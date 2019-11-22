@@ -27,5 +27,17 @@ class DB_Functions {
         if(!isset($post["Lozinka"])|| ctype_space($post["Lozinka"]) || empty($post["Lozinka"])) return "Lozinka";
         return 1;
     }
+
+    public function hashPassword($post) {
+        $salt = (32);
+        //echo "Hashing\n";
+        $saltB64= base64_encode($salt);
+        //echo $saltB64."\n";
+        $iterations = 10000;
+        $hash = hash_pbkdf2("sha256", $post["Lozinka"], $salt, $iterations);
+        $hashB64 = base64_encode(pack('H*',$hash));
+        //echo $hashB64."\n";
+        return [$saltB64,$hashB64];
+    }
 }
 ?>
