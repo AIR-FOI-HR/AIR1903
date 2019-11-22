@@ -14,4 +14,14 @@ if ($registerCheck!==1){
     echo $response;
     return;
 }
+
+$registerCheck = $db->userExistsRegister($_POST);
+
+if ($registerCheck){
+    $response->STATUS=400;
+    $response->STATUSMESSAGE="BAD REQUEST: ALREADY EXISTS: ".$registerCheck;
+    $response = json_encode($response);
+    echo $response;
+    return;
+}
 ?>
