@@ -13,7 +13,7 @@ class DB_Functions {
 		
 	}
 	
-	public function checkRegister($post){
+	public function checkRegisterEmpty($post){
         if(!isset($post["Ime"])|| ctype_space($post["Ime"]) || empty($post["Ime"])) return "Ime";
         if(!isset($post["Prezime"])|| ctype_space($post["Prezime"]) || empty($post["Prezime"])) return "Prezime";
         if(!isset($post["Email"])|| ctype_space($post["Email"]) || empty($post["Email"])) return "Email";
