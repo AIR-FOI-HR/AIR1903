@@ -28,4 +28,16 @@ if ($registerCheck){
 $hash = $db->hashPassword($_POST);
 
 $regUser = $db->storeUser($_POST, $hash);
+
+$response->STATUS=200;
+$response->STATUSMESSAGE= "OK";
+
+$response2->USERNAME=$regUser;
+$response2= json_encode($response2);
+$response->DATA=$response2;
+
+$response = json_encode($response);
+echo $response;
+return;
+
 ?>
