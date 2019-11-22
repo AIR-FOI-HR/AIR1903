@@ -7,7 +7,7 @@ require_once 'responseTemplate.php';
 $loginCheck=$db->checkLogin($_POST);
 
 if ($loginCheck!==1){
-    $response->STATUS=400;
+    $response->STATUS=false;
     $response->STATUSMESSAGE="BAD REQUEST: BAD PARAMETER: ".$loginCheck;
     $response = json_encode($response);
     echo $response;
@@ -17,7 +17,7 @@ if ($loginCheck!==1){
 $loginCheck = $db->userExistsLogin($_POST);
 
 if ($loginCheck==0){
-    $response->STATUS=400;
+    $response->STATUS=false;
     $response->STATUSMESSAGE="BAD REQUEST: USER DOESN'T EXIST";
     $response = json_encode($response);
     echo $response;
@@ -27,14 +27,14 @@ if ($loginCheck==0){
 $loginCheck = $db->checkPassword($_POST);
 
 if ($loginCheck===0){
-    $response->STATUS=401;
+    $response->STATUS=false;
     $response->STATUSMESSAGE="UNAUTHORIZED: WRONG PASSWORD";
     $response=json_encode($response);
     echo $response;
     return;
 }
 else {
-    $response->STATUS=200;
+    $response->STATUS=true;
     $response->STATUSMESSAGE="OK";
     $response->DATA=$loginCheck;
     $response= json_encode($response);
