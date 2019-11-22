@@ -37,6 +37,15 @@ class DB_Functions {
         return $post["KorisnickoIme"];
         
     }
+	
+	public function checkRegister($post) {
+        if (strlen($post["Ime"])<3) return "Ime";
+        if (strlen($post["Prezime"])<3) return "Prezime";
+        if (!preg_match("/(\w+\.)*(\w+)@(\w+\.){1,2}(\w{2,5})/", $post["Email"])) return "Email";
+        if (strlen($post["KorisnickoIme"])<5) return "KorisnickoIme";
+        if (strlen($post["Lozinka"])<7) return "Lozinka";
+        return 1;
+    }
     
     public function userExistsRegister($post) {
         $q="SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='".$post["KorisnickoIme"]."'";
