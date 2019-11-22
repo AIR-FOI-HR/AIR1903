@@ -37,7 +37,7 @@ $response2= json_encode($response2);
 $response->DATA=$response2;
 
 $response = json_encode($response);
-echo $response;
+echo stripslashes($response);
 return;
 
 ?>
