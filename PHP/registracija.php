@@ -15,6 +15,16 @@ if ($registerCheck!==1){
     return;
 }
 
+$registerCheck=$db->checkRegister($_POST);
+
+if ($registerCheck!==1){
+    $response->STATUS=false;
+    $response->STATUSMESSAGE="BAD REQUEST: BAD PARAMETER: ".$registerCheck;
+    $response = json_encode($response);
+    echo $response;
+    return;
+}
+
 $registerCheck = $db->userExistsRegister($_POST);
 
 if ($registerCheck){
