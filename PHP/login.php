@@ -24,4 +24,21 @@ if ($loginCheck==0){
     return;
 }
 
+$loginCheck = $db->checkPassword($_POST);
+
+if ($loginCheck===0){
+    $response->STATUS=401;
+    $response->STATUSMESSAGE="UNAUTHORIZED: WRONG PASSWORD";
+    $response=json_encode($response);
+    echo $response;
+    return;
+}
+else {
+    $response->STATUS=200;
+    $response->STATUSMESSAGE="OK";
+    $response->DATA=$loginCheck;
+    $response= json_encode($response);
+    echo $response;
+    return;
+}
 ?>
