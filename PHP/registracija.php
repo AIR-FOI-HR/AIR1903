@@ -24,4 +24,8 @@ if ($registerCheck){
     echo $response;
     return;
 }
+
+$hash = $db->hashPassword($_POST);
+
+$regUser = $db->storeUser($_POST, $hash);
 ?>
