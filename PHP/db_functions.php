@@ -67,7 +67,8 @@ class DB_Functions {
     }
 
     public function hashPassword($post) {
-        $salt = (32);
+        $cstrong=true;
+        $salt = openssl_random_pseudo_bytes(32, $cstrong);
         $saltB64= base64_encode($salt);
         $iterations = 10000;
         $hash = hash_pbkdf2("sha256", $post["Lozinka"], $salt, $iterations);
