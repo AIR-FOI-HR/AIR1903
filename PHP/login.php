@@ -13,4 +13,15 @@ if ($loginCheck!==1){
     echo $response;
     return;
 }
+
+$loginCheck = $db->userExistsLogin($_POST);
+
+if ($loginCheck==0){
+    $response->STATUS=400;
+    $response->STATUSMESSAGE="BAD REQUEST: USER DOESN'T EXIST";
+    $response = json_encode($response);
+    echo $response;
+    return;
+}
+
 ?>
