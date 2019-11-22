@@ -4,6 +4,8 @@ require_once 'db_function.php';
 $db = new DB_Functions();
 
 require_once 'responseTemplate.php';
+
+header('Content-Type: application/json');
         
 $registerCheck=$db->checkRegisterEmpty($_POST);
 
@@ -43,7 +45,6 @@ $response->STATUS=true;
 $response->STATUSMESSAGE= "OK";
 
 $response2->USERNAME=$regUser;
-$response2= json_encode($response2);
 $response->DATA=$response2;
 
 $response = json_encode($response);

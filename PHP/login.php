@@ -4,6 +4,8 @@ $db = new DB_Functions();
 
 require_once 'responseTemplate.php';
 
+header('Content-Type: application/json');
+
 $loginCheck=$db->checkLogin($_POST);
 
 if ($loginCheck!==1){
@@ -36,7 +38,7 @@ if ($loginCheck===0){
 else {
     $response->STATUS=true;
     $response->STATUSMESSAGE="OK";
-    $response->DATA=$loginCheck;
+    $response->DATA=json_decode($loginCheck);
     $response= json_encode($response);
     echo $response;
     return;
