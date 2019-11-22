@@ -38,7 +38,7 @@ else {
     $response->STATUSMESSAGE="OK";
     $response->DATA=$loginCheck;
     $response= json_encode($response);
-    echo stripslashes($response);
+    echo $response;
     return;
 }
 ?>
