@@ -68,13 +68,10 @@ class DB_Functions {
 
     public function hashPassword($post) {
         $salt = (32);
-        //echo "Hashing\n";
         $saltB64= base64_encode($salt);
-        //echo $saltB64."\n";
         $iterations = 10000;
         $hash = hash_pbkdf2("sha256", $post["Lozinka"], $salt, $iterations);
         $hashB64 = base64_encode(pack('H*',$hash));
-        //echo $hashB64."\n";
         return [$saltB64,$hashB64];
     }
 
