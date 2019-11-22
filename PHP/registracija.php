@@ -8,7 +8,7 @@ require_once 'responseTemplate.php';
 $registerCheck=$db->checkRegister($_POST);
 
 if ($registerCheck!==1){
-    $response->STATUS=400;
+    $response->STATUS=false;
     $response->STATUSMESSAGE="BAD REQUEST: BAD PARAMETER: ".$registerCheck;
     $response = json_encode($response);
     echo $response;
@@ -18,7 +18,7 @@ if ($registerCheck!==1){
 $registerCheck = $db->userExistsRegister($_POST);
 
 if ($registerCheck){
-    $response->STATUS=400;
+    $response->STATUS=false;
     $response->STATUSMESSAGE="BAD REQUEST: ALREADY EXISTS: ".$registerCheck;
     $response = json_encode($response);
     echo $response;
@@ -29,7 +29,7 @@ $hash = $db->hashPassword($_POST);
 
 $regUser = $db->storeUser($_POST, $hash);
 
-$response->STATUS=200;
+$response->STATUS=true;
 $response->STATUSMESSAGE= "OK";
 
 $response2->USERNAME=$regUser;
