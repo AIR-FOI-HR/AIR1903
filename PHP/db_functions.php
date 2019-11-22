@@ -28,6 +28,35 @@ class DB_Functions {
         return 1;
     }
 
+    
+    public function userExistsRegister($post) {
+        $q="SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='".$post["KorisnickoIme"]."'";
+        $stmt = $this->conn->query($q);
+        
+        if ($stmt->num_rows > 0) {
+            $stmt->close();
+            return "KorisnickoIme";
+        }
+        
+        $q="SELECT Email FROM Korisnik WHERE Email='".$post["Email"]."'";
+        $stmt = $this->conn->query($q);
+        
+        if ($stmt->num_rows > 0) {
+            $stmt->close();
+            return "Email";
+        }
+        return 0;
+    }
+    
+    public function userExistsLogin($post) {
+        $q="SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='".$post["KorisnickoIme"]."'";
+        $stmt = $this->conn->query($q);
+        if ($stmt->num_rows > 0) {
+            return 1;
+        }
+        return 0;
+    }
+
     public function hashPassword($post) {
         $salt = (32);
         //echo "Hashing\n";
