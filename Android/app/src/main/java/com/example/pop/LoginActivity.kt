@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.ApiResponse
 import com.example.webservice.Response.IMyAPI
@@ -41,6 +42,18 @@ class LoginActivity : AppCompatActivity() {
                     else {
                         Toast.makeText(this@LoginActivity, "Uspjesna prijava", Toast.LENGTH_SHORT)
                             .show()
+                        Session.user.Ime=response!!.body()!!.DATA!!.Ime
+                        Session.user.Prezime= response!!.body()!!.DATA!!.Prezime
+                        Session.user.Email = response!!.body()!!.DATA!!.Email
+                        Session.user.KorisnickoIme = response!!.body()!!.DATA!!.KorisnickoIme
+                        Session.user.Id_Uloge = response!!.body()!!.DATA!!.Id_Uloge
+                        Session.user.Naziv_Uloge = response!!.body()!!.DATA!!.Naziv_Uloge
+                        Session.user.StanjeRacuna = response!!.body()!!.DATA!!.StanjeRacuna
+                        Session.user.DozvolaPregledTransakcija = response!!.body()!!.DATA!!.DozvolaPregledTransakcija
+                        Session.user.DozvolaUpravljanjeStanjemRacuna = response!!.body()!!.DATA!!.DozvolaUpravljanjeStanjemRacuna
+                        Session.user.DozvolaUpravljanjeUlogama = response!!.body()!!.DATA!!.DozvolaUpravljanjeUlogama
+                        Session.user.DozvolaUvidUStatistiku = response!!.body()!!.DATA!!.DozvolaUvidUStatistiku
+                        Session.user.LoginTime = response!!.body()!!.DATA!!.LoginTime
                     }
                 }
             })
