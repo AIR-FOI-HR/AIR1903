@@ -45,52 +45,52 @@
         android:hint="@string/inputHintPassword"
         android:importantForAutofill="no"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/layoutLoginTextForgottenPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutLoginInputUsername" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/layoutLoginTextForgottenPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/marginInputForms"
         android:text="@string/loginForgottenPassword"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
+        app:layout_constraintBottom_toTopOf="@+id/layoutLoginButtonLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutLoginInputPassword" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/layoutLoginButtonLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/marginInputForms"
         android:layout_marginRight="@dimen/marginInputForms"
         android:text="@string/buttonLogin"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/layoutLoginTextNoAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutLoginTextForgottenPassword" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/layoutLoginTextNoAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/marginInputForms"
         android:layout_marginRight="@dimen/marginInputForms"
         android:text="@string/loginCreateAccount"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/registracijaButton"
+        app:layout_constraintBottom_toTopOf="@+id/layoutLoginButtonRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutLoginButtonLogin" />
 
     <Button
-        android:id="@+id/registracijaButton"
+        android:id="@+id/layoutLoginButtonRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/marginInputForms"
@@ -100,7 +100,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutLoginTextNoAccount" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
