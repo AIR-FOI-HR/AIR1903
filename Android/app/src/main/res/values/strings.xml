@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">POP</string>
+    <string name="imageLogo">Logo</string>
+    <string name="inputHintPassword">Password</string>
+    <string name="inputHintUsername">Username</string>
+    <string name="loginForgottenPassword">Forgotten password?</string>
+    <string name="loginCreateAccount">Don\'t have an account?</string>
+    <string name="buttonLogin">Log In</string>
+    <string name="buttonRegister">Register</string>
 </resources>

@@ -15,6 +15,6 @@ class MainActivity : AppCompatActivity() {
         mService = Common.api
 
         registracijaButton.setOnClickListener{startActivity(Intent(this@MainActivity,Registraacija::class.java))}
-        loginButton.setOnClickListener{authenticateUser(KorisnickoIme.text.toString(),Lozinka.text.toString())}
+        loginButton.setOnClickListener{authenticateUser(layoutLoginInputUsername.text.toString(),layoutLoginInputPassword.text.toString())}
     }
 }
