@@ -12,5 +12,10 @@ interface IMyAPI {
     @POST("registracija.php")
     fun registerUser(@Field("Ime") Ime:String, @Field("Prezime") Prezime:String, @Field("LozinkaTest") LozinkaTest:String, @Field("Email") Email:String, @Field("KorisnickoIme") KorisnickoIme:String): Call<ApiResponse>
 
+    @FormUrlEncoded
+    @POST("login.php")
+
+    fun storeUser(@Field("KorisnickoIme") KorisnickoIme:String, @Field("Lozinka") Lozinka:String):Call<ApiResponse>
+
 
 }
