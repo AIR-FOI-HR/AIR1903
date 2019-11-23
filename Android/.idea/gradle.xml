@@ -9,6 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+<<<<<<< HEAD
+=======
+            <option value="$PROJECT_DIR$/webservice" />
+>>>>>>> android/feature/restful
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
