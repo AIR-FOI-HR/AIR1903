@@ -35,6 +35,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.568" />
 
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="218dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="96dp"
+        android:hint="E-mail"
+        app:layout_constraintBottom_toTopOf="@+id/Lozinka"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.989"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19" />
+
+    <EditText
+        android:id="@+id/prezime"
+        android:layout_width="218dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="96dp"
+        android:hint="Prezime"
+        app:layout_constraintBottom_toTopOf="@+id/Lozinka"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.374" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
