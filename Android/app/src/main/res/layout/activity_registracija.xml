@@ -65,6 +65,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.374" />
 
+    <EditText
+        android:id="@+id/KorisnickoIme"
+        android:layout_width="218dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="96dp"
+        android:hint="Korisnicko ime"
+        app:layout_constraintBottom_toTopOf="@+id/Lozinka"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.12" />
+    <!--ovo treba prebacit na odabir ne na textbox-->
+    <EditText
+        android:id="@+id/tipKorisnika"
+        android:layout_width="218dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="96dp"
+        android:hint="Tip korisnika"
+        app:layout_constraintBottom_toTopOf="@+id/Lozinka"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.989"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
