@@ -1,4 +1,4 @@
-package com.example.pop.Model
+package com.example.webservice.Model
 
 class ApiResponse {
     var STATUS:Boolean=false

@@ -1,4 +1,4 @@
-package com.example.pop.Model
+package com.example.webservice.Model
 
 class User {
     var Ime:String=""

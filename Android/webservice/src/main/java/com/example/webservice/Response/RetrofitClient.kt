@@ -1,4 +1,4 @@
-package com.example.pop.Response
+package com.example.webservice.Response
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

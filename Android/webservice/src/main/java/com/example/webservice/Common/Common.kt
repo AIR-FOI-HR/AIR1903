@@ -1,7 +1,7 @@
-package com.example.pop.Common
+package com.example.webservice.Common
 
-import com.example.pop.Response.IMyAPI
-import com.example.pop.Response.RetrofitClient
+import com.example.webservice.Response.IMyAPI
+import com.example.webservice.Response.RetrofitClient
 
 object Common {
 

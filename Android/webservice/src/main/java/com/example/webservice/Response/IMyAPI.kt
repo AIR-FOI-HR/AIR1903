@@ -1,6 +1,6 @@
-package com.example.pop.Response
+package com.example.webservice.Response
 
-import com.example.pop.Model.ApiResponse
+import com.example.webservice.Model.ApiResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
