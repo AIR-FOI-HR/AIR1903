@@ -33,8 +33,23 @@ class DB_Functions {
         $q = "INSERT INTO Korisnik (Id ,Ime, Prezime, Email, Id_Uloge, KorisnickoIme, StanjeRacuna, LozinkaSalt, LozinkaHash, DozvolaUpravljanjeUlogama, DozvolaUpravljanjeStanjemRacuna, DozvolaPregledTransakcija, DozvolaUvidUStatistiku) ";
         $q.="VALUES (null,'{$post["Ime"]}', '{$post["Prezime"]}','{$post["Email"]}', 1, '{$post["KorisnickoIme"]}', 0, '{$hash[0]}', '{$hash[1]}', 0, 0, 0, 0)";
         $stmt = $this->conn->query($q);
+        $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.StanjeRacuna, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $response["Ime"] = $stmt["Ime"];
+        $response["Prezime"] = $stmt["Prezime"];
+        $response["Email"] = $stmt["Email"];
+        $response["KorisnickoIme"] = $stmt["KorisnickoIme"];
+        $response["StanjeRacuna"] = $stmt["StanjeRacuna"];
+        $response["DozvolaUpravljanjeUlogama"] = $stmt["DozvolaUpravljanjeUlogama"];
+        $response["DozvolaUpravljanjeStanjemRacuna"] = $stmt["DozvolaUpravljanjeStanjemRacuna"];
+        $response["DozvolaPregledTransakcija"] = $stmt["DozvolaPregledTransakcija"];
+        $response["DozvolaUvidUStatistiku"] = $stmt["DozvolaUvidUStatistiku"];
+        $response["Id_Uloge"] = $stmt["Id_Uloge"];
+        $response["Naziv_Uloge"] = $stmt["Naziv"];
+        $response["LoginTime"] = time();
         
-        return $post["KorisnickoIme"];
+        return $response;
         
     }
 	

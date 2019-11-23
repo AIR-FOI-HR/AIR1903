@@ -44,8 +44,7 @@ $regUser = $db->storeUser($_POST, $hash);
 $response->STATUS=true;
 $response->STATUSMESSAGE= "OK";
 
-$response2->USERNAME=$regUser;
-$response->DATA=$response2;
+$response->DATA=$regUser;
 
 $response = json_encode($response);
 echo $response;
