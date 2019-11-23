@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POP</string>
+    <string name="imageLogo">Logo</string>
+    <string name="inputHintPassword">Lozinka</string>
+    <string name="inputHintUsername">Korisničko ime</string>
+    <string name="loginForgottenPassword">Zaboravljena lozinka?</string>
+    <string name="loginCreateAccount">Nemate račun?</string>
+    <string name="buttonLogin">Prijava</string>
+    <string name="buttonRegister">Registracija</string>
+</resources>
