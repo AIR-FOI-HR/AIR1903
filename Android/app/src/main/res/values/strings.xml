@@ -5,10 +5,12 @@
     <string name="inputHintName">Name</string>
     <string name="inputHintSurname">Surname</string>
     <string name="inputHintUsername">Username</string>
+    <string name="inputHintEmail">Email address</string>
     <string name="InputHintPassword">Password</string>
+    <string name="InputHintConfirmPassword">Confirm Password</string>
     <string name="InputCaptcha">CAPTCHA</string>
     <string name="buttonNext">Next</string>
     <string name="buttonRegister">Register</string>
     <string name="buttonLogin">Log in</string>
-    <string name="registrationInfo">Professor has to confirm your registration. After your account is confirmed, you will gain access to the rest of the application.</string>
+    <string name="registrationInfo">A professor has to confirm your registration. After your account is confirmed, you will gain access to the rest of the application.</string>
 </resources>

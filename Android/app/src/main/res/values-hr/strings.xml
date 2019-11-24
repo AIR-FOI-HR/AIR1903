@@ -6,7 +6,9 @@
     <string name="inputHintName">Ime</string>
     <string name="inputHintSurname">Prezime</string>
     <string name="inputHintUsername">Korisničko ime</string>
+    <string name="inputHintEmail">Email adresa</string>
     <string name="InputHintPassword">Lozinka</string>
+    <string name="InputHintConfirmPassword">Potvrdite lozinku</string>
     <string name="InputCaptcha">CAPTCHA</string>
     <string name="buttonNext">Dalje</string>
     <string name="buttonRegister">Registriraj se</string>
