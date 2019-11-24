@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/layoutRegistrationLogo"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/imageLogo"
         android:scaleType="fitXY"
@@ -38,12 +38,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationLogo"
-        app:navGraph="@navigation/navigation_registration" />
+        app:navGraph="@navigation/navigation_registration"
+        tools:layout="@layout/fragment_registration_first" />
 
     <TextView
         android:id="@+id/layoutRegistrationTextLogin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="24dp"
         android:text="@string/registrationLogin"
         app:layout_constraintBottom_toBottomOf="parent"
