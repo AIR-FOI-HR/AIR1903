@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POP</string>
+    <string name="imageLogo">Logo</string>
+    <string name="registrationLogin">Već imate račun? Prijava</string>
+</resources>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">POP</string>
+    <string name="imageLogo">Logo</string>
+    <string name="registrationLogin">Already have an account? Login</string>
 </resources>
