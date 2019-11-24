@@ -23,8 +23,8 @@ class LoginActivity : AppCompatActivity() {
         mService = Common.api
 
 
-        //layoutLoginButtonRegister.setOnClickListener{startActivity(Intent(this@LoginActivity,Registraacija::class.java))}
         layoutLoginButtonLogin.setOnClickListener{authenticateUser(layoutLoginInputUsername.text.toString(),layoutLoginInputPassword.text.toString())}
+        layoutLoginButtonRegister.setOnClickListener{startActivity(Intent(this@LoginActivity,RegistrationActivity::class.java))}
     }
         private fun authenticateUser(KorisnickoIme: String, Lozinka: String) {
             mService.storeUser(KorisnickoIme, Lozinka).enqueue(object : Callback<ApiResponse> {
