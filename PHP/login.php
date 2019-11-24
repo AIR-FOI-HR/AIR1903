@@ -28,9 +28,17 @@ if ($loginCheck==0){
 
 $loginCheck = $db->checkPassword($_POST);
 
-if ($loginCheck===0){
+if ($loginCheck[0]["Forbidden"]==true){
     $response->STATUS=false;
-    $response->STATUSMESSAGE="UNAUTHORIZED: WRONG PASSWORD";
+    $response->STATUSMESSAGE="FORBIDDEN: TOO MANY FAILED LOGINS: CONTACT ADMINISTRATOR";
+    $response=json_encode($response);
+    echo $response;
+    return;
+            
+}
+elseif ($loginCheck[0]["KrivePrijave"]!=0){
+    $response->STATUS=false;
+    $response->STATUSMESSAGE="UNAUTHORIZED: WRONG PASSWORD: ATTEMPT {$loginCheck[0]["KrivePrijave"]} OF 3";
     $response=json_encode($response);
     echo $response;
     return;
@@ -38,9 +46,10 @@ if ($loginCheck===0){
 else {
     $response->STATUS=true;
     $response->STATUSMESSAGE="OK";
-    $response->DATA=json_decode($loginCheck);
+    $response->DATA=json_decode($loginCheck[1]);
     $response= json_encode($response);
     echo $response;
     return;
 }
+
 ?>
