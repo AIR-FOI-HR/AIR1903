@@ -101,20 +101,11 @@ class DB_Functions {
     }
 
     public function checkPassword($post) {
-        $q="SELECT LozinkaSalt, LozinkaHash, KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $q="SELECT LozinkaSalt, LozinkaHash FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         
         $iterations = 10000;
-        
-        $response["Forbidden"]=false;
-        $response["KrivePrijave"]=0;
-        $response2=null;
-        
-        if ($stmt["KrivePrijave"]>=3){
-            $response["Forbidden"]=true;
-            return [$response, $response2];
-        }
         
         $salt = base64_decode($stmt["LozinkaSalt"]);
         $hashDB = $stmt["LozinkaHash"];
@@ -122,40 +113,27 @@ class DB_Functions {
         $hash = hash_pbkdf2("sha256", $post["Lozinka"], $salt, $iterations);
         $hash= base64_encode(pack('H*',$hash));
         
-        
         if($hash==$hashDB){
             $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.StanjeRacuna, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
-            $response2["Ime"] = $stmt["Ime"];
-            $response2["Prezime"] = $stmt["Prezime"];
-            $response2["Email"] = $stmt["Email"];
-            $response2["KorisnickoIme"] = $stmt["KorisnickoIme"];
-            $response2["StanjeRacuna"] = $stmt["StanjeRacuna"];
-            $response2["DozvolaUpravljanjeUlogama"] = $stmt["DozvolaUpravljanjeUlogama"];
-            $response2["DozvolaUpravljanjeStanjemRacuna"] = $stmt["DozvolaUpravljanjeStanjemRacuna"];
-            $response2["DozvolaPregledTransakcija"] = $stmt["DozvolaPregledTransakcija"];
-            $response2["DozvolaUvidUStatistiku"] = $stmt["DozvolaUvidUStatistiku"];
-            $response2["Id_Uloge"] = $stmt["Id_Uloge"];
-            $response2["Naziv_Uloge"] = $stmt["Naziv"];
-            $response2["LoginTime"] = time();
+            $response["Ime"] = $stmt["Ime"];
+            $response["Prezime"] = $stmt["Prezime"];
+            $response["Email"] = $stmt["Email"];
+            $response["KorisnickoIme"] = $stmt["KorisnickoIme"];
+            $response["StanjeRacuna"] = $stmt["StanjeRacuna"];
+            $response["DozvolaUpravljanjeUlogama"] = $stmt["DozvolaUpravljanjeUlogama"];
+            $response["DozvolaUpravljanjeStanjemRacuna"] = $stmt["DozvolaUpravljanjeStanjemRacuna"];
+            $response["DozvolaPregledTransakcija"] = $stmt["DozvolaPregledTransakcija"];
+            $response["DozvolaUvidUStatistiku"] = $stmt["DozvolaUvidUStatistiku"];
+            $response["Id_Uloge"] = $stmt["Id_Uloge"];
+            $response["Naziv_Uloge"] = $stmt["Naziv"];
+			$response["LoginTime"] = time();
             
-            $response2 = json_encode($response2);
-            
-            $q = "UPDATE Korisnik SET KrivePrijave = 0 WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
-            $stmt = $this->conn->query($q);
-            
-            return [$response, $response2];
+            $response = json_encode($response);
+            return $response;
         }
-        else{
-            $q = "UPDATE Korisnik SET KrivePrijave = KrivePrijave+1 WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
-            $stmt = $this->conn->query($q);
-            $q = "SELECT KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
-            $stmt = $this->conn->query($q);
-            $stmt=$stmt->fetch_assoc();
-            $response["KrivePrijave"]=$stmt["KrivePrijave"];
-            return [$response, $response2];
-        }
+        else return 0;
         
     }
 }
