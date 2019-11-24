@@ -6,9 +6,9 @@
     <string name="inputHintSurname">Surname</string>
     <string name="inputHintUsername">Username</string>
     <string name="inputHintEmail">Email address</string>
-    <string name="InputHintPassword">Password</string>
-    <string name="InputHintConfirmPassword">Confirm Password</string>
-    <string name="InputCaptcha">CAPTCHA</string>
+    <string name="inputHintPassword">Password</string>
+    <string name="inputHintConfirmPassword">Confirm Password</string>
+    <string name="inputCaptcha">CAPTCHA</string>
     <string name="buttonNext">Next</string>
     <string name="buttonRegister">Register</string>
     <string name="buttonLogin">Log in</string>
