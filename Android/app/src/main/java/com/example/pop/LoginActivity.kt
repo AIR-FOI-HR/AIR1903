@@ -42,18 +42,19 @@ class LoginActivity : AppCompatActivity() {
                     else {
                         Toast.makeText(this@LoginActivity, "Uspjesna prijava", Toast.LENGTH_SHORT)
                             .show()
-                        Session.user.Ime=response!!.body()!!.DATA!!.Ime
-                        Session.user.Prezime= response!!.body()!!.DATA!!.Prezime
-                        Session.user.Email = response!!.body()!!.DATA!!.Email
-                        Session.user.KorisnickoIme = response!!.body()!!.DATA!!.KorisnickoIme
-                        Session.user.Id_Uloge = response!!.body()!!.DATA!!.Id_Uloge
-                        Session.user.Naziv_Uloge = response!!.body()!!.DATA!!.Naziv_Uloge
-                        Session.user.StanjeRacuna = response!!.body()!!.DATA!!.StanjeRacuna
-                        Session.user.DozvolaPregledTransakcija = response!!.body()!!.DATA!!.DozvolaPregledTransakcija
-                        Session.user.DozvolaUpravljanjeStanjemRacuna = response!!.body()!!.DATA!!.DozvolaUpravljanjeStanjemRacuna
-                        Session.user.DozvolaUpravljanjeUlogama = response!!.body()!!.DATA!!.DozvolaUpravljanjeUlogama
-                        Session.user.DozvolaUvidUStatistiku = response!!.body()!!.DATA!!.DozvolaUvidUStatistiku
-                        Session.user.LoginTime = response!!.body()!!.DATA!!.LoginTime
+                        var resp = response!!.body()!!.DATA!!
+                        Session.user.Ime=resp.Ime
+                        Session.user.Prezime= resp.Prezime
+                        Session.user.Email = resp.Email
+                        Session.user.KorisnickoIme = resp.KorisnickoIme
+                        Session.user.Id_Uloge = resp.Id_Uloge
+                        Session.user.Naziv_Uloge = resp.Naziv_Uloge
+                        Session.user.StanjeRacuna = resp.StanjeRacuna
+                        Session.user.DozvolaPregledTransakcija = resp.DozvolaPregledTransakcija
+                        Session.user.DozvolaUpravljanjeStanjemRacuna = resp.DozvolaUpravljanjeStanjemRacuna
+                        Session.user.DozvolaUpravljanjeUlogama = resp.DozvolaUpravljanjeUlogama
+                        Session.user.DozvolaUvidUStatistiku = resp.DozvolaUvidUStatistiku
+                        Session.user.LoginTime = resp.LoginTime
                     }
                 }
             })
