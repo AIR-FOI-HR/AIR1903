@@ -12,50 +12,57 @@
 
         <EditText
             android:id="@+id/layoutRegistrationInputUsername"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginInputForms"
+            android:layout_marginRight="@dimen/marginInputForms"
             android:ems="10"
             android:hint="@string/inputHintUsername"
+            android:importantForAutofill="no"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/layoutRegistrationInputPassword"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginInputForms"
+            android:layout_marginRight="@dimen/marginInputForms"
             android:ems="10"
             android:hint="@string/InputHintPassword"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputPasswordConfirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputUsername"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputUsername" />
 
         <EditText
             android:id="@+id/layoutRegistrationInputPasswordConfirm"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginInputForms"
+            android:layout_marginRight="@dimen/marginInputForms"
             android:ems="10"
             android:hint="@string/InputHintPassword"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputCaptcha"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputPassword"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputPassword" />
 
         <CheckBox
             android:id="@+id/layoutRegistrationInputCaptcha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginInputForms"
             android:text="@string/InputCaptcha"
             app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationButtonRegister"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,6 +72,8 @@
             android:id="@+id/layoutRegistrationButtonRegister"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginInputForms"
+            android:layout_marginRight="@dimen/marginInputForms"
             android:text="@string/buttonRegister"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

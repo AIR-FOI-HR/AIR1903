@@ -12,8 +12,10 @@
 
         <EditText
             android:id="@+id/layoutRegistrationInputName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginInputForms"
+            android:layout_marginRight="@dimen/marginInputForms"
             android:ems="10"
             android:hint="@string/inputHintName"
             android:importantForAutofill="no"
@@ -26,8 +28,10 @@
 
         <EditText
             android:id="@+id/layoutRegistrationInputSurname"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginInputForms"
+            android:layout_marginRight="@dimen/marginInputForms"
             android:ems="10"
             android:hint="@string/inputHintSurname"
             android:importantForAutofill="no"
@@ -40,8 +44,10 @@
 
         <Button
             android:id="@+id/layoutRegistrationButtonNext"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginInputForms"
+            android:layout_marginRight="@dimen/marginInputForms"
             android:text="@string/buttonNext"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
