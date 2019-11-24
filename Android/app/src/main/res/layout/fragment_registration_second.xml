@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistrationSecond">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/layoutRegistrationInputUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/inputHintUsername"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
+
+        <EditText
+            android:id="@+id/layoutRegistrationInputPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/InputHintPassword"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputPasswordConfirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputUsername"
+            android:importantForAutofill="no" />
+
+        <EditText
+            android:id="@+id/layoutRegistrationInputPasswordConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/InputHintPassword"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputCaptcha"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputPassword"
+            android:importantForAutofill="no" />
+
+        <CheckBox
+            android:id="@+id/layoutRegistrationInputCaptcha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/InputCaptcha"
+            app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationButtonRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputPasswordConfirm" />
+
+        <Button
+            android:id="@+id/layoutRegistrationButtonRegister"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/buttonRegister"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputCaptcha" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

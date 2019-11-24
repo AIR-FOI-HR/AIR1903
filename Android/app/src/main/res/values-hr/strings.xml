@@ -5,5 +5,9 @@
     <string name="registrationLogin">Već imate račun? Prijava</string>
     <string name="inputHintName">Ime</string>
     <string name="inputHintSurname">Prezime</string>
+    <string name="inputHintUsername">Korisničko ime</string>
+    <string name="InputHintPassword">Lozinka</string>
+    <string name="InputCaptcha">CAPTCHA</string>
     <string name="buttonNext">Dalje</string>
+    <string name="buttonRegister">Registriraj se</string>
 </resources>

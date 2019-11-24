@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_registration">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_registration"
+    app:startDestination="@id/registrationFirst">
 
+    <fragment
+        android:id="@+id/registrationFirst"
+        android:name="com.example.pop.RegistrationFirst"
+        android:label="fragment_registration_first"
+        tools:layout="@layout/fragment_registration_first" >
+        <action
+            android:id="@+id/action_registrationFirst_to_registrationSecond"
+            app:destination="@id/registrationSecond" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationSecond"
+        android:name="com.example.pop.RegistrationSecond"
+        android:label="fragment_registration_second"
+        tools:layout="@layout/fragment_registration_second" />
 </navigation>

@@ -4,5 +4,9 @@
     <string name="registrationLogin">Already have an account? Login</string>
     <string name="inputHintName">Name</string>
     <string name="inputHintSurname">Surname</string>
+    <string name="inputHintUsername">Username</string>
+    <string name="InputHintPassword">Password</string>
+    <string name="InputCaptcha">CAPTCHA</string>
     <string name="buttonNext">Next</string>
+    <string name="buttonRegister">Register</string>
 </resources>
