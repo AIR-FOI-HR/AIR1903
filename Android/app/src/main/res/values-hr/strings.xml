@@ -14,4 +14,6 @@
     <string name="buttonRegister">Registriraj se</string>
     <string name="buttonLogin">Prijava</string>
     <string name="registrationInfo">Profesor mora potvrditi vašu registraciju. Nakon što je vaš račun potvrđen, dobiti ćete pristup ostatku aplikacije.</string>
+    <string name="loginForgottenPassword">Zaboravljena lozinka?</string>
+    <string name="loginCreateAccount">Nemate račun?</string>
 </resources>
