@@ -18,5 +18,14 @@
         android:id="@+id/registrationSecond"
         android:name="com.example.pop.RegistrationSecond"
         android:label="fragment_registration_second"
-        tools:layout="@layout/fragment_registration_second" />
+        tools:layout="@layout/fragment_registration_second" >
+        <action
+            android:id="@+id/action_registrationSecond_to_registrationThird"
+            app:destination="@id/registrationThird" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationThird"
+        android:name="com.example.pop.RegistrationThird"
+        android:label="fragment_registration_third"
+        tools:layout="@layout/fragment_registration_third" />
 </navigation>

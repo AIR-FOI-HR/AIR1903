@@ -18,7 +18,7 @@ class RegistrationSecond : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_registration_second, container, false)
         view.layoutRegistrationButtonRegister.setOnClickListener {
-            //it.findNavController().navigate()
+            it.findNavController().navigate(R.id.action_registrationSecond_to_registrationThird)
         }
         return view
     }
