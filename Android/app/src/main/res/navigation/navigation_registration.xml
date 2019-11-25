@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_registration_first" >
         <action
             android:id="@+id/action_registrationFirst_to_registrationSecond"
-            app:destination="@id/registrationSecond" />
+            app:destination="@id/registrationSecond"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/registrationSecond"
@@ -21,7 +25,11 @@
         tools:layout="@layout/fragment_registration_second" >
         <action
             android:id="@+id/action_registrationSecond_to_registrationThird"
-            app:destination="@id/registrationThird" />
+            app:destination="@id/registrationThird"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/registrationThird"
