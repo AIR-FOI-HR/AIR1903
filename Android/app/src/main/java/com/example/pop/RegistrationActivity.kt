@@ -15,11 +15,15 @@ class RegistrationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_registration)
 
         layoutRegistrationTextLogin.setOnClickListener {
-            val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent);
-            RegistrationData.Reset()
-            this@RegistrationActivity.finish()
+            startLoginActivity()
         }
+    }
+
+    fun startLoginActivity() {
+        RegistrationData.Reset()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        this.finish()
     }
 }

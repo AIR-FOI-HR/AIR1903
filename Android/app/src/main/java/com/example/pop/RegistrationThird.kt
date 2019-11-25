@@ -18,22 +18,14 @@ class RegistrationThird : Fragment() {
     ): View? {
         val view:View = inflater.inflate(R.layout.fragment_registration_third, container, false)
         view.button.setOnClickListener {
-            startLoginActivity()
+            (activity as RegistrationActivity).startLoginActivity()
         }
         view.setOnTouchListener { _, event : MotionEvent ->
             if (event.action == MotionEvent.ACTION_DOWN) touchX = event.x
             if (event.action == MotionEvent.ACTION_UP)
-                if(abs(touchX - event.x) > SWIPE_THRESHOLD) startLoginActivity()
+                if(abs(touchX - event.x) > SWIPE_THRESHOLD) (activity as RegistrationActivity).startLoginActivity()
             true
         }
         return view
-    }
-
-    private fun startLoginActivity() {
-        val intent = Intent(activity,LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent);
-        RegistrationData.Reset()
-        activity!!.finish()
     }
 }
