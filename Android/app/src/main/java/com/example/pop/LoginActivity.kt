@@ -40,8 +40,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     else {
-                        Toast.makeText(this@LoginActivity, "Uspjesna prijava", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this@LoginActivity, R.string.toastLoginSuccess, Toast.LENGTH_SHORT).show()
                         var resp = response!!.body()!!.DATA!!
                         Session.user.Ime=resp.Ime
                         Session.user.Prezime= resp.Prezime

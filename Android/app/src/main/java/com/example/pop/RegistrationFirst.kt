@@ -15,13 +15,13 @@ class RegistrationFirst : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         RegistrationData.Ime = v?.layoutRegistrationInputName?.text.toString()
         if (RegistrationData.Ime == ""){
-            Toast.makeText(activity,"Ime ne smije biti prazno", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, R.string.toastEmptyName, Toast.LENGTH_SHORT).show()
             return
         }
 
         RegistrationData.Prezime = v?.layoutRegistrationInputSurname?.text.toString()
         if (RegistrationData.Prezime==""){
-            Toast.makeText(activity,"Prezime ne smije biti prazno", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, R.string.toastEmptySurname, Toast.LENGTH_SHORT).show()
             return
         }
 

@@ -15,5 +15,12 @@
     <string name="registrationInfo">A professor has to confirm your registration. After your account is confirmed, you will gain access to the rest of the application.</string>
     <string name="loginForgottenPassword">Forgotten password?</string>
     <string name="loginCreateAccount">or</string>
-
+    <string name="toastLoginSuccess">Login successful</string>
+    <string name="toastRegistrationSuccess">Registration successful</string>
+    <string name="toastEmptyName">Name field cannot be empty</string>
+    <string name="toastEmptySurname">Surname field cannot be empty</string>
+    <string name="toastEmptyPassword">Password field cannot be empty</string>
+    <string name="toastEmptyEmail">Email field cannot be empty</string>
+    <string name="toastEmptyUsername">Username field cannot be empty</string>
+    <string name="toastPasswordsDontMatch">Passwords don\'t match</string>
 </resources>

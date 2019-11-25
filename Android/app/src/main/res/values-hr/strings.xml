@@ -16,4 +16,12 @@
     <string name="registrationInfo">Profesor mora potvrditi vašu registraciju. Nakon što je vaš račun potvrđen, dobiti ćete pristup ostatku aplikacije.</string>
     <string name="loginForgottenPassword">Zaboravljena lozinka?</string>
     <string name="loginCreateAccount">ili</string>
+    <string name="toastLoginSuccess">Prijava uspješna</string>
+    <string name="toastRegistrationSuccess">Registracija uspješna</string>
+    <string name="toastEmptyName">Polje imena ne smije biti prazno</string>
+    <string name="toastEmptySurname">Polje prezimena ne smije biti prazno</string>
+    <string name="toastEmptyPassword">Polje lozinke ne smije biti prazno</string>
+    <string name="toastEmptyEmail">Polje emaila ne smije biti prazno</string>
+    <string name="toastEmptyUsername">Polje korisničkog imena ne smije biti prazno</string>
+    <string name="toastPasswordsDontMatch">Lozinke nisu jednake</string>
 </resources>

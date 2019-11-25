@@ -21,22 +21,22 @@ class RegistrationSecond : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (!checkPassword(v?.layoutRegistrationInputPassword?.text.toString(),v?.layoutRegistrationInputPasswordConfirm?.text.toString())){
-            Toast.makeText(activity,"Lozinke se ne podudaraju",Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, R.string.toastPasswordsDontMatch,Toast.LENGTH_SHORT).show()
         }
         else{
             RegistrationData.Lozinka = v?.layoutRegistrationInputPassword?.text.toString()
             if (RegistrationData.Lozinka==""){
-                Toast.makeText(activity,"Lozinka ne smije biti prazna",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.toastEmptyPassword, Toast.LENGTH_SHORT).show()
                 return
             }
             RegistrationData.Email = v?.layoutRegistrationInputEmail?.text.toString()
             if (RegistrationData.Email==""){
-                Toast.makeText(activity,"Email ne smije biti prazan",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.toastEmptyEmail, Toast.LENGTH_SHORT).show()
                 return
             }
             RegistrationData.KorisnickoIme = v?.layoutRegistrationInputUsername?.text.toString()
             if (RegistrationData.KorisnickoIme==""){
-                Toast.makeText(activity,"Korisničko ime ne smije biti prazno",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.toastEmptyUsername, Toast.LENGTH_SHORT).show()
                 return
             }
             mService.registerUser(RegistrationData.Ime, RegistrationData.Prezime, RegistrationData.Lozinka, RegistrationData.Email, RegistrationData.KorisnickoIme)
@@ -49,7 +49,7 @@ class RegistrationSecond : Fragment(), View.OnClickListener {
                             Toast.makeText(activity,response!!.body()!!.STATUSMESSAGE,Toast.LENGTH_SHORT).show()
                         }
                         else {
-                            Toast.makeText(activity, "Uspjesna registracija", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, R.string.toastRegistrationSuccess, Toast.LENGTH_SHORT).show()
                             v!!.findNavController().navigate(R.id.action_registrationSecond_to_registrationThird)
                         }
                     }
