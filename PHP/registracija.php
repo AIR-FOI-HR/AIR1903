@@ -31,7 +31,7 @@ $registerCheck = $db->userExistsRegister($_POST);
 
 if ($registerCheck){
     $response->STATUS=false;
-    $response->STATUSMESSAGE="User {$registerCheck} already exists";
+    $response->STATUSMESSAGE="{$registerCheck} already exists";
     $response = json_encode($response);
     echo $response;
     return;
