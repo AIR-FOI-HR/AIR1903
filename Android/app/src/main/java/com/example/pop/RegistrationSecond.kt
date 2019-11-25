@@ -3,10 +3,12 @@ package com.example.pop
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.ApiResponse
 import com.example.webservice.Response.IMyAPI
@@ -14,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_registration_second.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.abs
 
 class RegistrationSecond : Fragment(), View.OnClickListener {
 
@@ -63,11 +66,18 @@ class RegistrationSecond : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         mService = Common.api
-
         val view: View = inflater.inflate(R.layout.fragment_registration_second, container, false)
-
         view.layoutRegistrationButtonRegister.setOnClickListener {
             onClick(view)
+        }
+        view.setOnTouchListener { v : View, event : MotionEvent ->
+            if (event.action == MotionEvent.ACTION_DOWN) touchX = event.x
+            if (event.action == MotionEvent.ACTION_UP) {
+                if(abs(touchX - event.x) > SWIPE_THRESHOLD) {
+                    if(touchX - event.x < 0) v.findNavController().navigateUp()
+                }
+            }
+            true
         }
         return view
     }
