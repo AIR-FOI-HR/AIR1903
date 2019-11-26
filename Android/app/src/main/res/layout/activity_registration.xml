@@ -6,26 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".RegistrationActivity">
 
-    <ImageView
-        android:id="@+id/layoutRegistrationLogo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/imageLogo"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic[17]" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <fragment
         android:id="@+id/fragmentRegistrationMain"
@@ -37,7 +23,7 @@
         app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationTextLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationLogo"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:navGraph="@navigation/navigation_registration"
         tools:layout="@layout/fragment_registration_first" />
 
