@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/registration1"
     tools:context=".RegistrationFirst">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,47 +14,61 @@
         <EditText
             android:id="@+id/layoutRegistrationInputName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/marginInputForms"
-            android:layout_marginRight="@dimen/marginInputForms"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_input"
             android:ems="10"
             android:hint="@string/inputHintName"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
+            android:padding="10dp"
             app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputSurname"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <EditText
             android:id="@+id/layoutRegistrationInputSurname"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/marginInputForms"
-            android:layout_marginRight="@dimen/marginInputForms"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_input"
             android:ems="10"
             android:hint="@string/inputHintSurname"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
+            android:padding="10dp"
             app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationButtonNext"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputName" />
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputName"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <Button
             android:id="@+id/layoutRegistrationButtonNext"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/marginInputForms"
-            android:layout_marginRight="@dimen/marginInputForms"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="250dp"
+            android:background="@drawable/rounded_button"
             android:text="@string/buttonNext"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputSurname" />
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputSurname"
+            app:layout_constraintVertical_chainStyle="packed" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
