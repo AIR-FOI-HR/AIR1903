@@ -25,4 +25,7 @@
     <string name="toastEmptyEmail">Polje emaila ne smije biti prazno</string>
     <string name="toastEmptyUsername">Polje korisničkog imena ne smije biti prazno</string>
     <string name="toastPasswordsDontMatch">Lozinke nisu jednake</string>
+    <string name="stepIndicator1">1</string>
+    <string name="stepIndicator2">2</string>
+    <string name="stepIndicator3">3</string>
 </resources>
