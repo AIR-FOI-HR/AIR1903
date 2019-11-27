@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorFoi">#CE003D</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorFoiAlternate">#F8B323</color>
+    <color name="colorUnselected">#979696</color>
 </resources>
