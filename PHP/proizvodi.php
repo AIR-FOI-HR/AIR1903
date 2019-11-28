@@ -9,6 +9,12 @@ $allProducts = json_encode(array('data' => $allProducts));
 echo ($allProducts);
 }
  else {
+    $response->STATUS = true;
+    $response->STATUSMESSAGE = "OK";
+    $newProduct = $db->addNewProduct($_POST);
+    $response2->NAME = $newProduct;
+    $response2 = json_encode($response2);
+    $response->DATA = $response2;
    
 }
 
