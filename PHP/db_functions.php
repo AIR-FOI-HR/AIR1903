@@ -174,5 +174,8 @@ public function addNewProduct($post) {
         $stmt = $this->conn->query($q);
         return $post["Naziv"];
     }
+ public function deleteProduct($post) {
+        
+    }
 }
 ?>
