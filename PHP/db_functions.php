@@ -158,5 +158,8 @@ class DB_Functions {
         }
         
     }
+public function getAllProducts() {
+        
+    }
 }
 ?>
