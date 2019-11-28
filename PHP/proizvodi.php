@@ -9,21 +9,21 @@ $allProducts = json_encode(array('data' => $allProducts));
 echo ($allProducts);
 }
  else {
- $productCheck = $db->checkProductEmpty($_POST);
+  $productCheck = $db->checkProductEmpty($_POST);
     if ($productCheckCheck === 0) {
         $response->STATUS = false;
         $response->STATUSMESSAGE = "BAD REQUEST: BAD PARAMETER: " . $registerCheck;
         $response = json_encode($response);
         echo $response;
         return;
-    } 
-    $response->STATUS = true;
-    $response->STATUSMESSAGE = "OK";
-    $newProduct = $db->addNewProduct($_POST);
-    $response2->NAME = $newProduct;
-    $response2 = json_encode($response2);
-    $response->DATA = $response2;
-   
+    } else if ($productCheck === 1) {
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "OK";
+        $newProduct = $db->addNewProduct($_POST);
+        $response2->NAME = $newProduct;
+        $response2 = json_encode($response2);
+        $response->DATA = $response2;
+    }
 }
 
 ?>
