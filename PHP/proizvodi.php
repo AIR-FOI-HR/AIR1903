@@ -9,6 +9,14 @@ $allProducts = json_encode(array('data' => $allProducts));
 echo ($allProducts);
 }
  else {
+ $productCheck = $db->checkProductEmpty($_POST);
+    if ($productCheckCheck === 0) {
+        $response->STATUS = false;
+        $response->STATUSMESSAGE = "BAD REQUEST: BAD PARAMETER: " . $registerCheck;
+        $response = json_encode($response);
+        echo $response;
+        return;
+    } 
     $response->STATUS = true;
     $response->STATUSMESSAGE = "OK";
     $newProduct = $db->addNewProduct($_POST);
