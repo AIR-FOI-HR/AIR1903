@@ -159,7 +159,14 @@ class DB_Functions {
         
     }
 public function getAllProducts() {
+        $q = "SELECT Id, Naziv, Cijena, Opis, Slika FROM Proizvod";
+        $stmt = $this->conn->query($q);
+        $json_array = array();
         
+        while($row = $stmt->fetch_assoc()){
+            $json_array[] = $row;
+        }
+        return $json_array;
     }
 }
 ?>
