@@ -168,5 +168,8 @@ public function getAllProducts() {
         }
         return $json_array;
     }
+public function addNewProduct($post) {
+        
+    }
 }
 ?>
