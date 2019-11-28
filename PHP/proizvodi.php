@@ -10,6 +10,7 @@ echo ($allProducts);
 }
  else {
   $productCheck = $db->checkProductEmpty($_POST);
+  $isDelete = $db->isDelete($_POST);
     if ($productCheckCheck === 0) {
         $response->STATUS = false;
         $response->STATUSMESSAGE = "BAD REQUEST: BAD PARAMETER: " . $registerCheck;
@@ -23,6 +24,10 @@ echo ($allProducts);
         $response2->NAME = $newProduct;
         $response2 = json_encode($response2);
         $response->DATA = $response2;
+    }else if ($isDelete === 1) {
+        $deleteProduct = $db->deleteProduct($_POST);
+        $response3->ID = $deleteProduct;
+        $response3 = json_encode($response3);
     }
 }
 
