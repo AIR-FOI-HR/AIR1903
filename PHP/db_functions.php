@@ -188,7 +188,11 @@ public function checkProductEmpty($post) {
         }    
     }
 public function isDelete($post) {
-      
+      if(!isset($post["Id"])){
+            return 0;
+        }else{
+            return 1;
+        }
     }
 
 }
