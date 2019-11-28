@@ -187,5 +187,9 @@ public function checkProductEmpty($post) {
             return 1;
         }    
     }
+public function isDelete($post) {
+      
+    }
+
 }
 ?>
