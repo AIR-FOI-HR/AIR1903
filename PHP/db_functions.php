@@ -180,5 +180,8 @@ public function addNewProduct($post) {
         $response = "Proizvod je uspjesno obrisan!";
         return $response;
     }
+public function checkProductEmpty($post) {
+         
+    }
 }
 ?>
