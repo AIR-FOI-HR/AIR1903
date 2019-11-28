@@ -175,7 +175,10 @@ public function addNewProduct($post) {
         return $post["Naziv"];
     }
  public function deleteProduct($post) {
-        
+        $q = "DELETE FROM Proizvod WHERE Id = '{$post["Id"]}'";
+        $stmt = $this->conn->query($q);
+        $response = "Proizvod je uspjesno obrisan!";
+        return $response;
     }
 }
 ?>
