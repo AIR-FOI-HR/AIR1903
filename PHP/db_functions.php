@@ -169,7 +169,10 @@ public function getAllProducts() {
         return $json_array;
     }
 public function addNewProduct($post) {
-        
+        $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
+        $q.= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '{$post["Slika"]}')";
+        $stmt = $this->conn->query($q);
+        return $post["Naziv"];
     }
 }
 ?>
