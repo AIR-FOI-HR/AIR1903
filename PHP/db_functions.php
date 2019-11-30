@@ -194,7 +194,19 @@ public function isDelete($post) {
             return 1;
         }  
     }
- public function isSeller($post) {
+    public function isSeller($post) {
+        if(!isset($post["Id"])) {
+            return 0;
+        } else {
+            $q = "SELECT Id_Uloge FROM Korisnik WHERE Id = '{$post["Id"]}'";
+            $stmt = $this->conn->query($q);
+            $id = $stmt;
+            if ($id === 3) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 }
 ?>
