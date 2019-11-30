@@ -209,7 +209,17 @@ public function isDelete($post) {
         }
     }
     public function getSellerProducts($post) {
-   
+        $q = "SELECT Id FROM Trgovina WHERE Prodavac = '{$post["Id"]}'";
+        $stmt = $this->conn->query($q);
+        $id = $stmt->fetch_assoc();
+        $id2 = $id['Id'];
+        $q2 = "SELECT Proizvod.Id, Proizvod.Naziv, Proizvod.Cijena, Proizvod.Opis, Proizvod.Slika FROM Proizvod, Trgovina_Proizvod, Trgovina WHERE Proizvod.Id = Trgovina_Proizvod.Id_Proizvoda AND Trgovina_Proizvod.Id_Trgovine = Trgovina.Id AND Trgovina.Id = '$id2'";
+        $stmt = $this->conn->query($q2);
+         $json_array = array();
+        while ($row = $stmt->fetch_assoc()) {
+            $json_array[] = $row;
+        }
+        return $json_array;
     }
 }
 ?>
