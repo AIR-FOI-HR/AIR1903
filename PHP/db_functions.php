@@ -194,5 +194,7 @@ public function isDelete($post) {
             return 1;
         }  
     }
+ public function isSeller($post) {
+    }
 }
 ?>
