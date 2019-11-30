@@ -24,10 +24,14 @@ echo ($allProducts);
         $response2->NAME = $newProduct;
         $response2 = json_encode($response2);
         $response->DATA = $response2;
+	return;
     }else if ($isDelete === 1) {
         $deleteProduct = $db->deleteProduct($_POST);
-        $response3->ID = $deleteProduct;
-        $response3 = json_encode($response3);
+        $response->ID = $deleteProduct;
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "Proizvod jest uspješno izbrisan!";
+        $response = json_encode($response);
+        return;
     }
 }
 
