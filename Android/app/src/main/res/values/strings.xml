@@ -13,6 +13,7 @@
     <string name="buttonRegister">Registration</string>
     <string name="buttonCompleteRegistration">Finish</string>
     <string name="buttonLogin">Login</string>
+    <string name="buttonAdd">Add</string>
     <string name="registrationInfo">A professor has to confirm your registration. After your account is confirmed, you will gain access to the rest of the application.</string>
     <string name="loginForgottenPassword">Forgotten password?</string>
     <string name="loginCreateAccount">or</string>
@@ -27,4 +28,5 @@
     <string name="stepIndicator1">1</string>
     <string name="stepIndicator2">2</string>
     <string name="stepIndicator3">3</string>
+    <string name="inputHintNumber">0</string>
 </resources>
