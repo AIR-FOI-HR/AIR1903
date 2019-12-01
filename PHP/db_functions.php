@@ -170,13 +170,16 @@ public function getAllProducts() {
     }
 public function addNewProduct($post) {
 	if(!isset($post["Slika"])||  empty($post["Slika"])){
+            $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
+            $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', 'https://cortex.foi.hr/pop/Slike/defaultPicture.png')";
+            $stmt = $this->conn->query($q);
+            return $post["Naziv"];
         } else {
-        }
-
-        $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
-        $q.= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '{$post["Slika"]}')";
-        $stmt = $this->conn->query($q);
-        return $post["Naziv"];
+            $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
+            $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '{$post["Slika"]}')";
+            $stmt = $this->conn->query($q);
+            return $post["Naziv"];
+        }       
     }
  public function deleteProduct($post) {
         $q = "DELETE FROM Proizvod WHERE Id = '{$post["Id"]}'";
