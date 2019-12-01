@@ -15,6 +15,7 @@
     <string name="buttonCompleteRegistration">Završi</string>
     <string name="buttonLogin">Prijava</string>
     <string name="buttonAdd">Dodaj</string>
+    <string name="buttonSave">Spremi</string>
     <string name="registrationInfo">Profesor mora potvrditi vašu registraciju. Nakon što je vaš račun potvrđen, dobiti ćete pristup ostatku aplikacije.</string>
     <string name="loginForgottenPassword">Zaboravljena lozinka?</string>
     <string name="loginCreateAccount">ili</string>
@@ -30,4 +31,5 @@
     <string name="stepIndicator2">2</string>
     <string name="stepIndicator3">3</string>
     <string name="inputHintNumber">0</string>
+    <string name="imageProduct">Slika proizvoda</string>
 </resources>
