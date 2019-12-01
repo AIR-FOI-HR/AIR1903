@@ -169,6 +169,10 @@ public function getAllProducts() {
         return $json_array;
     }
 public function addNewProduct($post) {
+	if(!isset($post["Slika"])||  empty($post["Slika"])){
+        } else {
+        }
+
         $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
         $q.= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '{$post["Slika"]}')";
         $stmt = $this->conn->query($q);
