@@ -32,4 +32,6 @@
     <string name="stepIndicator3">3</string>
     <string name="inputHintNumber">0</string>
     <string name="imageProduct">Slika proizvoda</string>
+    <string name="screenTitle">Poduzetnički pothvat</string>
+
 </resources>

@@ -31,4 +31,6 @@
     <string name="stepIndicator3">3</string>
     <string name="inputHintNumber">0</string>
     <string name="imageProduct">Product image</string>
+    <string name="screenTitle">Entrepreneurial Venture</string>
+
 </resources>
