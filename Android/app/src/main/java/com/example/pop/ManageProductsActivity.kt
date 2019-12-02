@@ -16,9 +16,9 @@ class ManageProductsActivity : AppCompatActivity() {
         if(intent.hasExtra("productId")) {
             layoutManageProductsButtonSubmit.text = getString(R.string.buttonSave)
             if(getProduct(intent.getIntExtra("productId", -1))) {
-                layoutManageProductsInputName.setText(product.Naziv)
-                layoutManageProductsInputValue.setText(product.Cijena)
-                layoutManageProductsImage.setImageURI(product.Slika?.toUri())
+                layoutManageProductsInputName.setText(product.name)
+                layoutManageProductsInputValue.setText(product.price.toString())
+                layoutManageProductsImage.setImageURI(product.picture?.toUri())
             }
         }
         else {
