@@ -1,9 +1,5 @@
 package com.example.database.Entities
 
-class Product {
-    var Id : Int = 0
-    var Naziv : String? = null
-    var Cijena : String? = null
-    var Opis : String? = null
-    var Slika : String? = null
-}
+import android.graphics.Bitmap
+
+data class Product(val id: Int, var name: String, var price: Double, var description: String, var picture : String)
