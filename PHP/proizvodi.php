@@ -16,13 +16,13 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
   $isDelete = $db->isDelete($_POST);
     if ($productCheckCheck === 0) {
         $response->STATUS = false;
-        $response->STATUSMESSAGE = "BAD REQUEST: BAD PARAMETER: " . $registerCheck;
+        $response->STATUSMESSAGE = "Niste unijeli Naziv, Opis ili Cijenu proizvoda! " . $registerCheck;
         $response = json_encode($response);
         echo $response;
         return;
     } else if ($productCheck === 1) {
         $response->STATUS = true;
-        $response->STATUSMESSAGE = "OK";
+        $response->STATUSMESSAGE = "Proizvod uspjesno dodan!";
         $newProduct = $db->addNewProduct($_POST);
         $response2->NAME = $newProduct;
         $response2 = json_encode($response2);
