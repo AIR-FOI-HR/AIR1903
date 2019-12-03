@@ -23,8 +23,8 @@ class ShowProductsActivity : AppCompatActivity(){
         setContentView(R.layout.activity_show_products)
 
         productAdapter = ProductRecyclerAdapter()
-        lista_proizvoda.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        lista_proizvoda.adapter = productAdapter
+        product_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        product_list.adapter = productAdapter
 
         val retrofit : Retrofit = Retrofit.Builder()
             .baseUrl("http://cortex.foi.hr")
