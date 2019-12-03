@@ -10,7 +10,8 @@
         android:label="@string/screenTitle"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeBar">
+        android:theme="@style/AppThemeBar"
+        android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
             android:name=".ShowProductsActivity"/>
