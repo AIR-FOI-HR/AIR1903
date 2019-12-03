@@ -10,39 +10,27 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.database.Entities.Product
 import com.example.pop.R
-import com.example.pop.adapters.ProductViewHolder
-import kotlin.collections.ArrayList
 
 
-class ProductRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class ProductRecyclerAdapter : RecyclerView.Adapter<ProductViewHolder>()
 {
+    private val products: MutableList<Product> = mutableListOf()
 
-    private val TAG: String = "AppDebug"
-
-    private var items: List<Product> = ArrayList()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ProductViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.product_list_item, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
+        return ProductViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.product_list_item, parent, false))
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder) {
-
-            is ProductViewHolder -> {
-                holder.bind(items.get(position))
-            }
-
-        }
+    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+        holder.bind(products[position])
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return products.size
     }
 
-    fun submitList(products: List<Product>){
-        items = products
+    fun submitList(data: List<Product>){
+        products.addAll(data)
+        notifyDataSetChanged()
     }
 
 
