@@ -5,8 +5,11 @@ $isSeller = $db->isSeller($_POST);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sellerProducts = $db->getSellerProducts($_POST);
-    $sellerProducts = json_encode(array('data' => $sellerProducts));
-    echo ($sellerProducts);
+    $response->DATA = $sellerProducts;
+    $response->STATUS = true;
+    $response->STATUSMESSAGE = "OK";
+    $response= json_encode($response);
+    echo stripslashes($response);
 }
 
 ?>
