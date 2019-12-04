@@ -195,7 +195,7 @@ public function checkProductEmpty($post) {
         }    
     }
 public function isDelete($post) {
-      if(!isset($post["Id"])){
+      if(!isset($post["Id"]) || isset($post["Naziv"]) || isset($post["Cijena"]) || isset($post["Opis"])){
             return 0;
         }else{
             return 1;
