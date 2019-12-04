@@ -235,5 +235,8 @@ public function isUpdate($post) {
             return 0;
         }
     }
+ public function updateProduct($post) {
+       
+    }
 }
 ?>
