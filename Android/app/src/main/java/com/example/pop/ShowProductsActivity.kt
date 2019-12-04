@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.pop.adapters.ProductRecyclerAdapter
+import com.example.webservice.Common.Common
 import com.example.webservice.Response.IMyAPI
+import com.example.webservice.Response.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_show_products.*
@@ -26,12 +28,7 @@ class ShowProductsActivity : AppCompatActivity(){
         product_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         product_list.adapter = productAdapter
 
-        val retrofit : Retrofit = Retrofit.Builder()
-            .baseUrl("http://cortex.foi.hr")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-        val productsApi = retrofit.create(ProductApi::class.java)
+        val productsApi = Common.api
 
         productsApi.getProducts()
             .subscribeOn(Schedulers.io())
