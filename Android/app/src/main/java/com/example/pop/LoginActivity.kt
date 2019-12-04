@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.ApiResponse
+import com.example.webservice.Model.ApiResponseUser
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
@@ -27,12 +27,12 @@ class LoginActivity : AppCompatActivity() {
         layoutLoginButtonRegister.setOnClickListener{startActivity(Intent(this@LoginActivity,RegistrationActivity::class.java))}
     }
         private fun authenticateUser(KorisnickoIme: String, Lozinka: String) {
-            mService.storeUser(KorisnickoIme, Lozinka).enqueue(object : Callback<ApiResponse> {
-                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+            mService.storeUser(KorisnickoIme, Lozinka).enqueue(object : Callback<ApiResponseUser> {
+                override fun onFailure(call: Call<ApiResponseUser>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, t!!.message, Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                override fun onResponse(call: Call<ApiResponseUser>, response: Response<ApiResponseUser>) {
                     if (!response!!.body()!!.STATUS)
                         Toast.makeText(
                             this@LoginActivity,

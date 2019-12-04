@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.ApiResponse
+import com.example.webservice.Model.ApiResponseUser
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.fragment_registration_second.view.*
 import retrofit2.Call
@@ -40,11 +40,11 @@ class RegistrationSecond : Fragment(), View.OnClickListener {
                 return
             }
             mService.registerUser(RegistrationData.Ime, RegistrationData.Prezime, RegistrationData.Lozinka, RegistrationData.Email, RegistrationData.KorisnickoIme)
-                .enqueue(object : Callback<ApiResponse> {
-                    override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                .enqueue(object : Callback<ApiResponseUser> {
+                    override fun onFailure(call: Call<ApiResponseUser>, t: Throwable) {
                         Toast.makeText(activity, t!!.message, Toast.LENGTH_SHORT).show()
                     }
-                    override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                    override fun onResponse(call: Call<ApiResponseUser>, response: Response<ApiResponseUser>) {
                         if(!response!!.body()!!.STATUS){
                             Toast.makeText(activity,response!!.body()!!.STATUSMESSAGE,Toast.LENGTH_SHORT).show()
                         }

@@ -1,6 +1,6 @@
 package com.example.webservice.Model
 
-class ApiResponse {
+class ApiResponseUser {
     var STATUS:Boolean=false
     var STATUSMESSAGE:String?=null
     var DATA:User?=null
