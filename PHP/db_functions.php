@@ -237,9 +237,12 @@ public function isUpdate($post) {
     }
  public function updateProduct($post) {
         if (!isset($post["Id"]) || empty($post["Id"])) {
-            
+            return 0;
         } else {
-          
+            $q = "UPDATE Proizvod SET Naziv = '{$post["Naziv"]}', Opis = '{$post["Opis"]}', Cijena = '{$post["Cijena"]}', Slika = '{$post["Slika"]}' WHERE Proizvod.Id = '{$post["Id"]}'";
+            $stmt = $this->conn->query($q);
+            $response = "Proizvod je uspjesno azuriran!";
+            return $response;
         }
     }
 }
