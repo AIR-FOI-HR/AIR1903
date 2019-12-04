@@ -1,18 +1,12 @@
 package com.example.pop.adapters
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.webservice.Model.Product
 import com.example.pop.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.product_list_item.view.*
-import org.w3c.dom.Text
 
 class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

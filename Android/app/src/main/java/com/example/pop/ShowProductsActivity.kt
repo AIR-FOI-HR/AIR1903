@@ -4,20 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.webservice.Model.ProductResponse
 import com.example.pop.adapters.ProductRecyclerAdapter
 import com.example.webservice.Common.Common
 import com.example.webservice.Response.IMyAPI
-import com.example.webservice.Response.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_show_products.*
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class ShowProductsActivity : AppCompatActivity(){
     private lateinit var productAdapter: ProductRecyclerAdapter
+    //internal lateinit var productsApi:IMyAPI
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -28,16 +29,29 @@ class ShowProductsActivity : AppCompatActivity(){
         product_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         product_list.adapter = productAdapter
 
-        val productsApi = Common.api
+        var productsApi = Common.api
 
-        productsApi.getProducts()
+        productsApi.getProducts().enqueue(object : Callback<ProductResponse> {
+            override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
+                Toast.makeText(this@ShowProductsActivity, t!!.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
+                var resp = response!!.body()!!.DATA!!
+                productAdapter.submitList(resp)
+            }
+        })
+
+        /*productsApi.getProducts()
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ productAdapter.submitList(it.DATA) },
                 {
                     Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-                })
+                })*/
+
+
     }
 
     /*

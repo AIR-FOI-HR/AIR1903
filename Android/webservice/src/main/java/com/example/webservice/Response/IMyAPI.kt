@@ -20,8 +20,8 @@ interface IMyAPI {
 
     fun storeUser(@Field("KorisnickoIme") KorisnickoIme:String, @Field("Lozinka") Lozinka:String):Call<ApiResponseUser>
 
-    @GET("/pop/proizvodi.php")
-    fun getProducts() : Observable<ProductResponse>
+    @GET("proizvodi.php")
+    fun getProducts() : Call<ProductResponse>
 
 
 
