@@ -228,5 +228,8 @@ public function isDelete($post) {
         }
         return $json_array;
     }
+public function isUpdate($post) {
+
+    }
 }
 ?>
