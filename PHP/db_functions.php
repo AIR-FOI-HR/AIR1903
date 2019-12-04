@@ -229,7 +229,11 @@ public function isDelete($post) {
         return $json_array;
     }
 public function isUpdate($post) {
-
+        if(isset($post["Id"]) && isset($post["Naziv"]) && isset($post["Cijena"]) && isset($post["Opis"]) && isset($post["Slika"])){
+            return 1;
+        }else{
+            return 0;
+        }
     }
 }
 ?>
