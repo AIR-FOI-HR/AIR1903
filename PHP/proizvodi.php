@@ -34,6 +34,13 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
         $response = json_encode($response);
         echo $response;
         return;
+    }else if ($isUpdate === 1) {
+        $updateProduct = $db->updateProduct($_POST);
+        $response->DATA = $updateProduct;
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "OK";
+        $response = json_encode($response);
+        echo stripslashes($response);
     }
 }
 
