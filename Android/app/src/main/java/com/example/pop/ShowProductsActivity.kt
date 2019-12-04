@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.pop.adapters.ProductRecyclerAdapter
-import com.example.webservice.Response.ProductApi
+import com.example.webservice.Response.IMyAPI
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_show_products.*
