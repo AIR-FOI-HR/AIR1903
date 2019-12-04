@@ -256,5 +256,16 @@ public function isUpdate($post) {
         $stmt = $this->conn->query($q);
         return $authString;
     }
+    
+    public function checkAuth($token){
+        $time=time();
+        $q = "SELECT ID FROM Tokeni WHERE Token = '{$token}' AND UnixVrijemeIsteka>{$time}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        if (sizeof($stmt)!=0) return true;
+        else return false;
+        
+    }
+
 }
 ?>
