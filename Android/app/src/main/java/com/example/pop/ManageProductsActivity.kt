@@ -3,7 +3,7 @@ package com.example.pop
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import com.example.database.Entities.Product
+import com.example.webservice.Model.Product
 import kotlinx.android.synthetic.main.activity_manage_products.*
 
 class ManageProductsActivity : AppCompatActivity() {

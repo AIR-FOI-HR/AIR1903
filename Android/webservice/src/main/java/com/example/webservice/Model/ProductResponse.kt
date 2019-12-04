@@ -1,4 +1,4 @@
-package com.example.database.Entities
+package com.example.webservice.Model
 
 class ProductResponse {
     var STATUS:Boolean=false

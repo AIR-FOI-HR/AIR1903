@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.product_list_item.view.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.database.Entities.Product
+import com.example.webservice.Model.Product
 import com.example.pop.R
 
 

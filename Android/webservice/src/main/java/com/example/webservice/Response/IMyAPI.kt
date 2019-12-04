@@ -1,6 +1,6 @@
 package com.example.webservice.Response
 
-import com.example.database.Entities.ProductResponse
+import com.example.webservice.Model.ProductResponse
 import com.example.webservice.Model.ApiResponseUser
 import io.reactivex.Observable
 import retrofit2.Call
