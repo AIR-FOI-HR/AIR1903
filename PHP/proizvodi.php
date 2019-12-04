@@ -29,10 +29,10 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
         return;
     }else if ($isDelete === 1) {
         $deleteProduct = $db->deleteProduct($_POST);
-        $response->ID = $deleteProduct;
         $response->STATUS = true;
         $response->STATUSMESSAGE = "Proizvod jest uspješno izbrisan!";
         $response = json_encode($response);
+        echo $response;
         return;
     }
 }
