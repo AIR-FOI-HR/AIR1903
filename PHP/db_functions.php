@@ -188,7 +188,7 @@ public function addNewProduct($post) {
         return $response;
     }
 public function checkProductEmpty($post) {
-        if(!isset($post["Naziv"])|| empty($post["Naziv"]) || !isset($post["Cijena"]) || empty($post["Cijena"]) || !isset($post["Opis"])||  empty($post["Opis"])){
+         if(!isset($post["Naziv"])|| empty($post["Naziv"]) || !isset($post["Cijena"]) || empty($post["Cijena"]) || !isset($post["Opis"])||  empty($post["Opis"]) || isset($post["Id"])){
             return 0;
         }else{
             return 1;
