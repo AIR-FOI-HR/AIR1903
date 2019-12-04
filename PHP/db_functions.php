@@ -245,5 +245,16 @@ public function isUpdate($post) {
             return $response;
         }
     }
+	
+	
+    public function generateAuth(){
+        
+        $auth = openssl_random_pseudo_bytes(128);
+        $authString = base64_encode($auth);
+        $time=time()+6*60*60;
+        $q = "INSERT INTO Tokeni (Token, UnixVrijemeIsteka) VALUES ('{$authString}',{$time});";
+        $stmt = $this->conn->query($q);
+        return $authString;
+    }
 }
 ?>
