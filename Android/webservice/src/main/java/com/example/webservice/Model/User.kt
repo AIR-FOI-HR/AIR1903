@@ -13,5 +13,6 @@ class User {
     var Id_Uloge:Int=0
     var Naziv_Uloge:String=""
     var LoginTime:Int=0
+    var Token:String=""
 
 }

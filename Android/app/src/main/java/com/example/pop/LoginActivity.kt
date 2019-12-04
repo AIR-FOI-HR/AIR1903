@@ -54,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
                         Session.user.DozvolaUpravljanjeUlogama = resp.DozvolaUpravljanjeUlogama
                         Session.user.DozvolaUvidUStatistiku = resp.DozvolaUvidUStatistiku
                         Session.user.LoginTime = resp.LoginTime
+                        Session.user.Token = resp.Token
 
                         showProducts()
                     }
