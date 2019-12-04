@@ -20,13 +20,13 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
         echo $response;
         return;
     } else if ($productCheck === 1) {
+        $newProduct = $db->addNewProduct($_POST);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "Proizvod uspjesno dodan!";
-        $newProduct = $db->addNewProduct($_POST);
-        $response2->NAME = $newProduct;
-        $response2 = json_encode($response2);
-        $response->DATA = $response2;
-	return;
+        $response->DATA = $newProduct;
+        $response = json_encode($response);
+        echo $response;
+        return;
     }else if ($isDelete === 1) {
         $deleteProduct = $db->deleteProduct($_POST);
         $response->ID = $deleteProduct;
