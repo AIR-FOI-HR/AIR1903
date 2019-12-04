@@ -100,7 +100,7 @@ class DB_Functions {
         return [$saltB64,$hashB64];
     }
 
-    public function checkPassword($post) {
+	public function checkPassword($post) {
         $q="SELECT LozinkaSalt, LozinkaHash, KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
@@ -139,6 +139,7 @@ class DB_Functions {
             $response2["Id_Uloge"] = $stmt["Id_Uloge"];
             $response2["Naziv_Uloge"] = $stmt["Naziv"];
             $response2["LoginTime"] = time();
+            $response2["Token"]=$this->generateAuth();
             
             $response2 = json_encode($response2);
             
