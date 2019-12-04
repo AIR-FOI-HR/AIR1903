@@ -236,7 +236,11 @@ public function isUpdate($post) {
         }
     }
  public function updateProduct($post) {
-       
+        if (!isset($post["Id"]) || empty($post["Id"])) {
+            
+        } else {
+          
+        }
     }
 }
 ?>
