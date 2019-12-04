@@ -12,6 +12,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
  else {
   $productCheck = $db->checkProductEmpty($_POST);
   $isDelete = $db->isDelete($_POST);
+  $isUpdate = $db->isUpdate($_POST);
     if ($productCheckCheck === 0) {
         $response->STATUS = false;
         $response->STATUSMESSAGE = "Niste unijeli Naziv, Opis ili Cijenu proizvoda! " . $registerCheck;
