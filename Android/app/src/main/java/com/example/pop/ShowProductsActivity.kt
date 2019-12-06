@@ -35,34 +35,5 @@ class ShowProductsActivity : AppCompatActivity(){
                 productAdapter.submitList(resp)
             }
         })
-
-
-
-        /*productsApi.getProducts()
-           .subscribeOn(Schedulers.io())
-           .unsubscribeOn(Schedulers.computation())
-           .observeOn(AndroidSchedulers.mainThread())
-           .subscribe({ productAdapter.submitList(it.DATA) },
-               {
-                   Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-               })*/
-
     }
-    /*
-    private fun addDataSet(){
-        val data = DataSource.createDataSet()
-        blogAdapter.submitList(data)
-    }
-
-    private fun initRecyclerView(){
-
-        recycler_view.apply {
-            layoutManager = LinearLayoutManager(this@ShowProductsActivity)
-            val topSpacingDecorator = TopSpacingItemDecoration(30)
-            addItemDecoration(topSpacingDecorator)
-            blogAdapter = ProductRecyclerAdapter()
-            adapter = blogAdapter
-        }
-    }
-     */
 }
