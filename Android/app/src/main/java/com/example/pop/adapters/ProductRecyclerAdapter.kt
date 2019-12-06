@@ -30,10 +30,11 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
 
         holder.bind(product)
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnLongClickListener {
             val expanded = product.isExpanded
             product.isExpanded = !expanded
             notifyItemChanged(position)
+            true
         }
 
         holder.itemView.img_edit_product.setOnClickListener{displayText("EDIT")}
