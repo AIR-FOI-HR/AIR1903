@@ -15,4 +15,20 @@ class User {
     var LoginTime:Int=0
     var Token:String=""
 
+    fun reset(){
+        Ime=""
+        Prezime=""
+        Email=""
+        KorisnickoIme=""
+        StanjeRacuna=""
+        DozvolaUpravljanjeUlogama=""
+        DozvolaUpravljanjeStanjemRacuna=""
+        DozvolaPregledTransakcija=""
+        DozvolaUvidUStatistiku=""
+        Id_Uloge=0
+        Naziv_Uloge=""
+        LoginTime=0
+        Token=""
+    }
+
 }
