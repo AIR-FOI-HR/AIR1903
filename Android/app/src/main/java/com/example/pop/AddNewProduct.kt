@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.webservice.Model.NewProductResponse
 import com.example.webservice.Response.IMyAPI
+import kotlinx.android.synthetic.main.activity_add_new_product.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +17,16 @@ class AddNewProduct : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_product)
+        if (addNewProductButton!=null) {
+            addNewProductButton.setOnClickListener {
+                addNewProduct(
+                    productName.text.toString(),
+                    productDescription.text.toString(),
+                    productPrice.text.toString(),
+                    productImage.text.toString()
+                )
+            }
+        }
     }
 
     private fun addNewProduct(Naziv: String, Opis: String, Cijena: String, Slika: String) {
