@@ -69,5 +69,6 @@ class LoginActivity : AppCompatActivity() {
     private fun showMainMenu(){
         val intent = Intent(this, MainMenu::class.java)
         startActivity(intent)
+        finish()
     }
 }
