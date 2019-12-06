@@ -7,25 +7,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.webservice.Model.ProductResponse
 import com.example.pop.adapters.ProductRecyclerAdapter
 import com.example.webservice.Common.Common
-import com.example.webservice.Response.IMyAPI
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_show_products.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
+import retrofit2.*
+import kotlinx.android.synthetic.main.product_list_item.*
 
 class ShowProductsActivity : AppCompatActivity(){
     private lateinit var productAdapter: ProductRecyclerAdapter
-    //internal lateinit var productsApi:IMyAPI
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_products)
 
-        productAdapter = ProductRecyclerAdapter()
+        productAdapter = ProductRecyclerAdapter(applicationContext)
         product_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         product_list.adapter = productAdapter
 
@@ -42,18 +36,18 @@ class ShowProductsActivity : AppCompatActivity(){
             }
         })
 
-        /*productsApi.getProducts()
-            .subscribeOn(Schedulers.io())
-            .unsubscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ productAdapter.submitList(it.DATA) },
-                {
-                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-                })*/
 
+
+        /*productsApi.getProducts()
+           .subscribeOn(Schedulers.io())
+           .unsubscribeOn(Schedulers.computation())
+           .observeOn(AndroidSchedulers.mainThread())
+           .subscribe({ productAdapter.submitList(it.DATA) },
+               {
+                   Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+               })*/
 
     }
-
     /*
     private fun addDataSet(){
         val data = DataSource.createDataSet()

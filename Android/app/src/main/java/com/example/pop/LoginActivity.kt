@@ -14,8 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
-    internal lateinit var mService:IMyAPI
-
+    private lateinit var mService:IMyAPI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
