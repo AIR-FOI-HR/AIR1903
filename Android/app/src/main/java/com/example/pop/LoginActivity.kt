@@ -65,5 +65,6 @@ class LoginActivity : AppCompatActivity() {
     private fun showProducts(){
         val intent = Intent(this, ShowProductsActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
