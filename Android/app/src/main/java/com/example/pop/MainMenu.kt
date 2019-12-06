@@ -14,5 +14,9 @@ class MainMenu : AppCompatActivity() {
         val intent = Intent(this, ShowProductsActivity::class.java)
         startActivity(intent)
     }
+    private fun addNewProduct(){
+        val intent = Intent(this, AddNewProduct::class.java)
+        startActivity(intent)
+    }
 
 }
