@@ -40,6 +40,7 @@ class ShowProductsActivity : AppCompatActivity(){
                     Toast.makeText(this@ShowProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
                     Session.reset()
                     startActivity(intent)
+                    finishAffinity()
                 }
                 if (resp!=null)
                     productAdapter.submitList(resp)
