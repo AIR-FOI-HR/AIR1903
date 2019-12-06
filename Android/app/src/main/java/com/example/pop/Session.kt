@@ -4,4 +4,7 @@ import com.example.webservice.Model.User
 
 object Session {
     var user:User=User()
+    fun reset(){
+        user.reset()
+    }
 }
