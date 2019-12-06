@@ -55,15 +55,19 @@ class LoginActivity : AppCompatActivity() {
                         Session.user.LoginTime = resp.LoginTime
                         Session.user.Token = resp.Token
 
-                        showProducts()
+                        showMainMenu()
                     }
                 }
             })
 
         }
 
-    private fun showProducts(){
-        val intent = Intent(this, ShowProductsActivity::class.java)
+    /*private fun showProducts(){
+       val intent = Intent(this, ShowProductsActivity::class.java)
+       startActivity(intent)
+   }*/
+    private fun showMainMenu(){
+        val intent = Intent(this, MainMenu::class.java)
         startActivity(intent)
     }
 }
