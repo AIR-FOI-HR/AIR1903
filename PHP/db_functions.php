@@ -162,11 +162,8 @@ class DB_Functions {
 public function getAllProducts() {
         $q = "SELECT Id, Naziv, Cijena, Opis, Slika FROM Proizvod";
         $stmt = $this->conn->query($q);
-        $json_array = array();
-        
-        while($row = $stmt->fetch_assoc()){
-            $json_array[] = $row;
-        }
+        $array = $stmt->fetch_all(MYSQLI_ASSOC);
+        $json_array = json_encode($array);
         return $json_array;
     }
 public function addNewProduct($post) {
