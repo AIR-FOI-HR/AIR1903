@@ -186,9 +186,11 @@ public function addNewProduct($post) {
             $pictureUrl = 'https://cortex.foi.hr/pop/' . $uploadPath;
             $fileInfo = pathinfo($_FILES['Slika']['name']);
             $extension = $fileInfo['extension'];
-            $file_url = $uploadUrl . $this->getFileName() . '.' . $extension;
-            $filePath = $uploadPath . $this->getFileName() . '.' . $extension;
-            $pictureUrl = $pictureUrl . $this->getFileName() . '.' . $extension;
+            $name = bin2hex(random_bytes(32));
+            
+            $file_url = $uploadUrl . $name. '.' . $extension;
+            $filePath = $uploadPath . $name . '.' . $extension;
+            $pictureUrl = $pictureUrl . $name . '.' . $extension;
             move_uploaded_file($_FILES['Slika']['tmp_name'], $file_url);
 
             $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
