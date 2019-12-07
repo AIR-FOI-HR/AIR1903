@@ -32,7 +32,7 @@ if ($db->checkAuth($_POST["Token"])) {
         } else if ($productCheck === 1) {
             $newProduct = $db->addNewProduct($_POST);
             $response->STATUS = true;
-            $response->STATUSMESSAGE = "Proizvod uspjesno dodan!";
+            $response->STATUSMESSAGE = "SUCCESS";
             $response->DATA = $newProduct;
             $response = json_encode($response);
             echo $response;
@@ -40,7 +40,7 @@ if ($db->checkAuth($_POST["Token"])) {
         } else if ($isDelete === 1) {
             $deleteProduct = $db->deleteProduct($_POST);
             $response->STATUS = true;
-            $response->STATUSMESSAGE = "Proizvod jest uspješno izbrisan!";
+            $response->STATUSMESSAGE = "DELETED";
             $response = json_encode($response);
             echo $response;
             return;
