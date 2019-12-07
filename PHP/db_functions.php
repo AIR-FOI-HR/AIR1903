@@ -167,7 +167,7 @@ public function getAllProducts() {
         return $json_array;
     }
 public function addNewProduct($post) {
-	if(!isset($post["Slika"])||  empty($post["Slika"])){
+        if (!isset($_FILES['Slika'])) {
             $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
             $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', 'https://cortex.foi.hr/pop/Slike/defaultPicture.png')";
             $stmt = $this->conn->query($q);
@@ -181,6 +181,7 @@ public function addNewProduct($post) {
             $response["Slika"] = $stmt["Slika"];
             return $response;
         } else {
+            $slika = $_FILES["Slika"];
             $uploadPath = 'Slike/';
             $uploadUrl = '/home/zlatko/public_html/pop/' . $uploadPath;
             $pictureUrl = 'https://cortex.foi.hr/pop/' . $uploadPath;
