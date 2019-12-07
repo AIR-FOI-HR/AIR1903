@@ -23,7 +23,7 @@ if ($db->checkAuth($_POST["Token"])) {
         $isDelete = $db->isDelete($_POST);
         $isUpdate = $db->isUpdate($_POST);
 
-        if ($productCheckCheck === 0) {
+        if ($productCheck === 0) {
             $response->STATUS = false;
             $response->STATUSMESSAGE = "Niste unijeli jedan od potrebnih parametara: ";
             $response = json_encode($response);
