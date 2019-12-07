@@ -41,6 +41,7 @@ if ($db->checkAuth($_POST["Token"])) {
             $deleteProduct = $db->deleteProduct($_POST);
             $response->STATUS = true;
             $response->STATUSMESSAGE = "DELETED";
+            $response->DATA=null;
             $response = json_encode($response);
             echo $response;
             return;
