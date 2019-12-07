@@ -47,9 +47,14 @@ if ($db->checkAuth($_POST["Token"])) {
             return;
         } else if ($isUpdate === 1) {
             $updateProduct = $db->updateProduct($_POST);
-            $response->DATA = $updateProduct;
+            $response2["Naziv"]=$_POST["Naziv"];
+            $response2["Opis"]=$_POST["Opis"];
+            $response2["Cijena"]=$_POST["Cijena"];
+            $response2["Slika"]=$_POST["Slika"];
+            
+            $response->DATA = $response2;
             $response->STATUS = true;
-            $response->STATUSMESSAGE = "OK";
+            $response->STATUSMESSAGE = "UPDATED";
             $response = json_encode($response);
             echo $response;
         }
