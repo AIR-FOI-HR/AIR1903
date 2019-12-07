@@ -60,7 +60,7 @@
             app:layout_constraintTop_toBottomOf="@+id/layoutLoginInputPassword" />
 
         <Button
-            android:id="@+id/layoutLoginButtonLogin"
+            android:id="@+id/btn_add_product_image"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="50dp"
@@ -89,7 +89,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutLoginButtonLogin"
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_product_image"
             tools:text="or" />
 
         <Button
@@ -107,7 +107,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutLoginButtonLogin" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_product_image" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -128,7 +128,7 @@
             app:layout_constraintBottom_toTopOf="@+id/layoutLoginButtonRegister"
             app:layout_constraintEnd_toStartOf="@+id/layoutLoginTextNoAccount"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutLoginButtonLogin" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_product_image" />
 
         <View
             android:id="@+id/rightLineOr"
@@ -142,7 +142,7 @@
             app:layout_constraintBottom_toTopOf="@+id/layoutLoginButtonRegister"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/layoutLoginTextNoAccount"
-            app:layout_constraintTop_toBottomOf="@+id/layoutLoginButtonLogin" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_add_product_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
