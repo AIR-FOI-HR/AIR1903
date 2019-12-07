@@ -1,6 +1,8 @@
 package com.example.webservice.Model
 
-class Product(val Id: Int, var Naziv: String, var Cijena: Double, var Opis: String?, var Slika: String){
+import java.io.Serializable
+
+class Product(val Id: Int, var Naziv: String, var Cijena: Double, var Opis: String?, var Slika: String) : Serializable {
     var isExpanded: Boolean = false
 }
 class NewProduct{
