@@ -31,4 +31,9 @@ interface IMyAPI {
     @POST("proizvodi.php")
     fun editProduct(@Field("Token")Token: String, @Field("Id")Id:Int, @Field("Naziv")Naziv: String, @Field("Opis") Opis:String, @Field("Cijena") Cijena:String?, @Field("Slika")Slika: String):Call<NewProductResponse>
 
+    @FormUrlEncoded
+    @POST("proizvodi.php")
+    fun deleteProduct(@Field("Token")Token: String, @Field("Id")Id:Int):Call<NewProductResponse>
+
+
 }
