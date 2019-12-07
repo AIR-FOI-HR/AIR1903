@@ -181,8 +181,18 @@ public function addNewProduct($post) {
             $response["Slika"] = $stmt["Slika"];
             return $response;
         } else {
+            $uploadPath = 'Slike/';
+            $uploadUrl = '/home/zlatko/public_html/pop/' . $uploadPath;
+            $pictureUrl = 'https://cortex.foi.hr/pop/' . $uploadPath;
+            $fileInfo = pathinfo($_FILES['Slika']['name']);
+            $extension = $fileInfo['extension'];
+            $file_url = $uploadUrl . $this->getFileName() . '.' . $extension;
+            $filePath = $uploadPath . $this->getFileName() . '.' . $extension;
+            $pictureUrl = $pictureUrl . $this->getFileName() . '.' . $extension;
+            move_uploaded_file($_FILES['Slika']['tmp_name'], $file_url);
+
             $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
-            $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '{$post["Slika"]}')";
+            $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '$pictureUrl')";
             $stmt = $this->conn->query($q);
             $q = "SELECT Naziv, Cijena, Opis, Slika WHERE Naziv='{$post["Naziv"]}'";
             $stmt = $this->conn->query($q);
