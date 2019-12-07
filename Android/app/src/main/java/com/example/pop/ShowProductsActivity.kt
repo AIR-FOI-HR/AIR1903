@@ -23,7 +23,6 @@ class ShowProductsActivity : AppCompatActivity(){
         setContentView(R.layout.activity_show_products)
 
         productAdapter = ProductRecyclerAdapter(applicationContext)
-        product_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         product_list.adapter = productAdapter
 
         var productsApi = Common.api
