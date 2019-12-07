@@ -36,5 +36,9 @@
     <string name="imageProduct">Product image</string>
     <string name="screenTitle">Entrepreneurial Venture</string>
     <string name="imageOverlay">Overlay</string>
+    <string name="label_add_image">Add image</string>
+    <string name="hint_product_name">Name</string>
+    <string name="hint_product_description">Description</string>
+    <string name="hint_product_price">Price</string>
 
 </resources>

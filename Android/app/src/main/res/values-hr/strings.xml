@@ -37,5 +37,8 @@
     <string name="imageProduct">Slika proizvoda</string>
     <string name="screenTitle">Poduzetnički pothvat</string>
     <string name="imageOverlay">Overlay</string>
-
+    <string name="label_add_image">Dodaj sliku</string>
+    <string name="hint_product_name">Naziv</string>
+    <string name="hint_product_description">Opis</string>
+    <string name="hint_product_price">Cijena</string>
 </resources>
