@@ -2,15 +2,11 @@ package com.example.pop
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewProductResponse
@@ -20,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_manage_products.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.Serializable
 
 
 class ManageProductsActivity : AppCompatActivity() {
@@ -48,7 +43,13 @@ class ManageProductsActivity : AppCompatActivity() {
 
         layoutManageProductsButtonSubmit.setOnClickListener {
             if(intent.hasExtra("product")) {
-                editProduct()
+                editProduct(
+                    product.Id,
+                    layoutManageProductsInputName.text.toString(),
+                    layoutManageProductsInputDescription.text.toString(),
+                    layoutManageProductsInputValue.text.toString(),
+                    layoutManageProductsImage.toString()
+                )
             }
             else {
                 addProduct(
@@ -119,8 +120,31 @@ class ManageProductsActivity : AppCompatActivity() {
         })
     }
 
-    private fun editProduct() {
+    private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Slika: String) {
         //Kod za editiranje proizvoda čija je referenca trenutno spremljena u product varijablu
+        mService.editProduct(Session.user.Token, Id, Naziv, Opis, Cijena, Slika).enqueue(object:
+            Callback<NewProductResponse> {
+            override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
+                Toast.makeText(this@ManageProductsActivity,t!!.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
+                if (response!!.body()!!.STATUSMESSAGE=="UPDATED"){
+                    Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                else if (response!!.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                    var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                    Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                    Session.reset()
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                else
+                    Toast.makeText(this@ManageProductsActivity,response!!.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     private fun showImageOverlay() {
