@@ -25,6 +25,6 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("proizvodi.php")
-    fun addNewProduct(@Field("Naziv") Naziv:String, @Field("Opis") Opis:String, @Field("Cijena") Cijena:String, @Field("Slika") Slika:String):Call<NewProductResponse>
+    fun addNewProduct(@Field("Token") Token: String, @Field("Naziv") Naziv:String, @Field("Opis") Opis:String, @Field("Cijena") Cijena:String?, @Field("Slika") Slika:String):Call<NewProductResponse>
 
 }

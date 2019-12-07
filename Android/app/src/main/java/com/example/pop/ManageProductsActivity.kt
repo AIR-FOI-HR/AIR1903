@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewProductResponse
 import com.example.webservice.Model.Product
@@ -94,17 +95,26 @@ class ManageProductsActivity : AppCompatActivity() {
     }
 
     private fun addProduct(Naziv: String, Opis: String, Cijena: String, Slika: String) {
-        mService.addNewProduct(Naziv, Opis, Cijena, Slika).enqueue(object:
+        mService.addNewProduct(Session.user.Token, Naziv, Opis, Cijena, Slika).enqueue(object:
             Callback<NewProductResponse> {
             override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
                 Toast.makeText(this@ManageProductsActivity,t!!.message, Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
-                /*if(response!!.body()!!.STATUS)
-                    Toast.makeText(this@AddNewProduct,response!!.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()*/
-                Toast.makeText(this@ManageProductsActivity,"Proizvod uspjesno dodan!", Toast.LENGTH_SHORT).show()
-                finish()
+                if (response!!.body()!!.STATUSMESSAGE=="SUCCESS"){
+                    Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno dodan", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                else if (response!!.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                    var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                    Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                    Session.reset()
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                else
+                    Toast.makeText(this@ManageProductsActivity,response!!.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
             }
         })
     }
