@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         mService = Common.api
 
 
-        layoutLoginButtonLogin.setOnClickListener{authenticateUser(layoutLoginInputUsername.text.toString(),layoutLoginInputPassword.text.toString())}
+        btn_add_product_image.setOnClickListener{authenticateUser(layoutLoginInputUsername.text.toString(),layoutLoginInputPassword.text.toString())}
         layoutLoginButtonRegister.setOnClickListener{startActivity(Intent(this@LoginActivity,RegistrationActivity::class.java))}
     }
         private fun authenticateUser(KorisnickoIme: String, Lozinka: String) {
