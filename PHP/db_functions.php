@@ -207,10 +207,10 @@ public function addNewProduct($post) {
             return $response;
         }      
     }
- public function deleteProduct($post) {
-        $q = "DELETE FROM Proizvod WHERE Id = '{$post["Id"]}'";
+	public function deleteProduct($post) {
+        $q = "DELETE FROM Proizvod WHERE Id = {$post["Id"]}";
         $stmt = $this->conn->query($q);
-        $response = "Proizvod je uspjesno obrisan!";
+        $response = null;
         return $response;
     }
 public function checkProductEmpty($post) {
