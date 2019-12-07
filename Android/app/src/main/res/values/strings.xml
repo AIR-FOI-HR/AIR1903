@@ -40,5 +40,4 @@
     <string name="hint_product_name">Name</string>
     <string name="hint_product_description">Description</string>
     <string name="hint_product_price">Price</string>
-
 </resources>
