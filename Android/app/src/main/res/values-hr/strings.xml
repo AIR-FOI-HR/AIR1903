@@ -9,6 +9,7 @@
     <string name="inputHintEmail">Email adresa</string>
     <string name="inputHintPassword">Lozinka</string>
     <string name="inputHintConfirmPassword">Potvrdite lozinku</string>
+    <string name="inputHintDescription">Opis</string>
     <string name="inputCaptcha">CAPTCHA</string>
     <string name="buttonNext">Dalje</string>
     <string name="buttonRegister">Registracija</string>
@@ -16,6 +17,8 @@
     <string name="buttonLogin">Prijava</string>
     <string name="buttonAdd">Dodaj</string>
     <string name="buttonSave">Spremi</string>
+    <string name="buttonEdit">Uredi</string>
+    <string name="buttonDelete">Obriši</string>
     <string name="registrationInfo">Profesor mora potvrditi vašu registraciju. Nakon što je vaš račun potvrđen, dobiti ćete pristup ostatku aplikacije.</string>
     <string name="loginForgottenPassword">Zaboravljena lozinka?</string>
     <string name="loginCreateAccount">ili</string>
@@ -33,5 +36,6 @@
     <string name="inputHintNumber">0</string>
     <string name="imageProduct">Slika proizvoda</string>
     <string name="screenTitle">Poduzetnički pothvat</string>
+    <string name="imageOverlay">Overlay</string>
 
 </resources>
