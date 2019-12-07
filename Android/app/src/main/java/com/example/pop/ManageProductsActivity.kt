@@ -1,36 +1,127 @@
 package com.example.pop
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.opengl.Visibility
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import com.example.webservice.Common.Common
+import com.example.webservice.Model.NewProductResponse
 import com.example.webservice.Model.Product
+import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.activity_manage_products.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.Serializable
+
 
 class ManageProductsActivity : AppCompatActivity() {
+    internal lateinit var mService: IMyAPI
     private lateinit var product : Product
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_products)
+        mService = Common.api
 
-        if(intent.hasExtra("productId")) {
+        if(intent.hasExtra("product")) {
             layoutManageProductsButtonSubmit.text = getString(R.string.buttonSave)
-            if(getProduct(intent.getIntExtra("productId", -1))) {
+            if(intent.getSerializableExtra("product") != null) {
+                product = intent.getSerializableExtra("product") as Product
                 layoutManageProductsInputName.setText(product.Naziv)
                 layoutManageProductsInputValue.setText(product.Cijena.toString())
-                layoutManageProductsImage.setImageURI(product.Slika?.toUri())
+                layoutManageProductsInputDescription.setText(product.Opis)
+                layoutManageProductsImage.setImageResource(R.drawable.prijava_bg)
             }
         }
         else {
             layoutManageProductsButtonSubmit.text = getString(R.string.buttonAdd)
         }
+
+        layoutManageProductsButtonSubmit.setOnClickListener {
+            if(intent.hasExtra("product")) {
+                editProduct()
+            }
+            else {
+                addProduct(
+                    layoutManageProductsInputName.text.toString(),
+                    layoutManageProductsInputDescription.text.toString(),
+                    layoutManageProductsInputValue.text.toString(),
+                    layoutManageProductsImage.toString()
+                )
+            }
+        }
+
+        layoutManageProductsImage.setOnClickListener {
+            showImageOverlay()
+        }
+
+        layoutManageProductsImageOverlay.setOnClickListener {
+            hideImageOverlay()
+        }
+
+        layoutManageProductsButtonDelete.setOnClickListener {
+            //Slika se postavlja na defaultnu template sliku proizvoda
+            product.Slika = "default.png"
+            layoutManageProductsImage.setImageResource(R.drawable.ic_launcher_foreground) //Treba biti res na defaultnu sliku
+            hideImageOverlay()
+        }
+
+        layoutManageProductsButtonEdit.setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Image"),1)
+        }
     }
 
-    private fun getProduct(id : Int) : Boolean{
-        if(id != -1) {
-            //Tu treba popunit varijablu product sa podacima iz baze na temelju id-a
-            return true
+    //U ovoj funkciji se slika učitava sa mobitela kao inputstream, od tu se treba spremiti/poslat na server
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            val inputStream = contentResolver.openInputStream(data?.data!!)
+            layoutManageProductsImage.setImageBitmap(BitmapFactory.decodeStream(inputStream))
+            hideImageOverlay()
         }
-        return false
+
+    }
+
+    private fun addProduct(Naziv: String, Opis: String, Cijena: String, Slika: String) {
+        mService.addNewProduct(Naziv, Opis, Cijena, Slika).enqueue(object:
+            Callback<NewProductResponse> {
+            override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
+                Toast.makeText(this@ManageProductsActivity,t!!.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
+                /*if(response!!.body()!!.STATUS)
+                    Toast.makeText(this@AddNewProduct,response!!.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()*/
+                Toast.makeText(this@ManageProductsActivity,"Proizvod uspjesno dodan!", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        })
+    }
+
+    private fun editProduct() {
+        //Kod za editiranje proizvoda čija je referenca trenutno spremljena u product varijablu
+    }
+
+    private fun showImageOverlay() {
+        layoutManageProductsImageOverlay.visibility = View.VISIBLE
+        layoutManageProductsButtonEdit.visibility = View.VISIBLE
+        layoutManageProductsButtonDelete.visibility = View.VISIBLE
+    }
+
+    private fun hideImageOverlay() {
+        layoutManageProductsImageOverlay.visibility = View.INVISIBLE
+        layoutManageProductsButtonEdit.visibility = View.INVISIBLE
+        layoutManageProductsButtonDelete.visibility = View.INVISIBLE
     }
 }
