@@ -123,6 +123,13 @@ class ManageProductsActivity : AppCompatActivity() {
                 if (response!!.body()!!.STATUSMESSAGE=="UPDATED"){
                     Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
                     finish()
+                    var intent=Intent(this@ManageProductsActivity,ShowProductsActivity::class.java)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    this@ManageProductsActivity.startActivity(intent)
+                    (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                    (this@ManageProductsActivity as Activity).finish()
+                    (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                    Toast.makeText(this@ManageProductsActivity,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
                 }
                 else if (response!!.body()!!.STATUSMESSAGE=="OLD TOKEN"){
                     var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
