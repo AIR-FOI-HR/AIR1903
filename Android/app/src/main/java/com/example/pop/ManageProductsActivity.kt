@@ -41,6 +41,9 @@ class ManageProductsActivity : AppCompatActivity() {
             layoutManageProductsButtonSubmit.text = getString(R.string.buttonAdd)
         }
 
+        btn_add_products.setOnClickListener{changeQuantity(1)}
+        btn_decrease_products.setOnClickListener{changeQuantity(-1)}
+
         layoutManageProductsButtonSubmit.setOnClickListener {
             if(intent.hasExtra("product")) {
                 editProduct(
@@ -61,22 +64,7 @@ class ManageProductsActivity : AppCompatActivity() {
             }
         }
 
-        layoutManageProductsImage.setOnClickListener {
-            showImageOverlay()
-        }
-
-        layoutManageProductsImageOverlay.setOnClickListener {
-            hideImageOverlay()
-        }
-
-        layoutManageProductsButtonDelete.setOnClickListener {
-            //Slika se postavlja na defaultnu template sliku proizvoda
-            product.Slika = "default.png"
-            layoutManageProductsImage.setImageResource(R.drawable.ic_launcher_foreground) //Treba biti res na defaultnu sliku
-            hideImageOverlay()
-        }
-
-        layoutManageProductsButtonEdit.setOnClickListener {
+        btn_add_product_image.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
@@ -90,9 +78,12 @@ class ManageProductsActivity : AppCompatActivity() {
         if(requestCode == 1 && resultCode == Activity.RESULT_OK) {
             val inputStream = contentResolver.openInputStream(data?.data!!)
             layoutManageProductsImage.setImageBitmap(BitmapFactory.decodeStream(inputStream))
-            hideImageOverlay()
         }
 
+    }
+
+    private fun changeQuantity(quantity: Int) {
+        input_quantity.text = quantity.toString()
     }
 
     private fun addProduct(Naziv: String, Opis: String, Cijena: String, Slika: String) {
@@ -147,15 +138,4 @@ class ManageProductsActivity : AppCompatActivity() {
 
     }
 
-    private fun showImageOverlay() {
-        layoutManageProductsImageOverlay.visibility = View.VISIBLE
-        layoutManageProductsButtonEdit.visibility = View.VISIBLE
-        layoutManageProductsButtonDelete.visibility = View.VISIBLE
-    }
-
-    private fun hideImageOverlay() {
-        layoutManageProductsImageOverlay.visibility = View.INVISIBLE
-        layoutManageProductsButtonEdit.visibility = View.INVISIBLE
-        layoutManageProductsButtonDelete.visibility = View.INVISIBLE
-    }
 }
