@@ -172,7 +172,7 @@ public function addNewProduct($post) {
             $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', 'https://cortex.foi.hr/pop/Slike/defaultPicture.png')";
             $stmt = $this->conn->query($q);
 
-            $q = "SELECT Naziv, Cijena, Opis, Slika WHERE Naziv='{$post["Naziv"]}'";
+            $q = "SELECT Naziv, Cijena, Opis, Slika FROM Proizvod WHERE Id={$this->conn->insert_id}";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             $response["Naziv"] = $stmt["Naziv"];
@@ -196,7 +196,7 @@ public function addNewProduct($post) {
             $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
             $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '$pictureUrl')";
             $stmt = $this->conn->query($q);
-            $q = "SELECT Naziv, Cijena, Opis, Slika WHERE Naziv='{$post["Naziv"]}'";
+            $q = "SELECT Naziv, Cijena, Opis, Slika FROM Proizvod WHERE Id={$this->conn->insert_id}";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             $response["Naziv"] = $stmt["Naziv"];
