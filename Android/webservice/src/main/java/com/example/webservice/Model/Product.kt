@@ -4,6 +4,7 @@ import java.io.Serializable
 
 class Product(val Id: Int, var Naziv: String, var Cijena: Double, var Opis: String?, var Slika: String) : Serializable {
     var isExpanded: Boolean = false
+    var isSelected: Boolean = false
 }
 class NewProduct{
     var Naziv:String=""
