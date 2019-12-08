@@ -6,10 +6,7 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.Toast
@@ -83,16 +80,24 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-
         val btnDismiss = popupView.findViewById(com.example.pop.R.id.button_popup_no) as Button
         val btnAccept = popupView.findViewById(com.example.pop.R.id.button_popup_yes) as Button
 
         var  anchor:View = (activityContext as Activity).findViewById(com.example.pop.R.id.product_card) as CardView
         btnDismiss.setOnClickListener {run { popupWindow.dismiss()} }
         btnAccept.setOnClickListener { deleteCall(popupWindow) }
-
         popupWindow.showAtLocation(anchor, Gravity.CENTER, 0,0)
+        popupWindow.dimBehind()
+    }
 
+    private fun PopupWindow.dimBehind(){
+        val container = contentView.rootView
+        val context = contentView.context
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val p = container.layoutParams as WindowManager.LayoutParams
+        p.flags = p.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        p.dimAmount = 0.7f
+        wm.updateViewLayout(container, p)
     }
 
     private fun editProduct(){
