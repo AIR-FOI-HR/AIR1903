@@ -4,9 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pop_sajamv2.Session
@@ -15,25 +16,19 @@ import com.example.webservice.Model.NewProductResponse
 import com.example.webservice.Model.Product
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.activity_manage_products.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import okhttp3.RequestBody
-import okhttp3.MultipartBody
-import retrofit2.Retrofit
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.net.Uri
-import android.os.Build
-import okhttp3.MediaType
 import java.io.File
 
 
 class ManageProductsActivity : AppCompatActivity() {
     private lateinit var mService: IMyAPI
     private lateinit var product : Product
-    private lateinit var imageFile : File
+    private var imageFile : File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,9 +96,11 @@ class ManageProductsActivity : AppCompatActivity() {
 
     private fun pickImageFromGallery() {
         //Intent to pick image
+
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
+
     }
 
     companion object {
@@ -135,11 +132,20 @@ class ManageProductsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(data?.data != null){
-            val uri = data.data
+            val uri:Uri = data.data!!
             if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
                 layoutManageProductsImage.setImageURI(uri)
             }
-            imageFile = File(uri?.path)
+            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+            val cursor = contentResolver.query(uri, filePathColumn, null, null, null)
+            cursor!!.moveToFirst()
+
+            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+            val picturePath = cursor.getString(columnIndex)
+
+            cursor.close()
+            imageFile = File(picturePath)
         }
     }
 
@@ -147,34 +153,78 @@ class ManageProductsActivity : AppCompatActivity() {
         input_quantity.text = quantity.toString()
     }
 
-    private fun addProduct(Naziv: String, Opis: String, Cijena: String, Slika: File) {
-        val fileReqBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
-        val part = MultipartBody.Part.createFormData("upload", imageFile.name, fileReqBody)
-        val description = RequestBody.create(MediaType.parse("text/plain"), "image-type")
+    private fun addProduct(Naziv: String, Opis: String, Cijena: String, Slika: File?) {
 
-        mService.addNewProduct(Session.user.Token, Naziv, Opis, Cijena, part, description).enqueue(object:
-            Callback<NewProductResponse> {
-            override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
-            }
+        if(Slika!=null){
+            var fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
+            var part : MultipartBody.Part = MultipartBody.Part.createFormData("Slika", Slika.name, fileReqBody)
 
-            override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
-                if (response.body()!!.STATUSMESSAGE=="SUCCESS"){
-                    Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno dodan", Toast.LENGTH_SHORT).show()
-                    finish()
+            var partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
+            var partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
+            var partOpis = MultipartBody.Part.createFormData("Opis", Opis)
+            var partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
+
+            mService.addNewProduct(partToken, partNaziv, partOpis, partCijena, part).enqueue(object:
+            //mService.addNewProduct(part, description).enqueue(object:
+                Callback<NewProductResponse> {
+                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
-                else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
-                    var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                    Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
-                    Session.reset()
-                    startActivity(intent)
-                    finishAffinity()
+
+                override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
+                    if (response.body()!!.STATUSMESSAGE=="SUCCESS"){
+                        Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno dodan", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                        var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                        Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Session.reset()
+                        startActivity(intent)
+                        finishAffinity()
+                    }
+                    else
+                        Toast.makeText(this@ManageProductsActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
-                else
-                    Toast.makeText(this@ManageProductsActivity,
-                        response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
-            }
-        })
+            })
+
+
+        } else{
+            println("DEBUG33: Slika ne postoji")
+            mService.addNewProductNoImage(Session.user.Token, Naziv, Opis, Cijena).enqueue(object: Callback<NewProductResponse> {
+                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
+                    if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Proizvod uspješno dodan",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
+                        var intent =
+                            Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Sesija istekla, molimo prijavite se ponovno",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Session.reset()
+                        startActivity(intent)
+                        finishAffinity()
+                    } else
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
+                        ).show()
+                }
+            })
+
+        }
     }
 
     private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Slika: String) {
@@ -212,32 +262,3 @@ class ManageProductsActivity : AppCompatActivity() {
 
     }
 }
-
-// private fun uploadToServer(filePath: String) {
-// val retrofit = RetrofitClient.getClient(Common.BASE_URL) // MISLIM DA IMATE BOLJI NAČIN OD OVOGA
-// val uploadAPIs = mService
-
-// //Create a file object using file path
-// val file = File(filePath)
-
-
-
-// // Create a request body with file and image media type
-// val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
-
-// // Create MultipartBody.Part using file request-body,file name and part name
-// val part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody)
-// //Create request body with text description and text media type
-// val description = RequestBody.create(MediaType.parse("text/plain"), "image-type")
-// /
-// val call = uploadAPIs.uploadImage(part, description)
-// call.enqueue(object:
-// Callback<NewProductResponse> {
-// override fun onResponse(call: Call<*>, response: Response<*>) {}
-// override fun onFailure(call: Call<*>, t: Throwable) {}
-// }
-// // override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-// //     Toast.makeText(this@ManageProductsActivity,t!!.message, Toast.LENGTH_SHORT).show()
-// })
-//
-// }
