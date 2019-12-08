@@ -8,9 +8,9 @@
     android:layout_marginStart="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginEnd="10dp"
+    android:clickable="false"
+    android:focusable="false"
     android:foreground="?android:selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
     app:cardCornerRadius="2dp"
     app:cardElevation="10dp"
     app:cardPreventCornerOverlap="false">
@@ -20,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp">
+        android:layout_marginBottom="0dp"
+        android:clickable="false">
 
 
         <ImageView
@@ -34,71 +35,73 @@
             android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@+id/sub_item"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
+        <ImageView
+            android:id="@+id/img_selected_product"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/img_selected_product" />
 
         <TextView
             android:id="@+id/product_price"
             android:layout_width="0dp"
             android:layout_height="19dp"
             android:background="#C9000000"
+            android:focusable="false"
+            android:longClickable="false"
             android:paddingTop="2dp"
-            android:text="TextView"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
-            android:textSize="12sp"
             android:textIsSelectable="false"
-            android:longClickable="false"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/sub_item"
             app:layout_constraintEnd_toEndOf="@+id/product_image"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/container"
-            android:layout_width="213dp"
-            android:layout_height="0dp"
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="0dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="false"
+            android:inputType="textMultiLine"
+            android:longClickable="false"
+            android:textColor="@color/color_text_primary"
+            android:textIsSelectable="false"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/product_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/product_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            android:clickable="true"
-            android:focusable="auto"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/sub_item"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="16dp"
+            android:clickable="false"
+            android:inputType="textMultiLine"
+            android:longClickable="false"
+            android:textColor="@color/color_text_secondary"
+            android:textIsSelectable="false"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/product_image"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/product_name"
-                android:layout_width="match_parent"
-                android:layout_height="29dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:clickable="true"
-                android:inputType="textMultiLine"
-                android:textColor="@color/colorUnselected"
-                android:textSize="18sp"
-                android:textIsSelectable="false"
-                android:longClickable="false"/>
-
-            <TextView
-                android:id="@+id/product_desc"
-                android:layout_width="200dp"
-                android:layout_height="72dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="10dp"
-                android:clickable="true"
-                android:inputType="textMultiLine"
-                android:textIsSelectable="false"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:longClickable="false"/>
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/product_name" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/sub_item"
@@ -114,19 +117,19 @@
             tools:visibility="visible">
 
             <TextView
-                android:id="@+id/sub_item_genre"
+                android:id="@+id/label_product_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:longClickable="false"
                 android:textColor="@color/colorWhite"
+                android:textIsSelectable="false"
                 android:textSize="18sp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Količina: 5"
-                android:textIsSelectable="false"
-                android:longClickable="false"/>
+                tools:text="Količina: 5" />
 
             <ImageView
                 android:id="@+id/img_edit_product"
@@ -139,7 +142,22 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/img_delete_product"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
                 app:srcCompat="@drawable/icon_edit" />
+
+            <ImageView
+                android:id="@+id/img_return_card"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:srcCompat="@drawable/img_return_card" />
 
             <ImageView
                 android:id="@+id/img_delete_product"
@@ -147,10 +165,12 @@
                 android:layout_height="25dp"
                 android:layout_marginEnd="16dp"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/img_return_card"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
                 app:srcCompat="@drawable/icon_delete" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
