@@ -30,6 +30,7 @@ import retrofit2.Response
 class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<ProductViewHolder>(){
 
     private var products: ArrayList<Product> = ArrayList()
+    private var selectedProducts: ArrayList<Product> = ArrayList()
     lateinit var product:Product
     lateinit var activityContext: Context
 
@@ -43,17 +44,33 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
 
         holder.bind(product)
 
-        holder.itemView.setOnLongClickListener {
-            val expanded = product.isExpanded
-            product.isExpanded = !expanded
-            notifyItemChanged(position)
-            true
-        }
-
+        holder.itemView.setOnLongClickListener{expandProduct(position)}
+        holder.itemView.setOnClickListener{selectProduct(position)}
         holder.itemView.img_edit_product.setOnClickListener{editProduct()}
         holder.itemView.img_delete_product.setOnClickListener{deleteProduct()}
+        holder.itemView.img_return_card.setOnClickListener{expandProduct(position)}
         activityContext=holder.itemView.img_delete_product.context
 
+    }
+
+
+    private fun expandProduct(position : Int) : Boolean{
+        val expanded = product.isExpanded
+        product.isExpanded = !expanded
+        notifyItemChanged(position)
+        return true
+    }
+
+    private fun selectProduct(position : Int) {
+        val selected = product.isSelected
+
+        if(!selected)
+            selectedProducts.add(product)
+        else
+            selectedProducts.remove(product)
+
+        product.isSelected = !selected
+        notifyItemChanged(position)
     }
 
     private fun deleteProduct() {
