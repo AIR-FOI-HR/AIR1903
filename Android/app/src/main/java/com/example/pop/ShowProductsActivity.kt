@@ -45,5 +45,15 @@ class ShowProductsActivity : AppCompatActivity(){
                     productAdapter.submitList(resp)
             }
         })
+
+        btn_new_product.setOnClickListener{addProduct()}
     }
+
+    private fun addProduct(){
+        val intent=Intent(applicationContext, ManageProductsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        applicationContext.startActivity(intent)
+    }
+
+
 }
