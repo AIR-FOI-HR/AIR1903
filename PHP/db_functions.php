@@ -212,19 +212,18 @@ public function getAllProducts($post) {
         return $array;
 }
 public function addNewProduct($post) {
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $userId = $stmt["Id"];
+        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $storeId=$stmt["Id_Trgovina"];
+        
+        $q = "INSERT INTO Proizvod (Id ,Naziv, Opis, Slika) ";
         if (!isset($_FILES['Slika'])) {
-            $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
-            $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', 'https://cortex.foi.hr/pop/Slike/defaultPicture.png')";
-            $stmt = $this->conn->query($q);
-
-            $q = "SELECT Naziv, Cijena, Opis, Slika FROM Proizvod WHERE Id={$this->conn->insert_id}";
-            $stmt = $this->conn->query($q);
-            $stmt = $stmt->fetch_assoc();
-            $response["Naziv"] = $stmt["Naziv"];
-            $response["Opis"] = $stmt["Opis"];
-            $response["Cijena"] = $stmt["Cijena"];
-            $response["Slika"] = $stmt["Slika"];
-            return $response;
+            $q .= "VALUES (null,'{$post["Naziv"]}','{$post["Opis"]}', 'https://cortex.foi.hr/pop/Slike/defaultPicture.png')";
         } else {
             $slika = $_FILES["Slika"];
             $uploadPath = 'Slike/';
@@ -233,24 +232,41 @@ public function addNewProduct($post) {
             $fileInfo = pathinfo($_FILES['Slika']['name']);
             $extension = $fileInfo['extension'];
             $name = bin2hex(random_bytes(32));
-            
-            $file_url = $uploadUrl . $name. '.' . $extension;
+
+            $file_url = $uploadUrl . $name . '.' . $extension;
             $filePath = $uploadPath . $name . '.' . $extension;
             $pictureUrl = $pictureUrl . $name . '.' . $extension;
             move_uploaded_file($_FILES['Slika']['tmp_name'], $file_url);
 
-            $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
-            $q .= "VALUES (null,'{$post["Naziv"]}', '{$post["Cijena"]}','{$post["Opis"]}', '$pictureUrl')";
-            $stmt = $this->conn->query($q);
-            $q = "SELECT Naziv, Cijena, Opis, Slika FROM Proizvod WHERE Id={$this->conn->insert_id}";
-            $stmt = $this->conn->query($q);
-            $stmt = $stmt->fetch_assoc();
-            $response["Naziv"] = $stmt["Naziv"];
-            $response["Opis"] = $stmt["Opis"];
-            $response["Cijena"] = $stmt["Cijena"];
-            $response["Slika"] = $stmt["Slika"];
-            return $response;
-        }      
+            $q .= "VALUES (null,'{$post["Naziv"]}','{$post["Opis"]}', '$pictureUrl')";
+        }
+        $stmt = $this->conn->query($q);
+        $productId=$this->conn->insert_id;
+        $time = time();
+        $q = "INSERT INTO Proizvod_Cijena (Id_Proizvod, UnixVrijeme, Cijena) VALUES "
+                . "({$productId}, {$time}, {$post["Cijena"]})";
+        $stmt = $this->conn->query($q);
+        
+        
+        $q = "SELECT Naziv, Opis, Slika FROM Proizvod WHERE Id={$productId}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $response["Naziv"] = $stmt["Naziv"];
+        $response["Opis"] = $stmt["Opis"];
+        $response["Slika"] = $stmt["Slika"];
+        
+        $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod={$productId} ORDER BY UnixVrijeme DESC LIMIT 1";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $response["Cijena"] = $stmt["Cijena"];
+        
+        
+        $q="INSERT INTO Trgovina_Proizvod (Id, Id_Trgovine, Id_Proizvoda, Kolicina) VALUES "
+                . "(null, {$storeId}, $productId, 1)";
+        $stmt = $this->conn->query($q);
+        
+        
+        return $response;
     }
 	public function deleteProduct($post) {
         $q = "DELETE FROM Proizvod WHERE Id = {$post["Id"]}";
