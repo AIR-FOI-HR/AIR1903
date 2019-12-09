@@ -23,6 +23,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import com.squareup.picasso.Picasso
 
 
 class ManageProductsActivity : AppCompatActivity() {
@@ -39,18 +40,22 @@ class ManageProductsActivity : AppCompatActivity() {
             layoutManageProductsButtonSubmit.text = getString(R.string.buttonSave)
             if(intent.getSerializableExtra("product") != null) {
                 product = intent.getSerializableExtra("product") as Product
+                productUrl=product.Slika
                 layoutManageProductsInputName.setText(product.Naziv)
                 layoutManageProductsInputValue.setText(product.Cijena.toString())
                 layoutManageProductsInputDescription.setText(product.Opis)
                 layoutManageProductsImage.setImageResource(R.drawable.prijava_bg)
+                input_quantity.setText(product.Kolicina)
             }
+            Picasso.get().load(productUrl).into(layoutManageProductsImage)
+
         }
         else {
             layoutManageProductsButtonSubmit.text = getString(R.string.buttonAdd)
         }
 
-        btn_add_products.setOnClickListener{changeQuantity(1)}
-        btn_decrease_products.setOnClickListener{changeQuantity(-1)}
+        btn_add_products.setOnClickListener{increaseQuantity()}
+        btn_decrease_products.setOnClickListener{decreaseQuantity()}
 
         layoutManageProductsButtonSubmit.setOnClickListener {
             if(intent.hasExtra("product")) {
@@ -59,7 +64,8 @@ class ManageProductsActivity : AppCompatActivity() {
                     layoutManageProductsInputName.text.toString(),
                     layoutManageProductsInputDescription.text.toString(),
                     layoutManageProductsInputValue.text.toString(),
-                    layoutManageProductsImage.toString()
+                    input_quantity.text.toString().toInt(),
+                    imageFile
                 )
             }
             else {
@@ -67,6 +73,7 @@ class ManageProductsActivity : AppCompatActivity() {
                     layoutManageProductsInputName.text.toString(),
                     layoutManageProductsInputDescription.text.toString(),
                     layoutManageProductsInputValue.text.toString(),
+                    input_quantity.text.toString().toInt(),
                     imageFile
                 )
             }
@@ -146,14 +153,25 @@ class ManageProductsActivity : AppCompatActivity() {
 
             cursor.close()
             imageFile = File(picturePath)
+            productUrl=""
         }
     }
 
-    private fun changeQuantity(quantity: Int) {
-        input_quantity.text = quantity.toString()
+    private fun increaseQuantity() {
+        var a = input_quantity.text.toString().toInt()
+        a+=1
+        input_quantity.setText(a.toString())
+    }
+    private fun decreaseQuantity(){
+        var a = input_quantity.text.toString().toInt()
+        a-=1
+        if (a<0) a=0
+        input_quantity.setText(a.toString())
     }
 
-    private fun addProduct(Naziv: String, Opis: String, Cijena: String, Slika: File?) {
+
+
+    private fun addProduct(Naziv: String, Opis: String, Cijena: String, Kolicina: Int, Slika: File?) {
 
         if(Slika!=null){
             var fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
@@ -163,9 +181,10 @@ class ManageProductsActivity : AppCompatActivity() {
             var partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
             var partOpis = MultipartBody.Part.createFormData("Opis", Opis)
             var partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
+            var partKolicina = MultipartBody.Part.createFormData("Kolicina", Kolicina.toString())
             var partKorisnickoIme = MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
-            mService.addNewProduct(partToken, partNaziv, partOpis, partCijena, part, partKorisnickoIme).enqueue(object:
+            mService.addNewProduct(partToken, partNaziv, partOpis, partCijena, partKolicina, part, partKorisnickoIme).enqueue(object:
             //mService.addNewProduct(part, description).enqueue(object:
                 Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
@@ -193,7 +212,7 @@ class ManageProductsActivity : AppCompatActivity() {
 
         } else{
             println("DEBUG33: Slika ne postoji")
-            mService.addNewProductNoImage(Session.user.Token, Naziv, Opis, Cijena, Session.user.KorisnickoIme).enqueue(object: Callback<NewProductResponse> {
+            mService.addNewProductNoImage(Session.user.Token, Naziv, Opis, Cijena, Kolicina, Session.user.KorisnickoIme).enqueue(object: Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
                     Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
@@ -228,38 +247,90 @@ class ManageProductsActivity : AppCompatActivity() {
         }
     }
 
-    private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Slika: String) {
+    private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Kolicina: Int, Slika: File?) {
         //Kod za editiranje proizvoda čija je referenca trenutno spremljena u product varijablu
-        mService.editProduct(Session.user.Token, Id, Naziv, Opis, Cijena, Slika).enqueue(object:
-            Callback<NewProductResponse> {
-            override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
-            }
+        if (productUrl==""){
+            lateinit var part : MultipartBody.Part
+            var fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
+            part=MultipartBody.Part.createFormData("Slika", Slika!!.name, fileReqBody)
 
-            override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
-                if (response.body()!!.STATUSMESSAGE=="UPDATED"){
-                    Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
-                    finish()
-                    var intent=Intent(this@ManageProductsActivity,ShowProductsActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    this@ManageProductsActivity.startActivity(intent)
-                    (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
-                    (this@ManageProductsActivity as Activity).finish()
-                    (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
-                    Toast.makeText(this@ManageProductsActivity,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
+
+            var partEdit = MultipartBody.Part.createFormData("Edit", "true")
+            var partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
+            var partId = MultipartBody.Part.createFormData("Id", Id.toString())
+            var partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
+            var partOpis = MultipartBody.Part.createFormData("Opis", Opis)
+            var partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
+            var partKolicina = MultipartBody.Part.createFormData("Kolicina", Kolicina.toString())
+            var partKorisnickoIme = MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
+
+            mService.editProduct(partEdit, partToken, partId, partNaziv, partOpis, partCijena, partKolicina, part, partKorisnickoIme).enqueue(object:
+                Callback<NewProductResponse> {
+                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
-                else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
-                    var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                    Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
-                    Session.reset()
-                    startActivity(intent)
-                    finishAffinity()
+
+                override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
+                    if (response.body()!!.STATUSMESSAGE=="UPDATED"){
+                        Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
+                    }
+                    else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                        var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                        Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Session.reset()
+                        startActivity(intent)
+                        finishAffinity()
+                    }
+                    else
+                        Toast.makeText(this@ManageProductsActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
-                else
-                    Toast.makeText(this@ManageProductsActivity,
-                        response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
-            }
-        })
+            })
+        } else {
+            println("DEBUG33: Stara slika???"+productUrl)
+            mService.editProductNoImage(
+                true,
+                Session.user.Token,
+                Id,
+                Naziv,
+                Opis,
+                Cijena,
+                Kolicina,
+                productUrl,
+                Session.user.KorisnickoIme
+            ).enqueue(object : Callback<NewProductResponse> {
+                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<NewProductResponse>,
+                    response: Response<NewProductResponse>
+                ) {
+                    if (response.body()!!.STATUSMESSAGE == "UPDATED") {
+                        Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
+                        var intent =
+                            Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Sesija istekla, molimo prijavite se ponovno",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Session.reset()
+                        startActivity(intent)
+                        finishAffinity()
+                    } else
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
+                        ).show()
+                }
+            })
+        }
+
 
     }
 }
