@@ -327,15 +327,36 @@ public function isUpdate($post) {
             return 0;
         }
     }
- public function updateProduct($post) {
-        if (!isset($post["Id"]) || empty($post["Id"])) {
-            return 0;
+public function updateProduct($post) {
+        
+        if (!isset($_FILES['Slika'])) {
+            if ($post["Slika"]=="") $slika = 'https://cortex.foi.hr/pop/Slike/defaultPicture.png';
+            else $slika = $post["Slika"];
         } else {
-            $q = "UPDATE Proizvod SET Naziv = '{$post["Naziv"]}', Opis = '{$post["Opis"]}', Cijena = '{$post["Cijena"]}', Slika = '{$post["Slika"]}' WHERE Proizvod.Id = '{$post["Id"]}'";
-            $stmt = $this->conn->query($q);
-            $response = "Proizvod je uspjesno azuriran!";
-            return $response;
+            $slika = $_FILES["Slika"];
+            $uploadPath = 'Slike/';
+            $uploadUrl = '/home/zlatko/public_html/pop/' . $uploadPath;
+            $pictureUrl = 'https://cortex.foi.hr/pop/' . $uploadPath;
+            $fileInfo = pathinfo($_FILES['Slika']['name']);
+            $extension = $fileInfo['extension'];
+            $name = bin2hex(random_bytes(32));
+
+            $file_url = $uploadUrl . $name . '.' . $extension;
+            $filePath = $uploadPath . $name . '.' . $extension;
+            $pictureUrl = $pictureUrl . $name . '.' . $extension;
+            move_uploaded_file($_FILES['Slika']['tmp_name'], $file_url);
+
+            $slika=$pictureUrl;
         }
+        $q = "UPDATE Proizvod SET Naziv = '{$post["Naziv"]}', Opis = '{$post["Opis"]}', Slika = '{$slika}' WHERE Proizvod.Id = '{$post["Id"]}'";
+        $stmt = $this->conn->query($q);
+        $time= time();
+        $q = "INSERT INTO Proizvod_Cijena (Id_Proizvod, UnixVrijeme, Cijena) VALUES ({$post["Id"]}, {$time}, {$post["Cijena"]})";
+        $stmt = $this->conn->query($q);
+        $q = "UPDATE Trgovina_Proizvod SET Kolicina = {$post["Kolicina"]} WHERE Id_Proizvoda = {$post["Id"]}";
+        $stmt = $this->conn->query($q);
+        $response = "Proizvod je uspjesno azuriran!";
+        return $response;
     }
 	
 	
