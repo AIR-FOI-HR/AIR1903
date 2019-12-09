@@ -269,11 +269,11 @@ public function addNewProduct($post) {
         return $response;
     }
 	public function deleteProduct($post) {
-        $q = "DELETE FROM Proizvod WHERE Id = {$post["Id"]}";
+        $q = "UPDATE Proizvod SET Izbrisan = 1 WHERE Id = {$post["Id"]}"; //promijenjeno
         $stmt = $this->conn->query($q);
         $response = null;
         return $response;
-    }
+	}
 public function checkProductEmpty($post) {
          if(!isset($post["Naziv"])|| empty($post["Naziv"]) || !isset($post["Cijena"]) || empty($post["Cijena"]) || !isset($post["Opis"])||  empty($post["Opis"]) || isset($post["Id"])){
             return 0;
