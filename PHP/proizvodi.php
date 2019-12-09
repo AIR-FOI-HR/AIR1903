@@ -12,11 +12,11 @@ header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"])) {
 
     if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
-        $allProducts = $db->getAllProducts();
-        $response->DATA = json_decode($allProducts);
+        $allProducts = $db->getAllProducts($_POST);
+        $response->DATA = $allProducts;
         $response->STATUS = true;
         $response->STATUSMESSAGE = "OK";
-        $response = json_encode($response);
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     } else {
         $productCheck = $db->checkProductEmpty($_POST);
