@@ -159,13 +159,58 @@ class DB_Functions {
         }
         
     }
-public function getAllProducts() {
-        $q = "SELECT Id, Naziv, Cijena, Opis, Slika FROM Proizvod";
+public function getAllProducts($post) {
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $userId = $stmt["Id"];
+        $roleId=$stmt["Id_Uloge"];
+        
+        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $storeId=$stmt["Id_Trgovina"];
+        
+        
+        
+        if ($roleId == 3){ // ako je prodavac
+            $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika FROM ("
+                ."SELECT svi.*, tp.Id_Trgovine "
+                ."FROM (SELECT a.*, b.Cijena "
+                ."FROM Proizvod a "
+                ."LEFT JOIN" 
+                ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme "
+                ."FROM "
+                ."(SELECT Id_Proizvod, MAX(UnixVrijeme) UnixVrijeme "
+                ."FROM Proizvod_Cijena "
+                ."GROUP BY Id_Proizvod) c "
+                ."JOIN Proizvod_Cijena d "
+                ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b "
+                ."ON a.Id = b.Id_Proizvod) svi "
+                ."JOIN Trgovina_Proizvod tp "
+                ."ON tp.Id_Proizvoda = svi.id "
+                ." WHERE svi.Izbrisan=0) fin "
+                ."WHERE Id_Trgovine={$storeId}";
+        }
+        elseif ($roleId == 2){ // ako je admin
+            $q="SELECT svi.Id, svi.Naziv, svi.Opis, svi.Cijena, svi.Slika FROM (SELECT a.*, b.Cijena "
+                ."FROM Proizvod a "
+                ."LEFT JOIN" 
+                ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme "
+                ."FROM "
+                ."(SELECT Id_Proizvod, MAX(UnixVrijeme) UnixVrijeme "
+                ."FROM Proizvod_Cijena "
+                ."GROUP BY Id_Proizvod) c "
+                ."JOIN Proizvod_Cijena d "
+                ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b "
+                ."ON a.Id = b.Id_Proizvod) svi WHERE svi.Izbrisan=0";
+        }
+
+        
         $stmt = $this->conn->query($q);
         $array = $stmt->fetch_all(MYSQLI_ASSOC);
-        $json_array = json_encode($array);
-        return $json_array;
-    }
+        return $array;
+}
 public function addNewProduct($post) {
         if (!isset($_FILES['Slika'])) {
             $q = "INSERT INTO Proizvod (Id ,Naziv, Cijena, Opis, Slika) ";
