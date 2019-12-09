@@ -26,6 +26,8 @@ class MainMenu : AppCompatActivity() {
     }
     private fun addNewProduct(){
         val intent = Intent(this, ManageProductsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra("previousActivity", 2)
         startActivity(intent)
     }
 
@@ -33,7 +35,9 @@ class MainMenu : AppCompatActivity() {
         val testProduct : Product = Product(1234, "Foi Product", 14.0, "Test product", "")
 
         val intent = Intent(this, ManageProductsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("product", testProduct)
+        intent.putExtra("previousActivity", 2)
         startActivity(intent)
     }
 }

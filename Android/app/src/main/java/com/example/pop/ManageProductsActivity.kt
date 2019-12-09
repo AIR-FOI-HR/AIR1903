@@ -30,11 +30,19 @@ class ManageProductsActivity : AppCompatActivity() {
     private lateinit var mService: IMyAPI
     private lateinit var product : Product
     private var imageFile : File? = null
+    private lateinit var productUrl:String
+    lateinit var previousActivity:Class<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_products)
         mService = Common.api
+
+
+        if (getIntent().getIntExtra("previousActivity", 1)==1)
+            previousActivity = ShowProductsActivity::class.java
+        else if (getIntent().getIntExtra("previousActivity", 1)==2)
+            previousActivity = MainMenu::class.java
 
         if(intent.hasExtra("product")) {
             layoutManageProductsButtonSubmit.text = getString(R.string.buttonSave)
@@ -194,7 +202,12 @@ class ManageProductsActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
                     if (response.body()!!.STATUSMESSAGE=="SUCCESS"){
                         Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno dodan", Toast.LENGTH_SHORT).show()
-                        finish()
+                        var intent=Intent(this@ManageProductsActivity,previousActivity)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        this@ManageProductsActivity.startActivity(intent)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).finish()
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
                     }
                     else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
                         var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
@@ -224,7 +237,14 @@ class ManageProductsActivity : AppCompatActivity() {
                             "Proizvod uspješno dodan",
                             Toast.LENGTH_SHORT
                         ).show()
-                        finish()
+
+
+                        var intent=Intent(this@ManageProductsActivity,previousActivity)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        this@ManageProductsActivity.startActivity(intent)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).finish()
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         var intent =
                             Intent(this@ManageProductsActivity, LoginActivity::class.java)
@@ -273,6 +293,13 @@ class ManageProductsActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
                     if (response.body()!!.STATUSMESSAGE=="UPDATED"){
                         Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
+                        finish()
+                        var intent=Intent(this@ManageProductsActivity,previousActivity)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        this@ManageProductsActivity.startActivity(intent)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).finish()
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
                     }
                     else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
                         var intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
@@ -311,6 +338,12 @@ class ManageProductsActivity : AppCompatActivity() {
                     if (response.body()!!.STATUSMESSAGE == "UPDATED") {
                         Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
                         finish()
+                        var intent=Intent(this@ManageProductsActivity,previousActivity)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        this@ManageProductsActivity.startActivity(intent)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).finish()
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         var intent =
                             Intent(this@ManageProductsActivity, LoginActivity::class.java)
