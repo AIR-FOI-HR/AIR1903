@@ -174,8 +174,8 @@ public function getAllProducts($post) {
         
         
         if ($roleId == 3){ // ako je prodavac
-            $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika FROM ("
-                ."SELECT svi.*, tp.Id_Trgovine "
+            $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, fin.Kolicina FROM ("
+                ."SELECT svi.*, tp.Id_Trgovine, tp.Kolicina "
                 ."FROM (SELECT a.*, b.Cijena "
                 ."FROM Proizvod a "
                 ."LEFT JOIN" 
@@ -193,7 +193,9 @@ public function getAllProducts($post) {
                 ."WHERE Id_Trgovine={$storeId}";
         }
         elseif ($roleId == 2){ // ako je admin
-            $q="SELECT svi.Id, svi.Naziv, svi.Opis, svi.Cijena, svi.Slika FROM (SELECT a.*, b.Cijena "
+            $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, fin.Kolicina FROM ("
+                ."SELECT svi.*, tp.Id_Trgovine, tp.Kolicina "
+                ."FROM (SELECT a.*, b.Cijena "
                 ."FROM Proizvod a "
                 ."LEFT JOIN" 
                 ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme "
@@ -203,7 +205,10 @@ public function getAllProducts($post) {
                 ."GROUP BY Id_Proizvod) c "
                 ."JOIN Proizvod_Cijena d "
                 ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b "
-                ."ON a.Id = b.Id_Proizvod) svi WHERE svi.Izbrisan=0";
+                ."ON a.Id = b.Id_Proizvod) svi "
+                ."JOIN Trgovina_Proizvod tp "
+                ."ON tp.Id_Proizvoda = svi.id "
+                ." WHERE svi.Izbrisan=0) fin ";
         }
 
         
