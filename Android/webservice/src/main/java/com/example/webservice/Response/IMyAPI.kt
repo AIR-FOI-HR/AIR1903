@@ -23,7 +23,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("proizvodi.php")
-    fun addNewProductNoImage (@Field("Token") Token: String, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Cijena") Cijena: String?): Call<NewProductResponse>
+    fun addNewProductNoImage (@Field("Token") Token: String, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Cijena") Cijena: String?, @Field("KorisnickoIme") KorisnickoIme: String): Call<NewProductResponse>
 
     @Multipart
     @POST("proizvodi.php")

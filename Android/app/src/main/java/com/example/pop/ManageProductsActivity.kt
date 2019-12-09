@@ -193,7 +193,7 @@ class ManageProductsActivity : AppCompatActivity() {
 
         } else{
             println("DEBUG33: Slika ne postoji")
-            mService.addNewProductNoImage(Session.user.Token, Naziv, Opis, Cijena).enqueue(object: Callback<NewProductResponse> {
+            mService.addNewProductNoImage(Session.user.Token, Naziv, Opis, Cijena, Session.user.KorisnickoIme).enqueue(object: Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
                     Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
