@@ -163,8 +163,9 @@ class ManageProductsActivity : AppCompatActivity() {
             var partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
             var partOpis = MultipartBody.Part.createFormData("Opis", Opis)
             var partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
+            var partKorisnickoIme = MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
-            mService.addNewProduct(partToken, partNaziv, partOpis, partCijena, part).enqueue(object:
+            mService.addNewProduct(partToken, partNaziv, partOpis, partCijena, part, partKorisnickoIme).enqueue(object:
             //mService.addNewProduct(part, description).enqueue(object:
                 Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {

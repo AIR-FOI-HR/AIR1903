@@ -19,7 +19,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("proizvodi.php")
-    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String) : Call<ProductResponse>
+    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme: String) : Call<ProductResponse>
 
     @FormUrlEncoded
     @POST("proizvodi.php")
@@ -27,7 +27,7 @@ interface IMyAPI {
 
     @Multipart
     @POST("proizvodi.php")
-    fun addNewProduct(@Part Token:MultipartBody.Part, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Cijena:MultipartBody.Part, @Part file: MultipartBody.Part): Call<NewProductResponse>
+    fun addNewProduct(@Part Token:MultipartBody.Part, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Cijena:MultipartBody.Part, @Part file: MultipartBody.Part, @Part KorisnickoIme: MultipartBody.Part): Call<NewProductResponse>
 
 
     @FormUrlEncoded
