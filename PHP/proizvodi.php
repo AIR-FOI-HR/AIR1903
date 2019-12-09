@@ -10,7 +10,6 @@ header('Content-Type: application/json');
 
 
 if ($db->checkAuth($_POST["Token"])) {
-
     if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
         $allProducts = $db->getAllProducts($_POST);
         $response->DATA = $allProducts;
@@ -22,7 +21,7 @@ if ($db->checkAuth($_POST["Token"])) {
         $productCheck = $db->checkProductEmpty($_POST);
         $isDelete = $db->isDelete($_POST);
         $isUpdate = $db->isUpdate($_POST);
-        if ($productCheck === 0) {
+        if ($productCheckk === 0) {
             $response->STATUS = false;
             $response->STATUSMESSAGE = "Niste unijeli jedan od potrebnih parametara: ";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
@@ -44,7 +43,7 @@ if ($db->checkAuth($_POST["Token"])) {
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
-        } else if ($isUpdate === 1) {
+        } else if ($_POST["Edit"]==true) {
             $updateProduct = $db->updateProduct($_POST);
             $response2["Naziv"]=$_POST["Naziv"];
             $response2["Opis"]=$_POST["Opis"];
