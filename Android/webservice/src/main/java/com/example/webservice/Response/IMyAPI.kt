@@ -19,7 +19,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("proizvodi.php")
-    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String) : Call<ProductResponse>
+    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme: String) : Call<ProductResponse>
 
     @FormUrlEncoded
     @POST("proizvodi.php")

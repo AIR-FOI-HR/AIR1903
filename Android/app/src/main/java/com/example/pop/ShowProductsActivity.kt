@@ -26,7 +26,7 @@ class ShowProductsActivity : AppCompatActivity(){
         product_list.adapter = productAdapter
 
         var productsApi = Common.api
-        productsApi.getProducts(true, Session.user.Token).enqueue(object : Callback<ProductResponse> {
+        productsApi.getProducts(true, Session.user.Token, Session.user.KorisnickoIme).enqueue(object : Callback<ProductResponse> {
             override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
                 Toast.makeText(this@ShowProductsActivity, t!!.message, Toast.LENGTH_SHORT).show()
             }
