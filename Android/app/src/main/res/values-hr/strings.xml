@@ -41,4 +41,5 @@
     <string name="hint_product_name">Naziv</string>
     <string name="hint_product_description">Opis</string>
     <string name="hint_product_price">Cijena</string>
+    <string name="text_delete_popup">Jeste li sigurni?</string>
 </resources>
