@@ -22,11 +22,10 @@ if ($db->checkAuth($_POST["Token"])) {
         $productCheck = $db->checkProductEmpty($_POST);
         $isDelete = $db->isDelete($_POST);
         $isUpdate = $db->isUpdate($_POST);
-
         if ($productCheck === 0) {
             $response->STATUS = false;
             $response->STATUSMESSAGE = "Niste unijeli jedan od potrebnih parametara: ";
-            $response = json_encode($response);
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
         } else if ($productCheck === 1) {
@@ -34,7 +33,7 @@ if ($db->checkAuth($_POST["Token"])) {
             $response->STATUS = true;
             $response->STATUSMESSAGE = "SUCCESS";
             $response->DATA = $newProduct;
-            $response = json_encode($response);
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
         } else if ($isDelete === 1) {
@@ -42,7 +41,7 @@ if ($db->checkAuth($_POST["Token"])) {
             $response->STATUS = true;
             $response->STATUSMESSAGE = "DELETED";
             $response->DATA=null;
-            $response = json_encode($response);
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
         } else if ($isUpdate === 1) {
