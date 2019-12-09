@@ -267,7 +267,7 @@ public function addNewProduct($post) {
         
         
         $q="INSERT INTO Trgovina_Proizvod (Id, Id_Trgovine, Id_Proizvoda, Kolicina) VALUES "
-                . "(null, {$storeId}, $productId, 1)";
+                . "(null, {$storeId}, $productId, {$post["Kolicina"]})";
         $stmt = $this->conn->query($q);
         
         
