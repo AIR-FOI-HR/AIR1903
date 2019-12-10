@@ -42,6 +42,7 @@ class ShowProductsActivity : AppCompatActivity(){
                     startActivity(intent)
                     finishAffinity()
                 }
+                else if (response!!.body()!!.STATUSMESSAGE=="OK") {}
                 else{
                     Toast.makeText(this@ShowProductsActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
                 }
