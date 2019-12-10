@@ -29,7 +29,7 @@ import com.squareup.picasso.Picasso
 class ManageProductsActivity : AppCompatActivity() {
     private lateinit var mService: IMyAPI
     private lateinit var product: Product
-    private lateinit var imageFile: File
+    private var imageFile: File? = null
     private lateinit var productUrl:String
     lateinit var previousActivity:Class<*>
 
@@ -257,12 +257,12 @@ class ManageProductsActivity : AppCompatActivity() {
         }
     }
 
-    private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Kolicina: Int, Slika: File) {
+    private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Kolicina: Int, Slika: File?) {
         //Kod za editiranje proizvoda čija je referenca trenutno spremljena u product varijablu
         if (productUrl==""){
             lateinit var part : MultipartBody.Part
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
-            part=MultipartBody.Part.createFormData("Slika", Slika.name, fileReqBody)
+            part=MultipartBody.Part.createFormData("Slika", Slika!!.name, fileReqBody)
 
 
             val partEdit = MultipartBody.Part.createFormData("Edit", "true")
