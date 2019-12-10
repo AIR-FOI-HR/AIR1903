@@ -10,11 +10,15 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewProductResponse
 import com.example.webservice.Model.Product
 import com.example.webservice.Response.IMyAPI
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_manage_products.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -23,18 +27,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import com.squareup.picasso.Picasso
 
 
 class ManageProductsActivity : AppCompatActivity() {
     private lateinit var mService: IMyAPI
     private lateinit var product: Product
     private var imageFile: File? = null
+    private lateinit var image : File
     private lateinit var productUrl:String
     lateinit var previousActivity:Class<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        image = File(applicationContext!!.cacheDir.path+"/temp.png")
         setContentView(R.layout.activity_manage_products)
         mService = Common.api
 
@@ -82,6 +87,21 @@ class ManageProductsActivity : AppCompatActivity() {
             }
         }
 
+        layoutManageProductsButtonCamera.setOnClickListener{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) { // no camera permission
+                    val permissions = arrayOf(Manifest.permission.CAMERA)
+                    requestPermissions(permissions, PERMISSION_CODE)
+                }
+                else{ // has camera permission
+                    getImageFromCamera()
+                }
+            }
+            else{ // <Marshmallow
+                getImageFromCamera()
+            }
+        }
+
         btn_add_product_image.setOnClickListener {
             //check runtime permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
@@ -113,11 +133,19 @@ class ManageProductsActivity : AppCompatActivity() {
 
     }
 
+    private fun getImageFromCamera(){
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider", image))
+        startActivityForResult(cameraIntent, CAMERA_CAPTURE)
+    }
+
     companion object {
         //image pick code
         private const val IMAGE_PICK_CODE = 1000
         //Permission code
         private const val PERMISSION_CODE = 1001
+        //camera code
+        private const val CAMERA_CAPTURE = 1002
     }
 
     //handle requested permission result
@@ -140,6 +168,19 @@ class ManageProductsActivity : AppCompatActivity() {
     //handle result of picked image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == CAMERA_CAPTURE) {
+            // Make sure the request was successful
+            if (resultCode == Activity.RESULT_OK) {
+                imageFile=File(image.path)
+                Picasso.get()
+                    .load(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider", image))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(layoutManageProductsImage)
+                productUrl=""
+            }
+        }
 
         if(data?.data != null){
             val uri:Uri = data.data!!
@@ -214,7 +255,6 @@ class ManageProductsActivity : AppCompatActivity() {
 
 
         } else{
-            println("DEBUG33: Slika ne postoji")
             mService.addNewProductNoImage(Session.user.Token, Naziv, Opis, Cijena, Kolicina, Session.user.KorisnickoIme).enqueue(object: Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
                     Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
@@ -304,7 +344,6 @@ class ManageProductsActivity : AppCompatActivity() {
                 }
             })
         } else {
-            println("DEBUG33: Stara slika???"+productUrl)
             mService.editProductNoImage(
                 true,
                 Session.user.Token,
