@@ -35,13 +35,15 @@ class ShowProductsActivity : AppCompatActivity(){
 
             override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
                 var resp = response!!.body()!!.DATA
-                println(Session.user.Token)
                 if (response!!.body()!!.STATUSMESSAGE=="OLD TOKEN"){
                     var intent = Intent(this@ShowProductsActivity, LoginActivity::class.java)
                     Toast.makeText(this@ShowProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
                     Session.reset()
                     startActivity(intent)
                     finishAffinity()
+                }
+                else{
+                    Toast.makeText(this@ShowProductsActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
                 }
                 if (resp!=null)
                     productAdapter.submitList(resp)
