@@ -42,4 +42,6 @@
     <string name="hint_product_description">Opis</string>
     <string name="hint_product_price">Cijena</string>
     <string name="text_delete_popup">Jeste li sigurni?</string>
+    <string name="hint_quantity">Količina</string>
+    <string name="text_quantity_default">1</string>
 </resources>

@@ -41,4 +41,6 @@
     <string name="hint_product_description">Description</string>
     <string name="hint_product_price">Price</string>
     <string name="text_delete_popup">Are you sure?</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="text_quantity_default">1</string>
 </resources>
