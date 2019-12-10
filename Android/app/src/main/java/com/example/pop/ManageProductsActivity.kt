@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.graphics.scale
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewProductResponse
@@ -27,6 +30,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.FileOutputStream
 
 
 class ManageProductsActivity : AppCompatActivity() {
@@ -39,7 +43,7 @@ class ManageProductsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        image = File(applicationContext!!.cacheDir.path+"/temp.png")
+        image = File(applicationContext!!.cacheDir.path+"/temp.webp")
         setContentView(R.layout.activity_manage_products)
         mService = Common.api
 
@@ -172,6 +176,9 @@ class ManageProductsActivity : AppCompatActivity() {
         if (requestCode == CAMERA_CAPTURE) {
             // Make sure the request was successful
             if (resultCode == Activity.RESULT_OK) {
+                var imageBitmap = BitmapFactory.decodeFile(image.path)
+                image = compressImage(imageBitmap)
+
                 imageFile=File(image.path)
                 Picasso.get()
                     .load(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider", image))
@@ -187,6 +194,8 @@ class ManageProductsActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
                 layoutManageProductsImage.setImageURI(uri)
             }
+
+
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
             val cursor = contentResolver.query(uri, filePathColumn, null, null, null)
@@ -196,9 +205,36 @@ class ManageProductsActivity : AppCompatActivity() {
             val picturePath = cursor.getString(columnIndex)
 
             cursor.close()
-            imageFile = File(picturePath)
+            var imageBitmap = BitmapFactory.decodeFile(picturePath)
+            image = compressImage(imageBitmap)
+            imageFile=File(image.path)
+
             productUrl=""
         }
+    }
+
+    private fun compressImage(originalImage:Bitmap):File{
+        var bitmap = originalImage
+        var height=0
+        var width=0
+        if (bitmap.width>2000 || bitmap.height>2000){
+            if (bitmap.width>=bitmap.height){
+                val ratio:Float = 1/(bitmap.width.toFloat()/2000)
+                width=2000
+                height=(bitmap.height*ratio).toInt()
+            }else
+            {
+                val ratio:Float = 1/(bitmap.height.toFloat()/2000)
+                height=2000
+                width=(bitmap.width*ratio).toInt()
+            }
+
+            bitmap=bitmap.scale(width, height)
+        }
+
+        var stream=FileOutputStream(image)
+        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, stream)
+        return image
     }
 
     private fun changeQuantity(value: Int) {
@@ -224,7 +260,6 @@ class ManageProductsActivity : AppCompatActivity() {
             val partKorisnickoIme = MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
             mService.addNewProduct(partToken, partNaziv, partOpis, partCijena, partKolicina, part, partKorisnickoIme).enqueue(object:
-            //mService.addNewProduct(part, description).enqueue(object:
                 Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
                     Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
