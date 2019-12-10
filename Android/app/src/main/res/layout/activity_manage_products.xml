@@ -1,161 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <EditText
-        android:id="@+id/layoutManageProductsInputName"
-        android:layout_width="283dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="64dp"
-        android:background="@drawable/rounded_input"
-        android:hint="@string/hint_product_name"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textColor="@color/color_text_primary"
-        app:layout_constraintBottom_toTopOf="@+id/layoutManageProductsInputDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/layoutManageProductsInputDescription"
-        android:layout_width="283dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:background="@drawable/rounded_text_area"
-        android:hint="@string/hint_product_description"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine|text"
-        android:padding="10dp"
-        android:singleLine="false"
-        android:textAlignment="inherit"
-        android:textColor="@color/color_text_primary"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutManageProductsInputName" />
-
-    <Button
-        android:id="@+id/btn_add_product_image"
-        android:layout_width="283dp"
-        android:layout_height="40dp"
-        android:background="@drawable/input"
-        android:backgroundTint="@color/colorFoi"
-        android:foregroundTint="#FFFFFF"
-        android:padding="0dp"
-        android:text="@string/label_add_image"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/layoutManageProductsImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/layoutManageProductsImage"
-        android:layout_width="283dp"
-        android:layout_height="160dp"
-        android:layout_marginBottom="32dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/border_product_image"
-        android:contentDescription="@string/imageProduct"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/layoutManageProductsButtonSubmit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/img_default" />
-
-    <Button
-        android:id="@+id/layoutManageProductsButtonSubmit"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/img_add_product"
-        android:foregroundTint="#FFFFFF"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="0sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="283dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:baselineAligned="true"
-        android:orientation="horizontal"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/btn_add_product_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutManageProductsInputDescription">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/layoutManageProductsInputValue"
-            android:layout_width="150dp"
+            android:id="@+id/layoutManageProductsInputName"
+            android:layout_width="283dp"
             android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_input"
-            android:hint="@string/hint_product_price"
+            android:hint="@string/hint_product_name"
             android:importantForAutofill="no"
-            android:inputType="numberDecimal"
+            android:inputType="text"
             android:padding="10dp"
             android:textColor="@color/color_text_primary"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/layoutManageProductsInputDescription"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/layoutManageProductsInputDescription"
+            android:layout_width="283dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_input"
+            android:hint="@string/hint_product_description"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|text"
+            android:padding="10dp"
+            android:singleLine="false"
+            android:textAlignment="inherit"
+            android:textColor="@color/color_text_primary"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutManageProductsInputName" />
 
         <Button
-            android:id="@+id/btn_decrease_products"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/img_left_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/input_quantity"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/btn_add_product_image"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:background="@drawable/input"
+            android:backgroundTint="@color/colorFoi"
+            android:foregroundTint="#FFFFFF"
+            android:padding="0dp"
+            android:text="@string/label_add_image"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutManageProductsImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/input_quantity"
+        <ImageView
+            android:id="@+id/layoutManageProductsImage"
+            android:layout_width="250dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="32dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/border_product_image"
+            android:contentDescription="@string/imageProduct"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/layoutManageProductsButtonSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/img_default" />
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="5dp"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/bottom_border_product_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/layoutManageProductsImage" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/layoutManageProductsButtonSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:inputType="number"
-            android:text="0"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/img_check_mark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="283dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="16dp"
+            android:baselineAligned="true"
+            android:orientation="horizontal"
             android:textAlignment="center"
-            android:textColor="@color/color_text_primary"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_add_products"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn_add_products"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/img_right_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_add_product_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutManageProductsInputDescription">
 
+            <EditText
+                android:id="@+id/layoutManageProductsInputValue"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_input"
+                android:hint="@string/hint_product_price"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textColor="@color/color_text_primary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/input_quantity"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/input_quantity"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_input"
+                android:hint="@string/hint_quantity"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:padding="10dp"
+                android:text="@string/text_quantity_default"
+                android:textAlignment="center"
+                android:textColor="@color/color_text_primary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/layoutManageProductsInputValue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <Button
+                android:id="@+id/btn_decrease_products"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/img_decrease_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/input_quantity"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_add_products"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/img_add_product"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

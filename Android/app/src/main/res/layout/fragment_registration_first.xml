@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/registration1"
+    android:fillViewport="true"
+    android:focusable="true"
+    android:isScrollContainer="false"
     tools:context=".RegistrationFirst">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:focusable="true">
 
 
         <EditText
@@ -18,7 +22,7 @@
             android:layout_height="45dp"
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/rounded_input"
             android:ems="10"
             android:hint="@string/inputHintName"
@@ -39,7 +43,7 @@
             android:layout_height="45dp"
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/rounded_input"
             android:ems="10"
             android:hint="@string/inputHintSurname"
@@ -114,5 +118,4 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/stepIndicator2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+</ScrollView>

@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/registration2"
+    android:fillViewport="true"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     tools:context=".RegistrationSecond">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <EditText
             android:id="@+id/layoutRegistrationInputPassword"
@@ -37,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="64dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="64dp"
             android:layout_marginBottom="28dp"
             android:background="@drawable/rounded_input"
@@ -99,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
-            android:layout_marginBottom="260dp"
+            android:layout_marginBottom="200dp"
             android:background="@drawable/rounded_button"
             android:text="@string/buttonCompleteRegistration"
             android:textAllCaps="false"
@@ -151,4 +156,4 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/stepIndicator2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</ScrollView>
