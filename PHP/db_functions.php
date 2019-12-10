@@ -159,12 +159,17 @@ class DB_Functions {
         }
         
     }
-public function getAllProducts($post) {
+	public function getAllProducts($post) {
         $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
         $roleId=$stmt["Id_Uloge"];
+        $response[0] = $stmt["Id_Uloge"];
+        
+        if ($roleId==1){
+            return $response;
+        }
         
         $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
         $stmt=$this->conn->query($q);
@@ -210,17 +215,24 @@ public function getAllProducts($post) {
                 ."ON tp.Id_Proizvoda = svi.id "
                 ." WHERE svi.Izbrisan=0) fin ";
         }
+        
 
         
         $stmt = $this->conn->query($q);
-        $array = $stmt->fetch_all(MYSQLI_ASSOC);
-        return $array;
-}
-public function addNewProduct($post) {
+        $response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
+        return $response;
+    }
+	public function addNewProduct($post) {
         $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
+        
+        $response[0] = $stmt["Id_Uloge"];
+        
+        if ($response[0]==1){
+            return $response;
+        }
         $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
@@ -256,14 +268,14 @@ public function addNewProduct($post) {
         $q = "SELECT Naziv, Opis, Slika FROM Proizvod WHERE Id={$productId}";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $response["Naziv"] = $stmt["Naziv"];
-        $response["Opis"] = $stmt["Opis"];
-        $response["Slika"] = $stmt["Slika"];
+        $response[1]["Naziv"] = $stmt["Naziv"];
+        $response[1]["Opis"] = $stmt["Opis"];
+        $response[1]["Slika"] = $stmt["Slika"];
         
         $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod={$productId} ORDER BY UnixVrijeme DESC LIMIT 1";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $response["Cijena"] = $stmt["Cijena"];
+        $response[1]["Cijena"] = $stmt["Cijena"];
         
         
         $q="INSERT INTO Trgovina_Proizvod (Id, Id_Trgovine, Id_Proizvoda, Kolicina) VALUES "

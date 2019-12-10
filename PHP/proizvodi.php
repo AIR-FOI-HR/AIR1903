@@ -12,11 +12,20 @@ header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"])) {
     if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
         $allProducts = $db->getAllProducts($_POST);
-        $response->DATA = $allProducts;
+        if ($allProducts[0]==1){
+            $response->DATA = null;
+            $response->STATUS=false;
+            $response->STATUSMESSAGE="REGULAR USERS CAN'T READ";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+        }
+        else{
+        $response->DATA = $allProducts[1];
         $response->STATUS = true;
         $response->STATUSMESSAGE = "OK";
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
+        }
     } else {
         $productCheck = $db->checkProductEmpty($_POST);
         $isDelete = $db->isDelete($_POST);
@@ -29,9 +38,18 @@ if ($db->checkAuth($_POST["Token"])) {
             return;
         } else if ($productCheck === 1) {
             $newProduct = $db->addNewProduct($_POST);
-            $response->STATUS = true;
-            $response->STATUSMESSAGE = "SUCCESS";
-            $response->DATA = $newProduct;
+            if ($newProduct[0]==1){
+                $response->STATUS = false;
+                $response->STATUSMESSAGE = "REGULAR USER CAN'T ADD";
+                $response->DATA=null;
+                echo json_encode($response, JSON_UNESCAPED_UNICODE);
+                return;
+            }
+            else{
+                $response->STATUS = true;
+                $response->STATUSMESSAGE = "SUCCESS";
+                $response->DATA = $newProduct[1];
+            }
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
