@@ -41,6 +41,9 @@ class MainMenu : AppCompatActivity() {
         startActivity(intent)
     }
     private fun addNewPackage(){
-        
+        val intent = Intent(this, AddNewPackage::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra("previousActivity", 2)
+        startActivity(intent)
     }
 }
