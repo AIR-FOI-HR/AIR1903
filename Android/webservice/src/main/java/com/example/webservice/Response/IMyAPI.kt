@@ -41,6 +41,10 @@ interface IMyAPI {
     @POST("proizvodi.php")
     fun deleteProduct(@Field("Token")Token: String, @Field("Id")Id: Int) : Call<NewProductResponse>
 
+
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun addNewPackage(@Field("Token") Token: String,@Field("ADD") ADD: Boolean, @Field("NazivPaketa") NazivPaketa: String, @Field("Id_Proizvoda") Id_Proizvoda: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<NewPackageResponse>
     /*@Multipart
     @POST("/upload")
     fun uploadImage(@Part file: MultipartBody.Part, @Part("name") requestBody: RequestBody) : Call<ResponseBody>
