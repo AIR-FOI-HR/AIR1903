@@ -17,4 +17,20 @@ if (isset($_POST["GET"]) && $_POST["GET"] == true) {
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
         }
+} else if ($_POST["ADD"] == true) {
+        if ($packageCheck === 0) {
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "Niste unijeli jedan od potrebnih parametara: ";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        } else if ($packageCheck === 1) {
+            $newPackage = $db->addNewPackage($_POST);
+            $response->STATUS = true;
+            $response->STATUSMESSAGE = "SUCCESS";
+            $response->DATA = $newPackage;
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
 ?>
