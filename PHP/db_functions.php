@@ -464,7 +464,22 @@ public function updateProduct($post) {
         $roleId=$stmt["Id_Uloge"];
         $response[0] = $stmt["Id_Uloge"];
         
-       
+        if ($roleId==1){
+            return $response;
+        }
+         if ($roleId == 3) { // ako je prodavac
+            $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = '$userId'";
+            $stmt = $this->conn->query($q);
+            $stmt = $stmt->fetch_assoc();
+            $storeId = $stmt["Id_Trgovina"];
+            $q = "SELECT Proizvod_Paket.Id_Proizvoda, Proizvod_Paket.Kolicina, Paket.Id, Paket.NazivPaketa, Paket.Popust FROM Proizvod_Paket LEFT OUTER JOIN Paket ON Paket.Id = Proizvod_Paket.Id_Paketa WHERE Paket.Id IN (SELECT Id_Paketa FROM Proizvod_Paket WHERE Id_Proizvoda IN (SELECT Id_Proizvoda FROM Trgovina_Proizvod WHERE Id_Trgovine = '$storeId'))";
+            
+        }elseif ($roleId == 2) {
+            $q = "SELECT Proizvod_Paket.Id_Proizvoda, Proizvod_Paket.Kolicina, Paket.Id, Paket.NazivPaketa, Paket.Popust FROM Proizvod_Paket LEFT OUTER JOIN Paket ON Paket.Id = Proizvod_Paket.Id_Paketa WHERE Paket.Id IN (SELECT Id_Paketa FROM Proizvod_Paket WHERE Id_Proizvoda IN (SELECT Id_Proizvoda FROM Trgovina_Proizvod))";
+        }
+        $stmt = $this->conn->query($q);
+        $response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
+        return $response;
     }
 
 }
