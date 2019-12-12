@@ -32,5 +32,13 @@ if (isset($_POST["GET"]) && $_POST["GET"] == true) {
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
-        }
+        } 
+} else if ($_POST["DELETE"] == true) {
+        $deleteProduct = $db->deletePackage($_POST);
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "DELETED";
+        $response->DATA = null;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
 ?>
