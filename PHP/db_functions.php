@@ -444,7 +444,9 @@ public function updateProduct($post) {
         return $response;
         
     }
-
+    public function updatePackage($post) {
+       
+    }
 
 }
 ?>
