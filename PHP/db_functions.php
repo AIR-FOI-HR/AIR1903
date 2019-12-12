@@ -391,6 +391,11 @@ public function updateProduct($post) {
         else return false;
         
     }
+    public function addNewPackage($post) {
+
+       
+    }
+
 
 }
 ?>
