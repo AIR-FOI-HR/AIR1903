@@ -40,4 +40,7 @@ class MainMenu : AppCompatActivity() {
         intent.putExtra("previousActivity", 2)
         startActivity(intent)
     }
+    private fun addNewPackage(){
+        
+    }
 }
