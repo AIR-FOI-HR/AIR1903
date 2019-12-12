@@ -456,6 +456,9 @@ public function updateProduct($post) {
         $response = "Proizvod je uspjesno azuriran!";
         return $response;
     }
+    public function getAllPackeges($post) {
+        
+    }
 
 }
 ?>
