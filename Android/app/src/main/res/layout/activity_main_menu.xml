@@ -7,6 +7,17 @@
     tools:context=".MainMenu">
 
     <Button
+        android:id="@+id/showAllPackages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prikaz paketa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProductButton" />
+
+    <Button
         android:id="@+id/showAllProductsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TEST - Uredi proizvod"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/showAllPackages"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

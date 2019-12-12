@@ -19,6 +19,7 @@ class MainMenu : AppCompatActivity() {
         showAllProductsButton.setOnClickListener{showProducts()}
         addProductButton.setOnClickListener{addNewProduct()}
         editProductButton.setOnClickListener { editProduct() }
+        showAllPackages.setOnClickListener { showPackages() }
     }
     private fun showProducts(){
         val intent = Intent(this, ShowProductsActivity::class.java)
@@ -28,6 +29,11 @@ class MainMenu : AppCompatActivity() {
         val intent = Intent(this, ManageProductsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("previousActivity", 2)
+        startActivity(intent)
+    }
+
+    private fun showPackages()  {
+        val intent = Intent(this, ShowPackagesActivity::class.java)
         startActivity(intent)
     }
 

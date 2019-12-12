@@ -1,5 +1,6 @@
 package com.example.pop
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,5 +18,13 @@ class ManagePackagesActivity : AppCompatActivity() {
                 
             }
         }
+
+        layoutManagePackagesButtonSubmit.setOnClickListener { submitPackage() }
+    }
+
+    private fun submitPackage() {
+        val intent = Intent(applicationContext, ShowPackagesActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        applicationContext.startActivity(intent)
     }
 }
