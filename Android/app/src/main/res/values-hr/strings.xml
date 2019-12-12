@@ -44,4 +44,6 @@
     <string name="text_delete_popup">Jeste li sigurni?</string>
     <string name="hint_quantity">Količina</string>
     <string name="text_quantity_default">1</string>
+    <string name="textDiscount">Popust</string>
+    <string name="inputHintPercentage">0%</string>
 </resources>
