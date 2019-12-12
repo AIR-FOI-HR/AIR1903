@@ -2,7 +2,10 @@
 require_once 'db_function.php';
 $db = new DB_Functions();
 header('Content-Type: application/json');
-if (isset($_POST["GET"]) && $_POST["GET"] == true) {
+if ($db->checkAuth($_POST["Token"])) {
+    $packageCheck = $db->checkPackageEmpty($_POST);
+    $isDelete = $db->isDeletePackage($_POST);
+    if (isset($_POST["GET"]) && $_POST["GET"] == true) {
         $allPackeges = $db->getAllPackeges($_POST);
         if ($allPackeges[0] == 1) {
             $response->DATA = null;
@@ -17,7 +20,7 @@ if (isset($_POST["GET"]) && $_POST["GET"] == true) {
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
         }
-} else if ($_POST["ADD"] == true) {
+    } else if ($_POST["ADD"] == true) {
         if ($packageCheck === 0) {
             $response->STATUS = false;
             $response->STATUSMESSAGE = "Niste unijeli jedan od potrebnih parametara: ";
@@ -32,8 +35,8 @@ if (isset($_POST["GET"]) && $_POST["GET"] == true) {
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
-        } 
-} else if ($_POST["DELETE"] == true) {
+        }
+    } else if ($_POST["DELETE"] == true) {
         $deleteProduct = $db->deletePackage($_POST);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "DELETED";
@@ -41,7 +44,7 @@ if (isset($_POST["GET"]) && $_POST["GET"] == true) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
- } else if ($_POST["UPDATE"] == true) {
+    } else if ($_POST["UPDATE"] == true) {
         $updatePackage = $db->updatePackage($_POST);
         $response2["NazivPaketa"] = $_POST["NazivPaketa"];
         $response2["Id_Proizvoda"] = $_POST["Id_Proizvoda"];
@@ -54,4 +57,5 @@ if (isset($_POST["GET"]) && $_POST["GET"] == true) {
         $response = json_encode($response);
         echo $response;
     }
+}
 ?>
