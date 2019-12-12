@@ -430,7 +430,18 @@ public function updateProduct($post) {
         }
     }
     public function deletePackage($post) {
-      
+        $q = "SELECT Id FROM Proizvod_Paket WHERE Id_Paketa = '{$post["Id"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $productPackageId = $stmt["Id"];
+        $q = "DELETE FROM Proizvod_Paket WHERE Id = '$productPackageId'";
+        $stmt = $this->conn->query($q);
+       
+        $q = "DELETE FROM Paket WHERE Id= '{$post["Id"]}'";
+        $stmt = $this->conn->query($q);
+        
+        $response = null;
+        return $response;
         
     }
 
