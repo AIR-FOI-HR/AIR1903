@@ -19,6 +19,7 @@ class MainMenu : AppCompatActivity() {
         showAllProductsButton.setOnClickListener{showProducts()}
         addProductButton.setOnClickListener{addNewProduct()}
         editProductButton.setOnClickListener { editProduct() }
+        addNewPackageButton.setOnClickListener { addNewPackage() }
     }
     private fun showProducts(){
         val intent = Intent(this, ShowProductsActivity::class.java)
