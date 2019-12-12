@@ -72,14 +72,26 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView"
         app:srcCompat="@drawable/img_check_mark" />
+
+    <Button
+        android:id="@+id/layoutManagePackagesButtonAddProduct"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/colorFoi"
+        android:text="@string/buttonAddProducts"
+        app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonSubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonSubmit"
+        app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonAddProduct"
         app:layout_constraintTop_toBottomOf="@+id/layoutManagePackagesInputDiscount">
 
 
