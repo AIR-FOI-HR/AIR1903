@@ -29,7 +29,20 @@ class AddNewPackage : AppCompatActivity() {
         mService = Common.api
     }
     private fun addNewPackage(NazivPaketa: String, Id_Proizvoda: String, Kolicina: String, Popust: String) {
-        
+        mService.addNewPackage(Session.user.Token,true, NazivPaketa, Id_Proizvoda, Kolicina, Popust).enqueue(object:
+            Callback<NewPackageResponse> {
+            override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                Toast.makeText(this@AddNewPackage,t!!.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<NewPackageResponse>, response: Response<NewPackageResponse>) {
+
+                Toast.makeText(this@AddNewPackage,"Paket uspjesno dodan!", Toast.LENGTH_SHORT).show()
+                finish()
+
+            }
+
+        })
 
     }
 }
