@@ -393,7 +393,28 @@ public function updateProduct($post) {
     }
     public function addNewPackage($post) {
 
-       
+        $q = "INSERT INTO Paket (Id ,NazivPaketa, Popust) VALUES (null,'{$post["NazivPaketa"]}','{$post["Popust"]}')";
+        $stmt = $this->conn->query($q);
+
+        $q = "SELECT Id FROM Paket WHERE NazivPaketa = '{$post["NazivPaketa"]}'"; //ili ukoliko naziv paketa nije jedinstven SELECT MAX(Id) FROM Paket WHERE NAzivPaketa='{$post["NazivPaketa"]}'
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $packageId = $stmt["Id"];
+
+        $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) VALUES (null, '$packageId', '{$post["Id_Proizvoda"]}','{$post["Kolicina"]}')";
+        $stmt = $this->conn->query($q);
+        $q = "SELECT MAX(Id) FROM Proizvod_Paket";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $packageProductId = $stmt["MAX(Id)"];
+
+        $q = "SELECT * FROM Proizvod_Paket WHERE Id={$packageId}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $q = "SELECT * FROM Paket WHERE Id={$packageProductId}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+      
     }
 
 
