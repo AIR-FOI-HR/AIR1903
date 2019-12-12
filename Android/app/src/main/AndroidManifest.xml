@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeBar">
-        <activity android:name=".AddNewProduct"></activity>
+        <activity android:name=".ManagePackagesActivity"></activity>
+        <activity android:name=".ShowPackagesActivity"></activity>
         <activity android:name=".MainMenu" />
         <activity android:name=".ShowProductsActivity" />
         <activity
