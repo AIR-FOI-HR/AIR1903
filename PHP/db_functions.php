@@ -423,7 +423,11 @@ public function updateProduct($post) {
         return $response;
     }
     public function checkPackageEmpty($post) {
-       
+        if (!isset($post["NazivPaketa"]) || empty($post["NazivPaketa"]) || !isset($post["Popust"]) || empty($post["Popust"]) || !isset($post["Id_Proizvoda"]) || empty($post["Id_Proizvoda"]) || !isset($post["Kolicina"]) || empty($post["Kolicina"])) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
 
