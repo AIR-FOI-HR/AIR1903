@@ -429,6 +429,10 @@ public function updateProduct($post) {
             return 1;
         }
     }
+    public function deletePackage($post) {
+      
+        
+    }
 
 
 }
