@@ -2,6 +2,7 @@ package com.example.webservice.Response
 
 import com.example.webservice.Model.ProductResponse
 import com.example.webservice.Model.ApiResponseUser
+import com.example.webservice.Model.NewPackageResponse
 import com.example.webservice.Model.NewProductResponse
 import io.reactivex.Observable
 import okhttp3.*
