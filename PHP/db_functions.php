@@ -445,7 +445,16 @@ public function updateProduct($post) {
         
     }
     public function updatePackage($post) {
-       
+        $q = "SELECT Id FROM Proizvod_Paket WHERE Id_Paketa = '{$post["Id"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $productPackageId = $stmt["Id"];
+        $q = "UPDATE Paket SET NazivPaketa = '{$post["NazivPaketa"]}', Popust = '{$post["Popust"]}' WHERE Id = '{$post["Id"]}'";
+        $stmt = $this->conn->query($q);
+        $q = "UPDATE Proizvod_Paket SET Id_Proizvoda = '{$post["Id_Proizvoda"]}', Kolicina = '{$post["Kolicina"]}' WHERE Id = '$productPackageId'";
+        $stmt = $this->conn->query($q);
+        $response = "Proizvod je uspjesno azuriran!";
+        return $response;
     }
 
 }
