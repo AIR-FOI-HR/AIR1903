@@ -8,6 +8,7 @@ import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewPackageResponse
 import com.example.webservice.Response.IMyAPI
+import kotlinx.android.synthetic.main.activity_add_new_package.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +28,17 @@ class AddNewPackage : AppCompatActivity() {
         setContentView(R.layout.activity_add_new_package)
 
         mService = Common.api
+
+        if (addNewPackageButton!=null) {
+            addNewPackageButton.setOnClickListener {
+                addNewPackage(
+                    newPackageName.text.toString(),
+                    productId.text.toString(),
+                    productQuantity.text.toString(),
+                    newPackageDiscount.text.toString()
+                )
+            }
+        }
     }
     private fun addNewPackage(NazivPaketa: String, Id_Proizvoda: String, Kolicina: String, Popust: String) {
         mService.addNewPackage(Session.user.Token,true, NazivPaketa, Id_Proizvoda, Kolicina, Popust).enqueue(object:
