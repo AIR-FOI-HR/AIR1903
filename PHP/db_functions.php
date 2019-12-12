@@ -422,6 +422,9 @@ public function updateProduct($post) {
 
         return $response;
     }
+    public function checkPackageEmpty($post) {
+       
+    }
 
 
 }
