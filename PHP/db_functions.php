@@ -457,7 +457,14 @@ public function updateProduct($post) {
         return $response;
     }
     public function getAllPackeges($post) {
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $userId = $stmt["Id"];
+        $roleId=$stmt["Id_Uloge"];
+        $response[0] = $stmt["Id_Uloge"];
         
+       
     }
 
 }
