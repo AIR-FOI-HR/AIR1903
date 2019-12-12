@@ -41,4 +41,17 @@ if (isset($_POST["GET"]) && $_POST["GET"] == true) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
+ } else if ($_POST["UPDATE"] == true) {
+        $updatePackage = $db->updatePackage($_POST);
+        $response2["NazivPaketa"] = $_POST["NazivPaketa"];
+        $response2["Id_Proizvoda"] = $_POST["Id_Proizvoda"];
+        $response2["Kolicina"] = $_POST["Kolicina"];
+        $response2["Popust"] = $_POST["Popust"];
+
+        $response->DATA = $response2;
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "UPDATED";
+        $response = json_encode($response);
+        echo $response;
+    }
 ?>
