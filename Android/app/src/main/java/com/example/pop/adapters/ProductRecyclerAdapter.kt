@@ -148,5 +148,7 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
         notifyDataSetChanged()
     }
 
-
+    fun getSelectedProducts() : List<Product>{
+        return selectedProducts
+    }
 }

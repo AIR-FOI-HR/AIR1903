@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.pop.adapters.ProductRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
+import com.example.webservice.Model.Product
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.activity_show_products.*
 import retrofit2.Call
@@ -52,12 +53,21 @@ class ShowProductsActivity : AppCompatActivity(){
         })
 
         btn_new_product.setOnClickListener{addProduct()}
+        btn_new_package.setOnClickListener{createPackage()}
     }
 
     private fun addProduct(){
         val intent=Intent(applicationContext, ManageProductsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("previousActivity", 1)
+        applicationContext.startActivity(intent)
+    }
+
+    private fun createPackage() {
+        val selectedProducts : List<Product> = productAdapter.getSelectedProducts()
+        val intent = Intent(applicationContext, ManagePackagesActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra("productList", selectedProducts as Serializable)
         applicationContext.startActivity(intent)
     }
 
