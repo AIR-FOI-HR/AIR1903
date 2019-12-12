@@ -414,7 +414,13 @@ public function updateProduct($post) {
         $q = "SELECT * FROM Paket WHERE Id={$packageProductId}";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-      
+        $response["NazivPaketa"] = $stmt["NazivPaketa"];
+        $response["Popust"] = $stmt["Popust"];
+        $response["Id_Paketa"] = $stmt["Id_Paketa"];
+        $response["Id_Proizvoda"] = $stmt["Id_Paketa"];
+        $response["Kolicina"] = $stmt["Kolicina"];
+
+        return $response;
     }
 
 
