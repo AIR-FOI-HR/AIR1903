@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_package_products_listing" >
         <action
             android:id="@+id/action_packageProductsListing_to_packageProductsAdding"
-            app:destination="@id/packageProductsAdding" />
+            app:destination="@id/packageProductsAdding"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/packageProductsAdding"
