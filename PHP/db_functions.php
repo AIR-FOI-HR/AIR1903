@@ -402,23 +402,23 @@ public function updateProduct($post) {
         $packageId = $stmt["Id"];
 
         $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) VALUES (null, '$packageId', '{$post["Id_Proizvoda"]}','{$post["Kolicina"]}')";
-        $stmt = $this->conn->query($q);
+        $stmt2 = $this->conn->query($q);
         $q = "SELECT MAX(Id) FROM Proizvod_Paket";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $packageProductId = $stmt["MAX(Id)"];
 
-        $q = "SELECT * FROM Proizvod_Paket WHERE Id={$packageId}";
+        $q = "SELECT Kolicina, Id_Paketa, Id_Proizvoda FROM Proizvod_Paket WHERE Id='{$packageProductId}'";
         $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $q = "SELECT * FROM Paket WHERE Id={$packageProductId}";
+        $stmt2 = $stmt->fetch_assoc();
+        $q = "SELECT NazivPaketa, Popust FROM Paket WHERE Id='{$packageId}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $response["NazivPaketa"] = $stmt["NazivPaketa"];
         $response["Popust"] = $stmt["Popust"];
-        $response["Id_Paketa"] = $stmt["Id_Paketa"];
-        $response["Id_Proizvoda"] = $stmt["Id_Paketa"];
-        $response["Kolicina"] = $stmt["Kolicina"];
+        $response["Id_Paketa"] = $stmt2["Id_Paketa"];
+        $response["Id_Proizvoda"] = $stmt2["Id_Paketa"];
+        $response["Kolicina"] = $stmt2["Kolicina"];
 
         return $response;
     }
