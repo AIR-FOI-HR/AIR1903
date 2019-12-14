@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_package_products"
+    app:startDestination="@id/packageProductsListing">
+
+    <fragment
+        android:id="@+id/packageProductsListing"
+        android:name="com.example.pop.PackageProductsListing"
+        android:label="fragment_package_products_listing"
+        tools:layout="@layout/fragment_package_products_listing" />
+</navigation>

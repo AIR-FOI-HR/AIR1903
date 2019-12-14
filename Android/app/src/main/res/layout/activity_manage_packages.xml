@@ -45,7 +45,6 @@
         android:hint="@string/inputHintPercentage"
         android:importantForAutofill="no"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/layoutManagePackagesTextDiscount"
@@ -87,13 +86,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ListView
-        android:id="@+id/listView"
+    <fragment
+        android:id="@+id/layoutManagePackagesNavHost"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonAddProduct"
-        app:layout_constraintTop_toBottomOf="@+id/layoutManagePackagesInputDiscount">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutManagePackagesInputDiscount"
+        app:navGraph="@navigation/navigation_package_products" />
 
-
-    </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>
