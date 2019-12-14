@@ -7,7 +7,7 @@ import com.example.webservice.Common.Common
 import com.example.webservice.Model.Product
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.activity_main_menu.*
-
+import com.example.pop_sajamv2.Session
 class MainMenu : AppCompatActivity() {
     internal lateinit var mService: IMyAPI
 
@@ -15,6 +15,9 @@ class MainMenu : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         mService = Common.api
+
+        username.text = Session.user.Ime + " " + Session.user.Prezime;
+
 
         showAllProductsButton.setOnClickListener{showProducts()}
         addProductButton.setOnClickListener{addNewProduct()}
