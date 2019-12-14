@@ -9,5 +9,13 @@
         android:id="@+id/packageProductsListing"
         android:name="com.example.pop.PackageProductsListing"
         android:label="fragment_package_products_listing"
-        tools:layout="@layout/fragment_package_products_listing" />
+        tools:layout="@layout/fragment_package_products_listing" >
+        <action
+            android:id="@+id/action_packageProductsListing_to_packageProductsAdding"
+            app:destination="@id/packageProductsAdding" />
+    </fragment>
+    <fragment
+        android:id="@+id/packageProductsAdding"
+        android:name="com.example.pop.PackageProductsAdding"
+        android:label="PackageProductsAdding" />
 </navigation>

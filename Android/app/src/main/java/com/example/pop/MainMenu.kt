@@ -38,12 +38,8 @@ class MainMenu : AppCompatActivity() {
     }
 
     private fun editProduct(){
-        val testProduct : Product = Product(1234, "Foi Product", 14.0, "Test product", "")
 
-        val intent = Intent(this, ManageProductsActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("product", testProduct)
-        intent.putExtra("previousActivity", 2)
+        val intent = Intent(this, ManagePackagesActivity::class.java)
         startActivity(intent)
     }
 }
