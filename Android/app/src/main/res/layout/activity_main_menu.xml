@@ -1,53 +1,318 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMenu">
+    android:background="@drawable/main_menu">
 
-    <Button
-        android:id="@+id/showAllPackages"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prikaz paketa"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProductButton" />
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
+        <TextView
+            android:id="@+id/main_menu_heading"
+            android:text="Main menu"
+            android:textSize="34sp"
+            android:textColor="#FFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/showAllProductsButton"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_below="@id/main_menu_heading"
+            android:layout_marginTop="5dp"
+            android:id="@+id/username"
+            android:textSize="24sp"
+            android:textColor="#FFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Prikazi sve proizvode"
-        app:layout_constraintBottom_toTopOf="@+id/addProductButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:columnOrderPreserved="false"
+        android:alignmentMode="alignMargins"
+        android:rowCount="3"
+        android:columnCount="2">
 
-    <Button
-        android:id="@+id/addProductButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dodaj proizvod"
-        app:layout_constraintBottom_toTopOf="@+id/editProductButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showAllProductsButton" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:id="@+id/showAllProductsButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
 
-    <Button
-        android:id="@+id/editProductButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Uredi paket"
-        app:layout_constraintBottom_toTopOf="@+id/showAllPackages"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addProductButton" />
+                <ImageView
+                    android:src="@drawable/show_all_products"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:text="Show all products" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:id="@+id/addProductButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/add_new_product"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Add product" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:id="@+id/editProductButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/edit_product"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Edit product" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:id="@+id/showAllPackages"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/show_all_packages"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Show all packages" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/add_new_product"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Add button" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/add_new_product"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Add button" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/add_new_product"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Add button" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="12dp"
+            android:layout_margin="12dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:src="@drawable/add_new_product"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#6f6f6f"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Add button" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+</LinearLayout>
