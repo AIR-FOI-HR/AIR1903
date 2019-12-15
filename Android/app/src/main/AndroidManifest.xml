@@ -30,6 +30,7 @@
         <activity android:name=".ManageProductsActivity" />
         <activity
             android:name=".LoginActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
