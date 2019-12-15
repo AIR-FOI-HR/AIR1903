@@ -43,7 +43,7 @@ class RegistrationFirst : Fragment(), View.OnClickListener {
         }
 
         val keyboard = HideKeyboard()
-        view.regFirst.setOnClickListener{keyboard.hideKeyboard(regFirst)}
+        view.registrationFirst.setOnClickListener{keyboard.hideKeyboard(registrationFirst)}
         view.setOnTouchListener { v : View, event : MotionEvent ->
             if (event.action == MotionEvent.ACTION_DOWN) touchX = event.x
             if (event.action == MotionEvent.ACTION_UP) {

@@ -11,6 +11,9 @@ import androidx.navigation.findNavController
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.ApiResponseUser
 import com.example.webservice.Response.IMyAPI
+import kotlinx.android.synthetic.main.fragment_registration_first.*
+import kotlinx.android.synthetic.main.fragment_registration_first.view.*
+import kotlinx.android.synthetic.main.fragment_registration_second.*
 import kotlinx.android.synthetic.main.fragment_registration_second.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -69,6 +72,9 @@ class RegistrationSecond : Fragment(), View.OnClickListener {
         view.layoutRegistrationButtonRegister.setOnClickListener {
             onClick(view)
         }
+
+        val keyboard = HideKeyboard()
+        view.registrationSecond.setOnClickListener{keyboard.hideKeyboard(registrationSecond)}
         view.setOnTouchListener { v : View, event : MotionEvent ->
             if (event.action == MotionEvent.ACTION_DOWN) touchX = event.x
             if (event.action == MotionEvent.ACTION_UP) {
