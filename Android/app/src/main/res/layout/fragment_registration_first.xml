@@ -11,6 +11,7 @@
     tools:context=".RegistrationFirst">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/regFirst"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true">

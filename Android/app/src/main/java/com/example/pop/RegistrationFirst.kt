@@ -1,15 +1,19 @@
 package com.example.pop
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import kotlinx.android.synthetic.main.fragment_registration_first.*
 import kotlinx.android.synthetic.main.fragment_registration_first.view.*
 import kotlin.math.abs
+
 
 class RegistrationFirst : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
@@ -37,6 +41,9 @@ class RegistrationFirst : Fragment(), View.OnClickListener {
         view.layoutRegistrationButtonNext.setOnClickListener {
             onClick(view)
         }
+
+        val keyboard = HideKeyboard()
+        view.regFirst.setOnClickListener{keyboard.hideKeyboard(regFirst)}
         view.setOnTouchListener { v : View, event : MotionEvent ->
             if (event.action == MotionEvent.ACTION_DOWN) touchX = event.x
             if (event.action == MotionEvent.ACTION_UP) {
@@ -48,4 +55,6 @@ class RegistrationFirst : Fragment(), View.OnClickListener {
         }
         return view
     }
+
+
 }

@@ -21,6 +21,9 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         mService = Common.api
 
+        val keyboard = HideKeyboard()
+        loginLayout.setOnClickListener{keyboard.hideKeyboard(this)}
+        layoutLoginInputUsername.setOnClickListener{layoutLoginInputUsername.setCursorVisible(true)}
 
         btn_add_product_image.setOnClickListener{authenticateUser(layoutLoginInputUsername.text.toString(),layoutLoginInputPassword.text.toString())}
         layoutLoginButtonRegister.setOnClickListener{startActivity(Intent(this@LoginActivity,RegistrationActivity::class.java))}
