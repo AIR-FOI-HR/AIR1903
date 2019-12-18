@@ -36,7 +36,7 @@ if ($db->checkAuth($_POST["Token"])) {
             return;
         }
     } else if ($_POST["DELETE"] == true) {
-        $deleteProduct = $db->deletePackage($_POST);
+        $deleteProduct = $db->deleteItem($_POST);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "DELETED";
         $response->DATA = null;
