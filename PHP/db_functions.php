@@ -431,15 +431,34 @@ public function updateProduct($post) {
     }
 	
     public function updatePackage($post) {
-        $q = "SELECT Id FROM Proizvod_Paket WHERE Id_Paketa = '{$post["Id"]}'";
+       if (!isset($_FILES['Slika'])) {
+            if ($post["Slika"]=="") $slika = 'https://cortex.foi.hr/pop/Slike/defaultPicture.png';
+            else $slika = $post["Slika"];
+        } else {
+            $slika = $_FILES["Slika"];
+            $uploadPath = 'Slike/';
+            $uploadUrl = '/home/zlatko/public_html/pop/' . $uploadPath;
+            $pictureUrl = 'https://cortex.foi.hr/pop/' . $uploadPath;
+            $fileInfo = pathinfo($_FILES['Slika']['name']);
+            $extension = $fileInfo['extension'];
+            $name = bin2hex(random_bytes(32));
+
+            $file_url = $uploadUrl . $name . '.' . $extension;
+            $filePath = $uploadPath . $name . '.' . $extension;
+            $pictureUrl = $pictureUrl . $name . '.' . $extension;
+            move_uploaded_file($_FILES['Slika']['tmp_name'], $file_url);
+
+            $slika=$pictureUrl;
+        }
+        $q = "UPDATE Item SET Naziv = '{$post["Naziv"]}', Opis = '{$post["Opis"]}', Slika = '{$slika}' WHERE Item.Id = {$post["Id"]}";
         $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $productPackageId = $stmt["Id"];
-        $q = "UPDATE Paket SET NazivPaketa = '{$post["NazivPaketa"]}', Popust = '{$post["Popust"]}' WHERE Id = '{$post["Id"]}'";
+        $time= time();
+        $q = "INSERT INTO Paket_Popust (Id_Paketa, UnixVrijeme, Popust) VALUES ({$post["Id"]}, {$time}, {$post["Popust"]})";
         $stmt = $this->conn->query($q);
-        $q = "UPDATE Proizvod_Paket SET Id_Proizvoda = '{$post["Id_Proizvoda"]}', Kolicina = '{$post["Kolicina"]}' WHERE Id = '$productPackageId'";
-        $stmt = $this->conn->query($q);
-        $response = "Proizvod je uspjesno azuriran!";
+        $response["Naziv"]=$post["Naziv"];
+        $response["Opis"]=$post["Opis"];
+        $response["Popust"]=$post["Popust"];
+        $response["Slika"]=$slika;
         return $response;
     }
     public function getAllPackeges($post) {

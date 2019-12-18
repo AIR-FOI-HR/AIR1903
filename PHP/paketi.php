@@ -45,15 +45,11 @@ if ($db->checkAuth($_POST["Token"])) {
         return;
     } else if ($_POST["UPDATE"] == true) {
         $updatePackage = $db->updatePackage($_POST);
-        $response2["NazivPaketa"] = $_POST["NazivPaketa"];
-        $response2["Id_Proizvoda"] = $_POST["Id_Proizvoda"];
-        $response2["Kolicina"] = $_POST["Kolicina"];
-        $response2["Popust"] = $_POST["Popust"];
-
-        $response->DATA = $response2;
+        $response->DATA = $updatePackage;
         $response->STATUS = true;
-        $response->STATUSMESSAGE = "UPDATED";
-        $response = json_encode($response);
+        $response->STATUSMESSAGE = "PACKAGE UPDATED";
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
         echo $response;
     }
 }
