@@ -182,7 +182,7 @@ class DB_Functions {
             $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, fin.Kolicina FROM ("
                 ."SELECT svi.*, tp.Id_Trgovine, tp.Kolicina "
                 ."FROM (SELECT a.*, b.Cijena "
-                ."FROM Proizvod a "
+                ."FROM Item a "
                 ."LEFT JOIN" 
                 ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme "
                 ."FROM "
@@ -192,8 +192,8 @@ class DB_Functions {
                 ."JOIN Proizvod_Cijena d "
                 ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b "
                 ."ON a.Id = b.Id_Proizvod) svi "
-                ."JOIN Trgovina_Proizvod tp "
-                ."ON tp.Id_Proizvoda = svi.id "
+                ."JOIN Trgovina_Item tp "
+                ."ON tp.Id_Itema = svi.id "
                 ." WHERE svi.Izbrisan=0) fin "
                 ."WHERE Id_Trgovine={$storeId}";
         }
@@ -201,7 +201,7 @@ class DB_Functions {
             $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, fin.Kolicina FROM ("
                 ."SELECT svi.*, tp.Id_Trgovine, tp.Kolicina "
                 ."FROM (SELECT a.*, b.Cijena "
-                ."FROM Proizvod a "
+                ."FROM Item a "
                 ."LEFT JOIN" 
                 ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme "
                 ."FROM "
@@ -211,8 +211,8 @@ class DB_Functions {
                 ."JOIN Proizvod_Cijena d "
                 ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b "
                 ."ON a.Id = b.Id_Proizvod) svi "
-                ."JOIN Trgovina_Proizvod tp "
-                ."ON tp.Id_Proizvoda = svi.id "
+                ."JOIN Trgovina_Item tp "
+                ."ON tp.Id_Itema = svi.id "
                 ." WHERE svi.Izbrisan=0) fin ";
         }
         
@@ -222,6 +222,7 @@ class DB_Functions {
         $response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
         return $response;
     }
+	
 	public function addNewProduct($post) {
         $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
         $stmt=$this->conn->query($q);
@@ -238,7 +239,7 @@ class DB_Functions {
         $stmt = $stmt->fetch_assoc();
         $storeId=$stmt["Id_Trgovina"];
         
-        $q = "INSERT INTO Proizvod (Id ,Naziv, Opis, Slika) ";
+        $q = "INSERT INTO Item (Id ,Naziv, Opis, Slika) ";
         if (!isset($_FILES['Slika'])) {
             $q .= "VALUES (null,'{$post["Naziv"]}','{$post["Opis"]}', 'https://cortex.foi.hr/pop/Slike/defaultPicture.png')";
         } else {
@@ -265,7 +266,7 @@ class DB_Functions {
         $stmt = $this->conn->query($q);
         
         
-        $q = "SELECT Naziv, Opis, Slika FROM Proizvod WHERE Id={$productId}";
+        $q = "SELECT Naziv, Opis, Slika FROM Item WHERE Id={$productId}";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $response[1]["Naziv"] = $stmt["Naziv"];
@@ -278,19 +279,19 @@ class DB_Functions {
         $response[1]["Cijena"] = $stmt["Cijena"];
         
         
-        $q="INSERT INTO Trgovina_Proizvod (Id, Id_Trgovine, Id_Proizvoda, Kolicina) VALUES "
+        $q="INSERT INTO Trgovina_Item (Id, Id_Trgovine, Id_Itema, Kolicina) VALUES "
                 . "(null, {$storeId}, $productId, {$post["Kolicina"]})";
         $stmt = $this->conn->query($q);
         
         
         return $response;
     }
-	public function deleteProduct($post) {
-        $q = "UPDATE Proizvod SET Izbrisan = 1 WHERE Id = {$post["Id"]}"; //promijenjeno
+	public function deleteItem($post) {
+        $q = "UPDATE Item SET Izbrisan = 1 WHERE Id = {$post["Id"]}";
         $stmt = $this->conn->query($q);
         $response = null;
         return $response;
-	}
+    }
 public function checkProductEmpty($post) {
          if(!isset($post["Naziv"])|| empty($post["Naziv"]) || !isset($post["Cijena"]) || empty($post["Cijena"]) || !isset($post["Opis"])||  empty($post["Opis"]) || isset($post["Id"])){
             return 0;
@@ -340,7 +341,6 @@ public function isUpdate($post) {
         }
     }
 public function updateProduct($post) {
-        
         if (!isset($_FILES['Slika'])) {
             if ($post["Slika"]=="") $slika = 'https://cortex.foi.hr/pop/Slike/defaultPicture.png';
             else $slika = $post["Slika"];
@@ -360,12 +360,12 @@ public function updateProduct($post) {
 
             $slika=$pictureUrl;
         }
-        $q = "UPDATE Proizvod SET Naziv = '{$post["Naziv"]}', Opis = '{$post["Opis"]}', Slika = '{$slika}' WHERE Proizvod.Id = '{$post["Id"]}'";
+        $q = "UPDATE Item SET Naziv = '{$post["Naziv"]}', Opis = '{$post["Opis"]}', Slika = '{$slika}' WHERE Item.Id = '{$post["Id"]}'";
         $stmt = $this->conn->query($q);
         $time= time();
         $q = "INSERT INTO Proizvod_Cijena (Id_Proizvod, UnixVrijeme, Cijena) VALUES ({$post["Id"]}, {$time}, {$post["Cijena"]})";
         $stmt = $this->conn->query($q);
-        $q = "UPDATE Trgovina_Proizvod SET Kolicina = {$post["Kolicina"]} WHERE Id_Proizvoda = {$post["Id"]}";
+        $q = "UPDATE Trgovina_Item SET Kolicina = {$post["Kolicina"]} WHERE Id_Itema = {$post["Id"]}";
         $stmt = $this->conn->query($q);
         $response = "Proizvod je uspjesno azuriran!";
         return $response;
