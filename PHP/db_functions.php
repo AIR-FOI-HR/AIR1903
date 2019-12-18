@@ -467,24 +467,63 @@ public function updateProduct($post) {
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
         $roleId=$stmt["Id_Uloge"];
-        $response[0] = $stmt["Id_Uloge"];
-        
+        $response[0]= $stmt["Id_Uloge"];
         if ($roleId==1){
             return $response;
         }
-         if ($roleId == 3) { // ako je prodavac
-            $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = '$userId'";
-            $stmt = $this->conn->query($q);
-            $stmt = $stmt->fetch_assoc();
-            $storeId = $stmt["Id_Trgovina"];
-            $q = "SELECT Proizvod_Paket.Id_Proizvoda, Proizvod_Paket.Kolicina, Paket.Id, Paket.NazivPaketa, Paket.Popust FROM Proizvod_Paket LEFT OUTER JOIN Paket ON Paket.Id = Proizvod_Paket.Id_Paketa WHERE Paket.Id IN (SELECT Id_Paketa FROM Proizvod_Paket WHERE Id_Proizvoda IN (SELECT Id_Proizvoda FROM Trgovina_Proizvod WHERE Id_Trgovine = '$storeId'))";
+        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $storeId=$stmt["Id_Trgovina"];
+        
+        if ($roleId == 3){ // ako je prodavac
+            $q = "SELECT * FROM (SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
+                    ."FROM "
+                    ."(SELECT svi.*, tp.Id_Trgovine "
+                    ."FROM "
+                    ."(SELECT a.*, b.Popust "
+                    ."FROM Item a "
+                    ."LEFT JOIN "
+                    ."(SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme "
+                    ."FROM "
+                    ."(SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme "
+                    ."FROM Paket_Popust "
+                    ."GROUP BY Id_Paketa) c "
+                    ."JOIN Paket_Popust d "
+                    ."ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b "
+                    ."ON a.Id = b.Id_Paketa) svi "
+                    ."JOIN Trgovina_Item tp "
+                    ."ON tp.Id_Itema = svi.id "
+                    ."WHERE svi.Izbrisan=0) fin "
+                    ."WHERE Id_Trgovine = {$storeId}) fin2 "
+                    ."JOIN Paket ON Paket.Id_Itema=fin2.Id ";
             
-        }elseif ($roleId == 2) {
-            $q = "SELECT Proizvod_Paket.Id_Proizvoda, Proizvod_Paket.Kolicina, Paket.Id, Paket.NazivPaketa, Paket.Popust FROM Proizvod_Paket LEFT OUTER JOIN Paket ON Paket.Id = Proizvod_Paket.Id_Paketa WHERE Paket.Id IN (SELECT Id_Paketa FROM Proizvod_Paket WHERE Id_Proizvoda IN (SELECT Id_Proizvoda FROM Trgovina_Proizvod))";
+        } elseif ($roleId == 2) { // ako je admin
+            $q = "SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
+                    . "FROM "
+                    . "(SELECT svi.*, tp.Id_Trgovine "
+                    . "FROM "
+                    . "(SELECT a.*, b.Popust "
+                    . "FROM Item a "
+                    . "LEFT JOIN "
+                    . "(SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme "
+                    . "FROM "
+                    . "(SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme "
+                    . "FROM Paket_Popust "
+                    . "GROUP BY Id_Paketa) c "
+                    . "JOIN Paket_Popust d "
+                    . "ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b "
+                    . "ON a.Id = b.Id_Paketa) svi "
+                    . "JOIN Trgovina_Item tp "
+                    . "ON tp.Id_Itema = svi.id "
+                    . "WHERE svi.Izbrisan=0) fin "
+                    . "JOIN Paket ON Paket.Id_Itema=fin.Id ";
         }
         $stmt = $this->conn->query($q);
         $response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
         return $response;
+        
+    }
     }
 
 }

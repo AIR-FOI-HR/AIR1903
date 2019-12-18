@@ -4,7 +4,7 @@ $db = new DB_Functions();
 header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"])) {
     $packageCheck = $db->checkPackageEmpty($_POST);
-    if (isset($_POST["GET"]) && $_POST["GET"] == true) {
+    if ($_POST["GET"] == true) {
         $allPackeges = $db->getAllPackeges($_POST);
         if ($allPackeges[0] == 1) {
             $response->DATA = null;
