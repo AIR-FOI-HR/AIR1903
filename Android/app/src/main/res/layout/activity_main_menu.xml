@@ -188,6 +188,7 @@
             android:layout_margin="12dp"
             >
             <LinearLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -206,7 +207,7 @@
                     android:textColor="#6f6f6f"
                     android:textSize="18sp"
                     android:textAlignment="center"
-                    android:text="Add button" />
+                    android:text="SHOW PP" />
 
             </LinearLayout>
 
