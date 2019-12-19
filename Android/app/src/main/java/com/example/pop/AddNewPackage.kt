@@ -17,11 +17,11 @@ class AddNewPackage : AppCompatActivity() {
 
     internal lateinit var mService: IMyAPI
 
-    var discounts = arrayOf("10", "20", "30" , "25", "15")
+    //var discounts = arrayOf("10", "20", "30" , "25", "15")
 
-    lateinit var discountForDatabase : String
+    //lateinit var discountForDatabase : String
 
-    lateinit var spinner: Spinner
+    //lateinit var spinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +33,15 @@ class AddNewPackage : AppCompatActivity() {
             addNewPackageButton.setOnClickListener {
                 addNewPackage(
                     newPackageName.text.toString(),
-                    productId.text.toString(),
+                    packageDesc.text.toString(),
                     productQuantity.text.toString(),
                     newPackageDiscount.text.toString()
                 )
             }
         }
     }
-    private fun addNewPackage(NazivPaketa: String, Id_Proizvoda: String, Kolicina: String, Popust: String) {
-        mService.addNewPackage(Session.user.Token,true, NazivPaketa, Id_Proizvoda, Kolicina, Popust).enqueue(object:
+    private fun addNewPackage(NazivPaketa: String, OpisPaketa: String, Kolicina: String, Popust: String) {
+        mService.addNewPackage(Session.user.Token,true, NazivPaketa, OpisPaketa, Kolicina, Popust, Session.user.KorisnickoIme).enqueue(object:
             Callback<NewPackageResponse> {
             override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
                 Toast.makeText(this@AddNewPackage,t!!.message, Toast.LENGTH_SHORT).show()

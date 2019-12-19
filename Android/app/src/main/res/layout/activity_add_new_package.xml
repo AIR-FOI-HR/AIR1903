@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".AddNewPackage">
     <EditText
-        android:id="@+id/productId"
+        android:id="@+id/packageDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -15,7 +15,7 @@
         android:layout_marginBottom="28dp"
         android:background="@drawable/rounded_input"
         android:ems="10"
-        android:hint="Id_Proizvoda"
+        android:hint="Opis"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:padding="10dp"
@@ -39,7 +39,7 @@
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/productId"
+        app:layout_constraintBottom_toTopOf="@+id/packageDesc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/productId"
+        app:layout_constraintTop_toBottomOf="@+id/packageDesc"
         app:layout_constraintVertical_chainStyle="packed" />
     <Button
         android:id="@+id/addNewPackageButton"
