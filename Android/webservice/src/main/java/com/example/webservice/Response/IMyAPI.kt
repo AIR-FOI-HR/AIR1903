@@ -63,6 +63,10 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("paketi.php")
     fun getOnePackageContents(@Field("Token") Token: String, @Field("GETONE") GETONE: Boolean, @Field("Id") Id: String):Call<PackageResponse>
+
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun addToPacket(@Field("Token") Token: String, @Field("ADDTOPACKET") ADDTOPACKET: Boolean, @Field("Id_Paket") Id_Paket: String, @Field("Id_Proizvod") Id_Proizvod: String, @Field("Kolicina") Kolicina: String):Call<PackageResponse>
 	
     /*@Multipart
     @POST("/upload")
