@@ -48,16 +48,16 @@ class ManageProductsActivity : AppCompatActivity() {
         mService = Common.api
 
         if (intent.getIntExtra("previousActivity", 1)==1)
-            previousActivity = ShowProductsActivity::class.java
+            previousActivity = TabLayoutActivity::class.java
         else if (intent.getIntExtra("previousActivity", 1)==2)
             previousActivity = MainMenu::class.java
 
-        if(intent.hasExtra("product")) {
-            if(intent.getSerializableExtra("product") != null) {
-                product = intent.getSerializableExtra("product") as Product
-                productUrl=product.Slika
+        if(intent.hasExtra("item")) {
+            if(intent.getSerializableExtra("item") != null) {
+                product = intent.getSerializableExtra("item") as Product
+                productUrl=product.Slika!!
                 layoutManageProductsInputName.setText(product.Naziv)
-                layoutManageProductsInputValue.setText(product.Cijena.toString())
+                layoutManageProductsInputValue.setText(product.Cijena)
                 layoutManageProductsInputDescription.setText(product.Opis)
                 layoutManageProductsImage.setImageResource(R.drawable.prijava_bg)
                 input_quantity.setText(product.Kolicina)
@@ -70,9 +70,9 @@ class ManageProductsActivity : AppCompatActivity() {
         btn_decrease_products.setOnClickListener{changeQuantity(-1)}
 
         layoutManageProductsButtonSubmit.setOnClickListener {
-            if(intent.hasExtra("product")) {
+            if(intent.hasExtra("item")) {
                 editProduct(
-                    product.Id,
+                    product.Id!!,
                     layoutManageProductsInputName.text.toString(),
                     layoutManageProductsInputDescription.text.toString(),
                     layoutManageProductsInputValue.text.toString(),
@@ -333,7 +333,7 @@ class ManageProductsActivity : AppCompatActivity() {
     }
 
     private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Kolicina: Int, Slika: File?) {
-        //Kod za editiranje proizvoda čija je referenca trenutno spremljena u product varijablu
+        //Kod za editiranje proizvoda čija je referenca trenutno spremljena u item varijablu
         if (productUrl==""){
             lateinit var part : MultipartBody.Part
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
