@@ -2,8 +2,9 @@ package com.example.webservice.Response
 
 import com.example.webservice.Model.ProductResponse
 import com.example.webservice.Model.ApiResponseUser
+import com.example.webservice.Model.NewPackageResponse
 import com.example.webservice.Model.NewProductResponse
-import io.reactivex.Observable
+import com.example.webservice.Model.PackageResponse
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.http.*
@@ -19,7 +20,8 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("proizvodi.php")
-    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme: String) : Call<ProductResponse>
+    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme: String
+    ) : Call<ProductResponse>
 
     @FormUrlEncoded
     @POST("proizvodi.php")
@@ -40,6 +42,31 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("proizvodi.php")
     fun deleteProduct(@Field("Token")Token: String, @Field("Id")Id: Int) : Call<NewProductResponse>
+
+    /*@FormUrlEncoded
+    @POST("paketi.php")
+    fun addNewPackage(@Field("Token") Token: String,@Field("ADD") ADD: Boolean, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String, @Field("KorisnickoIme") KorisnickoIme: String) : Call<NewPackageResponse>
+*/
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun getAllPackages(@Field("Token") Token: String,@Field("GET") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<PackageResponse>
+
+
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun deletePackage(@Field("Token") Token: String,@Field("DELETE") DELETE: Boolean, @Field("Id_Paketa") Id_Paketa: String) : Call<NewPackageResponse>
+
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun updatePackage(@Field("Token") Token: String,@Field("UPDATE") UPDATE: Boolean, @Field("Id") Id: String, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<NewPackageResponse>
+
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun getOnePackageContents(@Field("Token") Token: String, @Field("GETONE") GETONE: Boolean, @Field("Id") Id: String):Call<PackageResponse>
+
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun addToPacket(@Field("Token") Token: String, @Field("ADDTOPACKET") ADDTOPACKET: Boolean, @Field("Id_Paket") Id_Paket: String, @Field("Id_Proizvod") Id_Proizvod: String, @Field("Kolicina") Kolicina: String):Call<PackageResponse>
 
     /*@Multipart
     @POST("/upload")
