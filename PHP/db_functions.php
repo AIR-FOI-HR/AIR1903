@@ -533,7 +533,8 @@ public function updateProduct($post) {
         $storeId=$stmt["Id_Trgovina"];
         
         if ($roleId == 3){ // ako je prodavac
-            $q = "SELECT * FROM (SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
+            $q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Popust, fin2.Slika FROM "
+                    . "(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
                     ."FROM "
                     ."(SELECT svi.*, tp.Id_Trgovine "
                     ."FROM "
