@@ -46,7 +46,11 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("paketi.php")
     fun addNewPackage(@Field("Token") Token: String,@Field("ADD") ADD: Boolean, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("KolicinaPaketa") KolicinaPaketa: String) : Call<NewPackageResponse>
-	
+
+    @Multipart
+    @POST("paketi.php")
+    fun addNewPackageWithImage(@Part Token:MultipartBody.Part, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Popust:MultipartBody.Part, @Part Kolicina:MultipartBody.Part, @Part file: MultipartBody.Part, @Part KorisnickoIme: MultipartBody.Part, @Part KolicinaPaketa: MultipartBody.Part): Call<NewProductResponse>
+
     @FormUrlEncoded
     @POST("paketi.php")
     fun getAllPackage(@Field("Token") Token: String,@Field("GET") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<PackageResponse>
