@@ -57,7 +57,7 @@ if ($db->checkAuth($_POST["Token"])) {
         return;
     } else if ($_POST["UPDATE"] == true) {
         $updatePackage = $db->updatePackage($_POST);
-        $response->DATA = $updatePackage;
+        $response->DATA = null;
         $response->STATUS = true;
         $response->STATUSMESSAGE = "PACKAGE UPDATED";
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
