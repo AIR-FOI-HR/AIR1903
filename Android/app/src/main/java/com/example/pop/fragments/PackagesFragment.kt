@@ -43,7 +43,7 @@ class PackagesFragment : Fragment() {
             package_list.adapter = itemAdapter
             getPackages()
 
-            btn_new_package.setOnClickListener{addPackage()}
+           // btn_new_package.setOnClickListener{addPackage()}
         }
 
 

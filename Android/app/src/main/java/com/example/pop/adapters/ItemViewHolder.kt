@@ -34,8 +34,13 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.item_quantity.text = item.Kolicina
         }
 
-        else if(item is Package)
+        else if(item is Package){
             itemView.item_value.text = item.Popust.toString()
+            itemView.item_quantity.text = item.KolicinaPaketa
+
+        }
+
+
 
         Picasso.get().load(item.Slika).into(itemView.item_image)
     }

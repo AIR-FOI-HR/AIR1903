@@ -1,9 +1,8 @@
 package com.example.webservice.Model
 
 class Package(
-    var Popust: Double = 0.00,
-    var KolicinaPaketa: Int = 0,
-    var Kolicina: Int = 0,
+    var Popust: String? = "",
+    var KolicinaPaketa: String? = "",
     override val Id: Int?,
     override var Naziv: String = "",
     override var Opis: String? = "",
