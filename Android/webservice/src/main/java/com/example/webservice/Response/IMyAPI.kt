@@ -4,6 +4,7 @@ import com.example.webservice.Model.ProductResponse
 import com.example.webservice.Model.ApiResponseUser
 import com.example.webservice.Model.NewPackageResponse
 import com.example.webservice.Model.NewProductResponse
+import com.example.webservice.Model.PackageResponse
 import io.reactivex.Observable
 import okhttp3.*
 import retrofit2.Call
@@ -46,6 +47,12 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("paketi.php")
     fun addNewPackage(@Field("Token") Token: String,@Field("ADD") ADD: Boolean, @Field("NazivPaketa") NazivPaketa: String, @Field("Id_Proizvoda") Id_Proizvoda: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<NewPackageResponse>
+	
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun getAllPackage(@Field("Token") Token: String,@Field("GET") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<PackageResponse>
+
+	
     /*@Multipart
     @POST("/upload")
     fun uploadImage(@Part file: MultipartBody.Part, @Part("name") requestBody: RequestBody) : Call<ResponseBody>
