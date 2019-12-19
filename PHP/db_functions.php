@@ -401,10 +401,10 @@ public function updateProduct($post) {
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
         
-        $response[0] = $stmt["Id_Uloge"];
+        $response2 = $stmt["Id_Uloge"];
         
-        if ($response[0]==1){
-            return $response;
+        if ($response2==1){
+            return $response2;
         }
         $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
         $stmt = $this->conn->query($q);
@@ -454,7 +454,7 @@ public function updateProduct($post) {
         $response["Naziv"] = $stmt4["Naziv"];
         $response["Opis"] = $stmt4["Opis"];
         $response["Slika"] = $stmt4["Slika"];
-        $response["Kolicina"] = $stmt2["Kolicina"];
+        $response["Kolicina"] = $post["Kolicina"];
         $response["Popust"] = $stmt3["Popust"];
 
         return $response;
