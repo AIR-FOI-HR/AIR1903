@@ -35,6 +35,15 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
+    } else if ($_POST["ADDTOPACKET"]==true){
+        $addToPacket = $db->addItemToPackage($_POST);
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "SUCCESS";
+        $response->DATA = $addToPacket;
+        $response= json_encode($addToPacket);
+        echo $response;
+        return;
+        
     } else if ($_POST["DELETE"] == true) {
         $deleteProduct = $db->deleteItem($_POST);
         $response->STATUS = true;

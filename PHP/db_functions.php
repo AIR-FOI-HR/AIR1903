@@ -455,8 +455,27 @@ public function updateProduct($post) {
 
         return $response;
     }
+	
+	public function addItemToPackage($post){
+        
+        $q = "SELECT Id FROM Proizvod_Paket WHERE Id_Paketa = {$post["Id_Paket"]} AND Id_Proizvoda = {$post["Id_Proizvod"]}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        if (sizeof($stmt)!=0){
+            $q="UPDATE Proizvod_Paket SET Kolicina = {$post["Kolicina"]} "
+            . "WHERE Id_Paketa = {$post["Id_Paket"]} AND Id_Proizvoda = {$post["Id_Proizvod"]}";
+            $stmt = $this->conn->query($q);
+        }
+        else{
+            $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) "
+                    . "VALUES (null, {$post["Id_Paket"]}, {$post["Id_Proizvod"]}, {$post["Kolicina"]})";
+            $stmt = $this->conn->query($q);
+        }
+        return $post;
+    }
+	
     public function checkPackageEmpty($post) {
-        if (!isset($post["NazivPaketa"]) || empty($post["NazivPaketa"]) || !isset($post["Popust"]) || empty($post["Popust"]) || !isset($post["Id_Proizvoda"]) || empty($post["Id_Proizvoda"]) || !isset($post["Kolicina"]) || empty($post["Kolicina"])) {
+        if (!isset($post["Naziv"]) || empty($post["Naziv"]) || !isset($post["Popust"]) || empty($post["Popust"]) || !isset($post["Kolicina"]) || empty($post["Kolicina"]) || !isset($post["Opis"]) || empty($post["Opis"])) {
             return 0;
         } else {
             return 1;
