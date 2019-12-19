@@ -194,8 +194,9 @@ class DB_Functions {
                 ."ON a.Id = b.Id_Proizvod) svi "
                 ."JOIN Trgovina_Item tp "
                 ."ON tp.Id_Itema = svi.id "
-                ." WHERE svi.Izbrisan=0) fin "
-                ."WHERE Id_Trgovine={$storeId}";
+                ."WHERE svi.Izbrisan=0) fin "
+                ."JOIN Proizvod ON fin.Id = Proizvod.Id_Itema "
+                ."WHERE Id_Trgovine={$storeId} ";
         }
         elseif ($roleId == 2){ // ako je admin
             $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, fin.Kolicina FROM ("
@@ -213,7 +214,8 @@ class DB_Functions {
                 ."ON a.Id = b.Id_Proizvod) svi "
                 ."JOIN Trgovina_Item tp "
                 ."ON tp.Id_Itema = svi.id "
-                ." WHERE svi.Izbrisan=0) fin ";
+                ." WHERE svi.Izbrisan=0) fin "
+                ."JOIN Proizvod ON fin.Id = Proizvod.Id_Itema ";
         }
         
 
