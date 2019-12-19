@@ -59,6 +59,12 @@ if ($db->checkAuth($_POST["Token"])) {
         $response->STATUSMESSAGE = "PACKAGE UPDATED";
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
+    } else if ($_POST["GETONE"] == true){
+        $packageContents = $db->getContentsOfPackage($_POST);
+        $response->STATUS=true;
+        $response->STATUSMESSAGE = "PACKAGE CONTENTS GOTTEN";
+        $response->DATA=$packageContents;
+        $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
 }

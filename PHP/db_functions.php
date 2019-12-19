@@ -576,6 +576,34 @@ public function updateProduct($post) {
         return $response;
         
     }
+	
+	public function getContentsOfPackage($post){
+        $q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Cijena, fin2.Slika FROM "
+            ."(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika  "
+            ."FROM  "
+            ."(SELECT svi.*, tp.Id_Trgovine  "
+            ."FROM  "
+            ."(SELECT a.*, b.Cijena  "
+            ."FROM Item a  "
+            ."LEFT JOIN  "
+            ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme  "
+            ."FROM  "
+            ."(SELECT Id_Proizvod, MAX(UnixVrijeme) UnixVrijeme  "
+            ."FROM Proizvod_Cijena  "
+            ."GROUP BY Id_Proizvod) c  "
+            ."JOIN Proizvod_Cijena d  "
+            ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b  "
+            ."ON a.Id = b.Id_Proizvod) svi  "
+            ."JOIN Trgovina_Item tp  "
+            ."ON tp.Id_Itema = svi.id  "
+            ."WHERE svi.Izbrisan=0) fin "
+            ."JOIN Proizvod_Paket "
+            ."ON Proizvod_Paket.Id_Proizvoda = fin.Id "
+            ."WHERE Proizvod_Paket.Id_Paketa=27) fin2 ";
+        
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
+        return $stmt; 
     }
 
 }
