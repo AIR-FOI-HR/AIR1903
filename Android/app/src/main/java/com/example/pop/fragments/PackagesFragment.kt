@@ -1,4 +1,4 @@
-package com.example.pop
+package com.example.pop.fragments
 
 
 import android.os.Bundle
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.pop.R
 
 /**
  * A simple [Fragment] subclass.

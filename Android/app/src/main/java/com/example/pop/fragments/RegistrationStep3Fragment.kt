@@ -1,17 +1,19 @@
-package com.example.pop
+package com.example.pop.fragments
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import com.example.pop.R
+import com.example.pop.RegistrationActivity
+import com.example.pop.SWIPE_THRESHOLD
+import com.example.pop.touchX
 import kotlinx.android.synthetic.main.fragment_registration_third.view.*
 import kotlin.math.abs
 
-class RegistrationThird : Fragment() {
+class RegistrationStep3Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

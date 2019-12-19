@@ -19,12 +19,12 @@ import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewProductResponse
 import com.example.webservice.Model.Product
 import com.example.webservice.Response.IMyAPI
-import kotlinx.android.synthetic.main.product_list_item.view.*
+import kotlinx.android.synthetic.main.item_list.view.*
 import retrofit2.Call
 import retrofit2.Response
 
 
-class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<ProductViewHolder>(){
+class ProductRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ProductViewHolder>(){
 
     private var products: ArrayList<Product> = ArrayList()
     private var selectedProducts: ArrayList<Product> = ArrayList()
@@ -32,7 +32,7 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
     lateinit var activityContext: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        return ProductViewHolder(LayoutInflater.from(parent.context).inflate(com.example.pop.R.layout.product_list_item, parent, false))
+        return ProductViewHolder(LayoutInflater.from(parent.context).inflate(com.example.pop.R.layout.item_list, parent, false))
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
@@ -43,10 +43,10 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
 
         holder.itemView.setOnLongClickListener{expandProduct(position)}
         holder.itemView.setOnClickListener{selectProduct(position)}
-        holder.itemView.img_edit_product.setOnClickListener{editProduct()}
-        holder.itemView.img_delete_product.setOnClickListener{deleteProduct()}
-        holder.itemView.img_return_card.setOnClickListener{expandProduct(position)}
-        activityContext=holder.itemView.img_delete_product.context
+        holder.itemView.img_edit_item.setOnClickListener{editProduct()}
+        holder.itemView.img_delete_item.setOnClickListener{deleteProduct()}
+        holder.itemView.img_return_item.setOnClickListener{expandProduct(position)}
+        activityContext=holder.itemView.img_delete_item.context
 
     }
 
@@ -72,7 +72,7 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
 
     private fun deleteProduct() {
         val layoutInflater:LayoutInflater = context
-            .getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            ?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val popupView = layoutInflater.inflate(com.example.pop.R.layout.popup_delete_confirmation, null)
         val popupWindow = PopupWindow(
@@ -104,7 +104,7 @@ class ProductRecyclerAdapter (val context: Context) : RecyclerView.Adapter<Produ
         val intent=Intent(this.context,ManageProductsActivity::class.java)
         intent.putExtra("product",product)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+        context?.startActivity(intent)
 
     }
 

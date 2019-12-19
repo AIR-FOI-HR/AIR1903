@@ -1,21 +1,20 @@
-package com.example.pop
+package com.example.pop.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.pop.*
 import kotlinx.android.synthetic.main.fragment_registration_first.*
 import kotlinx.android.synthetic.main.fragment_registration_first.view.*
 import kotlin.math.abs
 
 
-class RegistrationFirst : Fragment(), View.OnClickListener {
+class RegistrationStep1Fragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         RegistrationData.Ime = v?.layoutRegistrationInputName?.text.toString()
         if (RegistrationData.Ime == ""){
@@ -24,7 +23,7 @@ class RegistrationFirst : Fragment(), View.OnClickListener {
         }
 
         RegistrationData.Prezime = v?.layoutRegistrationInputSurname?.text.toString()
-        if (RegistrationData.Prezime==""){
+        if (RegistrationData.Prezime ==""){
             Toast.makeText(activity, R.string.toastEmptySurname, Toast.LENGTH_SHORT).show()
             return
         }
