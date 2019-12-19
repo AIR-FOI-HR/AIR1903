@@ -604,7 +604,7 @@ public function updateProduct($post) {
             ."WHERE svi.Izbrisan=0) fin "
             ."JOIN Proizvod_Paket "
             ."ON Proizvod_Paket.Id_Proizvoda = fin.Id "
-            ."WHERE Proizvod_Paket.Id_Paketa=27) fin2 ";
+            ."WHERE Proizvod_Paket.Id_Paketa={$post["Id"]}) fin2 ";
         
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
