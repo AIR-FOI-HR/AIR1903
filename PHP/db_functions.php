@@ -260,6 +260,10 @@ class DB_Functions {
         }
         $stmt = $this->conn->query($q);
         $productId=$this->conn->insert_id;
+        
+        $q = "INSERT INTO Proizvod (Id_Itema) VALUES ({$productId})";
+        $stmt = $this->conn->query($q);
+        
         $time = time();
         $q = "INSERT INTO Proizvod_Cijena (Id_Proizvod, UnixVrijeme, Cijena) VALUES "
                 . "({$productId}, {$time}, {$post["Cijena"]})";

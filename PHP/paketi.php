@@ -1,4 +1,7 @@
 <?php
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+
 require_once 'db_function.php';
 $db = new DB_Functions();
 header('Content-Type: application/json');
@@ -67,5 +70,10 @@ if ($db->checkAuth($_POST["Token"])) {
         $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
+}
+else{
+    $response->STATUS=false;
+    $response->STATUSMESSAGE="OLD TOKEN";
+    echo json_encode($response);
 }
 ?>
