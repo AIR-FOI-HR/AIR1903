@@ -47,4 +47,5 @@
     <string name="textDiscount">Popust</string>
     <string name="inputHintPercentage">0%</string>
     <string name="buttonAddProducts">Dodaj proizvode</string>
+    <string name="label_quantity">Količina:</string>
 </resources>
