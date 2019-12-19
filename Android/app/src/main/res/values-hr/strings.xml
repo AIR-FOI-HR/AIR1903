@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POP</string>
+    <string name="imageLogo">Logo</string>
+    <string name="registrationLogin">Već imate račun? Prijava</string>
+    <string name="inputHintName">Ime</string>
+    <string name="inputHintSurname">Prezime</string>
+    <string name="inputHintUsername">Korisničko ime</string>
+    <string name="inputHintEmail">Email adresa</string>
+    <string name="inputHintPassword">Lozinka</string>
+    <string name="inputHintConfirmPassword">Potvrdite lozinku</string>
+    <string name="inputHintDescription">Opis</string>
+    <string name="inputCaptcha">CAPTCHA</string>
+    <string name="buttonNext">Dalje</string>
+    <string name="buttonRegister">Registracija</string>
+    <string name="buttonCompleteRegistration">Završi</string>
+    <string name="buttonLogin">Prijava</string>
+    <string name="buttonAdd">Dodaj</string>
+    <string name="buttonSave">Spremi</string>
+    <string name="buttonEdit">Uredi</string>
+    <string name="buttonDelete">Obriši</string>
+    <string name="registrationInfo">Profesor mora potvrditi vašu registraciju. Nakon što je vaš račun potvrđen, dobiti ćete pristup ostatku aplikacije.</string>
+    <string name="loginForgottenPassword">Zaboravljena lozinka?</string>
+    <string name="loginCreateAccount">ili</string>
+    <string name="toastLoginSuccess">Prijava uspješna</string>
+    <string name="toastRegistrationSuccess">Registracija uspješna</string>
+    <string name="toastEmptyName">Polje imena ne smije biti prazno</string>
+    <string name="toastEmptySurname">Polje prezimena ne smije biti prazno</string>
+    <string name="toastEmptyPassword">Polje lozinke ne smije biti prazno</string>
+    <string name="toastEmptyEmail">Polje emaila ne smije biti prazno</string>
+    <string name="toastEmptyUsername">Polje korisničkog imena ne smije biti prazno</string>
+    <string name="toastPasswordsDontMatch">Lozinke nisu jednake</string>
+    <string name="stepIndicator1">1</string>
+    <string name="stepIndicator2">2</string>
+    <string name="stepIndicator3">3</string>
+    <string name="inputHintNumber">0</string>
+    <string name="imageProduct">Slika proizvoda</string>
+    <string name="screenTitle">Poduzetnički pothvat</string>
+    <string name="imageOverlay">Overlay</string>
+    <string name="label_add_image">Dodaj sliku</string>
+    <string name="hint_product_name">Naziv</string>
+    <string name="hint_product_description">Opis</string>
+    <string name="hint_product_price">Cijena</string>
+    <string name="text_delete_popup">Jeste li sigurni?</string>
+    <string name="hint_quantity">Količina</string>
+    <string name="text_quantity_default">1</string>
+</resources>
