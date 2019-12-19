@@ -43,7 +43,6 @@ interface IMyAPI {
     @POST("proizvodi.php")
     fun deleteProduct(@Field("Token")Token: String, @Field("Id")Id: Int) : Call<NewProductResponse>
 
-
     @FormUrlEncoded
     @POST("paketi.php")
     fun addNewPackage(@Field("Token") Token: String,@Field("ADD") ADD: Boolean, @Field("NazivPaketa") NazivPaketa: String, @Field("Id_Proizvoda") Id_Proizvoda: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<NewPackageResponse>
@@ -52,6 +51,10 @@ interface IMyAPI {
     @POST("paketi.php")
     fun getAllPackage(@Field("Token") Token: String,@Field("GET") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<PackageResponse>
 
+	
+    @FormUrlEncoded
+    @POST("paketi.php")
+    fun deletePackage(@Field("Token") Token: String,@Field("DELETE") DELETE: Boolean, @Field("Id_Paketa") Id_Paketa: String) : Call<NewPackageResponse>
 	
     /*@Multipart
     @POST("/upload")
