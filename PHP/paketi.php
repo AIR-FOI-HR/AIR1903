@@ -41,9 +41,9 @@ if ($db->checkAuth($_POST["Token"])) {
     } else if ($_POST["ADDTOPACKET"]==true){
         $addToPacket = $db->addItemToPackage($_POST);
         $response->STATUS = true;
-        $response->STATUSMESSAGE = "SUCCESS";
-        $response->DATA = $addToPacket;
-        $response= json_encode($addToPacket);
+        $response->STATUSMESSAGE = "PRODUCT ADDED TO PACKET";
+        $response->DATA = null;
+        $response= json_encode($response);
         echo $response;
         return;
         
