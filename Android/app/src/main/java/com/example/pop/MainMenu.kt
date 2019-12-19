@@ -3,9 +3,7 @@ package com.example.pop
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TableLayout
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.Product
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.activity_main_menu.*
 import com.example.pop_sajamv2.Session
@@ -20,19 +18,15 @@ class MainMenu : AppCompatActivity() {
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
 
-        showAllProductsButton.setOnClickListener{showProducts()}
+        showAllProductsButton.setOnClickListener{showItems()}
         addProductButton.setOnClickListener{addNewProduct()}
-        editProductButton.setOnClickListener { editProduct() }
-        showAllPackages.setOnClickListener { showPackages() }
+        //editProductButton.setOnClickListener { editProduct() }
+        //showAllPackages.setOnClickListener { showPackages() }
 
-        tabLayout.setOnClickListener{showLayout()}
-    }
-    private fun showProducts(){
-        val intent = Intent(this, ShowProductsActivity::class.java)
-        startActivity(intent)
+        //tabLayout.setOnClickListener{showItems()}
     }
 
-    private fun showLayout(){
+    private fun showItems(){
         val intent = Intent(this, TabLayoutActivity::class.java)
         startActivity(intent)
     }

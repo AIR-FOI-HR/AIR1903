@@ -27,7 +27,6 @@
         <activity
             android:name=".MainMenu"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ShowProductsActivity" />
         <activity
             android:name=".RegistrationActivity"
             android:theme="@style/AppTheme" />
