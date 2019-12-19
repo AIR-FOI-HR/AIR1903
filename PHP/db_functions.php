@@ -443,7 +443,7 @@ public function updateProduct($post) {
         $q = "INSERT INTO Paket_Popust (Id_Paketa ,UnixVrijeme, Popust) VALUES ('{$itemId}','{$time}','{$post["Popust"]}')";
         $stmt = $this->conn->query($q);
         
-        $q = "INSERT INTO Trgovina_Item (Id, Id_Trgovine, Id_Itema, Kolicina) VALUES (null, $storeId, $itemId, 1)";
+        $q = "INSERT INTO Trgovina_Item (Id, Id_Trgovine, Id_Itema, Kolicina) VALUES (null, $storeId, $itemId, '{$post["KolicinaPaketa"]}')";
         $stmt = $this->conn->query($q);
       
         $q = "SELECT Naziv, Opis, Slika FROM Item WHERE Id={$itemId}";
