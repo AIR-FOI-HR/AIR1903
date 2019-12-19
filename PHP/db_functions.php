@@ -392,33 +392,66 @@ public function updateProduct($post) {
         
     }
     public function addNewPackage($post) {
-
-        $q = "INSERT INTO Paket (Id ,NazivPaketa, Popust) VALUES (null,'{$post["NazivPaketa"]}','{$post["Popust"]}')";
-        $stmt = $this->conn->query($q);
-
-        $q = "SELECT Id FROM Paket WHERE NazivPaketa = '{$post["NazivPaketa"]}'"; //ili ukoliko naziv paketa nije jedinstven SELECT MAX(Id) FROM Paket WHERE NAzivPaketa='{$post["NazivPaketa"]}'
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $userId = $stmt["Id"];
+        
+        $response[0] = $stmt["Id_Uloge"];
+        
+        if ($response[0]==1){
+            return $response;
+        }
+        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $packageId = $stmt["Id"];
+        $storeId=$stmt["Id_Trgovina"];
+         
+        $q = "INSERT INTO Item (Id, Naziv, Opis, Slika, Izbrisan) ";
+         if (!isset($_FILES['Slika'])) {
+            $q .= "VALUES (null,'{$post["Naziv"]}','{$post["Opis"]}', 'https://cortex.foi.hr/pop/Slike/defaultPicture.png',0)";
+        } else {
+            $slika = $_FILES["Slika"];
+            $uploadPath = 'Slike/';
+            $uploadUrl = '/home/zlatko/public_html/pop/' . $uploadPath;
+            $pictureUrl = 'https://cortex.foi.hr/pop/' . $uploadPath;
+            $fileInfo = pathinfo($_FILES['Slika']['name']);
+            $extension = $fileInfo['extension'];
+            $name = bin2hex(random_bytes(32));
 
-        $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) VALUES (null, '$packageId', '{$post["Id_Proizvoda"]}','{$post["Kolicina"]}')";
-        $stmt2 = $this->conn->query($q);
-        $q = "SELECT MAX(Id) FROM Proizvod_Paket";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $packageProductId = $stmt["MAX(Id)"];
+            $file_url = $uploadUrl . $name . '.' . $extension;
+            $filePath = $uploadPath . $name . '.' . $extension;
+            $pictureUrl = $pictureUrl . $name . '.' . $extension;
+            move_uploaded_file($_FILES['Slika']['tmp_name'], $file_url);
 
-        $q = "SELECT Kolicina, Id_Paketa, Id_Proizvoda FROM Proizvod_Paket WHERE Id='{$packageProductId}'";
+            $q .= "VALUES (null,'{$post["Naziv"]}','{$post["Opis"]}', '$pictureUrl', 0)";
+        }
         $stmt = $this->conn->query($q);
-        $stmt2 = $stmt->fetch_assoc();
-        $q = "SELECT NazivPaketa, Popust FROM Paket WHERE Id='{$packageId}'";
+        
+        $itemId = $this->conn->insert_id;
+       
+        $q = "INSERT INTO Paket (Id_Itema) VALUES ('{$itemId}')";
         $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $response["NazivPaketa"] = $stmt["NazivPaketa"];
-        $response["Popust"] = $stmt["Popust"];
-        $response["Id_Paketa"] = $stmt2["Id_Paketa"];
-        $response["Id_Proizvoda"] = $stmt2["Id_Paketa"];
+        
+        $time = time();
+        $q = "INSERT INTO Paket_Popust (Id_Paketa ,UnixVrijeme, Popust) VALUES ('{$itemId}','{$time}','{$post["Popust"]}')";
+        $stmt = $this->conn->query($q);
+        
+        $q = "INSERT INTO Trgovina_Item (Id, Id_Trgovine, Id_Itema, Kolicina) VALUES (null, $storeId, $itemId, 1)";
+        $stmt = $this->conn->query($q);
+      
+        $q = "SELECT Naziv, Opis, Slika FROM Item WHERE Id={$itemId}";
+        $stmt = $this->conn->query($q);
+        $stmt4 = $stmt->fetch_assoc();
+        $q = "SELECT Popust FROM Paket_Popust WHERE Id_Paketa={$itemId} ORDER BY UnixVrijeme DESC LIMIT 1";
+        $stmt = $this->conn->query($q);
+        $stmt3 = $stmt->fetch_assoc();
+        
+        $response["Naziv"] = $stmt4["Naziv"];
+        $response["Opis"] = $stmt4["Opis"];
+        $response["Slika"] = $stmt4["Slika"];
         $response["Kolicina"] = $stmt2["Kolicina"];
+        $response["Popust"] = $stmt3["Popust"];
 
         return $response;
     }
