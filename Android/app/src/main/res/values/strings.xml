@@ -37,17 +37,24 @@
     <string name="screenTitle">Entrepreneurial Venture</string>
     <string name="imageOverlay">Overlay</string>
     <string name="label_add_image">Add image</string>
-    <string name="hint_product_name">Name</string>
-    <string name="hint_product_description">Description</string>
-    <string name="hint_product_price">Price</string>
+    <string name="hint_product_name">Product name</string>
+    <string name="hint_product_description">Product description</string>
+    <string name="hint_product_price">Product price</string>
     <string name="text_delete_popup">Are you sure?</string>
     <string name="hint_quantity">Quantity</string>
-    <string name="text_quantity_default">1</string>
+    <string name="text_quantity_default">0</string>
     <string name="textDiscount">Discount</string>
     <string name="inputHintPercentage">0%</string>
     <string name="buttonAddProducts">Add products</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="label_quantity">Quantity:</string>
+    <string name="text_add_image_choice">Add image</string>
+    <string name="btn_gallery">GALLERY</string>
+    <string name="btn_camera">CAMERA</string>
+    <string name="text_add_image_dialog">Choose how you want to add an image.</string>
+    <string name="hint_package_discount" >Package discount</string>
+    <string name="btn_finish_adding_products">FINISH</string>
+    <string name="hint_package_name">Package name</string>
+    <string name="hint_package_description">Package description</string>
+
 </resources>

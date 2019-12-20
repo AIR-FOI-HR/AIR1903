@@ -38,14 +38,23 @@
     <string name="screenTitle">Poduzetnički pothvat</string>
     <string name="imageOverlay">Overlay</string>
     <string name="label_add_image">Dodaj sliku</string>
-    <string name="hint_product_name">Naziv</string>
-    <string name="hint_product_description">Opis</string>
-    <string name="hint_product_price">Cijena</string>
+    <string name="hint_product_name">Naziv proizvoda</string>
+    <string name="hint_product_description">Opis proizvoda</string>
+    <string name="hint_product_price">Cijena proizvoda</string>
     <string name="text_delete_popup">Jeste li sigurni?</string>
     <string name="hint_quantity">Količina</string>
-    <string name="text_quantity_default">1</string>
+    <string name="text_quantity_default">0</string>
     <string name="textDiscount">Popust</string>
     <string name="inputHintPercentage">0%</string>
     <string name="buttonAddProducts">Dodaj proizvode</string>
     <string name="label_quantity">Količina:</string>
+    <string name="text_add_image_choice">Dodajte sliku</string>
+    <string name="btn_gallery">GALERIJA</string>
+    <string name="btn_camera">KAMERA</string>
+    <string name="text_add_image_dialog">Odaberite kako želite dodati sliku.</string>
+    <string name="hint_package_discount">Popust paketa</string>
+    <string name="btn_finish_adding_products">FINISH</string>
+    <string name="hint_package_name">Naziv paketa</string>
+    <string name="hint_package_description">Opis paketa</string>
+
 </resources>
