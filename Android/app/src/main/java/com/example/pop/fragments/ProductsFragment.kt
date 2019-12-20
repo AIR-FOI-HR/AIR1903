@@ -39,7 +39,6 @@ class ProductsFragment : Fragment() {
         getProducts()
 
         btn_new_product.setOnClickListener{addProduct()}
-        btn_new_package.setOnClickListener{createPackage()}
     }
 
 
@@ -61,7 +60,7 @@ class ProductsFragment : Fragment() {
                         Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
-                        activity?.finish()
+                        activity?.finishAffinity()
                     }
                     response.body()!!.STATUSMESSAGE=="OK" -> {}
                     else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
@@ -79,13 +78,13 @@ class ProductsFragment : Fragment() {
         context?.startActivity(intent)
     }
 
-    private fun createPackage() {
+   /* private fun createPackage() {
         val selectedProducts : List<Item> = itemAdapter.getSelectedItems()
         val intent = Intent(context, ManagePackagesActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("productList", selectedProducts as Serializable)
         context?.startActivity(intent)
-    }
+    }*/
 
 
 

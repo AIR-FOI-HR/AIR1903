@@ -43,7 +43,7 @@ class PackagesFragment : Fragment() {
             package_list.adapter = itemAdapter
             getPackages()
 
-           // btn_new_package.setOnClickListener{addPackage()}
+            btn_new_packet.setOnClickListener{addPackage()}
         }
 
 
@@ -65,7 +65,7 @@ class PackagesFragment : Fragment() {
                             Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
                             Session.reset()
                             startActivity(intent)
-                            activity?.finish()
+                            activity?.finishAffinity()
                         }
                         response.body()!!.STATUSMESSAGE=="OK" -> {}
                         else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
@@ -77,7 +77,7 @@ class PackagesFragment : Fragment() {
         }
 
         private fun addPackage(){
-            val intent= Intent(context, ManageProductsActivity::class.java)
+            val intent= Intent(context, ManagePackagesActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra("previousActivity", 1)
             context?.startActivity(intent)

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.LoginActivity
 import com.example.pop.ManageProductsActivity
 import com.example.pop.R
-import com.example.pop.TabLayoutActivity
+import com.example.pop.ShowItemsActivity
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Item
 import com.example.webservice.Model.NewProductResponse
@@ -75,7 +75,7 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
         val layoutInflater:LayoutInflater = context
             ?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val popupView = layoutInflater.inflate(R.layout.popup_delete_confirmation, null)
+        val popupView = layoutInflater.inflate(R.layout.dialog_delete_confirmation, null)
         val popupWindow = PopupWindow(
             popupView,
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -120,7 +120,7 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
             override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
                 popupWindow.dismiss()
                 if (response.body()!!.STATUSMESSAGE=="DELETED"){
-                    val intent=Intent(activityContext,TabLayoutActivity::class.java)
+                    val intent=Intent(activityContext,ShowItemsActivity::class.java)
                     intent.flags = FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK
                     activityContext.startActivity(intent)
                     (activityContext as Activity).overridePendingTransition(0,0)
