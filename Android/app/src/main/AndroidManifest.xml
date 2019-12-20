@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeBar">
         <activity
-            android:name=".TabLayoutActivity"
+            android:name=".ShowItemsActivity"
             android:theme="@style/AppTheme">
         </activity>
         <activity android:name=".ManagePackagesActivity" />
@@ -41,6 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ManageItemsActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

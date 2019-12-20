@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TabLayoutActivity">
+    tools:context=".ShowItemsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -26,15 +26,15 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/colorWhite"
+            android:background="@color/colorFoi"
             android:textAlignment="center"
             app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorFoi"
+            app:tabIndicatorColor="@color/colorWhite"
             app:tabIndicatorHeight="40dp"
             app:tabMaxWidth="0dp"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorWhite"
-            app:tabTextColor="@color/colorFoi" />
+            app:tabSelectedTextColor="@color/colorFoi"
+            app:tabTextColor="@color/colorWhite" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
