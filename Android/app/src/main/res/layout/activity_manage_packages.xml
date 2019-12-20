@@ -1,68 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/layoutManagePackagesInputName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="@string/hint_product_name"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesInputPrice"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/manage_products"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/layoutManagePackagesInputPrice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:ems="10"
-        android:hint="@string/inputHintNumber"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesInputDiscount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutManagePackagesInputName" />
+        <EditText
+            android:id="@+id/layoutManagePacketsInputName"
+            android:layout_width="283dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/rounded_input"
+            android:hint="@string/hint_package_name"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/color_text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-    <EditText
-        android:id="@+id/layoutManagePackagesInputDiscount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:ems="10"
-        android:hint="@string/inputHintPercentage"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/layoutManagePackagesTextDiscount"
-        app:layout_constraintTop_toBottomOf="@+id/layoutManagePackagesInputPrice" />
+        <EditText
+            android:id="@+id/layoutManagePacketsInputDescription"
+            android:layout_width="283dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/rounded_input"
+            android:hint="@string/hint_package_description"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|text"
+            android:padding="10dp"
+            android:singleLine="false"
+            android:textAlignment="inherit"
+            android:textColor="@color/color_text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutManagePacketsInputName"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-    <TextView
-        android:id="@+id/layoutManagePackagesTextDiscount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/textDiscount"
-        app:layout_constraintBottom_toBottomOf="@+id/layoutManagePackagesInputDiscount"
-        app:layout_constraintEnd_toStartOf="@+id/layoutManagePackagesInputDiscount"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/layoutManagePackagesInputDiscount" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="283dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="15dp"
+            android:baselineAligned="true"
+            android:orientation="horizontal"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutManagePacketsInputDescription">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <EditText
+                android:id="@+id/layoutManageProductsInputValue"
+                android:layout_width="160dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_input"
+                android:hint="@string/hint_package_discount"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:padding="10dp"
+                android:textColor="@color/color_text_primary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/input_quantity"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/input_quantity"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_input"
+                android:hint="@string/hint_quantity"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:padding="10dp"
+                android:text="@string/text_quantity_default"
+                android:textAlignment="center"
+                android:textColor="@color/color_text_primary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/layoutManageProductsInputValue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <Button
+                android:id="@+id/btn_decrease_packages"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/img_decrease_quantity"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/input_quantity"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_add_packages"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/img_add_quantity"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="200dp"
+            android:layout_height="165dp"
+            android:background="@drawable/border_product_image"
+            app:layout_constraintBottom_toBottomOf="@+id/image_item_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image_item_picture" />
+
+        <ImageView
+            android:id="@+id/image_item_picture"
+            android:layout_width="190dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="256dp"
+            android:adjustViewBounds="true"
+            android:background="@color/colorFoi"
+            android:contentDescription="@string/imageProduct"
+            android:cropToPadding="true"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/add_image" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/layoutManagePackagesButtonSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,16 +169,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/img_check_mark" />
 
-    <fragment
-        android:id="@+id/layoutManagePackagesNavHost"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonSubmit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutManagePackagesInputDiscount"
-        app:navGraph="@navigation/navigation_package_products" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <fragment
+            android:id="@+id/layoutManagePackagesNavHost"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="00dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="20dp"
+            android:fadingEdgeLength="5dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_item_picture"
+            app:navGraph="@navigation/navigation_package_products" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
