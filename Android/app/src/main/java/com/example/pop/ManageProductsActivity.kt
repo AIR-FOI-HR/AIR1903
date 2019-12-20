@@ -2,6 +2,7 @@ package com.example.pop
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -10,6 +11,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.*
+import android.widget.Button
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -31,46 +35,49 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
+import kotlinx.android.synthetic.main.dialog_add_image.view.*
 
 
 class ManageProductsActivity : AppCompatActivity() {
     private lateinit var mService: IMyAPI
     private lateinit var product: Product
     private var imageFile: File? = null
-    private lateinit var image : File
-    private lateinit var productUrl:String
-    lateinit var previousActivity:Class<*>
+    private lateinit var image: File
+    private lateinit var productUrl: String
+    lateinit var previousActivity: Class<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        image = File(applicationContext!!.cacheDir.path+"/temp.webp")
+        image = File(applicationContext!!.cacheDir.path + "/temp.webp")
         setContentView(R.layout.activity_manage_products)
         mService = Common.api
 
-        if (intent.getIntExtra("previousActivity", 1)==1)
-            previousActivity = TabLayoutActivity::class.java
-        else if (intent.getIntExtra("previousActivity", 1)==2)
+        if (intent.getIntExtra("previousActivity", 1) == 1)
+            previousActivity = ShowItemsActivity::class.java
+        else if (intent.getIntExtra("previousActivity", 1) == 2)
             previousActivity = MainMenu::class.java
 
-        if(intent.hasExtra("item")) {
-            if(intent.getSerializableExtra("item") != null) {
+        if (intent.hasExtra("item")) {
+            if (intent.getSerializableExtra("item") != null) {
                 product = intent.getSerializableExtra("item") as Product
-                productUrl=product.Slika!!
+                productUrl = product.Slika!!
                 layoutManageProductsInputName.setText(product.Naziv)
                 layoutManageProductsInputValue.setText(product.Cijena)
                 layoutManageProductsInputDescription.setText(product.Opis)
-                layoutManageProductsImage.setImageResource(R.drawable.prijava_bg)
+                image_item_picture.setImageResource(R.drawable.prijava_bg)
                 input_quantity.setText(product.Kolicina)
             }
-            Picasso.get().load(productUrl).into(layoutManageProductsImage)
+            Picasso.get().load(productUrl).into(image_item_picture)
 
         }
 
-        btn_add_products.setOnClickListener{changeQuantity(1)}
-        btn_decrease_products.setOnClickListener{changeQuantity(-1)}
+        btn_add_products.setOnClickListener { changeQuantity(1) }
+        btn_decrease_products.setOnClickListener { changeQuantity(-1) }
+        image_item_picture.setOnClickListener { addImage() }
+
 
         layoutManageProductsButtonSubmit.setOnClickListener {
-            if(intent.hasExtra("item")) {
+            if (intent.hasExtra("item")) {
                 editProduct(
                     product.Id!!,
                     layoutManageProductsInputName.text.toString(),
@@ -79,8 +86,7 @@ class ManageProductsActivity : AppCompatActivity() {
                     input_quantity.text.toString().toInt(),
                     imageFile
                 )
-            }
-            else {
+            } else {
                 addProduct(
                     layoutManageProductsInputName.text.toString(),
                     layoutManageProductsInputDescription.text.toString(),
@@ -91,7 +97,44 @@ class ManageProductsActivity : AppCompatActivity() {
             }
         }
 
-        layoutManageProductsButtonCamera.setOnClickListener{
+
+    }
+
+    private fun addImage() {
+        val layoutInflater: LayoutInflater = this.applicationContext
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val dialogView = layoutInflater.run { inflate(R.layout.dialog_add_image, null) }
+        val dialogWindow = PopupWindow(
+            dialogView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        dialogView.btn_close_image_dialog.setOnClickListener { dialogWindow.dismiss() }
+
+        dialogView.btn_gallery.setOnClickListener {
+            //check runtime permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_DENIED
+                ) {
+                    //permission denied
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    //show popup to request runtime permission
+                    requestPermissions(permissions, PERMISSION_CODE)
+                } else {
+                    //permission already granted
+                    pickImageFromGallery()
+                }
+            } else {
+                //system OS is <  Marshmallow
+                pickImageFromGallery()
+            }
+            dialogWindow.dismiss()
+        }
+
+        dialogView.btn_camera.setOnClickListener{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) { // no camera permission
                     val permissions = arrayOf(Manifest.permission.CAMERA)
@@ -106,26 +149,18 @@ class ManageProductsActivity : AppCompatActivity() {
             }
         }
 
-        btn_add_product_image.setOnClickListener {
-            //check runtime permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                    PackageManager.PERMISSION_DENIED){
-                    //permission denied
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE)
-                }
-                else{
-                    //permission already granted
-                    pickImageFromGallery()
-                }
-            }
-            else{
-                //system OS is < Marshmallow
-                pickImageFromGallery()
-            }
-        }
+        dialogWindow.showAtLocation(manage_products, Gravity.CENTER, 0, 0)
+        dialogWindow.dimBehind()
+    }
+
+    private fun PopupWindow.dimBehind() {
+        val container = contentView.rootView
+        val context = contentView.context
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val p = container.layoutParams as WindowManager.LayoutParams
+        p.flags = p.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        p.dimAmount = 0.7f
+        wm.updateViewLayout(container, p)
     }
 
     private fun pickImageFromGallery() {
@@ -137,9 +172,12 @@ class ManageProductsActivity : AppCompatActivity() {
 
     }
 
-    private fun getImageFromCamera(){
+    private fun getImageFromCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider", image))
+        cameraIntent.putExtra(
+            MediaStore.EXTRA_OUTPUT,
+            FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", image)
+        )
         startActivityForResult(cameraIntent, CAMERA_CAPTURE)
     }
 
@@ -153,15 +191,19 @@ class ManageProductsActivity : AppCompatActivity() {
     }
 
     //handle requested permission result
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode){
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
             PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     //permission from popup granted
                     pickImageFromGallery()
-                }
-                else{
+                } else {
                     //permission from popup denied
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -176,23 +218,29 @@ class ManageProductsActivity : AppCompatActivity() {
         if (requestCode == CAMERA_CAPTURE) {
             // Make sure the request was successful
             if (resultCode == Activity.RESULT_OK) {
-                var imageBitmap = BitmapFactory.decodeFile(image.path)
+                val imageBitmap = BitmapFactory.decodeFile(image.path)
                 image = compressImage(imageBitmap)
 
-                imageFile=File(image.path)
+                imageFile = File(image.path)
                 Picasso.get()
-                    .load(FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider", image))
+                    .load(
+                        FileProvider.getUriForFile(
+                            this,
+                            BuildConfig.APPLICATION_ID + ".provider",
+                            image
+                        )
+                    )
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(layoutManageProductsImage)
-                productUrl=""
+                    .into(image_item_picture)
+                productUrl = ""
             }
         }
 
-        if(data?.data != null){
-            val uri:Uri = data.data!!
-            if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-                layoutManageProductsImage.setImageURI(uri)
+        if (data?.data != null) {
+            val uri: Uri = data.data!!
+            if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+                image_item_picture.setImageURI(uri)
             }
 
 
@@ -205,97 +253,136 @@ class ManageProductsActivity : AppCompatActivity() {
             val picturePath = cursor.getString(columnIndex)
 
             cursor.close()
-            var imageBitmap = BitmapFactory.decodeFile(picturePath)
+            val imageBitmap = BitmapFactory.decodeFile(picturePath)
             image = compressImage(imageBitmap)
-            imageFile=File(image.path)
+            imageFile = File(image.path)
 
-            productUrl=""
+            productUrl = ""
         }
     }
 
-    private fun compressImage(originalImage:Bitmap):File{
+    private fun compressImage(originalImage: Bitmap): File {
         var bitmap = originalImage
-        var height=0
-        var width=0
-        if (bitmap.width>2000 || bitmap.height>2000){
-            if (bitmap.width>=bitmap.height){
-                val ratio:Float = 1/(bitmap.width.toFloat()/2000)
-                width=2000
-                height=(bitmap.height*ratio).toInt()
-            }else
-            {
-                val ratio:Float = 1/(bitmap.height.toFloat()/2000)
-                height=2000
-                width=(bitmap.width*ratio).toInt()
+        var height = 0
+        var width = 0
+        if (bitmap.width > 2000 || bitmap.height > 2000) {
+            if (bitmap.width >= bitmap.height) {
+                val ratio: Float = 1 / (bitmap.width.toFloat() / 2000)
+                width = 2000
+                height = (bitmap.height * ratio).toInt()
+            } else {
+                val ratio: Float = 1 / (bitmap.height.toFloat() / 2000)
+                height = 2000
+                width = (bitmap.width * ratio).toInt()
             }
 
-            bitmap=bitmap.scale(width, height)
+            bitmap = bitmap.scale(width, height)
         }
 
-        var stream=FileOutputStream(image)
+        val stream = FileOutputStream(image)
         bitmap.compress(Bitmap.CompressFormat.WEBP, 80, stream)
         return image
     }
 
     private fun changeQuantity(value: Int) {
         var newValue = input_quantity.text.toString().toIntOrNull()
-        if(newValue != null){
-            newValue+=value
-            if(newValue<0) newValue = 0
+        if (newValue != null) {
+            newValue += value
+            if (newValue < 0) newValue = 0
             input_quantity.setText(newValue.toString())
         } else input_quantity.setText("0")
     }
 
-    private fun addProduct(Naziv: String, Opis: String, Cijena: String, Kolicina: Int, Slika: File?) {
+    private fun addProduct(
+        Naziv: String,
+        Opis: String,
+        Cijena: String,
+        Kolicina: Int,
+        Slika: File?
+    ) {
 
-        if(Slika!=null){
+        if (Slika != null) {
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
-            val part : MultipartBody.Part = MultipartBody.Part.createFormData("Slika", Slika.name, fileReqBody)
+            val part: MultipartBody.Part =
+                MultipartBody.Part.createFormData("Slika", Slika.name, fileReqBody)
 
             val partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
             val partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
             val partOpis = MultipartBody.Part.createFormData("Opis", Opis)
             val partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
             val partKolicina = MultipartBody.Part.createFormData("Kolicina", Kolicina.toString())
-            val partKorisnickoIme = MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
+            val partKorisnickoIme =
+                MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
-            mService.addNewProduct(partToken, partNaziv, partOpis, partCijena, partKolicina, part, partKorisnickoIme).enqueue(object:
+            mService.addNewProduct(
+                partToken,
+                partNaziv,
+                partOpis,
+                partCijena,
+                partKolicina,
+                part,
+                partKorisnickoIme
+            ).enqueue(object :
                 Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
 
-                override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
-                    if (response.body()!!.STATUSMESSAGE=="SUCCESS"){
-                        Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno dodan", Toast.LENGTH_SHORT).show()
-                        val intent=Intent(this@ManageProductsActivity,previousActivity)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                override fun onResponse(
+                    call: Call<NewProductResponse>,
+                    response: Response<NewProductResponse>
+                ) {
+                    if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Proizvod uspješno dodan",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                         (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
-                    }
-                    else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
+                    } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                        Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Sesija istekla, molimo prijavite se ponovno",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
-                    }
-                    else
-                        Toast.makeText(this@ManageProductsActivity,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+                    } else
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
+                        ).show()
                 }
             })
 
 
-        } else{
-            mService.addNewProductNoImage(Session.user.Token, Naziv, Opis, Cijena, Kolicina, Session.user.KorisnickoIme).enqueue(object: Callback<NewProductResponse> {
+        } else {
+            mService.addNewProductNoImage(
+                Session.user.Token,
+                Naziv,
+                Opis,
+                Cijena,
+                Kolicina,
+                Session.user.KorisnickoIme
+            ).enqueue(object : Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
 
-                override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
+                override fun onResponse(
+                    call: Call<NewProductResponse>,
+                    response: Response<NewProductResponse>
+                ) {
                     if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
                         Toast.makeText(
                             this@ManageProductsActivity,
@@ -304,12 +391,13 @@ class ManageProductsActivity : AppCompatActivity() {
                         ).show()
 
 
-                        val intent=Intent(this@ManageProductsActivity,previousActivity)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                         (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(this@ManageProductsActivity, LoginActivity::class.java)
@@ -332,12 +420,19 @@ class ManageProductsActivity : AppCompatActivity() {
         }
     }
 
-    private fun editProduct(Id: Int, Naziv: String, Opis: String, Cijena: String, Kolicina: Int, Slika: File?) {
+    private fun editProduct(
+        Id: Int,
+        Naziv: String,
+        Opis: String,
+        Cijena: String,
+        Kolicina: Int,
+        Slika: File?
+    ) {
         //Kod za editiranje proizvoda čija je referenca trenutno spremljena u item varijablu
-        if (productUrl==""){
-            lateinit var part : MultipartBody.Part
+        if (productUrl == "") {
+            lateinit var part: MultipartBody.Part
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
-            part=MultipartBody.Part.createFormData("Slika", Slika!!.name, fileReqBody)
+            part = MultipartBody.Part.createFormData("Slika", Slika?.name, fileReqBody)
 
 
             val partEdit = MultipartBody.Part.createFormData("Edit", "true")
@@ -347,35 +442,59 @@ class ManageProductsActivity : AppCompatActivity() {
             val partOpis = MultipartBody.Part.createFormData("Opis", Opis)
             val partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
             val partKolicina = MultipartBody.Part.createFormData("Kolicina", Kolicina.toString())
-            val partKorisnickoIme = MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
+            val partKorisnickoIme =
+                MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
-            mService.editProduct(partEdit, partToken, partId, partNaziv, partOpis, partCijena, partKolicina, part, partKorisnickoIme).enqueue(object:
+            mService.editProduct(
+                partEdit,
+                partToken,
+                partId,
+                partNaziv,
+                partOpis,
+                partCijena,
+                partKolicina,
+                part,
+                partKorisnickoIme
+            ).enqueue(object :
                 Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
 
-                override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
-                    if (response.body()!!.STATUSMESSAGE=="UPDATED"){
-                        Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
+                override fun onResponse(
+                    call: Call<NewProductResponse>,
+                    response: Response<NewProductResponse>
+                ) {
+                    if (response.body()!!.STATUSMESSAGE == "UPDATED") {
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Proizvod uspješno uređen",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         finish()
-                        val intent=Intent(this@ManageProductsActivity,previousActivity)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                         (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
-                    }
-                    else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
+                    } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                        Toast.makeText(this@ManageProductsActivity, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Sesija istekla, molimo prijavite se ponovno",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
-                    }
-                    else
-                        Toast.makeText(this@ManageProductsActivity,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+                    } else
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
+                        ).show()
                 }
             })
         } else {
@@ -400,14 +519,19 @@ class ManageProductsActivity : AppCompatActivity() {
                     response: Response<NewProductResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "UPDATED") {
-                        Toast.makeText(this@ManageProductsActivity,"Proizvod uspješno uređen", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ManageProductsActivity,
+                            "Proizvod uspješno uređen",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         finish()
-                        val intent=Intent(this@ManageProductsActivity,previousActivity)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                         (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0,0)
+                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(this@ManageProductsActivity, LoginActivity::class.java)

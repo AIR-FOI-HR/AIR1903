@@ -21,9 +21,6 @@ class MainMenu : AppCompatActivity() {
         showAllProductsButton.setOnClickListener{showItems()}
         btn_items.setOnClickListener{showItems()}
         //editProductButton.setOnClickListener { editProduct() }
-        //showAllPackages.setOnClickListener { showPackages() }
-
-        //tabLayout.setOnClickListener{showItems()}
     }
 
     private fun showItems(){
@@ -38,10 +35,6 @@ class MainMenu : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showPackages()  {
-        val intent = Intent(this, ShowPackagesActivity::class.java)
-        startActivity(intent)
-    }
 
     private fun editProduct(){
 
