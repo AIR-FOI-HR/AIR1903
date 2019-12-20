@@ -19,7 +19,7 @@ class MainMenu : AppCompatActivity() {
 
 
         showAllProductsButton.setOnClickListener{showItems()}
-        addProductButton.setOnClickListener{addNewProduct()}
+        btn_items.setOnClickListener{showItems()}
         //editProductButton.setOnClickListener { editProduct() }
         //showAllPackages.setOnClickListener { showPackages() }
 
@@ -27,7 +27,7 @@ class MainMenu : AppCompatActivity() {
     }
 
     private fun showItems(){
-        val intent = Intent(this, TabLayoutActivity::class.java)
+        val intent = Intent(this, ShowItemsActivity::class.java)
         startActivity(intent)
     }
 

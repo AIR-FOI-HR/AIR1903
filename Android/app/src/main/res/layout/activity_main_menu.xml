@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_menu">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp">
+        android:background="@color/colorFoi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/main_menu_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Main menu"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Main Menu"
             android:textColor="#FFF"
             android:textSize="34sp" />
 
         <TextView
-            android:layout_below="@id/main_menu_heading"
-            android:layout_marginTop="5dp"
             android:id="@+id/username"
-            android:textSize="24sp"
-            android:textColor="#FFF"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_menu_heading"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="#FFF"
+            android:textSize="24sp" />
 
     </RelativeLayout>
 
@@ -36,22 +40,20 @@
         android:layout_width="match_parent"
         android:layout_height="613dp"
         android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:columnOrderPreserved="false"
-        android:rowCount="3">
+        android:columnOrderPreserved="false">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="12dp"
+            android:layout_width="150dp"
+            android:layout_height="120dp"
             android:layout_marginTop="32dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp"
+            android:background="#92000000"
+            android:hapticFeedbackEnabled="true"
+            app:cardBackgroundColor="#92000000"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="false"
             app:layout_constraintEnd_toStartOf="@+id/cardView"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -60,20 +62,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:hapticFeedbackEnabled="true"
                 android:orientation="vertical"
                 android:padding="12dp">
 
                 <ImageView
-                    android:layout_width="60dp"
+                    android:layout_width="70dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/show_all_products" />
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sell_items" />
 
                 <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="22dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Show all products"
-                    android:textColor="#6f6f6f"
+                    android:text="SELL"
+                    android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -82,21 +86,20 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="12dp"
-            android:layout_marginTop="64dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp"
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="32dp"
+            android:background="#92000000"
+            android:hapticFeedbackEnabled="true"
+            app:cardBackgroundColor="#92000000"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/card_products"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/addProductButton"
+                android:id="@+id/btn_items"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -104,17 +107,17 @@
                 android:padding="12dp">
 
                 <ImageView
-                    android:layout_width="60dp"
+                    android:layout_width="70dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/add_new_product" />
+                    android:src="@drawable/items1" />
 
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="22dp"
                     android:layout_marginTop="10dp"
-                    android:text="Add product"
+                    android:text="ITEMS"
                     android:textAlignment="center"
-                    android:textColor="#6f6f6f"
+                    android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
             </LinearLayout>
