@@ -23,7 +23,6 @@
             android:theme="@style/AppTheme">
         </activity>
         <activity android:name=".ManagePackagesActivity" />
-        <activity android:name=".ShowPackagesActivity" />
         <activity
             android:name=".MainMenu"
             android:theme="@style/AppTheme" />
@@ -41,7 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ManageItemsActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
