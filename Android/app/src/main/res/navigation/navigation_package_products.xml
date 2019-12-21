@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_package_products"
-    app:startDestination="@id/packageProductsListing">
+    app:startDestination="@id/packageFragment">
 
     <fragment
         android:id="@+id/packageProductsListing"
@@ -29,5 +29,17 @@
         app:exitAnim="@anim/slide_out_right"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/packageFragment"
+        android:name="com.example.pop.fragments.PackageFragment"
+        android:label="PackageFragment" >
+        <action
+            android:id="@+id/action_packageFragment_to_packageProductsListing"
+            app:destination="@id/packageProductsListing"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 </navigation>
