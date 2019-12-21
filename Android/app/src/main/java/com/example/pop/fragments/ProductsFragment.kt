@@ -12,13 +12,11 @@ import com.example.pop.*
 import com.example.pop.adapters.ItemRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.Item
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.activity_show_products.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.Serializable
 
 class ProductsFragment : Fragment() {
     private lateinit var itemAdapter: ItemRecyclerAdapter

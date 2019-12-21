@@ -10,20 +10,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.pop.LoginActivity
 import com.example.pop.ManagePackagesActivity
-import com.example.pop.ManageProductsActivity
 import com.example.pop.R
 import com.example.pop.adapters.ItemRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.Item
-import com.example.webservice.Model.Package
 import com.example.webservice.Model.PackageResponse
 import kotlinx.android.synthetic.main.activity_show_products.*
 import kotlinx.android.synthetic.main.fragment_packages_tab.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.Serializable
 
 class PackagesFragment : Fragment() {
     private lateinit var itemAdapter: ItemRecyclerAdapter

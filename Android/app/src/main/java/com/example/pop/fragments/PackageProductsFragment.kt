@@ -40,7 +40,7 @@ class PackageProductsFragment : Fragment() {
 
         layoutPackageProductsListingButtonAdd.setOnClickListener {
             addProducts()
-            //it.findNavController().navigate(R.id.action_package_add_products_to_package_list_products)
+            it.findNavController().navigate(R.id.action_package_add_products_to_package_list_products)
         }
 
         productAdapter = ProductRecyclerAdapter(context)

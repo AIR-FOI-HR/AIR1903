@@ -40,6 +40,10 @@ class PackageAddedProductsFragment : Fragment() {
             it.findNavController().navigate(R.id.action_packageProductsListing_to_packageProductsAdding)
         }
 
+        view.btn_submit_package_products.setOnClickListener{
+            submitPackage()
+        }
+
         productAdapter = AddedProductRecyclerAdapter(context)
         getProducts()
         package_added_product_list.adapter = productAdapter
@@ -48,5 +52,9 @@ class PackageAddedProductsFragment : Fragment() {
 
     private fun getProducts(){
      //val products: ArrayList<Product> = arguments?.getSerializable("addedProducts")
+    }
+
+    private fun submitPackage(){
+
     }
 }
