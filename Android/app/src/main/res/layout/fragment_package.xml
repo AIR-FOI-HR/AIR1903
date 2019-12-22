@@ -158,14 +158,14 @@
                 android:cropToPadding="true"
                 android:padding="4dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toTopOf="@+id/layoutManagePackagesButtonSubmit"
+                app:layout_constraintBottom_toTopOf="@+id/btn_add_package"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/add_image" />
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/layoutManagePackagesButtonSubmit"
+                android:id="@+id/btn_add_package"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"

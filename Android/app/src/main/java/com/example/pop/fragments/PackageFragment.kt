@@ -21,8 +21,13 @@ class PackageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.layoutManagePackagesButtonSubmit.setOnClickListener {
+        view.btn_add_package.setOnClickListener {
+            addPackage()
             it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
         }
+    }
+
+    private fun addPackage() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
