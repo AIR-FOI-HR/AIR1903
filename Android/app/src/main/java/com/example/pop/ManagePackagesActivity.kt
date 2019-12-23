@@ -108,6 +108,60 @@ class ManagePackagesActivity : AppCompatActivity() {
 
     }
 
+    private fun addImage() {
+        val layoutInflater: LayoutInflater = this.applicationContext
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        val dialogView = layoutInflater.run { inflate(R.layout.dialog_add_image, null) }
+        val dialogWindow = PopupWindow(
+            dialogView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        dialogView.btn_close_image_dialog.setOnClickListener { dialogWindow.dismiss() }
+
+        dialogView.btn_gallery.setOnClickListener {
+            //check runtime permission
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_DENIED
+                ) {
+                    //permission denied
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    //show popup to request runtime permission
+                    requestPermissions(permissions, PERMISSION_CODE)
+                } else {
+                    //permission already granted
+                    pickImageFromGallery()
+                }
+            } else {
+                //system OS is <  Marshmallow
+                pickImageFromGallery()
+            }
+            dialogWindow.dismiss()
+        }
+
+        dialogView.btn_camera.setOnClickListener{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) { // no camera permission
+                    val permissions = arrayOf(Manifest.permission.CAMERA)
+                    requestPermissions(permissions, PERMISSION_CODE)
+                }
+                else{ // has camera permission
+                    getImageFromCamera()
+                }
+            }
+            else{ // <Marshmallow
+                getImageFromCamera()
+            }
+        }
+
+        dialogWindow.showAtLocation(manage_products, Gravity.CENTER, 0, 0)
+        dialogWindow.dimBehind()
+    }
+
+   
 
     }
 
