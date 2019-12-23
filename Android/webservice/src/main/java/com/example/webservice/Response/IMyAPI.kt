@@ -43,10 +43,18 @@ interface IMyAPI {
     @POST("proizvodi.php")
     fun deleteProduct(@Field("Token")Token: String, @Field("Id")Id: Int) : Call<NewProductResponse>
 
-    /*@FormUrlEncoded
+    @FormUrlEncoded
     @POST("paketi.php")
-    fun addNewPackage(@Field("Token") Token: String,@Field("ADD") ADD: Boolean, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String, @Field("KorisnickoIme") KorisnickoIme: String) : Call<NewPackageResponse>
-*/
+    fun addNewPackage(@Field("Token") Token: String,@Field("ADD") ADD: Boolean, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Popust") Popust: String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("KolicinaPaketa") KolicinaPaketa: Int) : Call<NewPackageResponse>
+
+    @Multipart
+    @POST("paketi.php")
+    fun addNewPackageWithImage(@Part Token:MultipartBody.Part, @Part ADD: Boolean, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Popust:MultipartBody.Part, @Part file: MultipartBody.Part, @Part KorisnickoIme: MultipartBody.Part, @Part KolicinaPaketa: MultipartBody.Part): Call<NewProductResponse>
+
+    @Multipart
+    @POST("paketi.php")
+    fun updatePackageWithImage(@Part UPDATE:MultipartBody.Part, @Part Token:MultipartBody.Part, @Part Id:MultipartBody.Part, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Popust:MultipartBody.Part, @Part Kolicina:MultipartBody.Part, @Part file: MultipartBody.Part): Call<NewProductResponse>
+
     @FormUrlEncoded
     @POST("paketi.php")
     fun getAllPackages(@Field("Token") Token: String,@Field("GET") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<PackageResponse>
@@ -58,7 +66,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("paketi.php")
-    fun updatePackage(@Field("Token") Token: String,@Field("UPDATE") UPDATE: Boolean, @Field("Id") Id: String, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<NewPackageResponse>
+    fun updatePackage(@Field("Token") Token: String,@Field("UPDATE") UPDATE: Boolean, @Field("Id") Id: Int, @Field("Naziv") Naziv: String, @Field("Opis") Opis: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String, @Field("Slika")Slika: String , @Field("KorisnickoIme") KorisnickoIme: String) : Call<NewPackageResponse>
 
     @FormUrlEncoded
     @POST("paketi.php")
