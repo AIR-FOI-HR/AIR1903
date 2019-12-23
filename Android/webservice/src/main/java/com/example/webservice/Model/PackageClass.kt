@@ -2,7 +2,7 @@ package com.example.webservice.Model
 
 class PackageClass(
     var Popust: String? = "",
-    var KolicinaPaketa: String? = "",
+    var Kolicina: String? = "",
     override val Id: Int?,
     override var Naziv: String = "",
     override var Opis: String? = "",
