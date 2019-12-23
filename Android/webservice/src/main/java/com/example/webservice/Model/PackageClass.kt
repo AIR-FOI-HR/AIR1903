@@ -1,6 +1,6 @@
 package com.example.webservice.Model
 
-class Package(
+class PackageClass(
     var Popust: String? = "",
     var KolicinaPaketa: String? = "",
     override val Id: Int?,

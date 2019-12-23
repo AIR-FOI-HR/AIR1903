@@ -24,6 +24,7 @@ import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewPackageResponse
 import com.example.webservice.Model.NewProductResponse
+import com.example.webservice.Model.PackageClass
 import com.example.webservice.Response.IMyAPI
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
@@ -48,7 +49,7 @@ import java.io.FileOutputStream
 class ManagePackagesActivity : AppCompatActivity() {
 
     private lateinit var mService: IMyAPI
-    private lateinit var package: Package
+    private lateinit var packageClass: PackageClass
     private var imageFile: File? = null
     private lateinit var image: File
     private lateinit var packageUrl: String
@@ -67,13 +68,13 @@ class ManagePackagesActivity : AppCompatActivity() {
 
         if (intent.hasExtra("item")) {
             if (intent.getSerializableExtra("item") != null) {
-                package = intent.getSerializableExtra("item") as Package
-                packageUrl = package.Slika!!
-                layoutManagePacketsInputName.setText(package.Naziv)
-                layoutManageProductsInputValue.setText(package.Cijena)
-                layoutManagePacketsInputDescription.setText(package.Opis)
+                packageClass = intent.getSerializableExtra("item") as PackageClass
+                packageUrl = packageClass.Slika!!
+                layoutManagePacketsInputName.setText(packageClass.Naziv)
+                layoutManageProductsInputValue.setText(packageClass.Popust)
+                layoutManagePacketsInputDescription.setText(packageClass.Opis)
                 image_item_picture.setImageResource(R.drawable.prijava_bg)
-                input_quantity.setText(package.Kolicina)
+                input_quantity.setText(packageClass.KolicinaPaketa)
             }
             Picasso.get().load(packageUrl).into(image_item_picture)
 
@@ -87,7 +88,7 @@ class ManagePackagesActivity : AppCompatActivity() {
         layoutManageProductsButtonSubmit.setOnClickListener {
             if (intent.hasExtra("item")) {
                 updatePackageWithImage(
-                    package.Id!!,
+                    packageClass.Id!!,
                     layoutManagePacketsInputName.text.toString(),
                     layoutManagePacketsInputDescription.text.toString(),
                     layoutManageProductsInputValue.text.toString(),
@@ -435,7 +436,7 @@ class ManagePackagesActivity : AppCompatActivity() {
         Naziv: String,
         Opis: String,
         Popust: String,
-        KolicinaPaketa: String,
+        KolicinaPaketa: Int,
         Slika: File?
     ) {
         //Kod za editiranje paketa čija je referenca trenutno spremljena u item varijablu
@@ -445,7 +446,7 @@ class ManagePackagesActivity : AppCompatActivity() {
             part = MultipartBody.Part.createFormData("Slika", Slika?.name, fileReqBody)
 
 
-            val partEdit = MultipartBody.Part.createFormData("Edit", "true")
+            val partUpdate = MultipartBody.Part.createFormData("UPDATE", "true")
             val partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
             val partId = MultipartBody.Part.createFormData("Id", Id.toString())
             val partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
@@ -455,16 +456,15 @@ class ManagePackagesActivity : AppCompatActivity() {
             val partKorisnickoIme =
                 MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
-            mService.editProduct(
-                partEdit,
+            mService.updatePackageWithImage(
+                partUpdate,
                 partToken,
                 partId,
                 partNaziv,
                 partOpis,
                 partPopust,
                 partKolicinaPaketa,
-                part,
-                partKorisnickoIme
+                part
             ).enqueue(object :
                 Callback<NewPackageResponse> {
                 override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
@@ -473,8 +473,8 @@ class ManagePackagesActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(
-                    call: Call<NewProductResponse>,
-                    response: Response<NewProductResponse>
+                    call: Call<NewPackageResponse>,
+                    response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "UPDATED") {
                         Toast.makeText(
@@ -515,7 +515,7 @@ class ManagePackagesActivity : AppCompatActivity() {
                 Naziv,
                 Opis,
                 Popust,
-                KolicinaPaketa,
+                KolicinaPaketa.toString(),
                 packageUrl,
                 Session.user.KorisnickoIme
             ).enqueue(object : Callback<NewPackageResponse> {
