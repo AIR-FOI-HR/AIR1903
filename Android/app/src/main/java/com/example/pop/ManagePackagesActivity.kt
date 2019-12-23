@@ -269,8 +269,39 @@ class ManagePackagesActivity : AppCompatActivity() {
         }
     }
 
-   
+    private fun compressImage(originalImage: Bitmap): File {
+        var bitmap = originalImage
+        var height = 0
+        var width = 0
+        if (bitmap.width > 2000 || bitmap.height > 2000) {
+            if (bitmap.width >= bitmap.height) {
+                val ratio: Float = 1 / (bitmap.width.toFloat() / 2000)
+                width = 2000
+                height = (bitmap.height * ratio).toInt()
+            } else {
+                val ratio: Float = 1 / (bitmap.height.toFloat() / 2000)
+                height = 2000
+                width = (bitmap.width * ratio).toInt()
+            }
 
+            bitmap = bitmap.scale(width, height)
+        }
+
+        val stream = FileOutputStream(image)
+        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, stream)
+        return image
+    }
+
+    private fun changeQuantity(value: Int) {
+        var newValue = input_quantity.text.toString().toIntOrNull()
+        if (newValue != null) {
+            newValue += value
+            if (newValue < 0) newValue = 0
+            input_quantity.setText(newValue.toString())
+        } else input_quantity.setText("0")
+    }
+
+   
 
     }
 
