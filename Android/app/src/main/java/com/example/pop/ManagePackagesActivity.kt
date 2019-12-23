@@ -54,6 +54,34 @@ class ManagePackagesActivity : AppCompatActivity() {
     private lateinit var packageUrl: String
     lateinit var previousActivity: Class<*>
 
-   
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        image = File(applicationContext!!.cacheDir.path + "/temp.webp")
+        setContentView(R.layout.activity_manage_packages)
+        mService = Common.api
+
+        if (intent.getIntExtra("previousActivity", 1) == 1)
+            previousActivity = ShowItemsActivity::class.java
+        else if (intent.getIntExtra("previousActivity", 1) == 2)
+            previousActivity = MainMenu::class.java
+
+        if (intent.hasExtra("item")) {
+            if (intent.getSerializableExtra("item") != null) {
+                package = intent.getSerializableExtra("item") as Package
+                packageUrl = package.Slika!!
+                layoutManagePacketsInputName.setText(package.Naziv)
+                layoutManageProductsInputValue.setText(package.Cijena)
+                layoutManagePacketsInputDescription.setText(package.Opis)
+                image_item_picture.setImageResource(R.drawable.prijava_bg)
+                input_quantity.setText(package.Kolicina)
+            }
+            Picasso.get().load(packageUrl).into(image_item_picture)
+
+        }
+
+        btn_add_package.setOnClickListener { changeQuantity(1) }
+        btn_decrease_packages.setOnClickListener { changeQuantity(-1) }
+        image_item_picture.setOnClickListener { addImage() }
+
 
 }
