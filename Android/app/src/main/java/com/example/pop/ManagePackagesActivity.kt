@@ -198,7 +198,79 @@ class ManagePackagesActivity : AppCompatActivity() {
         private const val CAMERA_CAPTURE = 1002
     }
 
+    //handle requested permission result
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
+                    //permission from popup granted
+                    pickImageFromGallery()
+                } else {
+                    //permission from popup denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    //handle result of picked image
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == CAMERA_CAPTURE) {
+            // Make sure the request was successful
+            if (resultCode == Activity.RESULT_OK) {
+                val imageBitmap = BitmapFactory.decodeFile(image.path)
+                image = compressImage(imageBitmap)
+
+                imageFile = File(image.path)
+                Picasso.get()
+                    .load(
+                        FileProvider.getUriForFile(
+                            this,
+                            BuildConfig.APPLICATION_ID + ".provider",
+                            image
+                        )
+                    )
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(image_item_picture)
+                packageUrl = ""
+            }
+        }
+
+        if (data?.data != null) {
+            val uri: Uri = data.data!!
+            if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+                image_item_picture.setImageURI(uri)
+            }
+
+
+            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+            val cursor = contentResolver.query(uri, filePathColumn, null, null, null)
+            cursor!!.moveToFirst()
+
+            val columnIndex = cursor.getColumnIndex(filePathColumn[0])
+            val picturePath = cursor.getString(columnIndex)
+
+            cursor.close()
+            val imageBitmap = BitmapFactory.decodeFile(picturePath)
+            image = compressImage(imageBitmap)
+            imageFile = File(image.path)
+
+            packageUrl = ""
+        }
+    }
+
    
+
 
     }
 
