@@ -6,6 +6,7 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.se.omapi.Session
 import android.view.*
 import android.widget.Button
 import android.widget.PopupWindow
@@ -14,9 +15,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.*
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.Item
-import com.example.webservice.Model.NewProductResponse
-import com.example.webservice.Model.Product
+import com.example.webservice.Model.*
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.item_list.view.*
 import retrofit2.Call
@@ -101,13 +100,10 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
 
     private fun editItem(){
         lateinit var intent: Intent
-        try {
-            val iii = item as Product
+        if (item is Product)
             intent=Intent(this.context,ManageProductsActivity::class.java)
-        }
-        catch (e:ClassCastException){
+        else if (item is PackageClass)
             intent=Intent(this.context,ManagePackagesActivity::class.java)
-        }
         intent.putExtra("item",item)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         context?.startActivity(intent)
@@ -116,33 +112,62 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
 
     private fun deleteCall(popupWindow:PopupWindow){
         val mService:IMyAPI= Common.api
-        mService.deleteProduct(com.example.pop_sajamv2.Session.user.Token, item.Id!!).enqueue(object : retrofit2.Callback<NewProductResponse> {
-            override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                Toast.makeText(activityContext, t.message, Toast.LENGTH_SHORT).show()
-                popupWindow.dismiss()
-            }
+        if (item is Product)
+            mService.deleteProduct(com.example.pop_sajamv2.Session.user.Token, item.Id!!).enqueue(object : retrofit2.Callback<NewProductResponse> {
+                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
+                    Toast.makeText(activityContext, t.message, Toast.LENGTH_SHORT).show()
+                    popupWindow.dismiss()
+                }
 
-            override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
-                popupWindow.dismiss()
-                if (response.body()!!.STATUSMESSAGE=="DELETED"){
-                    val intent=Intent(activityContext,ShowItemsActivity::class.java)
-                    intent.flags = FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK
-                    activityContext.startActivity(intent)
-                    (activityContext as Activity).overridePendingTransition(0,0)
-                    (activityContext as Activity).finish()
-                    (activityContext as Activity).overridePendingTransition(0,0)
-                    Toast.makeText(activityContext,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
+                override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
+                    popupWindow.dismiss()
+                    if (response.body()!!.STATUSMESSAGE=="DELETED"){
+                        val intent=Intent(activityContext,ShowItemsActivity::class.java)
+                        intent.flags = FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK
+                        activityContext.startActivity(intent)
+                        (activityContext as Activity).overridePendingTransition(0,0)
+                        (activityContext as Activity).finish()
+                        (activityContext as Activity).overridePendingTransition(0,0)
+                        Toast.makeText(activityContext,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
+                    }
+                    else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                        Toast.makeText(activityContext, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        val intent = Intent(activityContext, LoginActivity::class.java)
+                        com.example.pop_sajamv2.Session.reset()
+                        intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+                        activityContext.startActivity(intent)
+                        (activityContext as Activity).finish()
+                    }
                 }
-                else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
-                    Toast.makeText(activityContext, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
-                    val intent = Intent(activityContext, LoginActivity::class.java)
-                    com.example.pop_sajamv2.Session.reset()
-                    intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
-                    activityContext.startActivity(intent)
-                    (activityContext as Activity).finish()
+            })
+        else if (item is PackageClass)
+            mService.deletePackage(com.example.pop_sajamv2.Session.user.Token,true, item.Id!!.toString()).enqueue(object : retrofit2.Callback<NewPackageResponse> {
+                override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                    Toast.makeText(activityContext, t.message, Toast.LENGTH_SHORT).show()
+                    popupWindow.dismiss()
                 }
-            }
-        })
+
+                override fun onResponse(call: Call<NewPackageResponse>, response: Response<NewPackageResponse>) {
+                    popupWindow.dismiss()
+                    if (response.body()!!.STATUSMESSAGE=="DELETED"){
+                        val intent=Intent(activityContext,ShowItemsActivity::class.java)
+                        intent.flags = FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK
+                        activityContext.startActivity(intent)
+                        (activityContext as Activity).overridePendingTransition(0,0)
+                        (activityContext as Activity).finish()
+                        (activityContext as Activity).overridePendingTransition(0,0)
+                        Toast.makeText(activityContext,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
+                    }
+                    else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
+                        Toast.makeText(activityContext, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        val intent = Intent(activityContext, LoginActivity::class.java)
+                        com.example.pop_sajamv2.Session.reset()
+                        intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+                        activityContext.startActivity(intent)
+                        (activityContext as Activity).finish()
+                    }
+                }
+            })
     }
 
     override fun getItemCount(): Int {
