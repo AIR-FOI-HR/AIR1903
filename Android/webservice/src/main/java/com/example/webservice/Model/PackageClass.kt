@@ -1,7 +1,8 @@
 package com.example.webservice.Model
 
-class Product(
-    var Cijena: String = "", var Kolicina: String = "",
+class PackageClass(
+    var Popust: String? = "",
+    var KolicinaPaketa: String? = "",
     override val Id: Int?,
     override var Naziv: String = "",
     override var Opis: String? = "",
@@ -9,3 +10,4 @@ class Product(
     override var expanded: Boolean = false,
     override var selected: Boolean = false
 ) : Item
+

@@ -60,7 +60,7 @@
         android:importantForAutofill="no"
         android:inputType="text"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/addProductButton"
+        app:layout_constraintBottom_toTopOf="@+id/btn_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/productPrice"

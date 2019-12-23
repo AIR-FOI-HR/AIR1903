@@ -6,12 +6,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".LoginActivity"
         android:background="@drawable/prijava_bg">
 
         <EditText
+            android:cursorVisible="false"
             android:id="@+id/layoutLoginInputUsername"
             android:layout_width="0dp"
             android:layout_height="45dp"

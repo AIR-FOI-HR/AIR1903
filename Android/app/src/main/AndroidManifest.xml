@@ -18,17 +18,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeBar">
-        <activity android:name=".AddNewPackage"></activity>
-        <activity android:name=".AddNewProduct" />
-        <activity android:name=".MainMenu" />
-        <activity android:name=".ShowProductsActivity" />
+        <activity
+            android:name=".ShowItemsActivity"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity android:name=".ManagePackagesActivity" />
+        <activity
+            android:name=".MainMenu"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".RegistrationActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".ManageProductsActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -8,9 +8,10 @@
     android:fillViewport="true"
     android:focusable="true"
     android:isScrollContainer="false"
-    tools:context=".RegistrationFirst">
+    tools:context=".fragments.RegistrationStep1Fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/registrationFirst"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true">

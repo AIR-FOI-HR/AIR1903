@@ -11,8 +11,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.*
-import android.widget.Button
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,13 +22,20 @@ import androidx.core.content.FileProvider
 import androidx.core.graphics.scale
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
+import com.example.webservice.Model.NewPackageResponse
 import com.example.webservice.Model.NewProductResponse
-import com.example.webservice.Model.Product
+import com.example.webservice.Model.PackageClass
 import com.example.webservice.Response.IMyAPI
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_manage_products.*
+import kotlinx.android.synthetic.main.activity_manage_products.image_item_picture
+import kotlinx.android.synthetic.main.activity_manage_products.input_quantity
+import kotlinx.android.synthetic.main.activity_manage_products.layoutManageProductsInputValue
+import kotlinx.android.synthetic.main.activity_manage_products.manage_products
+import kotlinx.android.synthetic.main.dialog_add_image.view.*
+import kotlinx.android.synthetic.main.fragment_package.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,21 +44,21 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
-import kotlinx.android.synthetic.main.dialog_add_image.view.*
 
 
-class ManageProductsActivity : AppCompatActivity() {
+class ManagePackagesActivity : AppCompatActivity() {
+
     private lateinit var mService: IMyAPI
-    private lateinit var product: Product
+    private lateinit var packageClass: PackageClass
     private var imageFile: File? = null
     private lateinit var image: File
-    private lateinit var productUrl: String
+    private lateinit var packageUrl: String
     lateinit var previousActivity: Class<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         image = File(applicationContext!!.cacheDir.path + "/temp.webp")
-        setContentView(R.layout.activity_manage_products)
+        setContentView(R.layout.activity_manage_packages)
         mService = Common.api
 
         if (intent.getIntExtra("previousActivity", 1) == 1)
@@ -59,37 +68,37 @@ class ManageProductsActivity : AppCompatActivity() {
 
         if (intent.hasExtra("item")) {
             if (intent.getSerializableExtra("item") != null) {
-                product = intent.getSerializableExtra("item") as Product
-                productUrl = product.Slika!!
-                layoutManageProductsInputName.setText(product.Naziv)
-                layoutManageProductsInputValue.setText(product.Cijena)
-                layoutManageProductsInputDescription.setText(product.Opis)
+                packageClass = intent.getSerializableExtra("item") as PackageClass
+                packageUrl = packageClass.Slika!!
+                layoutManagePacketsInputName.setText(packageClass.Naziv)
+                layoutManageProductsInputValue.setText(packageClass.Popust)
+                layoutManagePacketsInputDescription.setText(packageClass.Opis)
                 image_item_picture.setImageResource(R.drawable.prijava_bg)
-                input_quantity.setText(product.Kolicina)
+                input_quantity.setText(packageClass.KolicinaPaketa)
             }
-            Picasso.get().load(productUrl).into(image_item_picture)
+            Picasso.get().load(packageUrl).into(image_item_picture)
 
         }
 
-        btn_add_products.setOnClickListener { changeQuantity(1) }
-        btn_decrease_products.setOnClickListener { changeQuantity(-1) }
+        btn_add_package.setOnClickListener { changeQuantity(1) }
+        btn_decrease_packages.setOnClickListener { changeQuantity(-1) }
         image_item_picture.setOnClickListener { addImage() }
 
 
         layoutManageProductsButtonSubmit.setOnClickListener {
             if (intent.hasExtra("item")) {
-                editProduct(
-                    product.Id!!,
-                    layoutManageProductsInputName.text.toString(),
-                    layoutManageProductsInputDescription.text.toString(),
+                updatePackageWithImage(
+                    packageClass.Id!!,
+                    layoutManagePacketsInputName.text.toString(),
+                    layoutManagePacketsInputDescription.text.toString(),
                     layoutManageProductsInputValue.text.toString(),
                     input_quantity.text.toString().toInt(),
                     imageFile
                 )
             } else {
-                addProduct(
-                    layoutManageProductsInputName.text.toString(),
-                    layoutManageProductsInputDescription.text.toString(),
+                addPackage(
+                    layoutManagePacketsInputName.text.toString(),
+                    layoutManagePacketsInputDescription.text.toString(),
                     layoutManageProductsInputValue.text.toString(),
                     input_quantity.text.toString().toInt(),
                     imageFile
@@ -233,7 +242,7 @@ class ManageProductsActivity : AppCompatActivity() {
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(image_item_picture)
-                productUrl = ""
+                packageUrl = ""
             }
         }
 
@@ -257,7 +266,7 @@ class ManageProductsActivity : AppCompatActivity() {
             image = compressImage(imageBitmap)
             imageFile = File(image.path)
 
-            productUrl = ""
+            packageUrl = ""
         }
     }
 
@@ -293,11 +302,11 @@ class ManageProductsActivity : AppCompatActivity() {
         } else input_quantity.setText("0")
     }
 
-    private fun addProduct(
+    private fun addPackage(
         Naziv: String,
         Opis: String,
-        Cijena: String,
-        Kolicina: Int,
+        Popust: String,
+        KolicinaPaketa: Int,
         Slika: File?
     ) {
 
@@ -309,47 +318,48 @@ class ManageProductsActivity : AppCompatActivity() {
             val partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
             val partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
             val partOpis = MultipartBody.Part.createFormData("Opis", Opis)
-            val partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
-            val partKolicina = MultipartBody.Part.createFormData("Kolicina", Kolicina.toString())
+            val partPopust = MultipartBody.Part.createFormData("Popust", Popust)
+            val partKolicinaPaketa = MultipartBody.Part.createFormData("KolicinaPaketa", KolicinaPaketa.toString())
             val partKorisnickoIme =
                 MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
-            mService.addNewProduct(
+            mService.addNewPackageWithImage(
                 partToken,
+                true,
                 partNaziv,
                 partOpis,
-                partCijena,
-                partKolicina,
+                partPopust,
                 part,
-                partKorisnickoIme
+                partKorisnickoIme,
+                partKolicinaPaketa
             ).enqueue(object :
-                Callback<NewProductResponse> {
-                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+                Callback<NewPackageResponse> {
+                override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                    Toast.makeText(this@ManagePackagesActivity, t.message, Toast.LENGTH_SHORT)
                         .show()
                 }
 
                 override fun onResponse(
-                    call: Call<NewProductResponse>,
-                    response: Response<NewProductResponse>
+                    call: Call<NewPackageResponse>,
+                    response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
                         Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno dodan",
+                            this@ManagePackagesActivity,
+                            "Paket uspješno dodan",
                             Toast.LENGTH_SHORT
                         ).show()
-                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        val intent = Intent(this@ManagePackagesActivity, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
-                        (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
+                        this@ManagePackagesActivity.startActivity(intent)
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                        (this@ManagePackagesActivity as Activity).finish()
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
-                        val intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                        val intent = Intent(this@ManagePackagesActivity, LoginActivity::class.java)
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             "Sesija istekla, molimo prijavite se ponovno",
                             Toast.LENGTH_LONG
                         ).show()
@@ -358,7 +368,7 @@ class ManageProductsActivity : AppCompatActivity() {
                         finishAffinity()
                     } else
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
                         ).show()
                 }
@@ -366,43 +376,44 @@ class ManageProductsActivity : AppCompatActivity() {
 
 
         } else {
-            mService.addNewProductNoImage(
+            mService.addNewPackage(
                 Session.user.Token,
+                true,
                 Naziv,
                 Opis,
-                Cijena,
-                Kolicina,
-                Session.user.KorisnickoIme
-            ).enqueue(object : Callback<NewProductResponse> {
-                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+                Popust,
+                Session.user.KorisnickoIme,
+                KolicinaPaketa
+            ).enqueue(object : Callback<NewPackageResponse> {
+                override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                    Toast.makeText(this@ManagePackagesActivity, t.message, Toast.LENGTH_SHORT)
                         .show()
                 }
 
                 override fun onResponse(
-                    call: Call<NewProductResponse>,
-                    response: Response<NewProductResponse>
+                    call: Call<NewPackageResponse>,
+                    response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
                         Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno dodan",
+                            this@ManagePackagesActivity,
+                            "Paket uspješno dodan",
                             Toast.LENGTH_SHORT
                         ).show()
 
 
-                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        val intent = Intent(this@ManagePackagesActivity, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
-                        (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
+                        this@ManagePackagesActivity.startActivity(intent)
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                        (this@ManagePackagesActivity as Activity).finish()
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
-                            Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                            Intent(this@ManagePackagesActivity, LoginActivity::class.java)
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             "Sesija istekla, molimo prijavite se ponovno",
                             Toast.LENGTH_LONG
                         ).show()
@@ -411,7 +422,7 @@ class ManageProductsActivity : AppCompatActivity() {
                         finishAffinity()
                     } else
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
                         ).show()
                 }
@@ -420,70 +431,69 @@ class ManageProductsActivity : AppCompatActivity() {
         }
     }
 
-    private fun editProduct(
+    private fun updatePackageWithImage(
         Id: Int,
         Naziv: String,
         Opis: String,
-        Cijena: String,
-        Kolicina: Int,
+        Popust: String,
+        KolicinaPaketa: Int,
         Slika: File?
     ) {
-        //Kod za editiranje proizvoda čija je referenca trenutno spremljena u item varijablu
-        if (productUrl == "") {
+        //Kod za editiranje paketa čija je referenca trenutno spremljena u item varijablu
+        if (packageUrl == "") {
             lateinit var part: MultipartBody.Part
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
             part = MultipartBody.Part.createFormData("Slika", Slika?.name, fileReqBody)
 
 
-            val partEdit = MultipartBody.Part.createFormData("Edit", "true")
+            val partUpdate = MultipartBody.Part.createFormData("UPDATE", "true")
             val partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
             val partId = MultipartBody.Part.createFormData("Id", Id.toString())
             val partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
             val partOpis = MultipartBody.Part.createFormData("Opis", Opis)
-            val partCijena = MultipartBody.Part.createFormData("Cijena", Cijena)
-            val partKolicina = MultipartBody.Part.createFormData("Kolicina", Kolicina.toString())
+            val partPopust = MultipartBody.Part.createFormData("Popust", Popust)
+            val partKolicinaPaketa = MultipartBody.Part.createFormData("KolicinaPaketa", KolicinaPaketa.toString())
             val partKorisnickoIme =
                 MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
 
-            mService.editProduct(
-                partEdit,
+            mService.updatePackageWithImage(
+                partUpdate,
                 partToken,
                 partId,
                 partNaziv,
                 partOpis,
-                partCijena,
-                partKolicina,
-                part,
-                partKorisnickoIme
+                partPopust,
+                partKolicinaPaketa,
+                part
             ).enqueue(object :
-                Callback<NewProductResponse> {
-                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+                Callback<NewPackageResponse> {
+                override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                    Toast.makeText(this@ManagePackagesActivity, t.message, Toast.LENGTH_SHORT)
                         .show()
                 }
 
                 override fun onResponse(
-                    call: Call<NewProductResponse>,
-                    response: Response<NewProductResponse>
+                    call: Call<NewPackageResponse>,
+                    response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "UPDATED") {
                         Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno uređen",
+                            this@ManagePackagesActivity,
+                            "Paket uspješno uređen",
                             Toast.LENGTH_SHORT
                         ).show()
                         finish()
-                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        val intent = Intent(this@ManagePackagesActivity, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
-                        (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
+                        this@ManagePackagesActivity.startActivity(intent)
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                        (this@ManagePackagesActivity as Activity).finish()
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
-                        val intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                        val intent = Intent(this@ManagePackagesActivity, LoginActivity::class.java)
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             "Sesija istekla, molimo prijavite se ponovno",
                             Toast.LENGTH_LONG
                         ).show()
@@ -492,51 +502,51 @@ class ManageProductsActivity : AppCompatActivity() {
                         finishAffinity()
                     } else
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
                         ).show()
                 }
             })
         } else {
-            mService.editProductNoImage(
-                true,
+            mService.updatePackage(
                 Session.user.Token,
+                true,
                 Id,
                 Naziv,
                 Opis,
-                Cijena,
-                Kolicina,
-                productUrl,
+                Popust,
+                KolicinaPaketa.toString(),
+                packageUrl,
                 Session.user.KorisnickoIme
-            ).enqueue(object : Callback<NewProductResponse> {
-                override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
+            ).enqueue(object : Callback<NewPackageResponse> {
+                override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                    Toast.makeText(this@ManagePackagesActivity, t.message, Toast.LENGTH_SHORT)
                         .show()
                 }
 
                 override fun onResponse(
-                    call: Call<NewProductResponse>,
-                    response: Response<NewProductResponse>
+                    call: Call<NewPackageResponse>,
+                    response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "UPDATED") {
                         Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno uređen",
+                            this@ManagePackagesActivity,
+                            "Paket uspješno uređen",
                             Toast.LENGTH_SHORT
                         ).show()
                         finish()
-                        val intent = Intent(this@ManageProductsActivity, previousActivity)
+                        val intent = Intent(this@ManagePackagesActivity, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        this@ManageProductsActivity.startActivity(intent)
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
-                        (this@ManageProductsActivity as Activity).finish()
-                        (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
+                        this@ManagePackagesActivity.startActivity(intent)
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                        (this@ManagePackagesActivity as Activity).finish()
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
-                            Intent(this@ManageProductsActivity, LoginActivity::class.java)
+                            Intent(this@ManagePackagesActivity, LoginActivity::class.java)
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             "Sesija istekla, molimo prijavite se ponovno",
                             Toast.LENGTH_LONG
                         ).show()
@@ -545,7 +555,7 @@ class ManageProductsActivity : AppCompatActivity() {
                         finishAffinity()
                     } else
                         Toast.makeText(
-                            this@ManageProductsActivity,
+                            this@ManagePackagesActivity,
                             response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
                         ).show()
                 }
@@ -554,4 +564,5 @@ class ManageProductsActivity : AppCompatActivity() {
 
 
     }
+
 }

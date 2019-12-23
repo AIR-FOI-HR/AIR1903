@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/registration2"
     android:fillViewport="true"
-    android:focusable="false"
+    android:focusable="true"
     android:focusableInTouchMode="false"
-    tools:context=".RegistrationSecond">
+    tools:context=".fragments.RegistrationStep2Fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/registrationSecond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusable="true">
 
         <EditText
             android:id="@+id/layoutRegistrationInputPassword"

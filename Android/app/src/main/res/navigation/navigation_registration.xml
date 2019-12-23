@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/registrationFirst"
-        android:name="com.example.pop.RegistrationFirst"
+        android:name="com.example.pop.fragments.RegistrationStep1Fragment"
         android:label="fragment_registration_first"
         tools:layout="@layout/fragment_registration_first" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationSecond"
-        android:name="com.example.pop.RegistrationSecond"
+        android:name="com.example.pop.fragments.RegistrationStep2Fragment"
         android:label="fragment_registration_second"
         tools:layout="@layout/fragment_registration_second" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationThird"
-        android:name="com.example.pop.RegistrationThird"
+        android:name="com.example.pop.fragments.RegistrationStep3Fragment"
         android:label="fragment_registration_third"
         tools:layout="@layout/fragment_registration_third" />
 </navigation>
