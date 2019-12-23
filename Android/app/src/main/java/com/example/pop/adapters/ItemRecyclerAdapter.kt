@@ -12,13 +12,11 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pop.LoginActivity
-import com.example.pop.ManageProductsActivity
-import com.example.pop.R
-import com.example.pop.ShowItemsActivity
+import com.example.pop.*
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Item
 import com.example.webservice.Model.NewProductResponse
+import com.example.webservice.Model.Product
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.item_list.view.*
 import retrofit2.Call
@@ -102,7 +100,14 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
     }
 
     private fun editItem(){
-        val intent=Intent(this.context,ManageProductsActivity::class.java)
+        lateinit var intent: Intent
+        try {
+            val iii = item as Product
+            intent=Intent(this.context,ManageProductsActivity::class.java)
+        }
+        catch (e:ClassCastException){
+            intent=Intent(this.context,ManagePackagesActivity::class.java)
+        }
         intent.putExtra("item",item)
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
         context?.startActivity(intent)
