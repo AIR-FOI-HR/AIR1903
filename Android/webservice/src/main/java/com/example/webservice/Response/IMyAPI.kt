@@ -49,11 +49,11 @@ interface IMyAPI {
 
     @Multipart
     @POST("paketi.php")
-    fun addNewPackageWithImage(@Part Token:MultipartBody.Part, @Part ADD: Boolean, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Popust:MultipartBody.Part, @Part file: MultipartBody.Part, @Part KorisnickoIme: MultipartBody.Part, @Part KolicinaPaketa: MultipartBody.Part): Call<NewProductResponse>
+    fun addNewPackageWithImage(@Part Token:MultipartBody.Part, @Part ADD: Boolean, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Popust:MultipartBody.Part, @Part file: MultipartBody.Part, @Part KorisnickoIme: MultipartBody.Part, @Part KolicinaPaketa: MultipartBody.Part): Call<NewPackageResponse>
 
     @Multipart
     @POST("paketi.php")
-    fun updatePackageWithImage(@Part UPDATE:MultipartBody.Part, @Part Token:MultipartBody.Part, @Part Id:MultipartBody.Part, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Popust:MultipartBody.Part, @Part Kolicina:MultipartBody.Part, @Part file: MultipartBody.Part): Call<NewProductResponse>
+    fun updatePackageWithImage(@Part UPDATE:MultipartBody.Part, @Part Token:MultipartBody.Part, @Part Id:MultipartBody.Part, @Part Naziv:MultipartBody.Part, @Part Opis:MultipartBody.Part, @Part Popust:MultipartBody.Part, @Part Kolicina:MultipartBody.Part, @Part file: MultipartBody.Part): Call<NewPackageResponse>
 
     @FormUrlEncoded
     @POST("paketi.php")

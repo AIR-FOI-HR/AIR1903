@@ -34,7 +34,7 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.item_quantity.text = item.Kolicina
         }
 
-        else if(item is Package){
+        else if(item is PackageClass){
             itemView.item_value.text = item.Popust.toString()
             itemView.item_quantity.text = item.KolicinaPaketa
 

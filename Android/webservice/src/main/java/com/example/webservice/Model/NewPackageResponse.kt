@@ -3,5 +3,5 @@ package com.example.webservice.Model
 class NewPackageResponse {
     var STATUS: Boolean= false
     var STATUSMESSAGE: String?= null
-    var DATA: Package? = null
+    var DATA: PackageClass? = null
 }
