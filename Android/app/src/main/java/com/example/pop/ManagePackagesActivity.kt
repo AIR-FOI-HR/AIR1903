@@ -84,4 +84,31 @@ class ManagePackagesActivity : AppCompatActivity() {
         image_item_picture.setOnClickListener { addImage() }
 
 
+        layoutManageProductsButtonSubmit.setOnClickListener {
+            if (intent.hasExtra("item")) {
+                updatePackageWithImage(
+                    package.Id!!,
+                    layoutManagePacketsInputName.text.toString(),
+                    layoutManagePacketsInputDescription.text.toString(),
+                    layoutManageProductsInputValue.text.toString(),
+                    input_quantity.text.toString().toInt(),
+                    imageFile
+                )
+            } else {
+                addPackage(
+                    layoutManagePacketsInputName.text.toString(),
+                    layoutManagePacketsInputDescription.text.toString(),
+                    layoutManageProductsInputValue.text.toString(),
+                    input_quantity.text.toString().toInt(),
+                    imageFile
+                )
+            }
+        }
+
+
+    }
+
+
+    }
+
 }
