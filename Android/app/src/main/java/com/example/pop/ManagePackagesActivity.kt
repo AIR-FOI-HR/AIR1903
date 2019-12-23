@@ -161,6 +161,43 @@ class ManagePackagesActivity : AppCompatActivity() {
         dialogWindow.dimBehind()
     }
 
+    private fun PopupWindow.dimBehind() {
+        val container = contentView.rootView
+        val context = contentView.context
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val p = container.layoutParams as WindowManager.LayoutParams
+        p.flags = p.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+        p.dimAmount = 0.7f
+        wm.updateViewLayout(container, p)
+    }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+
+    }
+
+    private fun getImageFromCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(
+            MediaStore.EXTRA_OUTPUT,
+            FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", image)
+        )
+        startActivityForResult(cameraIntent, CAMERA_CAPTURE)
+    }
+
+    companion object {
+        //image pick code
+        private const val IMAGE_PICK_CODE = 1000
+        //Permission code
+        private const val PERMISSION_CODE = 1001
+        //camera code
+        private const val CAMERA_CAPTURE = 1002
+    }
+
    
 
     }
