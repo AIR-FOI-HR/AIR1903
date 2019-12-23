@@ -301,6 +301,135 @@ class ManagePackagesActivity : AppCompatActivity() {
         } else input_quantity.setText("0")
     }
 
+    private fun addPackage(
+        Naziv: String,
+        Opis: String,
+        Popust: String,
+        KolicinaPaketa: Int,
+        Slika: File?
+    ) {
+
+        if (Slika != null) {
+            val fileReqBody = RequestBody.create(MediaType.parse("image/*"), Slika)
+            val part: MultipartBody.Part =
+                MultipartBody.Part.createFormData("Slika", Slika.name, fileReqBody)
+
+            val partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
+            val partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
+            val partOpis = MultipartBody.Part.createFormData("Opis", Opis)
+            val partPopust = MultipartBody.Part.createFormData("Popust", Popust)
+            val partKolicinaPaketa = MultipartBody.Part.createFormData("KolicinaPaketa", KolicinaPaketa.toString())
+            val partKorisnickoIme =
+                MultipartBody.Part.createFormData("KorisnickoIme", Session.user.KorisnickoIme)
+
+            mService.addNewPackageWithImage(
+                partToken,
+                true,
+                partNaziv,
+                partOpis,
+                partPopust,
+                part,
+                partKorisnickoIme,
+                partKolicinaPaketa
+            ).enqueue(object :
+                Callback<NewPackageResponse> {
+                override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                    Toast.makeText(this@ManagePackagesActivity, t.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<NewPackageResponse>,
+                    response: Response<NewPackageResponse>
+                ) {
+                    if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
+                        Toast.makeText(
+                            this@ManagePackagesActivity,
+                            "Paket uspješno dodan",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val intent = Intent(this@ManagePackagesActivity, previousActivity)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        this@ManagePackagesActivity.startActivity(intent)
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                        (this@ManagePackagesActivity as Activity).finish()
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                    } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
+                        val intent = Intent(this@ManagePackagesActivity, LoginActivity::class.java)
+                        Toast.makeText(
+                            this@ManagePackagesActivity,
+                            "Sesija istekla, molimo prijavite se ponovno",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Session.reset()
+                        startActivity(intent)
+                        finishAffinity()
+                    } else
+                        Toast.makeText(
+                            this@ManagePackagesActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
+                        ).show()
+                }
+            })
+
+
+        } else {
+            mService.addNewPackage(
+                Session.user.Token,
+                true,
+                Naziv,
+                Opis,
+                Popust,
+                Session.user.KorisnickoIme,
+                KolicinaPaketa
+            ).enqueue(object : Callback<NewPackageResponse> {
+                override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
+                    Toast.makeText(this@ManagePackagesActivity, t.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<NewPackageResponse>,
+                    response: Response<NewPackageResponse>
+                ) {
+                    if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
+                        Toast.makeText(
+                            this@ManagePackagesActivity,
+                            "Paket uspješno dodan",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+
+                        val intent = Intent(this@ManagePackagesActivity, previousActivity)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        this@ManagePackagesActivity.startActivity(intent)
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                        (this@ManagePackagesActivity as Activity).finish()
+                        (this@ManagePackagesActivity as Activity).overridePendingTransition(0, 0)
+                    } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
+                        val intent =
+                            Intent(this@ManagePackagesActivity, LoginActivity::class.java)
+                        Toast.makeText(
+                            this@ManagePackagesActivity,
+                            "Sesija istekla, molimo prijavite se ponovno",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Session.reset()
+                        startActivity(intent)
+                        finishAffinity()
+                    } else
+                        Toast.makeText(
+                            this@ManagePackagesActivity,
+                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
+                        ).show()
+                }
+            })
+
+        }
+    }
+
    
 
     }
