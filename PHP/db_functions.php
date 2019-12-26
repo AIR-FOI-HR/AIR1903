@@ -618,7 +618,17 @@ public function updateProduct($post) {
     }
 
 public function getBalance($post) {
-      
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $userId = $stmt["Id"];
+        
+        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = {$userId} ORDER BY UnixVrijeme DESC LIMIT 1";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $response = $stmt["StanjeRacuna"];
+        
+        return $response;
 }
 
 }
