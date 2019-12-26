@@ -617,5 +617,9 @@ public function updateProduct($post) {
         return $stmt; 
     }
 
+public function getBalance($post) {
+      
+}
+
 }
 ?>
