@@ -1,10 +1,6 @@
 package com.example.webservice.Response
 
-import com.example.webservice.Model.ProductResponse
-import com.example.webservice.Model.ApiResponseUser
-import com.example.webservice.Model.NewPackageResponse
-import com.example.webservice.Model.NewProductResponse
-import com.example.webservice.Model.PackageResponse
+import com.example.webservice.Model.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.http.*
@@ -76,6 +72,9 @@ interface IMyAPI {
     @POST("paketi.php")
     fun addToPackage(@Field("Token") Token: String, @Field("ADDTOPACKET") ADDTOPACKET: Boolean, @Field("Id_Paket") Id_Paket: String, @Field("Id_Proizvod") Id_Proizvod: String, @Field("Kolicina") Kolicina: String):Call<PackageResponse>
 
+    @FormUrlEncoded
+    @POST("novcanik.php")
+    fun getWalletBalance(@Field("Token") Token: String, @Field("GET") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<WalletBalanceResponse>
     /*@Multipart
     @POST("/upload")
     fun uploadImage(@Part file: MultipartBody.Part, @Part("name") requestBody: RequestBody) : Call<ResponseBody>
