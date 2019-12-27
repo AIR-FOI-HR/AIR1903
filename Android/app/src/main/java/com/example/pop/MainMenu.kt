@@ -20,6 +20,7 @@ class MainMenu : AppCompatActivity() {
 
         showAllProductsButton.setOnClickListener{showItems()}
         btn_items.setOnClickListener{showItems()}
+        showWalletBalanceButton.setOnClickListener{showWalletBalance()}
         //editProductButton.setOnClickListener { editProduct() }
     }
 
@@ -39,6 +40,11 @@ class MainMenu : AppCompatActivity() {
     private fun editProduct(){
 
         val intent = Intent(this, ManagePackagesActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun showWalletBalance(){
+        val intent = Intent(this, ShowWalletBalanceActivity::class.java)
         startActivity(intent)
     }
 }
