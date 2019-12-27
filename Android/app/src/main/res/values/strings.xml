@@ -52,7 +52,7 @@
     <string name="btn_gallery">GALLERY</string>
     <string name="btn_camera">CAMERA</string>
     <string name="text_add_image_dialog">Choose how you want to add an image.</string>
-    <string name="hint_package_discount" >Package discount</string>
+    <string name="hint_package_discount">Package discount</string>
     <string name="btn_finish_adding_products">FINISH</string>
     <string name="hint_package_name">Package name</string>
     <string name="hint_package_description">Package description</string>
