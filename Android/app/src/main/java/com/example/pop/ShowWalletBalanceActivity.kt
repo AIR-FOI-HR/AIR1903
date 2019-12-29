@@ -18,8 +18,12 @@ class ShowWalletBalanceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_wallet_balance)
-
         getBalance()
+        refreshWalletBallance.setOnRefreshListener {
+            getBalance()
+            refreshWalletBallance.isRefreshing = false
+        }
+        btn_details.setOnClickListener{}
     }
 
     private fun getBalance(){
@@ -33,7 +37,7 @@ class ShowWalletBalanceActivity : AppCompatActivity() {
                 call: Call<WalletBalanceResponse>,
                 response: Response<WalletBalanceResponse>
             ) {
-                walletBalance.text = response.body()!!.DATA
+                walletBalance.text = response.body()!!.DATA + " HRK"
             }
         })
     }
