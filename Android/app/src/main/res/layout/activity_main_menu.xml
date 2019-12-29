@@ -153,13 +153,55 @@
                     android:layout_width="70dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/sell_items" />
+                    android:src="@drawable/icon_wallet" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="WALLET"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_invoices"
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="32dp"
+            android:background="#92000000"
+            android:hapticFeedbackEnabled="true"
+            app:cardBackgroundColor="#92000000"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintStart_toStartOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/card_products"
+            >
+
+            <LinearLayout
+                android:id="@+id/showIssuedInvoices"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hapticFeedbackEnabled="true"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/icon_invoices" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="INVOICES"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
