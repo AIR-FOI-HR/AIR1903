@@ -15,9 +15,11 @@ if ($db->checkAuth($_POST["Token"])) {
         echo $response;
     }
     if(isset($_POST["SET"])){
+        $setUserBalance = $db->setInitialBalance($_POST);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "Stanje računa: ";
         $response->DATA = $setUserBalance;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
     
