@@ -667,6 +667,35 @@ public function sellItems($post) {
         $q = "INSERT INTO Item_Racun (Id, Id_Itema, Id_Racuna, Kolicina) VALUES (NULL, '{$post["Id_Itema"]}', '$idRacuna', '$kolicinaProdanihProizvoda')";
         $stmt = $this->conn->query($q);
         
+        $q = "SELECT MAX(UnixVrijeme) FROM Proizvod_Cijena WHERE Id_Proizvod = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $posljednjaIzmjena = $stmt["MAX(UnixVrijeme)"];
+        $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = '{$post["Id_Itema"]}' AND UnixVrijeme = '$posljednjaIzmjena'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $cijenaProizvoda = $stmt["Cijena"];
+        $ukupnaCijena = ($cijenaProizvoda * $post["Kolicina"]) * 1 - ($post["Popust"]/100);
+        
+        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '{$post["Id_Kupac"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $stanjePrijeKupnjeKupac = $stmt["StanjeRacuna"];
+        $novoStanjeKupac = $stanjePrijeKupnjeKupac - $ukupnaCijena;
+        $q = "UPDATE Korisnik_StanjeRacuna SET StanjeRacuna = '$novoStanjeKupac' WHERE Id_Korisnika = '{$post["Id_Kupac"]}'";
+        $stmt = $this->conn->query($q);
+        
+        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '{$post["Id_Prodavaca"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $stanjePrijeKupnjeProdavac = $stmt["StanjeRacuna"];
+        $novoStanjeProdavac = $stanjePrijeKupnjeProdavac + $ukupnaCijena;
+        $q = "UPDATE Korisnik_StanjeRacuna SET StanjeRacuna = '$novoStanjeProdavac' WHERE Id_Korisnika = '{$post["Id_Prodavaca"]}'";
+        $stmt = $this->conn->query($q);
+        
+        $response["NovoStanjeKupac"] = $novoStanjeKupac;
+        $response["NovoStanjeProdavac"] = $novoStanjeProdavac;
+        return $response;
       
     }
 
