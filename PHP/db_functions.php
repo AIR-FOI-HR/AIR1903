@@ -643,6 +643,10 @@ public function setInitialBalance($post) {
         
         return $response;
     }
+ //funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
+public function sellItems($post) {
+      
+    }
 
 }
 ?>
