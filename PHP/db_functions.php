@@ -645,6 +645,17 @@ public function setInitialBalance($post) {
     }
  //funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
 public function sellItems($post) {
+	$kolicinaProdanihProizvoda = $post["Kolicina"];
+        $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $kolicinaProizvodaPrijeProdaje = $stmt["Kolicina"];
+        $kolicinaProizvodaNakonProdaje = $kolicinaProizvodaPrijeProdaje - $kolicinaProdanihProizvoda;
+        $q = "UPDATE Trgovina_Item SET Kolicina = '$kolicinaProizvodaNakonProdaje' WHERE Id_Itema = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $datum = date('Y-m-d H:i:s');
+        
+       
       
     }
 
