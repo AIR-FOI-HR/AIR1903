@@ -636,7 +636,12 @@ public function setInitialBalance($post) {
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
         
-       
+        $time= time();
+        $q = "INSERT INTO Korisnik_StanjeRacuna (StanjeRacuna, UnixVrijeme, Id_Korisnika) VALUES ('{$post["StanjeRacuna"]}', '{$time}', '{$userId}')";
+        $stmt = $this->conn->query($q);
+        $response = $post["StanjeRacuna"];
+        
+        return $response;
     }
 
 }
