@@ -22,6 +22,14 @@ if ($db->checkAuth($_POST["Token"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
+    if(isset($_POST["SELL"])){
+        $sellProducts = $db->sellItems($_POST);
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "Stanje računa: ";
+        $response->DATA = $sellProducts;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+    }
     
 }
 ?>
