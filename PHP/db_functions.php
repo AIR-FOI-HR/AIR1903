@@ -631,7 +631,12 @@ public function getBalance($post) {
         return $response;
 }
 public function setInitialBalance($post) {
-
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $userId = $stmt["Id"];
+        
+       
     }
 
 }
