@@ -630,6 +630,9 @@ public function getBalance($post) {
         
         return $response;
 }
+public function setInitialBalance($post) {
+
+    }
 
 }
 ?>
