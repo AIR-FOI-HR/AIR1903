@@ -700,6 +700,15 @@ public function sellItems($post) {
       
     }
 public function sellPackages($post) {
+        $kolicinaProdanihPaketa = $post["Kolicina"];
+        $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $kolicinaPaketaPrijeProdaje = $stmt["Kolicina"];
+        $kolicinaPaketaNakonProdaje = $kolicinaPaketaPrijeProdaje - $kolicinaProdanihPaketa;
+        $q = "UPDATE Trgovina_Item SET Kolicina = '$kolicinaPaketaNakonProdaje' WHERE Id_Itema = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $datum = date('Y-m-d H:i:s');
        
     }
 
