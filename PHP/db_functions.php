@@ -722,7 +722,31 @@ public function sellPackages($post) {
         $q = "INSERT INTO Item_Racun (Id, Id_Itema, Id_Racuna, Kolicina) VALUES (NULL, '{$post["Id_Itema"]}', '$idRacuna', '$kolicinaProdanihPaketa')";
         $stmt = $this->conn->query($q);      
         
-      
+        $q = "SELECT MAX(UnixVrijeme) FROM Paket_Popust WHERE Id_Paketa = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $posljednjaIzmjena = $stmt["MAX(UnixVrijeme)"];
+        $q = "SELECT Popust FROM Paket_Popust WHERE Id_Paketa = '{$post["Id_Itema"]}' AND UnixVrijeme = '$posljednjaIzmjena'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $popustPaketa = 1 - $stmt["Popust"]/100;
+        
+        $q = "SELECT Id_Proizvoda FROM Proizvod_Paket WHERE Id_Paketa = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $IdProizvoda = $stmt["Id_Proizvoda"];
+        
+        $q = "SELECT MAX(UnixVrijeme) FROM Proizvod_Cijena WHERE Id_Proizvod = '$IdProizvoda'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $posljednjaIzmjena = $stmt["MAX(UnixVrijeme)"];
+        $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = '$IdProizvoda' AND UnixVrijeme = '$posljednjaIzmjena'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $cijenaProizvoda = $stmt["Cijena"];
+        $ukupnaCijena = ($cijenaProizvoda * $post["Kolicina"]) * $popustPaketa * (1 - ($post["Popust"]/100));
+        
+       
     }
 
 }
