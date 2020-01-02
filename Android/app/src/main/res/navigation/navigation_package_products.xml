@@ -33,7 +33,8 @@
     <fragment
         android:id="@+id/packageFragment"
         android:name="com.example.pop.fragments.PackageFragment"
-        android:label="PackageFragment" >
+        android:label="PackageFragment"
+        tools:layout="@layout/fragment_package">
         <action
             android:id="@+id/action_packageFragment_to_packageProductsListing"
             app:destination="@id/packageProductsListing"

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_package"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.PackageFragment">
@@ -90,7 +91,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-                    <!--app:layout_constraintEnd_toStartOf="@+id/package_quantity"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/package_quantity"-->
 
                 <!--<EditText
                     android:id="@+id/package_quantity"
@@ -142,13 +143,13 @@
                 android:layout_width="290dp"
                 android:layout_height="265dp"
                 android:background="@drawable/border_product_image"
-                app:layout_constraintBottom_toBottomOf="@+id/image_item_picture"
+                app:layout_constraintBottom_toBottomOf="@+id/image_package_picture"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/image_item_picture" />
+                app:layout_constraintTop_toTopOf="@+id/image_package_picture" />
 
             <ImageView
-                android:id="@+id/image_item_picture"
+                android:id="@+id/image_package_picture"
                 android:layout_width="283dp"
                 android:layout_height="250dp"
                 android:layout_marginBottom="64dp"
