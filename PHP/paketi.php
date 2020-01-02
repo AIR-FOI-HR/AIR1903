@@ -69,7 +69,15 @@ if ($db->checkAuth($_POST["Token"])) {
         $response->DATA=$packageContents;
         $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
+    } else if ($_POST["SELL"] == true){
+        $packageSell = $db->sellPackages($_POST);
+        $response->STATUS=true;
+        $response->STATUSMESSAGE = "Stanje racuna";
+        $response->DATA=$packageSell;
+        $response= json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
     }
+
 }
 else{
     $response->STATUS=false;
