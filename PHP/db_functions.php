@@ -735,6 +735,19 @@ public function sellPackages($post) {
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $IdProizvoda = $stmt["Id_Proizvoda"];
+
+	$q = "SELECT Kolicina FROM Proizvod_Paket WHERE Id_Proizvoda = '$IdProizvoda' AND Id_Paketa = '{$post["Id_Itema"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $kolicinaProdanihProizvoda = $stmt["Kolicina"];
+        $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '$IdProizvoda'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $kolicinaProizvodaPrijeProdaje = $stmt["Kolicina"];
+        $kolicinaProizvodaNakonProdaje = $kolicinaProizvodaPrijeProdaje - $kolicinaProdanihProizvoda;
+        $q = "UPDATE Trgovina_Item SET Kolicina = '$kolicinaProizvodaNakonProdaje' WHERE Id_Itema = '$IdProizvoda'";
+        $stmt = $this->conn->query($q);
+        $datum = date('Y-m-d H:i:s');
         
         $q = "SELECT MAX(UnixVrijeme) FROM Proizvod_Cijena WHERE Id_Proizvod = '$IdProizvoda'";
         $stmt = $this->conn->query($q);
