@@ -266,6 +266,7 @@ class PackageFragment : Fragment() {
                 MultipartBody.Part.createFormData("Slika", Slika.name, fileReqBody)
 
             val partToken = MultipartBody.Part.createFormData("Token", Session.user.Token)
+            val partAdd = MultipartBody.Part.createFormData("ADD", "true")
             val partNaziv = MultipartBody.Part.createFormData("Naziv", Naziv)
             val partOpis = MultipartBody.Part.createFormData("Opis", Opis)
             val partPopust = MultipartBody.Part.createFormData("Popust", Popust)
@@ -275,7 +276,7 @@ class PackageFragment : Fragment() {
 
             mService.addNewPackageWithImage(
                 partToken,
-                true,
+                partAdd,
                 partNaziv,
                 partOpis,
                 partPopust,
