@@ -2,6 +2,7 @@ package com.example.pop.fragments
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,11 +12,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
@@ -30,10 +33,9 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_manage_products.*
+import kotlinx.android.synthetic.main.fragment_package.*
 import kotlinx.android.synthetic.main.dialog_add_image.view.*
 import kotlinx.android.synthetic.main.fragment_package.*
-import kotlinx.android.synthetic.main.fragment_package.image_item_picture
-//import kotlinx.android.synthetic.main.fragment_package.package_quantity
 import kotlinx.android.synthetic.main.fragment_package.layoutManagePacketsInputValue
 import kotlinx.android.synthetic.main.fragment_package.view.*
 import okhttp3.MediaType
@@ -44,6 +46,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.Exception
 
 class PackageFragment : Fragment() {
 
@@ -55,6 +58,7 @@ class PackageFragment : Fragment() {
     lateinit var previousActivity: Class<*>
     private lateinit var intent: Intent
     private lateinit var appContext:Context
+    private var fragment: View? = null
 
 
     override fun onAttach(context: Context) {
@@ -66,13 +70,22 @@ class PackageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-            return inflater.inflate(R.layout.fragment_package, container, false)
+        if(fragment == null)
+            fragment = inflater.inflate(R.layout.fragment_package, container, false)
+        return fragment
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.btn_add_package.setOnClickListener {
+            it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()
         image = File(activity!!.applicationContext!!.cacheDir.path + "/temp.webp")
-        ////setContentView(R.layout.activity_manage_packages)
         intent = activity!!.intent
         mService = Common.api
 
@@ -88,16 +101,14 @@ class PackageFragment : Fragment() {
                 layoutManagePacketsInputName.setText(packageClass.Naziv)
                 layoutManagePacketsInputValue.setText(packageClass.Popust)
                 layoutManagePacketsInputDescription.setText(packageClass.Opis)
-                image_item_picture.setImageResource(R.drawable.prijava_bg)
+                image_package_picture.setImageResource(R.drawable.prijava_bg)
                 //package_quantity.setText(packageClass.Kolicina)
             }
-            Picasso.get().load(packageUrl).into(image_item_picture)
+            Picasso.get().load(packageUrl).into(image_package_picture)
 
         }
 
-        //btn_add_packages.setOnClickListener { changeQuantity(1) }
-        //btn_decrease_packages.setOnClickListener { changeQuantity(-1) }
-        image_item_picture.setOnClickListener { addImage() }
+        image_package_picture.setOnClickListener { addImage() }
 
 
         btn_add_package.setOnClickListener {
@@ -111,6 +122,7 @@ class PackageFragment : Fragment() {
                     1,
                     imageFile
                 )
+
             } else {
                 addPackage(
                     layoutManagePacketsInputName.text.toString(),
@@ -121,12 +133,13 @@ class PackageFragment : Fragment() {
                     imageFile
                 )
             }
+            //TODO: Poziv paketa dodanoh
+            it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
         }
     }
 
     private fun addImage() {
-        val layoutInflater: LayoutInflater = appContext
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layoutInflater: LayoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val dialogView = layoutInflater.run { inflate(R.layout.dialog_add_image, null) }
         val dialogWindow = PopupWindow(
@@ -171,6 +184,7 @@ class PackageFragment : Fragment() {
             else{ // <Marshmallow
                 getImageFromCamera()
             }
+            dialogWindow.dismiss()
         }
 
         dialogWindow.showAtLocation(manage_packets, Gravity.CENTER, 0, 0)
@@ -187,14 +201,6 @@ class PackageFragment : Fragment() {
         wm.updateViewLayout(container, p)
     }
 
-    /*private fun changeQuantity(value: Int) {
-        var newValue = package_quantity.text.toString().toIntOrNull()
-        if (newValue != null) {
-            newValue += value
-            if (newValue < 0) newValue = 0
-            package_quantity.setText(newValue.toString())
-        } else package_quantity.setText("0")
-    }*/
 
     private fun getImageFromCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -214,11 +220,36 @@ class PackageFragment : Fragment() {
         private const val CAMERA_CAPTURE = 1002
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        view.btn_add_package.setOnClickListener {
-            it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
+
+    private fun compressImage(originalImage: Bitmap): File {
+        var bitmap = originalImage
+        var height = 0
+        var width = 0
+        if (bitmap.width > 2000 || bitmap.height > 2000) {
+            if (bitmap.width >= bitmap.height) {
+                val ratio: Float = 1 / (bitmap.width.toFloat() / 2000)
+                width = 2000
+                height = (bitmap.height * ratio).toInt()
+            } else {
+                val ratio: Float = 1 / (bitmap.height.toFloat() / 2000)
+                height = 2000
+                width = (bitmap.width * ratio).toInt()
+            }
+
+            bitmap = bitmap.scale(width, height)
         }
+
+        val stream = FileOutputStream(image)
+        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, stream)
+        return image
+    }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
     private fun addPackage(
@@ -320,14 +351,13 @@ class PackageFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-
-                        val intent = Intent(appContext, previousActivity)
+                      /*  val intent = Intent(appContext, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         appContext.startActivity(intent)
                         (appContext as Activity).overridePendingTransition(0, 0)
                         (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)
+                        (appContext as Activity).overridePendingTransition(0, 0)*/
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)
@@ -392,7 +422,7 @@ class PackageFragment : Fragment() {
                     )
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(image_item_picture)
+                    .into(image_package_picture)
                 packageUrl = ""
             }
         }
@@ -400,9 +430,8 @@ class PackageFragment : Fragment() {
         if (data?.data != null) {
             val uri: Uri = data.data!!
             if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-                image_item_picture.setImageURI(uri)
+                image_package_picture.setImageURI(uri)
             }
-
 
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
@@ -421,37 +450,6 @@ class PackageFragment : Fragment() {
         }
     }
 
-    private fun compressImage(originalImage: Bitmap): File {
-        var bitmap = originalImage
-        var height = 0
-        var width = 0
-        if (bitmap.width > 2000 || bitmap.height > 2000) {
-            if (bitmap.width >= bitmap.height) {
-                val ratio: Float = 1 / (bitmap.width.toFloat() / 2000)
-                width = 2000
-                height = (bitmap.height * ratio).toInt()
-            } else {
-                val ratio: Float = 1 / (bitmap.height.toFloat() / 2000)
-                height = 2000
-                width = (bitmap.width * ratio).toInt()
-            }
-
-            bitmap = bitmap.scale(width, height)
-        }
-
-        val stream = FileOutputStream(image)
-        bitmap.compress(Bitmap.CompressFormat.WEBP, 80, stream)
-        return image
-    }
-
-    private fun pickImageFromGallery() {
-        //Intent to pick image
-
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-
-    }
 
     private fun updatePackageWithImage(
         Id: Int,
@@ -506,13 +504,13 @@ class PackageFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                         activity!!.finish()
-                        val intent = Intent(appContext, previousActivity)
+                      /*  val intent = Intent(appContext, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         appContext.startActivity(intent)
                         (appContext as Activity).overridePendingTransition(0, 0)
                         (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)
+                        (appContext as Activity).overridePendingTransition(0, 0)*/
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
                         Toast.makeText(
