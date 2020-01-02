@@ -700,7 +700,7 @@ public function sellItems($post) {
       
     }
 public function sellPackages($post) {
-        $kolicinaProdanihPaketa = $post["Kolicina"];
+	$kolicinaProdanihPaketa = $post["Kolicina"];
         $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '{$post["Id_Itema"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
@@ -709,7 +709,20 @@ public function sellPackages($post) {
         $q = "UPDATE Trgovina_Item SET Kolicina = '$kolicinaPaketaNakonProdaje' WHERE Id_Itema = '{$post["Id_Itema"]}'";
         $stmt = $this->conn->query($q);
         $datum = date('Y-m-d H:i:s');
-       
+
+	$q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = '{$post["Id_Prodavaca"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idTrgovine= $stmt["Id_Trgovina"];
+        
+        $q = "INSERT INTO Racun (Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac) VALUES (NULL, 'Fakultet Organizacije i informatike', '$datum', '{$post["Popust"]}', '$idTrgovine', '{$post["Id_Kupac"]}')";
+        $stmt = $this->conn->query($q);
+        $idRacuna = $this->conn->insert_id;
+        echo "ID ITEMA" . $post["Id_Itema"] . "ID RACUNA" . $idRacuna . "KOLICINA" . $kolicinaProdanihPaketa;
+        $q = "INSERT INTO Item_Racun (Id, Id_Itema, Id_Racuna, Kolicina) VALUES (NULL, '{$post["Id_Itema"]}', '$idRacuna', '$kolicinaProdanihPaketa')";
+        $stmt = $this->conn->query($q);      
+        
+      
     }
 
 }
