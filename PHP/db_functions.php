@@ -746,6 +746,25 @@ public function sellPackages($post) {
         $cijenaProizvoda = $stmt["Cijena"];
         $ukupnaCijena = ($cijenaProizvoda * $post["Kolicina"]) * $popustPaketa * (1 - ($post["Popust"]/100));
         
+        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '{$post["Id_Kupac"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $stanjePrijeKupnjeKupac = $stmt["StanjeRacuna"];
+        $novoStanjeKupac = $stanjePrijeKupnjeKupac - $ukupnaCijena;
+        $q = "UPDATE Korisnik_StanjeRacuna SET StanjeRacuna = '$novoStanjeKupac' WHERE Id_Korisnika = '{$post["Id_Kupac"]}'";
+        $stmt = $this->conn->query($q);
+        
+        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '{$post["Id_Prodavaca"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $stanjePrijeKupnjeProdavac = $stmt["StanjeRacuna"];
+        $novoStanjeProdavac = $stanjePrijeKupnjeProdavac + $ukupnaCijena;
+        $q = "UPDATE Korisnik_StanjeRacuna SET StanjeRacuna = '$novoStanjeProdavac' WHERE Id_Korisnika = '{$post["Id_Prodavaca"]}'";
+        $stmt = $this->conn->query($q);
+        
+        $response["NovoStanjeKupac"] = $novoStanjeKupac;
+        $response["NovoStanjeProdavac"] = $novoStanjeProdavac;
+        return $response;
        
     }
 
