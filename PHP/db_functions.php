@@ -453,6 +453,7 @@ public function updateProduct($post) {
         $stmt = $this->conn->query($q);
         $stmt3 = $stmt->fetch_assoc();
         
+        $response["Id"]=$itemId;
         $response["Naziv"] = $stmt4["Naziv"];
         $response["Opis"] = $stmt4["Opis"];
         $response["Slika"] = $stmt4["Slika"];
