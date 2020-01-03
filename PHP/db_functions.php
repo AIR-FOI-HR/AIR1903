@@ -799,6 +799,15 @@ public function sellPackages($post) {
         $response["NovoStanjeKupac"] = $novoStanjeKupac;
         $response["NovoStanjeProdavac"] = $novoStanjeProdavac;
         
+        $response["Trgovina"] = $nazivTrgovine;
+        $response["MjestoIzdavanja"] = $mjestoIzdavanja;
+        $response["VrijemeIzdavanja"] = $vrijemeIzdavanja;
+        $response["NazivItema"] = $nazivItema;
+        $response["Kolicina"] = $post["Kolicina"];
+        $response["PopustNaRacunu"] = $post["Popust"];
+        $response["PopustNaPaketu"] = $popustPaketaZaIspisRacuna;
+        $response["UkupnaCijena"] = $ukupnaCijena;
+
         return $response;
        
     }
