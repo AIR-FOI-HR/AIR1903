@@ -713,6 +713,19 @@ public function sellItems($post) {
         $stmt = $stmt->fetch_assoc();
         $mjestoIzdavanja = $stmt["MjestoIzdavanja"];
         $vrijemeIzdavanja = $stmt["DatumIzdavanja"];
+
+	$response["NovoStanjeKupac"] = $novoStanjeKupac;
+        $response["NovoStanjeProdavac"] = $novoStanjeProdavac;
+        
+        $response["Trgovina"] = $nazivTrgovine;
+        $response["MjestoIzdavanja"] = $mjestoIzdavanja;
+        $response["VrijemeIzdavanja"] = $vrijemeIzdavanja;
+        $response["NazivItema"] = $nazivItema;
+        $response["Kolicina"] = $post["Kolicina"];
+        $response["CijenaProizvoda"] = $cijenaProizvoda;
+        $response["PopustNaRacunu"] = $post["Popust"];
+      
+        $response["UkupnaCijena"] = $ukupnaCijena;
  
         return $response;
       
