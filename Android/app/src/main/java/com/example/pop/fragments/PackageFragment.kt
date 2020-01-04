@@ -104,7 +104,24 @@ class PackageFragment : Fragment() {
                 image_package_picture.setImageResource(R.drawable.prijava_bg)
                 //package_quantity.setText(packageClass.Kolicina)
             }
-            Picasso.get().load(packageUrl).into(image_package_picture)
+            if (intent.hasExtra("imagePath")){
+                imageFile = File(intent.getStringExtra("imagePath"))
+                packageUrl=""
+                intent.removeExtra("imagePath")
+                Picasso.get()
+                    .load(
+                        FileProvider.getUriForFile(
+                            appContext,
+                            BuildConfig.APPLICATION_ID + ".provider",
+                            imageFile!!
+                        )
+                    )
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(image_package_picture)
+            }
+            else
+                Picasso.get().load(packageUrl).into(image_package_picture)
 
         }
 
@@ -352,13 +369,6 @@ class PackageFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                      /*  val intent = Intent(appContext, previousActivity)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        appContext.startActivity(intent)
-                        (appContext as Activity).overridePendingTransition(0, 0)
-                        (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)*/
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)
@@ -413,6 +423,8 @@ class PackageFragment : Fragment() {
                 image = compressImage(imageBitmap)
 
                 imageFile = File(image.path)
+
+                intent.putExtra("imagePath", image.path)
                 Picasso.get()
                     .load(
                         FileProvider.getUriForFile(
@@ -446,6 +458,7 @@ class PackageFragment : Fragment() {
             val imageBitmap = BitmapFactory.decodeFile(picturePath)
             image = compressImage(imageBitmap)
             imageFile = File(image.path)
+            intent.putExtra("imagePath", image.path)
 
             packageUrl = ""
         }
@@ -505,13 +518,6 @@ class PackageFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                         activity!!.finish()
-                      /*  val intent = Intent(appContext, previousActivity)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        appContext.startActivity(intent)
-                        (appContext as Activity).overridePendingTransition(0, 0)
-                        (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)*/
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
                         Toast.makeText(
