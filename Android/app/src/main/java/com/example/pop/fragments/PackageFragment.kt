@@ -2,7 +2,6 @@ package com.example.pop.fragments
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,7 +17,6 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
@@ -32,10 +30,8 @@ import com.example.webservice.Response.IMyAPI
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_manage_products.*
 import kotlinx.android.synthetic.main.fragment_package.*
 import kotlinx.android.synthetic.main.dialog_add_image.view.*
-import kotlinx.android.synthetic.main.fragment_package.*
 import kotlinx.android.synthetic.main.fragment_package.layoutManagePacketsInputValue
 import kotlinx.android.synthetic.main.fragment_package.view.*
 import okhttp3.MediaType
@@ -46,7 +42,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Exception
 
 class PackageFragment : Fragment() {
 
@@ -58,8 +53,7 @@ class PackageFragment : Fragment() {
     lateinit var previousActivity: Class<*>
     private lateinit var intent: Intent
     private lateinit var appContext:Context
-    private var fragment: View? = null
-
+    private var newImageAdded: Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -70,9 +64,7 @@ class PackageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if(fragment == null)
-            fragment = inflater.inflate(R.layout.fragment_package, container, false)
-        return fragment
+        return inflater.inflate(R.layout.fragment_package, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,16 +90,17 @@ class PackageFragment : Fragment() {
             if (intent.getSerializableExtra("item") != null) {
                 packageClass = intent.getSerializableExtra("item") as PackageClass
                 packageUrl = packageClass.Slika!!
+                Log.e("ALDIN", "STAVIO OPET")
                 layoutManagePacketsInputName.setText(packageClass.Naziv)
                 layoutManagePacketsInputValue.setText(packageClass.Popust)
                 layoutManagePacketsInputDescription.setText(packageClass.Opis)
                 image_package_picture.setImageResource(R.drawable.prijava_bg)
                 //package_quantity.setText(packageClass.Kolicina)
             }
-            Picasso.get().load(packageUrl).into(image_package_picture)
-
+            Log.e("ALDIN", "Stavljam" + packageUrl)
+            if(!newImageAdded)
+                Picasso.get().load(packageUrl).into(image_package_picture)
         }
-
         image_package_picture.setOnClickListener { addImage() }
 
 
@@ -352,13 +345,6 @@ class PackageFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                      /*  val intent = Intent(appContext, previousActivity)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        appContext.startActivity(intent)
-                        (appContext as Activity).overridePendingTransition(0, 0)
-                        (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)*/
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)
@@ -409,6 +395,7 @@ class PackageFragment : Fragment() {
         if (requestCode == CAMERA_CAPTURE) {
             // Make sure the request was successful
             if (resultCode == Activity.RESULT_OK) {
+                newImageAdded = true
                 val imageBitmap = BitmapFactory.decodeFile(image.path)
                 image = compressImage(imageBitmap)
 
@@ -424,6 +411,8 @@ class PackageFragment : Fragment() {
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(image_package_picture)
+                Log.e("ALDIN", "FILE:" + image)
+                Log.e("ALDIN", "PATH:" + imageFile)
                 packageUrl = ""
             }
         }
@@ -431,6 +420,7 @@ class PackageFragment : Fragment() {
         if (data?.data != null) {
             val uri: Uri = data.data!!
             if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+                newImageAdded = true
                 image_package_picture.setImageURI(uri)
             }
 
