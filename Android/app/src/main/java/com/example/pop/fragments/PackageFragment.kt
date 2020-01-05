@@ -517,7 +517,14 @@ class PackageFragment : Fragment() {
                             "Paket uspješno uređen",
                             Toast.LENGTH_SHORT
                         ).show()
-                        activity!!.finish()
+                        val intent = Intent(appContext, previousActivity)
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        appContext.startActivity(intent)
+                        (appContext as Activity).overridePendingTransition(0, 0)
+                        (appContext as Activity).finish()
+                        (appContext as Activity).overridePendingTransition(0, 0)
+                        //activity!!.finish()
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
                         Toast.makeText(
