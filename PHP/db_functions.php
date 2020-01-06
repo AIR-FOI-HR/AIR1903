@@ -840,8 +840,12 @@ public function sellPackages($post) {
         $response["UkupnaCijena"] = $ukupnaCijena;
 
         return $response;
-       
     }
+public function getInvoice($post) {
+
+        
+    }
+
 
 }
 ?>
