@@ -842,8 +842,25 @@ public function sellPackages($post) {
         return $response;
     }
 public function getInvoice($post) {
-
+        $q = "SELECT Id_Trgovine FROM Trgovina_Korisnik WHERE Id_Korisnik = '{$post["Id_Korisnika"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idTrgovine = $stmt["Id_Trgovine"];
         
+        $q = "SELECT Naziv FROM Trgovina WHERE Id = '$idTrgovine'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $nazivTrgovine = $stmt["Naziv"];
+        
+        $q = "SELECT Id, MjestoIzdavanja, VrijemeIzdavanja, Popust FROM Racun WHERE Id_Trgovine = '$idTrgovine'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $mjestoIzdavanja = $stmt["MjestoIzdavanja"];
+        $vrijemeIzdavanja = $stmt["VrijemeIzdavanja"];
+        $popust = $stmt["Popust"];
+        $idRacuna = $stmt["Id"];
+        
+      
     }
 
 
