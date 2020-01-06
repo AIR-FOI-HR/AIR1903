@@ -880,7 +880,18 @@ public function getInvoice($post) {
         $stmt = $stmt->fetch_assoc();
         $jedinicnaCijena = $stmt["Cijena"];
         
-
+        $ukupnaCijena = ($jedinicnaCijena * $kolicinaItema) * (1 - $popust/100);     
+       
+        $response["Trgovina"] = $nazivTrgovine;
+        $response["MjestoIzdavanja"] = $mjestoIzdavanja;
+        $response["VrijemeIzdavanja"] = $vrijemeIzdavanja;
+        $response["NazivItema"] = $nazivItema;
+        $response["Kolicina"] = $kolicinaItema;
+        $response["PopustNaRacunu"] = $popust;
+        $response["JedinicnaCijena"] = $jedinicnaCijena;
+        $response["UkupnaCijena"] = $ukupnaCijena;
+        
+        return $response;
         
     }
 
