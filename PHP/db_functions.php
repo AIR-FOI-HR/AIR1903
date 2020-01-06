@@ -860,7 +860,28 @@ public function getInvoice($post) {
         $popust = $stmt["Popust"];
         $idRacuna = $stmt["Id"];
         
-      
+        $q = "SELECT Id_Itema, Kolicina FROM Item_Racun WHERE Id_Racuna = '$idRacuna'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idItema = $stmt["Id_Itema"];
+        $kolicinaItema = $stmt["Kolicina"];
+        
+        $q = "SELECT Naziv FROM Item WHERE Id = '$idItema'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $nazivItema = $stmt["Naziv"];
+        
+        $q = "SELECT MAX(UnixVrijeme) FROM Proizvod_Cijena WHERE Id_Proizvod = '$idItema'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $posljednjaIzmjena = $stmt["MAX(UnixVrijeme)"];
+        $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvoda = '$idItema' AND UnixVrijeme = '$posljednjaIzmjena'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $jedinicnaCijena = $stmt["Cijena"];
+        
+
+        
     }
 
 
