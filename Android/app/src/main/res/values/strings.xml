@@ -56,5 +56,6 @@
     <string name="btn_finish_adding_products">FINISH</string>
     <string name="hint_package_name">Package name</string>
     <string name="hint_package_description">Package description</string>
+    <string name="imageReceipt">Receipt image</string>
 
 </resources>

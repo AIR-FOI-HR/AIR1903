@@ -56,5 +56,6 @@
     <string name="btn_finish_adding_products">FINISH</string>
     <string name="hint_package_name">Naziv paketa</string>
     <string name="hint_package_description">Opis paketa</string>
+    <string name="imageReceipt">Slika računa</string>
 
 </resources>
