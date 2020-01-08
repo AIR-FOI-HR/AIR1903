@@ -21,6 +21,7 @@ class MainMenu : AppCompatActivity() {
         showAllProductsButton.setOnClickListener{showItems()}
         btn_items.setOnClickListener{showItems()}
         showWalletBalanceButton.setOnClickListener{showWalletBalance()}
+        showIssuedInvoices.setOnClickListener { showInvoices() }
         //editProductButton.setOnClickListener { editProduct() }
     }
 
@@ -49,7 +50,7 @@ class MainMenu : AppCompatActivity() {
     }
 
     private fun showInvoices() {
-        val intent = Intent(this, ShowReceiptsActivity::class.java)
+        val intent = Intent(this, ShowInvoicesActivity::class.java)
         startActivity(intent)
     }
 }

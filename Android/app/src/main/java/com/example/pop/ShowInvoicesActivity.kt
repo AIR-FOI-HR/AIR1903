@@ -2,15 +2,15 @@ package com.example.pop
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.pop.adapters.ReceiptAdapter
+import com.example.pop.adapters.InvoiceAdapter
 
-class ShowReceiptsActivity : AppCompatActivity() {
+class ShowInvoicesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_receipts)
+        setContentView(R.layout.activity_show_invoices)
 
-        val adapter = ReceiptAdapter()
+        val adapter = InvoiceAdapter()
         //adapter.data =
     }
 }

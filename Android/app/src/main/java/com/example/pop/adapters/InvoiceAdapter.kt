@@ -2,12 +2,11 @@ package com.example.pop.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.R
 
-class ReceiptAdapter : RecyclerView.Adapter<ReceiptViewHolder>() {
-    var data = listOf<Receipt>()
+class InvoiceAdapter : RecyclerView.Adapter<InvoiceViewHolder>() {
+    var data = listOf<Int/*Receipt*/>()
     set(value) {
         field = value
         notifyDataSetChanged()
@@ -15,14 +14,14 @@ class ReceiptAdapter : RecyclerView.Adapter<ReceiptViewHolder>() {
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holder: ReceiptViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: InvoiceViewHolder, position: Int) {
         val item = data[position]
         holder.bind()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceiptViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InvoiceViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.receipt_list_item, parent, false)
-        return ReceiptViewHolder(view)
+        val view = layoutInflater.inflate(R.layout.invoice_list_item, parent, false)
+        return InvoiceViewHolder(view)
     }
 }
