@@ -15,16 +15,18 @@
         android:adjustViewBounds="false"
         android:contentDescription="@string/imageReceipt"
         android:scaleType="fitXY"
+        android:tint="@color/colorFoi"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/add_image" />
+        app:srcCompat="@drawable/icon_invoices" />
 
     <TextView
         android:id="@+id/layoutReceiptItemTextName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/layoutReceiptItemTextDate"
         app:layout_constraintStart_toEndOf="@+id/layoutReceiptItemImage"
