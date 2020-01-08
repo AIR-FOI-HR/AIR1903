@@ -25,13 +25,25 @@
         android:id="@+id/layoutReceiptItemTextName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutReceiptItemTextInvoice"
+        app:layout_constraintStart_toEndOf="@+id/layoutReceiptItemTextInvoice"
+        app:layout_constraintTop_toTopOf="@+id/layoutReceiptItemTextInvoice"
+        tools:text="x" />
+
+    <TextView
+        android:id="@+id/layoutReceiptItemTextInvoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:text="@string/textInvoice"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/layoutReceiptItemTextDate"
         app:layout_constraintStart_toEndOf="@+id/layoutReceiptItemImage"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Račun 1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/layoutReceiptItemTextDate"
@@ -40,7 +52,7 @@
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/layoutReceiptItemTextPrice"
         app:layout_constraintStart_toEndOf="@+id/layoutReceiptItemImage"
-        app:layout_constraintTop_toBottomOf="@+id/layoutReceiptItemTextName"
+        app:layout_constraintTop_toBottomOf="@+id/layoutReceiptItemTextInvoice"
         tools:text="datum" />
 
     <TextView
