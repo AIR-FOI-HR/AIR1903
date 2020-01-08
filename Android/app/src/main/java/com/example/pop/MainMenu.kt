@@ -47,4 +47,9 @@ class MainMenu : AppCompatActivity() {
         val intent = Intent(this, ShowWalletBalanceActivity::class.java)
         startActivity(intent)
     }
+
+    private fun showInvoices() {
+        val intent = Intent(this, ShowReceiptsActivity::class.java)
+        startActivity(intent)
+    }
 }
