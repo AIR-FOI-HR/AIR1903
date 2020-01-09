@@ -894,6 +894,31 @@ public function getInvoice($post) {
         return $response;
         
     }
+	
+	public function getAllInvoices($post){
+        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idKorisnika = $stmt["Id"];
+        $idUloge = $stmt["Id_Uloge"];
+        if ($idUloge == 1){ //kupac
+            $q = "SELECT Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac FROM Racun WHERE Kupac = {$idKorisnika}";
+        }
+        elseif ($idUloge == 2){ //admin
+            $q = "SELECT Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac FROM Racun";
+        }
+        elseif ($idUloge == 3){ //prodavac
+            $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$idKorisnika}";
+            $stmt = $this->conn->query($q);
+            $stmt = $stmt->fetch_assoc();
+            $idTrgovine = $stmt["Id_Trgovina"];
+            $q = "SELECT Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac FROM Racun WHERE Id_Trgovine = {$idTrgovine}";
+        }
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
+        $response = $stmt;
+        return $response;
+    }
 
 
 }
