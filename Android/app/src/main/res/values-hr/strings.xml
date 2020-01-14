@@ -58,5 +58,7 @@
     <string name="hint_package_description">Opis paketa</string>
     <string name="imageReceipt">Slika računa</string>
     <string name="textInvoice">Račun</string>
+    <string name="addItemsText">Popis artikala za prodaju je prazan</string>
+    <string name="sellItemsLink">Odaberi proizvode</string>
 
 </resources>

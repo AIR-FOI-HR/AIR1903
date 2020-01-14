@@ -58,5 +58,7 @@
     <string name="hint_package_description">Package description</string>
     <string name="imageReceipt">Invoice image</string>
     <string name="textInvoice">Invoice</string>
+    <string name="addItemsText">List of items for sale is empty</string>
+    <string name="sellItemsLink">Select items</string>
 
 </resources>
