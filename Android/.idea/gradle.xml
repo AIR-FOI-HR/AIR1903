@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/database" />
             <option value="$PROJECT_DIR$/nfc" />
+            <option value="$PROJECT_DIR$/qr" />
             <option value="$PROJECT_DIR$/webservice" />
           </set>
         </option>

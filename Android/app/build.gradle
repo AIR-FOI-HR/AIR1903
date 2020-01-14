@@ -66,4 +66,5 @@ dependencies {
     implementation project(path: ':webservice')
     implementation project(path: ':database')
     implementation project(path: ':nfc')
+    implementation project(path: ':qr')
 }
