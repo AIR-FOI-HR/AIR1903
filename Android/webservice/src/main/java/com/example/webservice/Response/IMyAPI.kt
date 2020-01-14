@@ -79,6 +79,10 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("racuni.php")
     fun getAllInvoices(@Field("Token") Token: String, @Field("Readall") Readall: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<InvoiceResponse>
+
+    @FormUrlEncoded
+    @POST("novcanik.php")
+    fun sellProduct(@Field("Token") Token: String, @Field("SELL") SELL: Boolean, @Field("Id_Kupca") Id_Kupca: String, @Field("Id_Prodavaca") Id_Prodavaca: String, @Field("Id_Itema") Id_Itema: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<WalletBalanceResponse>
     
     /*@Multipart
     @POST("/upload")
