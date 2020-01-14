@@ -18,11 +18,16 @@ class MainMenu : AppCompatActivity() {
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
 
-        showAllProductsButton.setOnClickListener{showItems()}
+        sellItemsButton.setOnClickListener{showSellItemsActivity()}
         btn_items.setOnClickListener{showItems()}
         showWalletBalanceButton.setOnClickListener{showWalletBalance()}
         showIssuedInvoices.setOnClickListener { showInvoices() }
         //editProductButton.setOnClickListener { editProduct() }
+    }
+
+    private fun showSellItemsActivity(){
+        val intent = Intent(this, SellItemsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showItems(){
