@@ -61,5 +61,6 @@
     <string name="addItemsText">Popis artikala za prodaju je prazan</string>
     <string name="sellItemsLink">Odaberi proizvode</string>
     <string name="textTotal">Ukupno:</string>
+    <string name="textHRK">HRK</string>
 
 </resources>
