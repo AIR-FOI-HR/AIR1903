@@ -60,5 +60,6 @@
     <string name="textInvoice">Invoice</string>
     <string name="addItemsText">List of items for sale is empty</string>
     <string name="sellItemsLink">Select items</string>
+    <string name="textTotal">Total:</string>
 
 </resources>

@@ -7,6 +7,8 @@ import com.example.webservice.Common.Common
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.activity_main_menu.*
 import com.example.pop_sajamv2.Session
+import com.example.webservice.Model.Item
+
 class MainMenu : AppCompatActivity() {
     internal lateinit var mService: IMyAPI
 
@@ -18,16 +20,11 @@ class MainMenu : AppCompatActivity() {
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
 
-        sellItemsButton.setOnClickListener{showSellItemsActivity()}
+        sellItemsButton.setOnClickListener{showItems()}
         btn_items.setOnClickListener{showItems()}
         showWalletBalanceButton.setOnClickListener{showWalletBalance()}
         showIssuedInvoices.setOnClickListener { showInvoices() }
         //editProductButton.setOnClickListener { editProduct() }
-    }
-
-    private fun showSellItemsActivity(){
-        val intent = Intent(this, SellItemsActivity::class.java)
-        startActivity(intent)
     }
 
     private fun showItems(){

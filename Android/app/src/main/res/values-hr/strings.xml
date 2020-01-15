@@ -60,5 +60,6 @@
     <string name="textInvoice">Račun</string>
     <string name="addItemsText">Popis artikala za prodaju je prazan</string>
     <string name="sellItemsLink">Odaberi proizvode</string>
+    <string name="textTotal">Ukupno:</string>
 
 </resources>
