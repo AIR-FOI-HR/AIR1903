@@ -27,12 +27,10 @@ class ShowItemsActivity : AppCompatActivity() {
     }
 
     private fun startSellActivity() {
-        var selectedItems : ArrayList<Item> = arrayListOf(PackageClass("s", "1", 1,"a","a","a"), Product("a", "1",1,"abcd","a"))
+        var selectedItems : ArrayList<Item> = arrayListOf()
         val fragmentAdapter = viewPager.adapter as ShowItemsPagerAdapter
-        /*val productsFragment : ProductsFragment = fragmentAdapter.getItem(0) as ProductsFragment
-        val packagesFragment : PackagesFragment = fragmentAdapter.getItem(1) as PackagesFragment
-        selectedItems.addAll(packagesFragment.getRecyclerAdapter().getSelectedItems())
-        selectedItems.addAll(productsFragment.getRecyclerAdapter().getSelectedItems())*/
+        selectedItems.addAll(fragmentAdapter.packagesFragment.getRecyclerAdapter().getSelectedItems())
+        selectedItems.addAll(fragmentAdapter.productsFragment.getRecyclerAdapter().getSelectedItems())
 
         val intent = Intent(this, SellItemsActivity::class.java)
         intent.putExtra("items", ItemsWrapper(selectedItems))

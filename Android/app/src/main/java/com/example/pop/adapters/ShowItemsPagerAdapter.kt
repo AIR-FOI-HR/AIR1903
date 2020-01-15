@@ -7,12 +7,16 @@ import com.example.pop.fragments.PackagesFragment
 import com.example.pop.fragments.ProductsFragment
 
 class ShowItemsPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    lateinit var productsFragment : ProductsFragment
+    lateinit var packagesFragment: PackagesFragment
     override fun getItem(position: Int): Fragment {
-        return when (position){
+        when (position){
             0 -> {
-                ProductsFragment()
+                productsFragment = ProductsFragment()
+                return productsFragment
             }else -> {
-                return PackagesFragment()
+                packagesFragment = PackagesFragment()
+                return packagesFragment
             }
         }
     }
