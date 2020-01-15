@@ -29,6 +29,10 @@ class ProductsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_products_tab, container, false)
     }
 
+    public fun getRecyclerAdapter() : ItemRecyclerAdapter{
+        return product_list.adapter as ItemRecyclerAdapter
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -38,7 +42,6 @@ class ProductsFragment : Fragment() {
 
         btn_new_product.setOnClickListener{addProduct()}
     }
-
 
 
     private fun getProducts(){

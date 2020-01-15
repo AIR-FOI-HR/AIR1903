@@ -32,6 +32,10 @@ class PackagesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_packages_tab, container, false)
     }
 
+    public fun getRecyclerAdapter() : ItemRecyclerAdapter{
+        return package_list.adapter as ItemRecyclerAdapter
+    }
+
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
