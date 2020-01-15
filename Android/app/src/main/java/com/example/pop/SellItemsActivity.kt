@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import com.example.pop.adapters.SellItemsAdapter
+import com.example.qr.QRCode
 import com.example.webservice.Model.Item
 import com.example.webservice.Model.PackageClass
 import com.example.webservice.Model.Product
 import kotlinx.android.synthetic.main.activity_sell_items.*
+import kotlinx.android.synthetic.main.sell_item_list.*
 import java.lang.System.out
 
 class SellItemsActivity : AppCompatActivity() {
@@ -33,6 +35,9 @@ class SellItemsActivity : AppCompatActivity() {
     }
 
     private fun startQR() {
-        //Pokrece placanje sa qr-om
+        val intent = Intent(this, QRCodeActivity::class.java)
+        //layoutSellItemsTotalPrice  -> iznos u banneru iznad popisa selektiranih proizvoda
+        intent.putExtra("Total", layoutSellItemListPrice.text)
+        startActivity(intent)
     }
 }
