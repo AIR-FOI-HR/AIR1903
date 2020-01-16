@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import androidx.core.graphics.scale
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.pop.*
@@ -59,6 +60,7 @@ class PackageFragment : Fragment() {
     private lateinit var intent: Intent
     private lateinit var appContext:Context
     private var fragment: View? = null
+    private lateinit var createdView:View
 
 
     override fun onAttach(context: Context) {
@@ -77,8 +79,9 @@ class PackageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.btn_add_package.setOnClickListener {
-            it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
+        createdView=view
+        createdView.btn_add_package.setOnClickListener {
+            it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing,bundleOf("packageId" to packageClass.Id))
         }
     }
 
@@ -89,6 +92,7 @@ class PackageFragment : Fragment() {
         intent = activity!!.intent
         mService = Common.api
 
+
         if (intent.getIntExtra("previousActivity", 1) == 1)
             previousActivity = ShowItemsActivity::class.java
         else if (intent.getIntExtra("previousActivity", 1) == 2)
@@ -97,6 +101,10 @@ class PackageFragment : Fragment() {
         if (intent.hasExtra("item")) {
             if (intent.getSerializableExtra("item") != null) {
                 packageClass = intent.getSerializableExtra("item") as PackageClass
+                println ("DEBUG33--"+packageClass.Id)
+
+
+
                 packageUrl = packageClass.Slika!!
                 layoutManagePacketsInputName.setText(packageClass.Naziv)
                 layoutManagePacketsInputValue.setText(packageClass.Popust)
@@ -369,6 +377,7 @@ class PackageFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
 
+
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)
@@ -517,14 +526,13 @@ class PackageFragment : Fragment() {
                             "Paket uspješno uređen",
                             Toast.LENGTH_SHORT
                         ).show()
-                        val intent = Intent(appContext, previousActivity)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        appContext.startActivity(intent)
-                        (appContext as Activity).overridePendingTransition(0, 0)
-                        (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)
-                        //activity!!.finish()
+                        //val intent = Intent(appContext, previousActivity)
+                        //intent.flags =
+                        //    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        //appContext.startActivity(intent)
+                        //(appContext as Activity).overridePendingTransition(0, 0)
+                        //(appContext as Activity).finish()
+                        //(appContext as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
                         Toast.makeText(
@@ -569,14 +577,14 @@ class PackageFragment : Fragment() {
                             "Paket uspješno uređen",
                             Toast.LENGTH_SHORT
                         ).show()
-                        activity!!.finish()
-                        val intent = Intent(appContext, previousActivity)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        appContext.startActivity(intent)
-                        (appContext as Activity).overridePendingTransition(0, 0)
-                        (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)
+                        //activity!!.finish()
+                        //val intent = Intent(appContext, previousActivity)
+                        //intent.flags =
+                        //    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        //appContext.startActivity(intent)
+                        //(appContext as Activity).overridePendingTransition(0, 0)
+                        //(appContext as Activity).finish()
+                        //(appContext as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)
