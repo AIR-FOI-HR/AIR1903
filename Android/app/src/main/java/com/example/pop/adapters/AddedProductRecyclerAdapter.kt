@@ -10,7 +10,6 @@ class AddedProductRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<
 
     private var products: ArrayList<Product> = ArrayList()
     lateinit var product: Product
-    lateinit var activityContext: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddedProductViewHolder {
         return AddedProductViewHolder(LayoutInflater.from(parent.context).inflate(com.example.pop.R.layout.package_list_added_product, parent, false))
@@ -29,7 +28,7 @@ class AddedProductRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<
         notifyItemRangeChanged(position, products.size)
     }
 
-    fun submitList(data: List<Product>) {
+    fun submitList(data: ArrayList<Product>) {
         products.addAll(data)
         notifyDataSetChanged()
     }

@@ -3,46 +3,92 @@ package com.example.pop.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pop.*
+import com.example.pop.adapters.ItemClickListener
 import com.example.pop.adapters.ItemRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
+import com.example.webservice.Model.Product
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.activity_show_products.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProductsFragment : Fragment() {
+class ProductsFragment : Fragment(), ItemClickListener {
+
     private lateinit var itemAdapter: ItemRecyclerAdapter
+    private var products: ArrayList<Product>? = ArrayList()
+    var selectedProducts: ArrayList<Product> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_products_tab, container, false)
-    }
-
-    public fun getRecyclerAdapter() : ItemRecyclerAdapter{
-        return product_list.adapter as ItemRecyclerAdapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        itemAdapter = ItemRecyclerAdapter(context)
-        product_list.adapter = itemAdapter
         getProducts()
+        product_list.layoutManager = LinearLayoutManager(context)
+        itemAdapter = ItemRecyclerAdapter(context)
+        itemAdapter.setClickListener(this)
 
+        product_list.adapter = itemAdapter
+        itemAdapter.notifyDataSetChanged()
+        Log.e("ALDIN", "PORUKA")
+        products?.forEach{
+            Log.e("Nakon dohvata", it.Naziv)
+        }
         btn_new_product.setOnClickListener{addProduct()}
     }
 
+    override fun onItemClick(view: View, position: Int) {
+        val product: Product = products!![position]
+
+        Toast.makeText(context, product.Naziv, Toast.LENGTH_SHORT).show()
+        selectProduct(product,position)
+        selectedProducts.forEach{
+            Log.e("Dodani proizvodi", it.Naziv)
+        }
+    }
+
+    override fun onItemLongClick(view: View?, position: Int) {
+        val product: Product = products!![position]
+        product.expanded = product.expanded.not()
+        Log.e("EXPAND", product.expanded.toString())
+        itemAdapter.notifyItemChanged(position)
+    }
+
+    override fun onItemDeleteClick(view: View?, position: Int) {
+        Toast.makeText(context, "DELETE" + (products!![position].Naziv), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemEditClick(view: View?, position: Int) {
+        Toast.makeText(context, "EDIT" + (products!![position].Naziv), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun selectProduct(selectedProduct: Product, position: Int) {
+        val selected = selectedProduct.selected
+
+        if(!selected)
+            selectedProducts.add(selectedProduct)
+        else
+            selectedProducts.remove(selectedProduct)
+
+        selectedProduct.selected = !selected
+
+        itemAdapter.notifyItemChanged(position)
+    }
 
     private fun getProducts(){
         val api = Common.api
@@ -53,8 +99,10 @@ class ProductsFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
-                val resp = response.body()!!.DATA
-
+                products = response.body()!!.DATA
+                products?.forEach {
+                    Log.e("LISTA", it.Naziv)
+                }
                 when {
                     response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
                         val intent = Intent(activity, LoginActivity::class.java)
@@ -66,8 +114,9 @@ class ProductsFragment : Fragment() {
                     response.body()!!.STATUSMESSAGE=="OK" -> {}
                     else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
                 }
-
-                if (resp != null) itemAdapter.submitList(resp)
+                if(products != null){
+                    itemAdapter.submitList(products!!)
+                }
             }
         })
     }

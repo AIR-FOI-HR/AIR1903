@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_manage_packages.*
 
 class ManagePackagesActivity : AppCompatActivity() {
 
+    var packageId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

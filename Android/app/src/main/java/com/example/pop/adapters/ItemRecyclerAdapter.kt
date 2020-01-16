@@ -6,69 +6,77 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.se.omapi.Session
 import android.view.*
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pop.*
+import com.example.webservice.Model.*
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.RecyclerView
-import com.example.pop.*
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.*
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.item_list.view.*
 import retrofit2.Call
 import retrofit2.Response
 
+interface ItemClickListener {
+    fun onItemClick(view: View, position: Int)
+    fun onItemLongClick(view: View?, position: Int)
+    fun onItemDeleteClick(view: View?, position: Int)
+    fun onItemEditClick(view: View?, position: Int)
+}
 
-class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemViewHolder>(){
+
+class ItemRecyclerAdapter(
+    val context: Context?
+) : RecyclerView.Adapter<ItemViewHolder>(){
 
     private var items: ArrayList<Item> = ArrayList()
-    private var selectedItems: ArrayList<Item> = ArrayList()
+    var mClickListener: ItemClickListener? = null
+    private var mInflater: LayoutInflater? = null
     lateinit var item: Item
     lateinit var activityContext: Context
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(LayoutInflater.from(parent.context).inflate(com.example.pop.R.layout.item_list, parent, false))
+
+    init {
+        mInflater = LayoutInflater.from(context)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int) : ItemViewHolder {
+        val view = mInflater!!.inflate(R.layout.item_list, parent, false)
+        return ItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
-        this.item = items[position]
+        val item = items[position]
+        holder.bind(item, mClickListener)
 
-        holder.bind(item)
-
-        holder.itemView.setOnLongClickListener{expandItem(position)}
-        holder.itemView.setOnClickListener{selectItem(position)}
-        holder.itemView.img_edit_item.setOnClickListener{editItem()}
-        holder.itemView.img_delete_item.setOnClickListener{deleteItem()}
-        holder.itemView.img_return_item.setOnClickListener{expandItem(position)}
-        activityContext=holder.itemView.img_delete_item.context
+        holder.itemView.img_edit_item.setOnClickListener{editItem(position)}
+        holder.itemView.img_delete_item.setOnClickListener{deleteItem(position)}
+        activityContext = holder.itemView.img_delete_item.context
 
     }
 
-
-    private fun expandItem(position : Int) : Boolean{
-        val expanded = item.expanded
-        item.expanded = !expanded
-        notifyItemChanged(position)
-        return true
+    override fun getItemCount(): Int {
+        return items.size
     }
 
-    private fun selectItem(position : Int) {
-        val selected = item.selected
-
-        if(!selected)
-            selectedItems.add(item)
-        else
-            selectedItems.remove(item)
-
-        item.selected = !selected
-        notifyItemChanged(position)
+    // allows clicks events to be caught
+    fun setClickListener(itemClickListener: ItemClickListener) {
+        mClickListener = itemClickListener
     }
 
-    private fun deleteItem() {
+
+    fun getItem(position: Int): Item? {
+        return items[position]
+    }
+
+
+
+    private fun deleteItem(position: Int) {
         val layoutInflater:LayoutInflater = context
             ?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -83,7 +91,7 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
 
         val  anchor:View = (activityContext as Activity).findViewById(R.id.item_card) as CardView
         btnDismiss.setOnClickListener {run { popupWindow.dismiss()} }
-        btnAccept.setOnClickListener { deleteCall(popupWindow) }
+        btnAccept.setOnClickListener { deleteCall(popupWindow, position) }
         popupWindow.showAtLocation(anchor, Gravity.CENTER, 0,0)
         popupWindow.dimBehind()
     }
@@ -98,8 +106,9 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
         wm.updateViewLayout(container, p)
     }
 
-    private fun editItem(){
+    private fun editItem(position: Int) {
         lateinit var intent: Intent
+        item = items[position]
         if (item is Product)
             intent=Intent(this.context,ManageProductsActivity::class.java)
         else if (item is PackageClass)
@@ -110,8 +119,9 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
 
     }
 
-    private fun deleteCall(popupWindow:PopupWindow){
-        val mService:IMyAPI= Common.api
+    private fun deleteCall(popupWindow: PopupWindow, position: Int){
+        val mService: IMyAPI = Common.api
+        item = items[position]
         if (item is Product)
             mService.deleteProduct(com.example.pop_sajamv2.Session.user.Token, item.Id!!).enqueue(object : retrofit2.Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
@@ -122,11 +132,11 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
                 override fun onResponse(call: Call<NewProductResponse>, response: Response<NewProductResponse>) {
                     popupWindow.dismiss()
                     if (response.body()!!.STATUSMESSAGE=="DELETED"){
-                        val intent=Intent(activityContext,ShowItemsActivity::class.java)
+                        val intent=Intent(activityContext, ShowItemsActivity::class.java)
                         intent.flags = FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK
                         activityContext.startActivity(intent)
                         (activityContext as Activity).overridePendingTransition(0,0)
-                        (activityContext as Activity).finish()
+                        (activityContext as Activity).finishAffinity()
                         (activityContext as Activity).overridePendingTransition(0,0)
                         Toast.makeText(activityContext,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
                     }
@@ -170,16 +180,11 @@ class ItemRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<ItemView
             })
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+
 
     fun submitList(data: List<Item>){
         items.addAll(data)
         notifyDataSetChanged()
     }
-
-    fun getSelectedItems() : List<Item>{
-        return selectedItems
-    }
 }
+

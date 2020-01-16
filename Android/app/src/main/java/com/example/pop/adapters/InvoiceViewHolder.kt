@@ -8,8 +8,8 @@ import kotlinx.android.synthetic.main.invoice_list_item.view.*
 
 class InvoiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(invoice : Invoice) {
-        //itemView.layoutReceiptItemTextName.text = invoice.Id.toString()
-        //itemView.layoutReceiptItemTextDate.text = invoice.Datum
-        //itemView.layoutReceiptItemTextPrice.text = invoice.Cijena.toString()
+        itemView.layoutReceiptItemTextName.text = invoice.Id.toString()
+        itemView.layoutReceiptItemTextDate.text = invoice.DatumIzdavanja.toString()
+       // itemView.layoutReceiptItemTextPrice.text = invoice.Cije
     }
 }

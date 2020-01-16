@@ -7,6 +7,11 @@ import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Invoice
 import kotlinx.android.synthetic.main.activity_show_invoices.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Month
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.security.auth.callback.Callback
 
 class ShowInvoicesActivity : AppCompatActivity() {
@@ -17,21 +22,20 @@ class ShowInvoicesActivity : AppCompatActivity() {
 
         val adapter = InvoiceAdapter()
         layoutShowReceiptsRecycler.adapter = adapter
-        //adapter.data = getInvoices()
+        adapter.data = getInvoices()
     }
 
-    //private fun getInvoices() : List<Invoice> {
-    //    val api = Common.api
-    //    //Dohvatiti listu racuna u invoicesList
-//
-    //    //DEBUG
-    //    var invoicesList : List<Invoice> = listOf(
-    //        Invoice(1,"1.1.2020.", 20f),
-    //        Invoice(2,"2.2.2222.", 100f),
-    //        Invoice(61,"sutra.", 524.50f),
-    //        Invoice(5523,"15.8.2001.", 100000.0f),
-    //        Invoice(12134,"21.5.1995.", 22.6f) )
-//
-    //    return invoicesList
-    //}
+    private fun getInvoices() : List<Invoice> {
+        val api = Common.api
+
+        //DEBUG
+        val date = Calendar.getInstance().time
+        val formatter = SimpleDateFormat.getDateTimeInstance() //or use getDateInstance()
+        val formatedDate = formatter.format(date)
+
+        val invoicesList : List<Invoice> = listOf(
+            Invoice(1,"Foi", date, 10.0, 2, 1),
+            Invoice(2,"Foi", date, 15.0, 2, 2))
+        return invoicesList
+    }
 }
