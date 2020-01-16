@@ -19,6 +19,9 @@ if ($db->checkAuth($_POST["Token"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
+    }else if ($_POST["SELLPRODUCT"] == true){
+        $productSell = $db->sellItems($_POST);
+        
     }
 }
 else{
