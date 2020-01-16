@@ -2,11 +2,11 @@ package com.example.pop.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pop.LoginActivity
@@ -15,7 +15,6 @@ import com.example.pop.adapters.AddedProductRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.PackageClass
-import com.example.webservice.Model.Product
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.fragment_package_added_products.*
 import kotlinx.android.synthetic.main.fragment_package_added_products.view.*
@@ -55,11 +54,9 @@ class PackageAddedProductsFragment : Fragment() {
     private fun getProducts(){
         val api = Common.api
         lateinit var id: String
-        if (arguments != null) {
-            var packageClass = activity!!.intent.getSerializableExtra("item") as PackageClass
-            id = packageClass.Id.toString()
-            println("DEBUG33-"+arguments!!.getInt("packageId"))
-        }
+        var packageClass = activity!!.intent.getSerializableExtra("item") as PackageClass
+        id = packageClass.Id.toString()
+        //println("DEBUG33-"+arguments!!.getInt("packageId"))
 
         api.getOnePackageContents(Session.user.Token, true, id).enqueue(object:Callback<ProductResponse>{
             override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
