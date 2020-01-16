@@ -3,23 +3,22 @@ package com.example.pop.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pop.LoginActivity
+import com.example.pop.ManagePackagesActivity
 import com.example.pop.R
 import com.example.pop.adapters.ProductRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
+import com.example.webservice.Model.PackageResponse
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.fragment_package_products.*
-import kotlinx.android.synthetic.main.fragment_package_products.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +26,8 @@ import retrofit2.Response
 class PackageProductsFragment : Fragment() {
 
     private lateinit var productAdapter: ProductRecyclerAdapter
+    var parentActivity: ManagePackagesActivity = ManagePackagesActivity()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,9 +44,10 @@ class PackageProductsFragment : Fragment() {
             it.findNavController().navigate(R.id.action_package_add_products_to_package_list_products)
         }
 
+        parentActivity = activity as ManagePackagesActivity
         productAdapter = ProductRecyclerAdapter(context)
-        getProducts()
         package_product_list.adapter = productAdapter
+        getProducts()
         package_product_list.layoutManager = LinearLayoutManager(context)
     }
 
@@ -53,9 +55,35 @@ class PackageProductsFragment : Fragment() {
         val api = Common.api
         for(product in productAdapter.products){
             if(product.Kolicina != "0")
-                api.addToPackage(Session.user.Token, true, "41", product.Id.toString(), product.Kolicina )
+            {
+                api.addToPackage(Session.user.Token, true, parentActivity.packageId.toString(), product.Id.toString(), product.Kolicina ).enqueue(object :
+                    Callback<PackageResponse> {
+                    override fun onFailure(call: Call<PackageResponse>, t: Throwable) {
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onResponse(call: Call<PackageResponse>, response: Response<PackageResponse>) {
+                        val resp = response.body()!!.DATA
+
+                        when {
+                            response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
+                                val intent = Intent(activity, LoginActivity::class.java)
+                                Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                                Session.reset()
+                                startActivity(intent)
+                                activity?.finishAffinity()
+                            }
+                            response.body()!!.STATUSMESSAGE=="OK" -> {}
+                            else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
+                        }
+
+                    }
+                })
+
+            }
         }
     }
+
 
     private fun getProducts(){
         val api = Common.api
