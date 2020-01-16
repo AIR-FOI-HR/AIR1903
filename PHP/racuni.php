@@ -21,7 +21,11 @@ if ($db->checkAuth($_POST["Token"])) {
         return;
     }else if ($_POST["SELLPRODUCT"] == true){
         $productSell = $db->sellItems($_POST);
-        
+        $response->STATUS=true;
+        $response->STATUSMESSAGE = "Stanje racuna";
+        $response->DATA=$productSell;
+        $response= json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
     }
 }
 else{
