@@ -66,7 +66,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("paketi.php")
-    fun getOnePackageContents(@Field("Token") Token: String, @Field("GETONE") GETONE: Boolean, @Field("Id") Id: String):Call<PackageResponse>
+    fun getOnePackageContents(@Field("Token") Token: String, @Field("GETONE") GETONE: Boolean, @Field("Id") Id: String):Call<ProductResponse>
 
     @FormUrlEncoded
     @POST("paketi.php")
