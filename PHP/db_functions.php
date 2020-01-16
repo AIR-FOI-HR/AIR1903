@@ -646,11 +646,12 @@ public function setInitialBalance($post) {
     }
  //funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
 public function sellItems($post) {
-	$kolicinaProdanihProizvoda = $post["Kolicina"];
+$kolicinaProdanihProizvoda = $post["Kolicina"];
         $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '{$post["Id_Itema"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $kolicinaProizvodaPrijeProdaje = $stmt["Kolicina"];
+        
         $kolicinaProizvodaNakonProdaje = $kolicinaProizvodaPrijeProdaje - $kolicinaProdanihProizvoda;
         $q = "UPDATE Trgovina_Item SET Kolicina = '$kolicinaProizvodaNakonProdaje' WHERE Id_Itema = '{$post["Id_Itema"]}'";
         $stmt = $this->conn->query($q);
@@ -675,7 +676,7 @@ public function sellItems($post) {
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $cijenaProizvoda = $stmt["Cijena"];
-        $ukupnaCijena = ($cijenaProizvoda * $post["Kolicina"]) * 1 - ($post["Popust"]/100);
+        $ukupnaCijena = ($cijenaProizvoda * $post["Kolicina"]) * (1 - ($post["Popust"]/100));
         
         $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '{$post["Id_Kupac"]}'";
         $stmt = $this->conn->query($q);
@@ -693,10 +694,7 @@ public function sellItems($post) {
         $q = "UPDATE Korisnik_StanjeRacuna SET StanjeRacuna = '$novoStanjeProdavac' WHERE Id_Korisnika = '{$post["Id_Prodavaca"]}'";
         $stmt = $this->conn->query($q);
         
-        $response["NovoStanjeKupac"] = $novoStanjeKupac;
-        $response["NovoStanjeProdavac"] = $novoStanjeProdavac;
-        
-         $q = "SELECT Naziv FROM Item WHERE Id = '{$post["Id_Itema"]}'";
+        $q = "SELECT Naziv FROM Item WHERE Id = '{$post["Id_Itema"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
@@ -713,8 +711,8 @@ public function sellItems($post) {
         $stmt = $stmt->fetch_assoc();
         $mjestoIzdavanja = $stmt["MjestoIzdavanja"];
         $vrijemeIzdavanja = $stmt["DatumIzdavanja"];
-
-	$response["NovoStanjeKupac"] = $novoStanjeKupac;
+        
+        $response["NovoStanjeKupac"] = $novoStanjeKupac;
         $response["NovoStanjeProdavac"] = $novoStanjeProdavac;
         
         $response["Trgovina"] = $nazivTrgovine;
@@ -726,9 +724,8 @@ public function sellItems($post) {
         $response["PopustNaRacunu"] = $post["Popust"];
       
         $response["UkupnaCijena"] = $ukupnaCijena;
- 
+        
         return $response;
-      
     }
 public function sellPackages($post) {
 	$kolicinaProdanihPaketa = $post["Kolicina"];
