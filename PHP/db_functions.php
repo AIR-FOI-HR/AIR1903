@@ -292,7 +292,7 @@ class DB_Functions {
         
         return $response;
     }
-	public function deleteItem($post) {
+	public function deleteProduct($post) {
         $q = "UPDATE Item SET Izbrisan = 1 WHERE Id = {$post["Id"]}";
         $stmt = $this->conn->query($q);
         $response = null;
