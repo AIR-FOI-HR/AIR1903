@@ -59,6 +59,7 @@ class PackageFragment : Fragment() {
     private lateinit var intent: Intent
     private lateinit var appContext:Context
     private var fragment: View? = null
+    var parentActivity: ManagePackagesActivity = ManagePackagesActivity()
 
 
     override fun onAttach(context: Context) {
@@ -77,14 +78,12 @@ class PackageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.btn_add_package.setOnClickListener {
-            it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
-        }
     }
 
 
     override fun onStart() {
         super.onStart()
+        parentActivity = activity as ManagePackagesActivity
         image = File(activity!!.applicationContext!!.cacheDir.path + "/temp.webp")
         intent = activity!!.intent
         mService = Common.api
@@ -97,6 +96,7 @@ class PackageFragment : Fragment() {
         if (intent.hasExtra("item")) {
             if (intent.getSerializableExtra("item") != null) {
                 packageClass = intent.getSerializableExtra("item") as PackageClass
+                parentActivity.packageId = packageClass.Id!!
                 packageUrl = packageClass.Slika!!
                 layoutManagePacketsInputName.setText(packageClass.Naziv)
                 layoutManagePacketsInputValue.setText(packageClass.Popust)
@@ -150,8 +150,10 @@ class PackageFragment : Fragment() {
                     imageFile
                 )
             }
+
             //TODO: Poziv paketa dodanoh
             it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
+
         }
     }
 
@@ -317,13 +319,13 @@ class PackageFragment : Fragment() {
                             "Paket uspješno dodan",
                             Toast.LENGTH_SHORT
                         ).show()
-                        val intent = Intent(appContext, previousActivity)
+                       /* val intent = Intent(appContext, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         appContext.startActivity(intent)
                         (appContext as Activity).overridePendingTransition(0, 0)
                         (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)
+                        (appContext as Activity).overridePendingTransition(0, 0)*/
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
                         Toast.makeText(
@@ -339,6 +341,7 @@ class PackageFragment : Fragment() {
                             appContext,
                             response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
                         ).show()
+                    parentActivity.packageId = response.body()!!.DATA!!.Id!!
                 }
             })
 
@@ -512,6 +515,7 @@ class PackageFragment : Fragment() {
                     response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "PACKAGE UPDATED") {
+                        parentActivity.packageId = Id
                         Toast.makeText(
                             appContext,
                             "Paket uspješno uređen",
@@ -564,6 +568,7 @@ class PackageFragment : Fragment() {
                     response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "PACKAGE UPDATED") {
+                        parentActivity.packageId = Id
                         Toast.makeText(
                             appContext,
                             "Paket uspješno uređen",
@@ -596,7 +601,6 @@ class PackageFragment : Fragment() {
                 }
             })
         }
-
 
     }
 }
