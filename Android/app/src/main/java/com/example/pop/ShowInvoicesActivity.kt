@@ -17,21 +17,21 @@ class ShowInvoicesActivity : AppCompatActivity() {
 
         val adapter = InvoiceAdapter()
         layoutShowReceiptsRecycler.adapter = adapter
-        adapter.data = getInvoices()
+        //adapter.data = getInvoices()
     }
 
-    private fun getInvoices() : List<Invoice> {
-        val api = Common.api
-        //Dohvatiti listu racuna u invoicesList
-
-        //DEBUG
-        var invoicesList : List<Invoice> = listOf(
-            Invoice(1,"1.1.2020.", 20f),
-            Invoice(2,"2.2.2222.", 100f),
-            Invoice(61,"sutra.", 524.50f),
-            Invoice(5523,"15.8.2001.", 100000.0f),
-            Invoice(12134,"21.5.1995.", 22.6f) )
-
-        return invoicesList
-    }
+    //private fun getInvoices() : List<Invoice> {
+    //    val api = Common.api
+    //    //Dohvatiti listu racuna u invoicesList
+//
+    //    //DEBUG
+    //    var invoicesList : List<Invoice> = listOf(
+    //        Invoice(1,"1.1.2020.", 20f),
+    //        Invoice(2,"2.2.2222.", 100f),
+    //        Invoice(61,"sutra.", 524.50f),
+    //        Invoice(5523,"15.8.2001.", 100000.0f),
+    //        Invoice(12134,"21.5.1995.", 22.6f) )
+//
+    //    return invoicesList
+    //}
 }
