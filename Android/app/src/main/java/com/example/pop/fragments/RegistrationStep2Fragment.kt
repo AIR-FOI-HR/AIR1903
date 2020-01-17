@@ -79,10 +79,12 @@ class RegistrationStep2Fragment : Fragment(), View.OnClickListener {
             onClick(view)
         }
 
-        val keyboard = HideKeyboard()
-        view.registrationSecond.setOnClickListener{keyboard.hideKeyboard(registrationSecond)}
         view.setOnTouchListener { v : View, event : MotionEvent ->
-            if (event.action == MotionEvent.ACTION_DOWN) touchX = event.x
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val keyboard = HideKeyboard()
+                keyboard.hideKeyboard(registrationSecond)
+                touchX = event.x
+            }
             if (event.action == MotionEvent.ACTION_UP) {
                 if(abs(touchX - event.x) > SWIPE_THRESHOLD) {
                     if(touchX - event.x < 0) v.findNavController().navigateUp()
