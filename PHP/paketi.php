@@ -8,7 +8,8 @@ header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"])) {
     $packageCheck = $db->checkPackageEmpty($_POST);
     if ($_POST["GET"] == true) {
-        $allPackeges = $db->getAllPackeges($_POST);
+        //$allPackeges = $db->getAllPackeges($_POST);
+        $allPackeges = $db->getPacketsWithProducts($_POST);
         if ($allPackeges[0] == 1) {
             $response->DATA = null;
             $response->STATUS = false;
@@ -77,7 +78,6 @@ if ($db->checkAuth($_POST["Token"])) {
         $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
-
 }
 else{
     $response->STATUS=false;

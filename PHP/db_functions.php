@@ -926,6 +926,83 @@ public function getInvoice($post) {
         $response = $stmt;
         return $response;
     }
+	
+	public function getPacketsWithProducts($post){
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $userId = $stmt["Id"];
+        $roleId=$stmt["Id_Uloge"];
+        $response[0]= $stmt["Id_Uloge"];
+        if ($roleId==1){
+            return $response;
+        }
+        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $storeId=$stmt["Id_Trgovina"];
+        
+        //echo "Store id: " . $storeId;
+        
+        if ($roleId == 3){ // ako je prodavac
+            /*$q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Popust, fin2.Slika FROM "
+                    . "(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
+                    ."FROM "
+                    ."(SELECT svi.*, tp.Id_Trgovine "
+                    ."FROM "
+                    ."(SELECT a.*, b.Popust "
+                    ."FROM Item a "
+                    ."LEFT JOIN "
+                    ."(SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme "
+                    ."FROM "
+                    ."(SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme "
+                    ."FROM Paket_Popust "
+                    ."GROUP BY Id_Paketa) c "
+                    ."JOIN Paket_Popust d "
+                    ."ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b "
+                    ."ON a.Id = b.Id_Paketa) svi "
+                    ."JOIN Trgovina_Item tp "
+                    ."ON tp.Id_Itema = svi.id "
+                    ."WHERE svi.Izbrisan=0) fin "
+                    ."WHERE Id_Trgovine = {$storeId}) fin2 "
+                    ."JOIN Paket ON Paket.Id_Itema=fin2.Id ";*/
+            $q = "SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika FROM (SELECT svi.*, tp.Id_Trgovine, tp.Kolicina FROM (SELECT a.*, b.Popust FROM Item a LEFT JOIN (SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme FROM (SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme FROM Paket_Popust GROUP BY Id_Paketa) c JOIN Paket_Popust d ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b ON a.Id = b.Id_Paketa) svi JOIN Trgovina_Item tp ON tp.Id_Itema = svi.id WHERE svi.Izbrisan=0) fin JOIN Paket ON fin.Id = Paket.Id_Itema WHERE Id_Trgovine = '{$storeId}'";
+            
+        } elseif ($roleId == 2) { // ako je admin
+            /*$q = "SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
+                    . "FROM "
+                    . "(SELECT svi.*, tp.Id_Trgovine "
+                    . "FROM "
+                    . "(SELECT a.*, b.Popust "
+                    . "FROM Item a "
+                    . "LEFT JOIN "
+                    . "(SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme "
+                    . "FROM "
+                    . "(SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme "
+                    . "FROM Paket_Popust "
+                    . "GROUP BY Id_Paketa) c "
+                    . "JOIN Paket_Popust d "
+                    . "ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b "
+                    . "ON a.Id = b.Id_Paketa) svi "
+                    . "JOIN Trgovina_Item tp "
+                    . "ON tp.Id_Itema = svi.id "
+                    . "WHERE svi.Izbrisan=0) fin "
+                    . "JOIN Paket ON Paket.Id_Itema=fin.Id ";*/
+            $q = "SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika FROM (SELECT svi.*, tp.Id_Trgovine, tp.Kolicina FROM (SELECT a.*, b.Popust FROM Item a LEFT JOIN (SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme FROM (SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme FROM Paket_Popust GROUP BY Id_Paketa) c JOIN Paket_Popust d ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b ON a.Id = b.Id_Paketa) svi JOIN Trgovina_Item tp ON tp.Id_Itema = svi.id WHERE svi.Izbrisan=0) fin JOIN Paket ON fin.Id = Paket.Id_Itema ";
+        }
+        $stmt = $this->conn->query($q);
+        
+        $vv=[];
+        $gottenPackages = $stmt->fetch_all(MYSQLI_ASSOC);
+        foreach ($gottenPackages as &$i){
+            $i["Items"] = $this->getContentsOfPackage($i);
+            array_push($vv,$i);
+        }
+        //var_dump($vv);
+        //$response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
+        $response[1]=$vv;
+        return $response;
+    }
 
 
 }
