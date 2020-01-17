@@ -70,7 +70,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("paketi.php")
-    fun addToPackage(@Field("Token") Token: String, @Field("ADDTOPACKET") ADDTOPACKET: Boolean, @Field("Id_Paket") Id_Paket: String, @Field("Id_Proizvod") Id_Proizvod: String, @Field("Kolicina") Kolicina: String):Call<PackageResponse>
+    fun addToPackage(@Field("Token") Token: String, @Field("ADDTOPACKET") ADDTOPACKET: Boolean, @Field("Id_Paket") Id_Paket: String, @Field("Id_Proizvod[]") Id_Proizvod: ArrayList<Int>, @Field("Kolicina[]") Kolicina: ArrayList<String>):Call<PackageResponse>
 
     @FormUrlEncoded
     @POST("novcanik.php")

@@ -56,36 +56,42 @@ class PackageProductsFragment : Fragment() {
         val api = Common.api
         var packageClass = activity!!.intent.getSerializableExtra("item") as PackageClass
         var id = packageClass.Id.toString()
+        var prodIds = ArrayList<Int>()
+        var prodAmt = ArrayList<String>()
         for(product in productAdapter.products){
             if(product.Kolicina != "0")
             {
+                prodIds.add(product.Id!!)
+                prodAmt.add(product.Kolicina)
                 println("DEBUG33-"+product.Naziv)
-                api.addToPackage(Session.user.Token, true, id, product.Id.toString(), product.Kolicina ).enqueue(object :
-                    Callback<PackageResponse> {
-                    override fun onFailure(call: Call<PackageResponse>, t: Throwable) {
-                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onResponse(call: Call<PackageResponse>, response: Response<PackageResponse>) {
-                        val resp = response.body()!!.DATA
-
-                        when {
-                            response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
-                                val intent = Intent(activity, LoginActivity::class.java)
-                                Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
-                                Session.reset()
-                                startActivity(intent)
-                                activity?.finishAffinity()
-                            }
-                            response.body()!!.STATUSMESSAGE=="OK" -> {}
-                            else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
-                        }
-
-                    }
-                })
-
             }
         }
+
+        api.addToPackage(Session.user.Token, true, id, prodIds,prodAmt).enqueue(object:Callback<PackageResponse> {
+            override fun onFailure(call: Call<PackageResponse>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<PackageResponse>, response: Response<PackageResponse>) {
+                val resp = response.body()!!.DATA
+                println("DEBUG33asdda-"+response.body().toString())
+
+                when {
+                    response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
+                        val intent = Intent(activity, LoginActivity::class.java)
+                        Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Session.reset()
+                        startActivity(intent)
+                        activity?.finishAffinity()
+                    }
+                    response.body()!!.STATUSMESSAGE=="OK" -> {}
+                    else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
+                }
+
+            }
+
+            /**/
+        })
     }
 
 
