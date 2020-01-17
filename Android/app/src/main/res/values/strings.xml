@@ -49,9 +49,13 @@
 
     <string name="label_quantity">Quantity:</string>
     <string name="text_add_image_choice">Add image</string>
+    <string name="text_payment_method">Payment method</string>
     <string name="btn_gallery">GALLERY</string>
     <string name="btn_camera">CAMERA</string>
+    <string name="btn_qr_code">QR CODE</string>
+    <string name="btn_nfc">NFC</string>
     <string name="text_add_image_dialog">Choose how you want to add an image.</string>
+    <string name="text_choose_payment_method">Choose payment method.</string>
     <string name="hint_package_discount">Package discount</string>
     <string name="btn_finish_adding_products">FINISH</string>
     <string name="hint_package_name">Package name</string>

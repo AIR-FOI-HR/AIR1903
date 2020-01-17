@@ -58,31 +58,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/layoutSellItemsButtonNFC"
+        android:id="@+id/btn_choose_payment_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="16dp"
         android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/layoutSellItemsButtonQR"
-        app:srcCompat="@drawable/items1"
-        android:focusable="true" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/layoutSellItemsButtonQR"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/layoutSellItemsButtonNFC"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/layoutSellItemsRecycler"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/sell_items"
-        android:focusable="true" />
+        app:srcCompat="@drawable/img_check_mark" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/layoutSellItemsRecycler"

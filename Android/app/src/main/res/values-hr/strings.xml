@@ -49,9 +49,13 @@
     <string name="buttonAddProducts">Dodaj proizvode</string>
     <string name="label_quantity">Količina:</string>
     <string name="text_add_image_choice">Dodajte sliku</string>
+    <string name="text_payment_method">Metoda plaćanja</string>
     <string name="btn_gallery">GALERIJA</string>
+    <string name="btn_qr_code">QR KOD</string>
     <string name="btn_camera">KAMERA</string>
+    <string name="btn_nfc">NFC</string>
     <string name="text_add_image_dialog">Odaberite kako želite dodati sliku.</string>
+    <string name="text_choose_payment_method">Odaberite metodu plaćanja.</string>
     <string name="hint_package_discount">Popust paketa</string>
     <string name="btn_finish_adding_products">FINISH</string>
     <string name="hint_package_name">Naziv paketa</string>
