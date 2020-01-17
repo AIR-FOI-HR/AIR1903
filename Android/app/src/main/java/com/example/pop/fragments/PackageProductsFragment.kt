@@ -16,6 +16,7 @@ import com.example.pop.R
 import com.example.pop.adapters.ProductRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
+import com.example.webservice.Model.PackageClass
 import com.example.webservice.Model.PackageResponse
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.fragment_package_products.*
@@ -53,10 +54,13 @@ class PackageProductsFragment : Fragment() {
 
     private fun addProducts(){
         val api = Common.api
+        var packageClass = activity!!.intent.getSerializableExtra("item") as PackageClass
+        var id = packageClass.Id.toString()
         for(product in productAdapter.products){
             if(product.Kolicina != "0")
             {
-                api.addToPackage(Session.user.Token, true, parentActivity.packageId.toString(), product.Id.toString(), product.Kolicina ).enqueue(object :
+                println("DEBUG33-"+product.Naziv)
+                api.addToPackage(Session.user.Token, true, id, product.Id.toString(), product.Kolicina ).enqueue(object :
                     Callback<PackageResponse> {
                     override fun onFailure(call: Call<PackageResponse>, t: Throwable) {
                         Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
@@ -104,7 +108,7 @@ class PackageProductsFragment : Fragment() {
                         startActivity(intent)
                         activity?.finishAffinity()
                     }
-                    response.body()!!.STATUSMESSAGE=="OK" -> {}
+                    response.body()!!.STATUSMESSAGE=="SUCCESS" -> {}
                     else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
                 }
 
