@@ -465,20 +465,30 @@ public function updateProduct($post) {
 	
 	public function addItemToPackage($post){
         
-        $q = "SELECT Id FROM Proizvod_Paket WHERE Id_Paketa = {$post["Id_Paket"]} AND Id_Proizvoda = {$post["Id_Proizvod"]}";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        if (sizeof($stmt)!=0){
-            $q="UPDATE Proizvod_Paket SET Kolicina = {$post["Kolicina"]} "
-            . "WHERE Id_Paketa = {$post["Id_Paket"]} AND Id_Proizvoda = {$post["Id_Proizvod"]}";
+        $paket = $post["Id_Paket"];
+        $proizvodi = $post["Id_Proizvod"];
+        $kolicine = $post["Kolicina"];
+        
+        for ($i=0;$i<sizeof($proizvodi);$i++){
+            $q = "SELECT Id FROM Proizvod_Paket WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
+            
             $stmt = $this->conn->query($q);
-        }
-        else{
-            $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) "
-                    . "VALUES (null, {$post["Id_Paket"]}, {$post["Id_Proizvod"]}, {$post["Kolicina"]})";
-            $stmt = $this->conn->query($q);
+            $stmt = $stmt->fetch_assoc();
+            if (sizeof($stmt)!=0){
+                $q="UPDATE Proizvod_Paket SET Kolicina = {$kolicine[$i]} "
+                . "WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
+                $stmt = $this->conn->query($q);
+            }
+            else{
+                $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) "
+                        . "VALUES (null, {$paket}, {$proizvodi[$i]}, {$kolicine[$i]})";
+                $stmt = $this->conn->query($q);
+            }
         }
         return $post;
+        //if (is_array($proizvodi)) echo "ARRAY";
+        
+        
     }
 	
     public function checkPackageEmpty($post) {
