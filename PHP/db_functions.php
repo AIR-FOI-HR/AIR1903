@@ -459,6 +459,7 @@ public function updateProduct($post) {
         $response["Slika"] = $stmt4["Slika"];
         $response["Kolicina"] = $post["Kolicina"];
         $response["Popust"] = $stmt3["Popust"];
+        $response["Items"]=null;
 
         return $response;
     }
@@ -475,8 +476,12 @@ public function updateProduct($post) {
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             if (sizeof($stmt)!=0){
-                $q="UPDATE Proizvod_Paket SET Kolicina = {$kolicine[$i]} "
-                . "WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
+                if ($kolicine[$i]==0){
+                    $q="DELETE FROM Proizvod_Paket WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
+                } else{
+                    $q="UPDATE Proizvod_Paket SET Kolicina = {$kolicine[$i]} "
+                    . "WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
+                }
                 $stmt = $this->conn->query($q);
             }
             else{
@@ -487,8 +492,6 @@ public function updateProduct($post) {
         }
         return $post;
         //if (is_array($proizvodi)) echo "ARRAY";
-        
-        
     }
 	
     public function checkPackageEmpty($post) {
@@ -531,7 +534,7 @@ public function updateProduct($post) {
         return $response;
     }
     public function getAllPackeges($post) {
-         $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -600,8 +603,8 @@ public function updateProduct($post) {
     }
 	
 	public function getContentsOfPackage($post){
-        $q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Cijena, fin2.Slika FROM "
-            ."(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika  "
+        $q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Cijena, fin2.Slika, fin2.Kolicina FROM "
+            ."(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, Proizvod_Paket.Kolicina  "
             ."FROM  "
             ."(SELECT svi.*, tp.Id_Trgovine  "
             ."FROM  "
@@ -625,6 +628,7 @@ public function updateProduct($post) {
         
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
+        
         return $stmt; 
     }
 
