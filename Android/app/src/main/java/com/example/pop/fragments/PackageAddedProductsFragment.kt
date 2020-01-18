@@ -121,7 +121,7 @@ class PackageAddedProductsFragment : Fragment() {
 
     private fun transitionToAddProducts(it:View){
         var alreadyPresentBundle = bundleOf(
-            "items" to items
+            "items" to productAdapter.getItems()
         )
         it.findNavController().navigate(R.id.action_packageProductsListing_to_packageProductsAdding, alreadyPresentBundle)
     }
