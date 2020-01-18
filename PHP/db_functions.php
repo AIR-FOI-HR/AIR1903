@@ -470,31 +470,16 @@ public function updateProduct($post) {
         $proizvodi = $post["Id_Proizvod"];
         $kolicine = $post["Kolicina"];
         
+        $q = "DELETE FROM Proizvod_Paket WHERE Id_Paketa = {$paket}";
+        $stmt = $this->conn->query($q);
+        $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) VALUES ";
         for ($i=0;$i<sizeof($proizvodi);$i++){
-            $q = "SELECT Id FROM Proizvod_Paket WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
-            
-            $stmt = $this->conn->query($q);
-            $stmt = $stmt->fetch_assoc();
-            if (sizeof($stmt)!=0){
-                if ($kolicine[$i]==0){
-                    $q="DELETE FROM Proizvod_Paket WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
-                } else{
-                    $q="UPDATE Proizvod_Paket SET Kolicina = {$kolicine[$i]} "
-                    . "WHERE Id_Paketa = {$paket} AND Id_Proizvoda = {$proizvodi[$i]}";
-                }
-                $stmt = $this->conn->query($q);
-            }
-            else{
-                if($kolicine[$i]==0){
-                    continue;
-                }
-                else{
-                    $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) "
-                            . "VALUES (null, {$paket}, {$proizvodi[$i]}, {$kolicine[$i]})";
-                    $stmt = $this->conn->query($q);
-                }
-            }
+            if ($kolicine[$i]!=0)
+                $q.="(null, {$paket}, {$proizvodi[$i]},  {$kolicine[$i]}), ";
         }
+        $q=substr($q, 0, -2);
+        //echo $q;
+        $stmt = $this->conn->query($q);
         return $post;
         //if (is_array($proizvodi)) echo "ARRAY";
     }
