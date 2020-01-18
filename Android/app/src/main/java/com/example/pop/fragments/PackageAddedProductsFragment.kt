@@ -32,6 +32,7 @@ class PackageAddedProductsFragment : Fragment() {
 
     private lateinit var productAdapter: AddedProductRecyclerAdapter
     var finalItems = ArrayList<Product>()
+    var newProds = ArrayList<Product>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +58,7 @@ class PackageAddedProductsFragment : Fragment() {
         }
 
         if (arguments != null) {
-            var newProds = arguments!!.get("prods") as ArrayList<Product>
+            newProds = arguments!!.get("prods") as ArrayList<Product>
 
             for (i:Product in newProds){
                 var chk:Product?=null
@@ -67,10 +68,10 @@ class PackageAddedProductsFragment : Fragment() {
                         break
                     }
                 }
-                if (chk!=null){
+                if (chk!=null && chk.Kolicina!=0.toString()){
                     finalItems.add(chk)
                 }
-                else
+                else if (i.Kolicina!=0.toString())
                     finalItems.add(i)
             }
         }
@@ -130,7 +131,7 @@ class PackageAddedProductsFragment : Fragment() {
 
         var prodIds = ArrayList<Int>()
         var prodAmt = ArrayList<String>()
-        for (i:Product in finalItems){
+        for (i:Product in newProds){
             prodIds.add(i.Id!!)
             prodAmt.add(i.Kolicina)
         }
