@@ -485,9 +485,14 @@ public function updateProduct($post) {
                 $stmt = $this->conn->query($q);
             }
             else{
-                $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) "
-                        . "VALUES (null, {$paket}, {$proizvodi[$i]}, {$kolicine[$i]})";
-                $stmt = $this->conn->query($q);
+                if($kolicine[$i]==0){
+                    continue;
+                }
+                else{
+                    $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) "
+                            . "VALUES (null, {$paket}, {$proizvodi[$i]}, {$kolicine[$i]})";
+                    $stmt = $this->conn->query($q);
+                }
             }
         }
         return $post;
