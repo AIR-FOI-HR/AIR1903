@@ -55,6 +55,7 @@ class PackageProductsFragment : Fragment() {
         val api = Common.api
         var prods = ArrayList<Product>()
         for(product in productAdapter.products){
+            if (product.Kolicina!=0.toString())
             prods.add(product)
         }
 
@@ -77,7 +78,7 @@ class PackageProductsFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
-                resp = response.body()!!.DATA!!
+                resp = response.body()!!.DATA!! as ArrayList<Product>
 
                 when {
                     response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
@@ -100,17 +101,17 @@ class PackageProductsFragment : Fragment() {
                 var finalItems = ArrayList<Product>()
 
                 for (i:Product in resp){
-                    var chk:Product?=null
+                    var chk=0
                     for (j:Product in items){
                         if (j.Id==i.Id){
-                            chk=j
+                            i.Kolicina=j.Kolicina
+                            println("DEBUG33-paskd-"+i.Naziv+" -- "+i.Kolicina)
+                            finalItems.add(i)
+                            chk=1
                             break
                         }
                     }
-                    if (chk!=null){
-                        finalItems.add(chk)
-                    }
-                    else{
+                    if (chk==0){
                         i.Kolicina=0.toString()
                         finalItems.add(i)
                     }

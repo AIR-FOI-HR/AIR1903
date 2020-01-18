@@ -36,5 +36,8 @@ class AddedProductRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<
     override fun getItemCount(): Int {
         return products.size
     }
+    fun getItems ():ArrayList<Product>{
+        return products
+    }
 
 }

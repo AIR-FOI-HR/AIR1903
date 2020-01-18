@@ -31,8 +31,7 @@ import retrofit2.Response
 class PackageAddedProductsFragment : Fragment() {
 
     private lateinit var productAdapter: AddedProductRecyclerAdapter
-    var finalItems = ArrayList<Product>()
-    var newProds = ArrayList<Product>()
+    var items = ArrayList<Product>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,75 +50,27 @@ class PackageAddedProductsFragment : Fragment() {
         view.btn_submit_package_products.setOnClickListener{
             submitPackage()
         }
-        var items = ArrayList<Product>()
-        if (activity!!.intent.hasExtra("item")) {
-            items =
-                (activity!!.intent.extras!!.get("item") as PackageClass).Items as ArrayList<Product>
-        }
-
-        if (arguments != null) {
-            newProds = arguments!!.get("prods") as ArrayList<Product>
-
-            for (i:Product in newProds){
-                var chk:Product?=null
-                for (j:Product in items){
-                    if (i.Id!! == j.Id!!) {
-                        chk = j
-                        break
-                    }
-                }
-                if (chk!=null && chk.Kolicina!=0.toString()){
-                    finalItems.add(chk)
-                }
-                else if (i.Kolicina!=0.toString())
-                    finalItems.add(i)
+        try {
+            items = arguments!!.get("prods") as ArrayList<Product>
+        }catch (e:kotlin.KotlinNullPointerException){
+            try {
+                items = (activity!!.intent.extras!!.get("item") as PackageClass).Items as ArrayList<Product>
+            } catch (e:TypeCastException){
+                items=ArrayList<Product>()
             }
         }
-        else finalItems=items
 
         productAdapter = AddedProductRecyclerAdapter(context)
         package_added_product_list.adapter = productAdapter
-        productAdapter.submitList(ArrayList(finalItems))
+        productAdapter.submitList(ArrayList(items))
 
         package_added_product_list.layoutManager = LinearLayoutManager(context)
     }
 
 
-    private fun getProducts(){
-        val api = Common.api
-        lateinit var id: String
-        var packageClass = activity!!.intent.getSerializableExtra("item") as PackageClass
-        id = packageClass.Id.toString()
-
-        api.getOnePackageContents(Session.user.Token, true, id).enqueue(object:Callback<ProductResponse>{
-            override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
-                val resp = response.body()!!.DATA
-
-                when {
-                    response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
-                        val intent = Intent(activity, LoginActivity::class.java)
-                        Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
-                        Session.reset()
-                        startActivity(intent)
-                        activity?.finishAffinity()
-                    }
-                    response.body()!!.STATUSMESSAGE=="OK" -> {}
-                    else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
-                }
-
-                if (resp != null) productAdapter.submitList(resp)
-            }
-        })
-    }
 
     private fun submitPackage(){
         var id=0
-        //var id = (arguments!!.get("packageId"))
-        //println("DEBUG33-asdddcyxxa-"+id)
         try {
             id = (activity!!.intent.extras!!.get("item") as PackageClass).Id!!
             println("DEBUG33-try-"+id)
@@ -131,7 +82,7 @@ class PackageAddedProductsFragment : Fragment() {
 
         var prodIds = ArrayList<Int>()
         var prodAmt = ArrayList<String>()
-        for (i:Product in newProds){
+        for (i:Product in productAdapter.getItems()){
             prodIds.add(i.Id!!)
             prodAmt.add(i.Kolicina)
         }
@@ -170,7 +121,7 @@ class PackageAddedProductsFragment : Fragment() {
 
     private fun transitionToAddProducts(it:View){
         var alreadyPresentBundle = bundleOf(
-            "items" to finalItems
+            "items" to items
         )
         it.findNavController().navigate(R.id.action_packageProductsListing_to_packageProductsAdding, alreadyPresentBundle)
     }
