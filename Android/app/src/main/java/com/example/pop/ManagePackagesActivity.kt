@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import kotlinx.android.synthetic.main.activity_manage_packages.*
 
+var packageTouchX : Float = 0f
 
 class ManagePackagesActivity : AppCompatActivity() {
+
 
     var packageId: Int = 0
 

@@ -5,16 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pop.LoginActivity
-import com.example.pop.R
-import com.example.pop.ShowItemsActivity
+import com.example.pop.*
 import com.example.pop.adapters.AddedProductRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_package_added_products.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.abs
 
 class PackageAddedProductsFragment : Fragment() {
 
@@ -37,8 +38,20 @@ class PackageAddedProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_package_added_products, container, false)
+        view.package_added_product_list.setOnTouchListener { _: View, event : MotionEvent ->
 
-        return inflater.inflate(R.layout.fragment_package_added_products, container, false)
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                packageTouchX = event.x
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                if(abs(packageTouchX - event.x) > SWIPE_THRESHOLD) {
+                    if(packageTouchX - event.x > 0) transitionToAddProducts(view)
+                }
+            }
+            true
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

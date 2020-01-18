@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -12,9 +13,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pop.LoginActivity
-import com.example.pop.ManagePackagesActivity
-import com.example.pop.R
+import com.example.pop.*
 import com.example.pop.adapters.ProductRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
@@ -23,9 +22,11 @@ import com.example.webservice.Model.PackageResponse
 import com.example.webservice.Model.Product
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.fragment_package_products.*
+import kotlinx.android.synthetic.main.fragment_package_products.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.abs
 
 class PackageProductsFragment : Fragment() {
 
@@ -37,7 +38,20 @@ class PackageProductsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_package_products, container, false)
+        val view = inflater.inflate(R.layout.fragment_package_products, container, false)
+        view.package_product_list.setOnTouchListener { v : View, event : MotionEvent ->
+
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                packageTouchX = event.x
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                if(abs(packageTouchX - event.x) > SWIPE_THRESHOLD) {
+                    if(packageTouchX - event.x < 0) addProducts(view)
+                }
+            }
+            true
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
