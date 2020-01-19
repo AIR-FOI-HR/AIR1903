@@ -63,7 +63,6 @@ class SellItemsActivity : AppCompatActivity() {
 
     private fun startQR() {
         val intent = Intent(this, QRCodeActivity::class.java)
-        //layoutSellItemsTotalPrice  -> iznos u banneru iznad popisa selektiranih proizvoda
         intent.putExtra("Total", invoice_total_value.text)
         startActivity(intent)
     }
