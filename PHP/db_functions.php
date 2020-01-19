@@ -593,29 +593,49 @@ public function updateProduct($post) {
     }
 	
 	public function getContentsOfPackage($post){
-        $q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Cijena, fin2.Slika, fin2.Kolicina FROM "
-            ."(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, Proizvod_Paket.Kolicina  "
-            ."FROM  "
-            ."(SELECT svi.*, tp.Id_Trgovine  "
-            ."FROM  "
-            ."(SELECT a.*, b.Cijena  "
-            ."FROM Item a  "
-            ."LEFT JOIN  "
-            ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme  "
-            ."FROM  "
-            ."(SELECT Id_Proizvod, MAX(UnixVrijeme) UnixVrijeme  "
-            ."FROM Proizvod_Cijena  "
-            ."GROUP BY Id_Proizvod) c  "
-            ."JOIN Proizvod_Cijena d  "
-            ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b  "
-            ."ON a.Id = b.Id_Proizvod) svi  "
-            ."JOIN Trgovina_Item tp  "
-            ."ON tp.Id_Itema = svi.id  "
-            ."WHERE svi.Izbrisan=0) fin "
-            ."JOIN Proizvod_Paket "
-            ."ON Proizvod_Paket.Id_Proizvoda = fin.Id "
-            ."WHERE Proizvod_Paket.Id_Paketa={$post["Id"]}) fin2 ";
-        
+        if (isset($post["UnixDatum"])){
+            $q = "SELECT p.Id_Proizvoda Id, i.Naziv, i.Opis, i.Slika, p.Kolicina"
+                    . " FROM Proizvod_Paket p"
+                    . " JOIN Item i ON i.Id = p.Id_Proizvoda "
+                    . " WHERE Id_Paketa = {$post["Id"]}";
+            $stmt = $this->conn->query($q);
+            $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
+            
+            foreach ($stmt as &$i){
+                $q = "SELECT Cijena FROM Proizvod_Cijena p"
+                        . " WHERE p.Id_Proizvod = {$i["Id"]} AND UnixVrijeme < {$post["UnixDatum"]}"
+                        . " ORDER BY UnixVrijeme DESC LIMIT 1";
+                $stmt2 = $this->conn->query($q);
+                $stmt2 = $stmt2->fetch_assoc();
+                $i["Cijena"] = $stmt2["Cijena"];
+            }
+            
+            return $stmt;
+        }
+        else {
+            $q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Cijena, fin2.Slika, fin2.Kolicina FROM "
+                ."(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, Proizvod_Paket.Kolicina  "
+                ."FROM  "
+                ."(SELECT svi.*, tp.Id_Trgovine  "
+                ."FROM  "
+                ."(SELECT a.*, b.Cijena  "
+                ."FROM Item a  "
+                ."LEFT JOIN  "
+                ."(SELECT c.Id_Proizvod, d.Cijena, c.UnixVrijeme  "
+                ."FROM  "
+                ."(SELECT Id_Proizvod, MAX(UnixVrijeme) UnixVrijeme  "
+                ."FROM Proizvod_Cijena  "
+                ."GROUP BY Id_Proizvod) c  "
+                ."JOIN Proizvod_Cijena d  "
+                ."ON c.Id_Proizvod = d.Id_Proizvod AND d.UnixVrijeme = c.UnixVrijeme ) b  "
+                ."ON a.Id = b.Id_Proizvod) svi  "
+                ."JOIN Trgovina_Item tp  "
+                ."ON tp.Id_Itema = svi.id  "
+                ."WHERE svi.Izbrisan=0) fin "
+                ."JOIN Proizvod_Paket "
+                ."ON Proizvod_Paket.Id_Proizvoda = fin.Id "
+                ."WHERE Proizvod_Paket.Id_Paketa={$post["Id"]}) fin2 ";
+        }
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
         
