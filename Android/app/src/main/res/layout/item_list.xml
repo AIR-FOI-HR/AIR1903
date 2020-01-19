@@ -11,7 +11,7 @@
     android:clickable="false"
     android:focusable="false"
     android:foreground="?android:selectableItemBackground"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="18dp"
     app:cardPreventCornerOverlap="false">
 
@@ -45,10 +45,10 @@
             android:layout_weight="1"
             android:clickable="true"
             android:scaleType="fitXY"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/img_selected_item" />
+            app:srcCompat="@drawable/img_selected" />
 
         <TextView
             android:id="@+id/item_value"
