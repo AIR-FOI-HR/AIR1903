@@ -29,15 +29,12 @@ class MainMenuBuyer : AppCompatActivity() {
 
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
-
-
         val dialogView = layoutInflater.run { inflate(R.layout.dialog_payment_method, null) }
         val dialogWindow = PopupWindow(
             dialogView,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-
 
         card_sell_items.setOnClickListener{
             dialogWindow.showAtLocation(it, Gravity.CENTER, 0, 0)
@@ -46,18 +43,13 @@ class MainMenuBuyer : AppCompatActivity() {
         card_invoices.setOnClickListener{showInvoices()}
         card_wallet.setOnClickListener{showWalletBalance()}
 
-
         dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow.dismiss() }
-
         dialogView.btn_qr_code.setOnClickListener{
+            val scanner = IntentIntegrator(this)
+            scanner.initiateScan()
         }
-
         dialogView.btn_nfc.setOnClickListener{
         }
-    }
-
-    private fun buy(){
-
     }
 
     private fun showWalletBalance(){
@@ -78,5 +70,22 @@ class MainMenuBuyer : AppCompatActivity() {
         p.flags = p.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
         p.dimAmount = 0.7f
         wm.updateViewLayout(container, p)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK){
+            val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+            if(result != null){
+                if(result.contents == null){
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
+                }else{
+                    Toast.makeText(this, "Scanned: " + result.contents, Toast.LENGTH_LONG).show()
+                }
+            }else{
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
     }
 }
