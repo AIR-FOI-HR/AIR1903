@@ -27,6 +27,21 @@ if ($db->checkAuth($_POST["Token"])) {
         $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
+    else if (isset($_POST["Readone"]) && $_POST["Readone"] == true){
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "SUCCESS";
+        $response->DATA = $db->getInvoice($_POST);
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
 }
 else{
     $response->STATUS=false;

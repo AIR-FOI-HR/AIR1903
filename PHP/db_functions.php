@@ -842,55 +842,95 @@ public function sellPackages($post) {
 
         return $response;
     }
-public function getInvoice($post) {
-        $q = "SELECT Id_Trgovine FROM Trgovina_Korisnik WHERE Id_Korisnik = '{$post["Id_Korisnika"]}'";
+	
+	public function getInvoice($post) {
+        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $idTrgovine = $stmt["Id_Trgovine"];
+        $idKorisnika = $stmt["Id"];
         
-        $q = "SELECT Naziv FROM Trgovina WHERE Id = '$idTrgovine'";
+        $q = "SELECT r.Id, r.MjestoIzdavanja, r.DatumIzdavanja, r.Popust, r.Id_Trgovine, t.Naziv Trgovina, r.Kupac, k.Ime Ime_Klijenta, k.Prezime Prezime_Klijenta, k.KorisnickoIme"
+                    . " FROM Racun r"
+                    . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
+                    . " JOIN Korisnik k ON r.Kupac = k.Id"
+                    . " WHERE r.Id = '{$post["Id_Racuna"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $nazivTrgovine = $stmt["Naziv"];
         
-        $q = "SELECT Id, MjestoIzdavanja, VrijemeIzdavanja, Popust FROM Racun WHERE Id_Trgovine = '$idTrgovine'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $mjestoIzdavanja = $stmt["MjestoIzdavanja"];
-        $vrijemeIzdavanja = $stmt["VrijemeIzdavanja"];
-        $popust = $stmt["Popust"];
-        $idRacuna = $stmt["Id"];
+        $response["Id"] = $stmt["Id"];
+        $response["MjestoIzdavanja"] = $stmt["MjestoIzdavanja"];
+        $response["DatumIzdavanja"] = $stmt["DatumIzdavanja"];
+        $response["Id_Trgovine"] = $stmt["Id_Trgovine"];
+        $response["Trgovina"] = $stmt["Trgovina"];
+        $response["Kupac"] = $stmt["Kupac"];
+        $response["Ime_Klijenta"] = $stmt["Ime_Klijenta"];
+        $response["Prezime_Klijenta"] = $stmt["Prezime_Klijenta"];
+        $response["KorisnickoIme"] = $stmt["KorisnickoIme"];
+        $response["CijenaRacuna"] = 0;
+        $response["PopustRacuna"] = $stmt["Popust"];
+        $response["IznosPopustaRacuna"]=0;
+        $response["ZavrsnaCijena"] = 0;
         
-        $q = "SELECT Id_Itema, Kolicina FROM Item_Racun WHERE Id_Racuna = '$idRacuna'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $idItema = $stmt["Id_Itema"];
-        $kolicinaItema = $stmt["Kolicina"];
         
-        $q = "SELECT Naziv FROM Item WHERE Id = '$idItema'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $nazivItema = $stmt["Naziv"];
+        $q = "SELECT r.Id_Itema, i.Naziv, i.Opis, r.Kolicina"
+                . " FROM Item_Racun r"
+                . " JOIN Item i"
+                . " ON r.Id_Itema = i.Id"
+                . " WHERE Id_Racuna = {$post["Id_Racuna"]}";
+                
         
-        $q = "SELECT MAX(UnixVrijeme) FROM Proizvod_Cijena WHERE Id_Proizvod = '$idItema'";
         $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $posljednjaIzmjena = $stmt["MAX(UnixVrijeme)"];
-        $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvoda = '$idItema' AND UnixVrijeme = '$posljednjaIzmjena'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $jedinicnaCijena = $stmt["Cijena"];
+        $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
         
-        $ukupnaCijena = ($jedinicnaCijena * $kolicinaItema) * (1 - $popust/100);     
-       
-        $response["Trgovina"] = $nazivTrgovine;
-        $response["MjestoIzdavanja"] = $mjestoIzdavanja;
-        $response["VrijemeIzdavanja"] = $vrijemeIzdavanja;
-        $response["NazivItema"] = $nazivItema;
-        $response["Kolicina"] = $kolicinaItema;
-        $response["PopustNaRacunu"] = $popust;
-        $response["JedinicnaCijena"] = $jedinicnaCijena;
-        $response["UkupnaCijena"] = $ukupnaCijena;
+        
+        foreach ($stmt as &$i){
+            
+            $q = "SELECT * FROM Proizvod WHERE Id_Itema = {$i["Id_Itema"]}";
+            $stmt2 = $this->conn->query($q);
+            $stmt2 = $stmt2->fetch_assoc();
+            $k = $stmt2["Id_Itema"];
+            //echo $i;
+            if ($k==NULL){
+                $i["ItemType"] = "Paket";
+                $i["CijenaStavke"]=0;
+                $i["Popust"]=0;
+                $i["IznosPopusta"]=0;
+                $i["CijenaStavkeNakonPopusta"]=0;
+                
+                $cijenaPaketa = 0;
+                $p["Id"] = $i["Id_Itema"];
+                $stmt3 = $this->getContentsOfPackage($p);
+                $i["StavkePaketa"] = $stmt3;
+                foreach  ($i["StavkePaketa"] as &$j){
+                    $j["CijenaStavke"] = strval($j["Cijena"] * $j["Kolicina"]);
+                    $cijenaPaketa+=$j["Cijena"] * $j["Kolicina"];
+                }
+                $i["CijenaStavke"] = strval($cijenaPaketa * $i["Kolicina"]);
+                $q="SELECT Popust FROM Paket_Popust WHERE Id_Paketa = {$i["Id_Itema"]} ORDER BY UnixVrijeme DESC LIMIT 1";
+                $stmt3 = $this->conn->query($q);
+                $stmt3 = $stmt3->fetch_assoc();
+                $i["Popust"] = $stmt3["Popust"];
+                $i["IznosPopusta"] = strval($i["Popust"] * $i["CijenaStavke"] / 100);
+                $i["CijenaStavkeNakonPopusta"] = strval($i["CijenaStavke"] - $i["IznosPopusta"]);
+                $response["CijenaRacuna"] += $i["CijenaStavkeNakonPopusta"];
+            }
+            else{
+                $q="SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = {$i["Id_Itema"]} ORDER BY UnixVrijeme DESC LIMIT 1";
+                $i["ItemType"] = "Proizvod";
+                $stmt3 = $this->conn->query($q);
+                $stmt3 = $stmt3->fetch_assoc();
+                $i["Cijena"] = $stmt3["Cijena"];
+                $i["CijenaStavke"] = strval($i["Cijena"] * $i["Kolicina"]);
+                $response["CijenaRacuna"] += $i["CijenaStavke"];
+            }
+            
+        }
+        $response["CijenaRacuna"] = strval($response["CijenaRacuna"]);
+        $response["IznosPopustaRacuna"] = strval($response["CijenaRacuna"] * $response["PopustRacuna"]);
+        $response["ZavrsnaCijena"] = strval($response["CijenaRacuna"] - $response["IznosPopustaRacuna"]);
+        //var_dump($stmt);
+        $response["Stavke"]=$stmt;
+        
         
         return $response;
         
