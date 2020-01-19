@@ -1,7 +1,6 @@
 package com.example.pop.fragments
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pop.*
 import com.example.pop.adapters.AddedProductRecyclerAdapter
@@ -21,7 +19,6 @@ import com.example.webservice.Common.Common
 import com.example.webservice.Model.PackageClass
 import com.example.webservice.Model.PackageResponse
 import com.example.webservice.Model.Product
-import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.fragment_package_added_products.*
 import kotlinx.android.synthetic.main.fragment_package_added_products.view.*
 import retrofit2.Call
@@ -56,7 +53,7 @@ class PackageAddedProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.layoutPackageProductsListingButtonAdd.setOnClickListener {
+        view.btn_add_products.setOnClickListener {
             transitionToAddProducts(it)
         }
 

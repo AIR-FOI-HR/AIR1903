@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -17,8 +16,6 @@ import com.example.pop.*
 import com.example.pop.adapters.ProductRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.PackageClass
-import com.example.webservice.Model.PackageResponse
 import com.example.webservice.Model.Product
 import com.example.webservice.Model.ProductResponse
 import kotlinx.android.synthetic.main.fragment_package_products.*
@@ -57,7 +54,7 @@ class PackageProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        layoutPackageProductsListingButtonAdd.setOnClickListener {
+        btn_add_products.setOnClickListener {
             addProducts(it)
         }
 

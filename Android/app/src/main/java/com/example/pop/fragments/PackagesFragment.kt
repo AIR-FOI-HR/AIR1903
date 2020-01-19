@@ -31,7 +31,7 @@ class PackagesFragment : Fragment(), ItemClickListener {
 
     private lateinit var itemAdapter: ItemRecyclerAdapter
     private var packages: ArrayList<PackageClass>? = ArrayList()
-    public var selectedPackages: ArrayList<PackageClass> = ArrayList()
+    var selectedPackages: ArrayList<PackageClass> = ArrayList()
 
 
     override fun onCreateView(
@@ -49,7 +49,6 @@ class PackagesFragment : Fragment(), ItemClickListener {
         itemAdapter = ItemRecyclerAdapter(context)
         itemAdapter.setClickListener(this)
         package_list.adapter = itemAdapter
-        btn_new_packet.setOnClickListener { addPackage() }
         itemAdapter.notifyDataSetChanged()
     }
 
@@ -128,7 +127,7 @@ class PackagesFragment : Fragment(), ItemClickListener {
         })
     }
 
-    private fun addPackage() {
+    fun addPackage() {
         val intent = Intent(context, ManagePackagesActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("previousActivity", 1)

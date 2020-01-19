@@ -3,16 +3,10 @@ package com.example.pop
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.AdapterView
 import com.example.pop.adapters.ShowItemsPagerAdapter
-import com.example.pop.fragments.PackagesFragment
-import com.example.pop.fragments.ProductsFragment
 import com.example.webservice.Model.Item
-import com.example.webservice.Model.PackageClass
-import com.example.webservice.Model.Product
 import kotlinx.android.synthetic.main.activity_tab_layout.*
+
 
 class ShowItemsActivity : AppCompatActivity(){
 
@@ -24,9 +18,16 @@ class ShowItemsActivity : AppCompatActivity(){
         viewPager.adapter = fragmentPagerAdapter
 
         tabLayout.setupWithViewPager(viewPager)
+        btn_sell.setOnClickListener { startSellActivity() }
+        btn_new_item.setOnClickListener { addItem(viewPager.currentItem) }
+    }
 
-
-        layoutTabLayoutButtonSell.setOnClickListener { startSellActivity() }
+    private fun addItem(currentFragment: Int) {
+        val fragmentAdapter = viewPager.adapter as ShowItemsPagerAdapter
+        if(currentFragment == 0)
+            fragmentAdapter.productsFragment.addProduct()
+        else
+            fragmentAdapter.packagesFragment.addPackage()
     }
 
     private fun startSellActivity() {

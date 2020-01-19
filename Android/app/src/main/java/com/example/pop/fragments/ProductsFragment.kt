@@ -49,7 +49,6 @@ class ProductsFragment : Fragment(), ItemClickListener {
         products?.forEach{
             Log.e("Nakon dohvata", it.Naziv)
         }
-        btn_new_product.setOnClickListener{addProduct()}
     }
 
     override fun onItemClick(view: View, position: Int) {
@@ -121,7 +120,7 @@ class ProductsFragment : Fragment(), ItemClickListener {
         })
     }
 
-    private fun addProduct(){
+    fun addProduct(){
         val intent= Intent(context, ManageProductsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("previousActivity", 1)
