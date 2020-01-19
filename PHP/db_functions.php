@@ -459,7 +459,7 @@ public function updateProduct($post) {
         $response["Slika"] = $stmt4["Slika"];
         $response["Kolicina"] = $post["Kolicina"];
         $response["Popust"] = $stmt3["Popust"];
-        $response["Items"]=null;
+        $response["StavkePaketa"]=null;
 
         return $response;
     }
@@ -894,10 +894,10 @@ public function sellPackages($post) {
         $response["ZavrsnaCijena"] = 0;
         
         
-        $q = "SELECT r.Id_Itema, i.Naziv, i.Opis, r.Kolicina"
+        $q = "SELECT r.Id_Itema Id, i.Naziv, i.Opis, i.Slika, r.Kolicina"
                 . " FROM Item_Racun r"
                 . " JOIN Item i"
-                . " ON r.Id_Itema = i.Id"
+                . " ON r.Id = i.Id"
                 . " WHERE Id_Racuna = {$post["Id_Racuna"]}";
                 
         
@@ -907,12 +907,12 @@ public function sellPackages($post) {
         
         foreach ($stmt as &$i){
             
-            $q = "SELECT * FROM Proizvod WHERE Id_Itema = {$i["Id_Itema"]}";
+            $q = "SELECT Id_Itema Id FROM Proizvod WHERE Id_Itema = {$i["Id"]}";
             $stmt2 = $this->conn->query($q);
             $stmt2 = $stmt2->fetch_assoc();
-            $k = $stmt2["Id_Itema"];
+            $k = $stmt2["Id"];
             //echo $i;
-            if ($k==NULL){
+            if ($k==NULL){ // ako je paket
                 $i["ItemType"] = "Paket";
                 $i["CijenaStavke"]=0;
                 $i["Popust"]=0;
@@ -920,7 +920,7 @@ public function sellPackages($post) {
                 $i["CijenaStavkeNakonPopusta"]=0;
                 
                 $cijenaPaketa = 0;
-                $p["Id"] = $i["Id_Itema"];
+                $p["Id"] = $i["Id"];
                 $p["UnixDatum"] = $unixDatum;
                 $stmt3 = $this->getContentsOfPackage($p);
                 $i["StavkePaketa"] = $stmt3;
@@ -929,7 +929,7 @@ public function sellPackages($post) {
                     $cijenaPaketa+=$j["Cijena"] * $j["Kolicina"];
                 }
                 $i["CijenaStavke"] = strval($cijenaPaketa * $i["Kolicina"]);
-                $q="SELECT Popust FROM Paket_Popust WHERE Id_Paketa = {$i["Id_Itema"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
+                $q="SELECT Popust FROM Paket_Popust WHERE Id_Paketa = {$i["Id"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
                 $stmt3 = $this->conn->query($q);
                 $stmt3 = $stmt3->fetch_assoc();
                 $i["Popust"] = $stmt3["Popust"];
@@ -937,8 +937,8 @@ public function sellPackages($post) {
                 $i["CijenaStavkeNakonPopusta"] = strval($i["CijenaStavke"] - $i["IznosPopusta"]);
                 $response["CijenaRacuna"] += $i["CijenaStavkeNakonPopusta"];
             }
-            else{
-                $q="SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = {$i["Id_Itema"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
+            else{ // ako je proizvod
+                $q="SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = {$i["Id"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
                 $i["ItemType"] = "Proizvod";
                 $stmt3 = $this->conn->query($q);
                 $stmt3 = $stmt3->fetch_assoc();
@@ -960,7 +960,7 @@ public function sellPackages($post) {
     }
     
     
-    public function getAllInvoices($post){
+    public function getAllInvoices($post){ 
         $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
