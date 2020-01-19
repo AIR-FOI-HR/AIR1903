@@ -21,6 +21,7 @@ class SellItemsAdapter : RecyclerView.Adapter<SellItemsViewHolder>(){
         return SellItemsViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: SellItemsViewHolder, position: Int) {
         val item = data[position]
         holder.bind(item)

@@ -23,6 +23,7 @@ import java.lang.System.out
 class SellItemsActivity : AppCompatActivity() {
 
     private var itemsList : List<Item> = listOf()
+    var totalValue: Double = 0.0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sell_items)
@@ -55,6 +56,7 @@ class SellItemsActivity : AppCompatActivity() {
         }
     }
 
+
     private fun startNFC() {
         //Pokrece placanje sa nfc-om
     }
@@ -62,7 +64,7 @@ class SellItemsActivity : AppCompatActivity() {
     private fun startQR() {
         val intent = Intent(this, QRCodeActivity::class.java)
         //layoutSellItemsTotalPrice  -> iznos u banneru iznad popisa selektiranih proizvoda
-        intent.putExtra("Total", layoutSellItemListPrice.text)
+        intent.putExtra("Total", invoice_total_value.text)
         startActivity(intent)
     }
 
