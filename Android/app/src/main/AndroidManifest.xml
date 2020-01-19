@@ -27,7 +27,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".ManagePackagesActivity" />
         <activity
-            android:name=".MainMenu"
+            android:name=".MainMenuSeller"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".RegistrationActivity"

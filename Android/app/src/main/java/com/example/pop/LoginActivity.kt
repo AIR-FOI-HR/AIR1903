@@ -31,19 +31,19 @@ class LoginActivity : AppCompatActivity() {
         private fun authenticateUser(KorisnickoIme: String, Lozinka: String) {
             mService.storeUser(KorisnickoIme, Lozinka).enqueue(object : Callback<ApiResponseUser> {
                 override fun onFailure(call: Call<ApiResponseUser>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, t!!.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onResponse(call: Call<ApiResponseUser>, response: Response<ApiResponseUser>) {
-                    if (!response!!.body()!!.STATUS)
+                    if (!response.body()!!.STATUS)
                         Toast.makeText(
                             this@LoginActivity,
-                            response!!.body()!!.STATUSMESSAGE,
+                            response.body()!!.STATUSMESSAGE,
                             Toast.LENGTH_SHORT
                         ).show()
                     else {
                         Toast.makeText(this@LoginActivity, R.string.toastLoginSuccess, Toast.LENGTH_SHORT).show()
-                        var resp = response!!.body()!!.DATA!!
+                        val resp = response.body()!!.DATA!!
                         Session.user.Ime=resp.Ime
                         Session.user.Prezime= resp.Prezime
                         Session.user.Email = resp.Email
@@ -70,7 +70,10 @@ class LoginActivity : AppCompatActivity() {
        startActivity(intent)
    }*/
     private fun showMainMenu(){
-        val intent = Intent(this, MainMenu::class.java)
+        val intent = if(Session.user.Id_Uloge == 1)
+                                Intent(this, MainMenuBuyer::class.java)
+                            else
+                                Intent(this, MainMenuSeller::class.java)
         startActivity(intent)
         finishAffinity()
     }

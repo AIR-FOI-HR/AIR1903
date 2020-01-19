@@ -12,7 +12,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
-import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -55,7 +54,7 @@ class ManageProductsActivity : AppCompatActivity() {
         if (intent.getIntExtra("previousActivity", 1) == 1)
             previousActivity = ShowItemsActivity::class.java
         else if (intent.getIntExtra("previousActivity", 1) == 2)
-            previousActivity = MainMenu::class.java
+            previousActivity = MainMenuSeller::class.java
 
         if (intent.hasExtra("item")) {
             if (intent.getSerializableExtra("item") != null) {

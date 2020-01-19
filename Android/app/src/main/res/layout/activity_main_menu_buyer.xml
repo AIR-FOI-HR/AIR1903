@@ -43,7 +43,7 @@
         android:columnOrderPreserved="false">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_products"
+            android:id="@+id/card_sell_items"
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:layout_marginTop="32dp"
@@ -53,7 +53,7 @@
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false"
-            app:layout_constraintEnd_toStartOf="@+id/cardView"
+            app:layout_constraintEnd_toStartOf="@+id/card_invoices"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="SELL"
+                    android:text="BUY"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
@@ -85,7 +85,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/card_invoices"
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:layout_marginTop="32dp"
@@ -95,7 +95,7 @@
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/card_products"
+            app:layout_constraintStart_toEndOf="@+id/card_sell_items"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
@@ -109,13 +109,13 @@
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/items1" />
+                    android:src="@drawable/icon_invoices" />
 
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="22dp"
                     android:layout_marginTop="10dp"
-                    android:text="ITEMS"
+                    android:text="INVOICES"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
@@ -135,9 +135,9 @@
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false"
-            app:layout_constraintEnd_toStartOf="@+id/cardView"
+            app:layout_constraintEnd_toStartOf="@+id/card_invoices"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_products"
+            app:layout_constraintTop_toBottomOf="@id/card_sell_items"
             >
 
             <LinearLayout
@@ -150,10 +150,10 @@
                 android:padding="12dp">
 
                 <ImageView
-                    android:layout_width="70dp"
+                    android:layout_width="55dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/icon_wallet" />
+                    android:src="@drawable/img_wallet_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,7 +168,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_invoices"
+            android:id="@+id/card_settings"
             android:layout_width="150dp"
             android:layout_height="120dp"
             android:layout_marginTop="32dp"
@@ -178,8 +178,8 @@
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false"
-            app:layout_constraintStart_toStartOf="@id/cardView"
-            app:layout_constraintTop_toBottomOf="@id/card_products"
+            app:layout_constraintStart_toStartOf="@id/card_invoices"
+            app:layout_constraintTop_toBottomOf="@id/card_sell_items"
             >
 
             <LinearLayout
@@ -192,16 +192,16 @@
                 android:padding="12dp">
 
                 <ImageView
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/icon_invoices" />
+                    android:src="@drawable/img_settings_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="INVOICES"
+                    android:text="SETTINGS"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
