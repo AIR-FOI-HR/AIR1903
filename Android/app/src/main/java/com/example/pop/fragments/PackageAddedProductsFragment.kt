@@ -64,7 +64,7 @@ class PackageAddedProductsFragment : Fragment() {
             items = arguments!!.get("prods") as ArrayList<Product>
         }catch (e:kotlin.KotlinNullPointerException){
             try {
-                items = (activity!!.intent.extras!!.get("item") as PackageClass).Items as ArrayList<Product>
+                items = (activity!!.intent.extras!!.get("item") as PackageClass).StavkePaketa as ArrayList<Product>
             } catch (e:TypeCastException){
                 items=ArrayList<Product>()
             }

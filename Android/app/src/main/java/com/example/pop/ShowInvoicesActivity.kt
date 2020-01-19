@@ -27,10 +27,10 @@ class ShowInvoicesActivity : AppCompatActivity() {
 
         val adapter = InvoiceAdapter()
         layoutShowReceiptsRecycler.adapter = adapter
-        adapter.data = getInvoices()
+        //adapter.data = getInvoices()
     }
 
-    private fun getInvoices() : List<Invoice> {
+    private fun getInvoices(){
         val api = Common.api
 
 
@@ -46,9 +46,9 @@ class ShowInvoicesActivity : AppCompatActivity() {
 
         //Treci nacin da napravimo da se iz PHP dohvati string i ispise date
 
-      val invoicesList : List<Invoice> = listOf(
+      /*val invoicesList : List<Invoice> = listOf(
             Invoice(1,"Foi", "10 OCT 2020", 10.0, 2, 1),
             Invoice(2,"Foi", "15 OCT 2020", 15.0, 2, 2))
-        return invoicesList
+        return invoicesList*/
     }
 }
