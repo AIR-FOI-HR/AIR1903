@@ -2,7 +2,6 @@ package com.example.pop.fragments
 
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,16 +11,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.FileProvider
 import androidx.core.graphics.scale
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.pop.*
@@ -33,10 +29,8 @@ import com.example.webservice.Response.IMyAPI
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_manage_products.*
 import kotlinx.android.synthetic.main.fragment_package.*
 import kotlinx.android.synthetic.main.dialog_add_image.view.*
-import kotlinx.android.synthetic.main.fragment_package.*
 import kotlinx.android.synthetic.main.fragment_package.layoutManagePacketsInputValue
 import kotlinx.android.synthetic.main.fragment_package.view.*
 import okhttp3.MediaType
@@ -47,7 +41,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Exception
 
 class PackageFragment : Fragment() {
 
@@ -96,7 +89,7 @@ class PackageFragment : Fragment() {
         if (intent.getIntExtra("previousActivity", 1) == 1)
             previousActivity = ShowItemsActivity::class.java
         else if (intent.getIntExtra("previousActivity", 1) == 2)
-            previousActivity = MainMenu::class.java
+            previousActivity = MainMenuSeller::class.java
 
         if (intent.hasExtra("item")) {
             if (intent.getSerializableExtra("item") != null) {

@@ -23,7 +23,7 @@ class ShowWalletBalanceActivity : AppCompatActivity() {
             getBalance()
             refreshWalletBallance.isRefreshing = false
         }
-        btn_details.setOnClickListener{}
+        btn_details.setOnClickListener{ showInvoices() }
     }
 
     private fun getBalance(){
@@ -40,5 +40,10 @@ class ShowWalletBalanceActivity : AppCompatActivity() {
                 walletBalance.text = response.body()!!.DATA + " HRK"
             }
         })
+    }
+
+    private fun showInvoices() {
+        val intent = Intent(this, ShowInvoicesActivity::class.java)
+        startActivity(intent)
     }
 }
