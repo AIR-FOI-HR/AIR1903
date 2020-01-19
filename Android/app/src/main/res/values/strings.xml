@@ -66,5 +66,12 @@
     <string name="sellItemsLink">Select items</string>
     <string name="textTotal">TOTAL:</string>
     <string name="textHRK">HRK</string>
+    <string name="textItem">Item</string>
+    <string name="textPrice">Price</string>
+    <string name="textTotalPrice">Total</string>
+    <string name="textLocation">Sale location:</string>
+    <string name="textDate">Date:</string>
+    <string name="textSeller">Seller:</string>
+    <string name="textBuyer">Buyer:</string>
 
 </resources>

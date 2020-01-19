@@ -6,4 +6,209 @@
     android:layout_height="match_parent"
     tools:context=".InvoiceDetailsActivity">
 
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextInvoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/textInvoice"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/inputHintNumber"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextInvoice"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextInvoice"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextInvoice" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/textLocation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextInvoice" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/textDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextLocation" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextSeller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/textSeller"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextDate" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextBuyer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/textBuyer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextSeller" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/textTotal"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBuyer" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextLocation"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextLocation"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextLocation"
+        tools:text="Location" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextDate"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextDate"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextDate"
+        tools:text="1.1.2020." />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsSeller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextBuyer"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextBuyer"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextBuyer"
+        tools:text="Buyer" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsBuyer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextSeller"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextSeller"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextSeller"
+        tools:text="Seller" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/inputHintNumber"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextTotal"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextTotal"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextTotal" />
+
+    <ImageView
+        android:id="@+id/layoutInvoiceDetailsImageLogo"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/imageLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/foi_logo" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutInvoiceDetailsHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorAccent"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextTotal">
+
+        <TextView
+            android:id="@+id/layoutInvoiceDetailsHeaderTextItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/textItem"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/layoutInvoiceDetailsHeaderTextQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/hint_quantity"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toStartOf="@+id/layoutInvoiceDetailsHeaderTextPrice"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/layoutInvoiceDetailsHeaderTextPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/textPrice"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toStartOf="@+id/layoutInvoiceDetailsHeaderTextTotal"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/layoutInvoiceDetailsHeaderTextTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/textTotalPrice"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/layoutInvoiceDetailsRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsHeader" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

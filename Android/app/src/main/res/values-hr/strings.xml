@@ -66,5 +66,12 @@
     <string name="sellItemsLink">Odaberi proizvode</string>
     <string name="textTotal">UKUPNO:</string>
     <string name="textHRK">HRK</string>
+    <string name="textItem">Artikl</string>
+    <string name="textPrice">Cijena</string>
+    <string name="textTotalPrice">Iznos</string>
+    <string name="textLocation">Mjesto prodaje:</string>
+    <string name="textDate">Datum:</string>
+    <string name="textSeller">Prodavač:</string>
+    <string name="textBuyer">Kupac:</string>
 
 </resources>
