@@ -880,6 +880,8 @@ public function sellPackages($post) {
         $response["Id"] = $stmt["Id"];
         $response["MjestoIzdavanja"] = $stmt["MjestoIzdavanja"];
         $response["DatumIzdavanja"] = $stmt["DatumIzdavanja"];
+        $unixDatum = strtotime($response["DatumIzdavanja"]);
+        //echo ($unixDatum);
         $response["Id_Trgovine"] = $stmt["Id_Trgovine"];
         $response["Trgovina"] = $stmt["Trgovina"];
         $response["Kupac"] = $stmt["Kupac"];
@@ -919,6 +921,7 @@ public function sellPackages($post) {
                 
                 $cijenaPaketa = 0;
                 $p["Id"] = $i["Id_Itema"];
+                $p["UnixDatum"] = $unixDatum;
                 $stmt3 = $this->getContentsOfPackage($p);
                 $i["StavkePaketa"] = $stmt3;
                 foreach  ($i["StavkePaketa"] as &$j){
@@ -926,7 +929,7 @@ public function sellPackages($post) {
                     $cijenaPaketa+=$j["Cijena"] * $j["Kolicina"];
                 }
                 $i["CijenaStavke"] = strval($cijenaPaketa * $i["Kolicina"]);
-                $q="SELECT Popust FROM Paket_Popust WHERE Id_Paketa = {$i["Id_Itema"]} ORDER BY UnixVrijeme DESC LIMIT 1";
+                $q="SELECT Popust FROM Paket_Popust WHERE Id_Paketa = {$i["Id_Itema"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
                 $stmt3 = $this->conn->query($q);
                 $stmt3 = $stmt3->fetch_assoc();
                 $i["Popust"] = $stmt3["Popust"];
@@ -935,7 +938,7 @@ public function sellPackages($post) {
                 $response["CijenaRacuna"] += $i["CijenaStavkeNakonPopusta"];
             }
             else{
-                $q="SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = {$i["Id_Itema"]} ORDER BY UnixVrijeme DESC LIMIT 1";
+                $q="SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = {$i["Id_Itema"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
                 $i["ItemType"] = "Proizvod";
                 $stmt3 = $this->conn->query($q);
                 $stmt3 = $stmt3->fetch_assoc();
@@ -955,8 +958,9 @@ public function sellPackages($post) {
         return $response;
         
     }
-	
-	public function getAllInvoices($post){
+    
+    
+    public function getAllInvoices($post){
         $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
