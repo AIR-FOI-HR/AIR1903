@@ -1,5 +1,6 @@
 package com.example.pop
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.pop.adapters.InvoiceAdapter
@@ -12,43 +13,73 @@ import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 import java.util.*
-import javax.security.auth.callback.Callback
+import retrofit2.Callback
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
+import android.widget.Toast
+import com.example.webservice.Model.InvoiceResponse
+import retrofit2.Call
+import retrofit2.Response
+import kotlin.collections.ArrayList
 
 
 class ShowInvoicesActivity : AppCompatActivity() {
+    private lateinit var invoiceAdapter :InvoiceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_invoices)
 
-        val adapter = InvoiceAdapter()
-        layoutShowReceiptsRecycler.adapter = adapter
+        invoiceAdapter = InvoiceAdapter()
+        layoutShowReceiptsRecycler.adapter = invoiceAdapter
+        getInvoices()
         //adapter.data = getInvoices()
     }
 
     private fun getInvoices(){
         val api = Common.api
+        api.getAllInvoices(Session.user.Token, true, Session.user.KorisnickoIme).enqueue(object: Callback<InvoiceResponse>{
+            override fun onFailure(call: Call<InvoiceResponse>, t: Throwable) {
+                println("DEBUG33-Neuspješno")
+                println("DEBUG33-"+t.message)
+                Toast.makeText(this@ShowInvoicesActivity, t.message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<InvoiceResponse>,
+                response: Response<InvoiceResponse>
+            ) {
+                var invoices = response.body()!!.DATA as ArrayList<Invoice>
+                when {
+                    response.body()!!.STATUSMESSAGE == "OLD TOKEN" -> {
+                        val intent = Intent(this@ShowInvoicesActivity, LoginActivity::class.java)
+                        Toast.makeText(
+                            this@ShowInvoicesActivity,
+                            "Sesija istekla, molimo prijavite se ponovno",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Session.reset()
+                        startActivity(intent)
+                        finishAffinity()
+                    }
+                    response.body()!!.STATUSMESSAGE == "SUCCESS" -> {
+                        println("DEBUG33-Uspješno primljeno")
+                        invoiceAdapter.data=invoices
+                    }
+                    else -> {
+                        Toast.makeText(
+                            this@ShowInvoicesActivity,
+                            response.body()!!.STATUSMESSAGE,
+                            Toast.LENGTH_LONG
+                        ).show()
+                        println("DEBUG33-ELSE")
+                    }
+                }
+                //if (packages != null) itemAdapter.submitList(packages!!)
+            }
+        })
 
 
-        //Prvi nacin - da procitamo godinu, mjesec, dan pa spojimo u string i ispisemo
-        val day = Calendar.DAY_OF_MONTH
-        val year = Calendar.YEAR
-        val month = Calendar.MONTH
-
-       //Drugi nacin - malo kompliciraniji, ali pravilniji
-        val parser = SimpleDateFormat.getDateInstance()
-        val formatter = SimpleDateFormat.getDateInstance()
-        //val output = formatter.format(parser.parse("2018-12-14")!!)
-
-        //Treci nacin da napravimo da se iz PHP dohvati string i ispise date
-
-      /*val invoicesList : List<Invoice> = listOf(
-            Invoice(1,"Foi", "10 OCT 2020", 10.0, 2, 1),
-            Invoice(2,"Foi", "15 OCT 2020", 15.0, 2, 2))
-        return invoicesList*/
     }
 }
