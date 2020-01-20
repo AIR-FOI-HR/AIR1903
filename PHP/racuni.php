@@ -19,10 +19,10 @@ if ($db->checkAuth($_POST["Token"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
-    }else if ($_POST["SELLPRODUCT"] == true){
+    }else if ($_POST["GENERATESALE"] == true){
         $productSell = $db->sellItems($_POST);
         $response->STATUS=true;
-        $response->STATUSMESSAGE = "Stanje racuna";
+        $response->STATUSMESSAGE = "INVOICE GENERATED";
         $response->DATA=$productSell;
         $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;

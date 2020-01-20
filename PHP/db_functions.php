@@ -669,69 +669,46 @@ public function setInitialBalance($post) {
         return $response;
     }
  //funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
-public function sellItems($post) {
-$kolicinaProdanihProizvoda = $post["Kolicina"];
-        $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '{$post["Id_Itema"]}'";
-        $stmt = $this->conn->query($q);
+	public function sellItems($post) {
+        //$prodavac = $post["KorisnickoIme"];
+        $popustRacuna = $post["PopustRacuna"];
+        $vrijemeProdaje = date("Y-m-d H:i:s");
+        $idItema = $post["Itemi"];
+        $kolicine = $post["Kolicine"];
+        $mjestoIzdavanja = "Fakultet organizacije i informatike";
+        $idTrgovine=0;
+        $idKupca="null";
+        
+        
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $kolicinaProizvodaPrijeProdaje = $stmt["Kolicina"];
+        $idProdavaca = $stmt["Id"];
         
-        $kolicinaProizvodaNakonProdaje = $kolicinaProizvodaPrijeProdaje - $kolicinaProdanihProizvoda;
-        $q = "UPDATE Trgovina_Item SET Kolicina = '$kolicinaProizvodaNakonProdaje' WHERE Id_Itema = '{$post["Id_Itema"]}'";
-        $stmt = $this->conn->query($q);
-        $datum = date('Y-m-d H:i:s');
-        
-        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = '{$post["Id_Prodavaca"]}'";
-        $stmt = $this->conn->query($q);
+        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$idProdavaca}";
+        $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $idTrgovine= $stmt["Id_Trgovina"];
+        $idTrgovine=$stmt["Id_Trgovina"];
         
-        $q = "INSERT INTO Racun (Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac) VALUES (NULL, 'Fakultet Organizacije i informatike', '$datum', '{$post["Popust"]}', '$idTrgovine', '{$post["Id_Kupac"]}')";
+        $q = "INSERT INTO Racun(Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac)"
+                . " VALUES (null, '{$mjestoIzdavanja}', '{$vrijemeProdaje}', {$popustRacuna}, {$idTrgovine}, {$idKupca})";
         $stmt = $this->conn->query($q);
-        $idRacuna = $this->conn->insert_id;
-        $q = "INSERT INTO Item_Racun (Id, Id_Itema, Id_Racuna, Kolicina) VALUES (NULL, '{$post["Id_Itema"]}', '$idRacuna', '$kolicinaProdanihProizvoda')";
-        $stmt = $this->conn->query($q);
+        $idRacuna=$this->conn->insert_id;
         
-        $q = "SELECT MAX(UnixVrijeme) FROM Proizvod_Cijena WHERE Id_Proizvod = '{$post["Id_Itema"]}'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $posljednjaIzmjena = $stmt["MAX(UnixVrijeme)"];
-        $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = '{$post["Id_Itema"]}' AND UnixVrijeme = '$posljednjaIzmjena'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $cijenaProizvoda = $stmt["Cijena"];
-        $ukupnaCijena = ($cijenaProizvoda * $post["Kolicina"]) * (1 - ($post["Popust"]/100));
+        $q = "INSERT INTO Item_Racun (Id, Id_Itema, Id_Racuna, Kolicina) VALUES ";
         
-        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '{$post["Id_Kupac"]}'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $stanjePrijeKupnjeKupac = $stmt["StanjeRacuna"];
-        $novoStanjeKupac = $stanjePrijeKupnjeKupac - $ukupnaCijena;
-        $q = "UPDATE Korisnik_StanjeRacuna SET StanjeRacuna = '$novoStanjeKupac' WHERE Id_Korisnika = '{$post["Id_Kupac"]}'";
+        for ($i=0;$i<sizeof($idItema);$i++){
+            $q.= "(null, {$idItema[$i]}, {$idRacuna}, {$kolicine[$i]}), ";
+        }
+        $q = substr($q,0,-2);
         $stmt = $this->conn->query($q);
         
-        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '{$post["Id_Prodavaca"]}'";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $stanjePrijeKupnjeProdavac = $stmt["StanjeRacuna"];
-        $novoStanjeProdavac = $stanjePrijeKupnjeProdavac + $ukupnaCijena;
-        $q = "UPDATE Korisnik_StanjeRacuna SET StanjeRacuna = '$novoStanjeProdavac' WHERE Id_Korisnika = '{$post["Id_Prodavaca"]}'";
-        $stmt = $this->conn->query($q);
+        $p["Id_Racuna"] = $idRacuna;
+        $p["KorisnickoIme"] = $post["KorisnickoIme"];
+        $response = $this->getInvoice($p);
+        return $response;
         
-        $q = "SELECT Naziv FROM Item WHERE Id = '{$post["Id_Itema"]}'";
-        $stmt = $this->conn->query($q);
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $nazivItema = $stmt["Naziv"];
-        
-        $q = "SELECT Naziv FROM Trgovina WHERE Id = '$idTrgovine'";
-        $stmt = $this->conn->query($q);
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $nazivTrgovine = $stmt["Naziv"];
-        
-        $q = "SELECT MjestoIzdavanja, DatumIzdavanja FROM Racun WHERE Id = '$idRacuna'";
-        $stmt = $this->conn->query($q);
+    }
         $stmt = $stmt->fetch_assoc();
         $mjestoIzdavanja = $stmt["MjestoIzdavanja"];
         $vrijemeIzdavanja = $stmt["DatumIzdavanja"];
@@ -872,8 +849,8 @@ public function sellPackages($post) {
         $q = "SELECT r.Id, r.MjestoIzdavanja, r.DatumIzdavanja, r.Popust, r.Id_Trgovine, t.Naziv Trgovina, r.Kupac, k.Ime Ime_Klijenta, k.Prezime Prezime_Klijenta, k.KorisnickoIme"
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
-                    . " JOIN Korisnik k ON r.Kupac = k.Id"
-                    . " WHERE r.Id = '{$post["Id_Racuna"]}'";
+                    . " LEFT JOIN Korisnik k ON r.Kupac = k.Id"
+                    . " WHERE r.Id = {$post["Id_Racuna"]}";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         
@@ -881,7 +858,6 @@ public function sellPackages($post) {
         $response["MjestoIzdavanja"] = $stmt["MjestoIzdavanja"];
         $response["DatumIzdavanja"] = $stmt["DatumIzdavanja"];
         $unixDatum = strtotime($response["DatumIzdavanja"]);
-        //echo ($unixDatum);
         $response["Id_Trgovine"] = $stmt["Id_Trgovine"];
         $response["Trgovina"] = $stmt["Trgovina"];
         $response["Kupac"] = $stmt["Kupac"];
@@ -911,7 +887,6 @@ public function sellPackages($post) {
             $stmt2 = $this->conn->query($q);
             $stmt2 = $stmt2->fetch_assoc();
             $k = $stmt2["Id"];
-            //echo $i;
             if ($k==NULL){ // ako je paket
                 $i["ItemType"] = "Paket";
                 $i["CijenaStavke"]=0;
@@ -949,9 +924,8 @@ public function sellPackages($post) {
             
         }
         $response["CijenaRacuna"] = strval($response["CijenaRacuna"]);
-        $response["IznosPopustaRacuna"] = strval($response["CijenaRacuna"] * $response["PopustRacuna"]);
+        $response["IznosPopustaRacuna"] = strval($response["CijenaRacuna"] * $response["PopustRacuna"]/100);
         $response["ZavrsnaCijena"] = strval($response["CijenaRacuna"] - $response["IznosPopustaRacuna"]);
-        //var_dump($stmt);
         $response["Stavke"]=$stmt;
         
         
