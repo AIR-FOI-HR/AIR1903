@@ -709,25 +709,24 @@ public function setInitialBalance($post) {
         return $response;
         
     }
+	
+	public function confirmSale($post){
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        $mjestoIzdavanja = $stmt["MjestoIzdavanja"];
-        $vrijemeIzdavanja = $stmt["DatumIzdavanja"];
+        $idKupca = $stmt["Id"];
         
-        $response["NovoStanjeKupac"] = $novoStanjeKupac;
-        $response["NovoStanjeProdavac"] = $novoStanjeProdavac;
+        $idRacuna = $post["Id_Racuna"];
         
-        $response["Trgovina"] = $nazivTrgovine;
-        $response["MjestoIzdavanja"] = $mjestoIzdavanja;
-        $response["VrijemeIzdavanja"] = $vrijemeIzdavanja;
-        $response["NazivItema"] = $nazivItema;
-        $response["Kolicina"] = $post["Kolicina"];
-        $response["CijenaProizvoda"] = $cijenaProizvoda;
-        $response["PopustNaRacunu"] = $post["Popust"];
-      
-        $response["UkupnaCijena"] = $ukupnaCijena;
+        $q = "UPDATE Racun SET Kupac = {$idKupca} WHERE Id = {$idRacuna}";
+        $stmt=$this->conn->query($q);
         
+        $p["Id_Racuna"] = $idRacuna;
+        $p["KorisnickoIme"] = $post["KorisnickoIme"];
+        $response = $this->getInvoice($p);
         return $response;
     }
+	
 public function sellPackages($post) {
 	$kolicinaProdanihPaketa = $post["Kolicina"];
         $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '{$post["Id_Itema"]}'";

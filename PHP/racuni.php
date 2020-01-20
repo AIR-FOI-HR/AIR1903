@@ -26,6 +26,15 @@ if ($db->checkAuth($_POST["Token"])) {
         $response->DATA=$productSell;
         $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
+        return;
+    }else if ($_POST["CONFIRMSALE"] == true) {
+        $changeSellerAndBuyerBallance = $db->confirmSale($_POST);
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "INVOICE FINALIZED";
+        $response->DATA = $changeSellerAndBuyerBallance;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
     }
     else if (isset($_POST["Readone"]) && $_POST["Readone"] == true){
         if (!isset($_POST["KorisnickoIme"])){
