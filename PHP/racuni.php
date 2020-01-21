@@ -19,19 +19,32 @@ if ($db->checkAuth($_POST["Token"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
-    }else if ($_POST["GENERATESALE"] == true){
+    }else if ($_POST["GENERATESALE"] == true){//GITNEW
         $productSell = $db->sellItems($_POST);
-        $response->STATUS=true;
-        $response->STATUSMESSAGE = "INVOICE GENERATED";
-        $response->DATA=$productSell;
+        if ($productSell==false){
+            $response->STATUS=false;
+            $response->STATUSMESSAGE = "MISSING AMOUNT";
+            $response->DATA=null;
+        }
+        else{
+            $response->STATUS=true;
+            $response->STATUSMESSAGE = "INVOICE GENERATED";
+            $response->DATA=$productSell;
+        }
         $response= json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
     }else if ($_POST["CONFIRMSALE"] == true) {
-        $changeSellerAndBuyerBallance = $db->confirmSale($_POST);
-        $response->STATUS = true;
-        $response->STATUSMESSAGE = "INVOICE FINALIZED";
-        $response->DATA = $changeSellerAndBuyerBallance;
+        $saleInvoice = $db->confirmSale($_POST);
+        if ($saleInvoice== false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "MISSING AMOUNT";
+            $response->DATA = null;
+        }else{
+            $response->STATUS = true;
+            $response->STATUSMESSAGE = "INVOICE FINALIZED";
+            $response->DATA = $saleInvoice;
+        }
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;

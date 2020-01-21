@@ -710,12 +710,27 @@ public function setInitialBalance($post) {
             $q.= "(null, {$idItema[$i]}, {$idRacuna}, {$kolicine[$i]}), ";
         }
         $q = substr($q,0,-2);
+        //echo "TESTksan".$q;
         $stmt = $this->conn->query($q);
         
         $p["Id_Racuna"] = $idRacuna;
         $p["KorisnickoIme"] = $post["KorisnickoIme"];
         $response = $this->getInvoice($p);
-        return $response;
+        //var_dump ($response);
+        //return $response;
+        
+        $p["Id_Racuna"]=$idRacuna;
+        $p["Id_Trgovine"]=$idTrgovine;
+        $p["KorisnickoIme"]=$post["KorisnickoIme"];
+        $goodAmounts = $this->checkAmounts($p);
+        if ($goodAmounts==true) return $response;
+        else{
+            $q = "DELETE FROM Racun WHERE Id={$idRacuna}";
+            $stmt = $this->conn->query($q);
+            $q="DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+            $stmt = $this->conn->query($q);
+            return false;
+        }  
         
     }
 	
@@ -733,6 +748,7 @@ public function setInitialBalance($post) {
         $p["Id_Racuna"] = $idRacuna;
         $p["KorisnickoIme"] = $post["KorisnickoIme"];
         $response = $this->getInvoice($p);
+        if ($this->reduceAmount($p)==false) return false;
         return $response;
     }
 	
@@ -846,6 +862,107 @@ public function sellPackages($post) {
         $response["UkupnaCijena"] = $ukupnaCijena;
 
         return $response;
+    }
+	
+	public function checkAmounts($post){ //GITNEW
+        //$kolicine = array();
+        $racun = $this->getInvoice($post);
+        //var_dump ($racun);
+        $q = "SELECT Id_Trgovine FROM Racun WHERE Id = {$post["Id_Racuna"]}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idTrgovine = $stmt["Id_Trgovine"];
+        
+        foreach ($racun["Stavke"] as &$i){
+            if ($i["ItemType"]=="Proizvod"){
+                if (isset($kolicine[$i["Id"]])) $kolicine[$i["Id"]]+=$i["Kolicina"];
+                else $kolicine[$i["Id"]]=+$i["Kolicina"]*1;
+            }
+            else {
+                $kolicinaPaketa = $i["Kolicina"];
+                foreach ($i["StavkePaketa"] as &$j){
+                    if (isset($kolicine[$j["Id"]])) $kolicine[$j["Id"]]+=$j["Kolicina"]*$kolicinaPaketa;
+                    else $kolicine[$j["Id"]]=+$j["Kolicina"]*$kolicinaPaketa;
+                }
+            }
+        }
+        ksort($kolicine);
+        //var_dump($kolicine);
+        $q = "SELECT Id_Itema Id, Kolicina FROM Trgovina_Item WHERE Id_Trgovine = {$idTrgovine} AND Id_Itema IN (";
+        //var_dump($kolicine);
+        foreach ($kolicine as $k=>$v){
+            $q.=$k.", ";
+        }
+        $q = substr($q,0,-2);
+        $q.=") ORDER BY Id_Itema ASC";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
+        //var_dump($stmt);
+        $goodAmounts = true;
+        foreach ($stmt as &$i){
+            $dobiveneKolicine[$i["Id"]] = $i["Kolicina"];
+        }
+        
+        foreach ($dobiveneKolicine as $k=>$v){
+            if ($dobiveneKolicine[$k] < $kolicine[$k])
+                $goodAmounts=false;
+        }
+        //echo "IS GOOD AMOUNT?".strval($goodAmounts);
+        return $goodAmounts;
+    }
+    
+    public function reduceAmount($post){
+        $racun = $this->getInvoice($post);//Id_Racuna i KorisnickoIme
+        //$idTrgovine = $post["Id_Trgovine"];
+        if ($this->checkAmounts($post)==false) return false;
+        
+        $q = "SELECT Id_Trgovine FROM Racun WHERE Id = {$post["Id_Racuna"]}";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idTrgovine = $stmt["Id_Trgovine"];
+        
+        
+        foreach ($racun["Stavke"] as &$i){
+            if ($i["ItemType"]=="Proizvod"){
+                if (isset($kolicine[$i["Id"]])) $kolicine[$i["Id"]]+=$i["Kolicina"];
+                else $kolicine[$i["Id"]]=+$i["Kolicina"]*1;
+            }
+            else {
+                $kolicinaPaketa = $i["Kolicina"];
+                foreach ($i["StavkePaketa"] as &$j){
+                    if (isset($kolicine[$j["Id"]])) $kolicine[$j["Id"]]+=$j["Kolicina"]*$kolicinaPaketa;
+                    else $kolicine[$j["Id"]]=+$j["Kolicina"]*$kolicinaPaketa;
+                }
+            }
+        }
+        
+        ksort($kolicine);
+        //var_dump($kolicine);
+        $q = "SELECT Id_Itema Id, Kolicina FROM Trgovina_Item WHERE Id_Trgovine = {$idTrgovine} AND Id_Itema IN (";
+        foreach ($kolicine as $k=>$v){
+            $q.=$k.", ";
+        }
+        $q = substr($q,0,-2);
+        $q.=") ORDER BY Id_Itema ASC";
+        //secho $q;
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
+        //var_dump($stmt);
+        
+        foreach ($stmt as &$i){
+            $dobiveneKolicine[$i["Id"]] = $i["Kolicina"];
+        }
+        //var_dump($dobiveneKolicine);
+        //var_dump($kolicine);
+        $q = "UPDATE Trgovina_Item SET Kolicina = CASE Id_Itema ";
+        foreach ($dobiveneKolicine as $k=>$v){
+            $novaKolicina = $v - $kolicine[$k];
+            $q.="WHEN {$k} THEN {$novaKolicina} ";
+        }
+        $q.="END WHERE Id_Trgovine={$idTrgovine}";
+        //echo $q;
+        $stmt = $this->conn->query($q);
+        return true;
     }
 	
 	public function getInvoice($post) {
