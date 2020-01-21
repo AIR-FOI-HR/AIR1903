@@ -173,7 +173,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:minWidth="40dp"
             android:text="@string/hint_quantity"
+            android:textAlignment="textEnd"
             android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toStartOf="@+id/layoutInvoiceDetailsHeaderTextPrice"
             app:layout_constraintTop_toTopOf="parent" />
@@ -183,7 +185,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:minWidth="60dp"
             android:text="@string/textPrice"
+            android:textAlignment="textEnd"
             android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toStartOf="@+id/layoutInvoiceDetailsHeaderTextTotal"
             app:layout_constraintTop_toTopOf="parent" />
@@ -193,7 +197,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:minWidth="60dp"
             android:text="@string/textTotalPrice"
+            android:textAlignment="textEnd"
             android:textColor="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
