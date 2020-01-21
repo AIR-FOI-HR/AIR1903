@@ -1,11 +1,13 @@
 package com.example.webservice.Model
 
 class Product(
-    var Cijena: String = "", var Kolicina: String = "",
     override val Id: Int?,
-    override var Naziv: String = "",
-    override var Opis: String? = "",
-    override var Slika: String? = "",
+    override var Naziv: String?,
+    override var Opis: String?,
+    override var Slika: String?,
+    override var Kolicina: String?,
+    var Cijena: String?,
+    var CijenaStavke: String?,
     override var expanded: Boolean = false,
     override var selected: Boolean = false
 ) : Item

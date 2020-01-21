@@ -81,12 +81,16 @@ interface IMyAPI {
     fun getAllInvoices(@Field("Token") Token: String, @Field("Readall") Readall: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<InvoiceResponse>
 
     @FormUrlEncoded
-    @POST("novcanik.php")
-    fun sellProduct(@Field("Token") Token: String, @Field("SELL") SELL: Boolean, @Field("Id_Kupca") Id_Kupca: String, @Field("Id_Prodavaca") Id_Prodavaca: String, @Field("Id_Itema") Id_Itema: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<WalletBalanceResponse>
+    @POST("racuni.php")
+    fun getOneInvoice(@Field("Token") Token: String, @Field("Readone") Readall: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: String) : Call<OneInvoiceResponse>
 
     @FormUrlEncoded
-    @POST("novcanik.php")
-    fun sellPackage(@Field("Token") Token: String, @Field("SELL") SELL: Boolean, @Field("Id_Kupca") Id_Kupca: String, @Field("Id_Prodavaca") Id_Prodavaca: String, @Field("Id_Itema") Id_Itema: String, @Field("Kolicina") Kolicina: String, @Field("Popust") Popust: String) : Call<WalletBalanceResponse>
+    @POST("racuni.php")
+    fun generateInvoice(@Field("Token") Token: String, @Field("GENERATESALE") GENERATESALE: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("PopustRacuna") PopustRacuna: String, @Field("Itemi[]") Itemi: ArrayList<Int>, @Field("Kolicine[]") Kolicine: ArrayList<String>) : Call<OneInvoiceResponse>
+
+    @FormUrlEncoded
+    @POST("racuni.php")
+    fun finalizeInvoice(@Field("Token") Token: String, @Field("CONFIRMSALE") CONFIRMSALE: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: Int) : Call<OneInvoiceResponse>
     
     /*@Multipart
     @POST("/upload")

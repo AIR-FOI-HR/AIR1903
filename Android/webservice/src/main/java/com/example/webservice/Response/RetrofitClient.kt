@@ -1,5 +1,8 @@
 package com.example.webservice.Response
 
+import com.example.webservice.ItemJsonDeserializer
+import com.example.webservice.Model.Item
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,8 +25,10 @@ object RetrofitClient {
             val client = OkHttpClient.Builder()
             client.addInterceptor(logging)
 
+
+            var builder = GsonBuilder().registerTypeAdapter(Item::class.java, ItemJsonDeserializer()).create()
             retrofit = Retrofit.Builder().baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(builder))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client.build())
                 .build()

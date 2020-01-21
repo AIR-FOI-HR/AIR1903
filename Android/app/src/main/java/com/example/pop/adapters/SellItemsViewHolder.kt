@@ -8,6 +8,8 @@ import com.example.webservice.Model.PackageClass
 import com.example.webservice.Model.Product
 import kotlinx.android.synthetic.main.sell_item_list.view.*
 import kotlinx.android.synthetic.main.activity_sell_items.*
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 const val INITIAL_QUANTITY = 1
 
@@ -20,8 +22,8 @@ class SellItemsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         itemView.layoutSellItemListName.text = item.Naziv
         itemView.layoutSellItemListQuantity.text = INITIAL_QUANTITY.toString()
 
-        if(item is PackageClass) quantityLimit = item.Kolicina!!.toInt()
-        else if(item is Product) quantityLimit = item.Kolicina.toInt()
+        if(item is PackageClass) quantityLimit = 100
+        else if(item is Product) quantityLimit = item.Kolicina!!.toInt()
         updatePrice(item, 1)
 
         itemView.layoutSellItemListButtonDecrease.setOnClickListener {decreaseQuantity(itemView, item)}
@@ -48,15 +50,15 @@ class SellItemsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
     private fun updatePrice(item: Item, change: Int) {
         if(item is PackageClass) {
-            itemView.layoutSellItemListPrice.text = item.Popust //Tu treba biti cjena paketa
-            parentActivity.totalValue += item.Popust.toDouble() * change
+            itemView.layoutSellItemListPrice.text = item.CijenaStavkeNakonPopusta //Tu treba biti cjena paketa
+            parentActivity.totalValue += BigDecimal(item.CijenaStavkeNakonPopusta!!.toDouble() * change).setScale(2, RoundingMode.HALF_EVEN)
             parentActivity.invoice_total_value.text = parentActivity.totalValue.toString()
         }
 
         else if(item is Product) {
-            val value = itemView.layoutSellItemListPrice.text.toString().toDouble() + (item.Cijena.toDouble() * change)
+            val value = itemView.layoutSellItemListPrice.text.toString().toDouble() + (item.Cijena!!.toDouble() * change)
             itemView.layoutSellItemListPrice.text = value.toString()
-            parentActivity.totalValue += item.Cijena.toDouble() * change
+            parentActivity.totalValue += BigDecimal(item.Cijena!!.toDouble() * change).setScale(2, RoundingMode.HALF_EVEN)
             parentActivity.invoice_total_value.text = parentActivity.totalValue.toString()
         }
     }
