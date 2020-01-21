@@ -15,7 +15,8 @@ class InvoiceDetailsActivity : AppCompatActivity() {
         layoutInvoiceDetailsId.text = invoice.Id.toString()
         layoutInvoiceDetailsLocation.text = invoice.MjestoIzdavanja
         layoutInvoiceDetailsDate.text = invoice.DatumIzdavanja
-        layoutInvoiceDetailsSeller.text = invoice.Id_Trgovine.toString()
-        layoutInvoiceDetailsBuyer.text = invoice.Kupac.toString()
+        layoutInvoiceDetailsSeller.text = invoice.Trgovina
+        layoutInvoiceDetailsBuyer.text = invoice.Ime_Klijenta
+        layoutInvoiceDetailsTotal.text = invoice.ZavrsnaCijena
     }
 }

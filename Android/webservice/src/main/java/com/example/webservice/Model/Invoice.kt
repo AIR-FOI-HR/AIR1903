@@ -8,10 +8,6 @@ class Invoice (
     var MjestoIzdavanja : String?,
     var DatumIzdavanja : String?,
     var Id_Trgovine : Int?,
-<<<<<<< HEAD
-    var Kupac : Int?
-) : Serializable
-=======
     var Trgovina : String?,
     var Kupac : Int?,
     var Ime_Klijenta: String?,
@@ -22,5 +18,5 @@ class Invoice (
     var IznosPopustaRacuna: String?,
     var ZavrsnaCijena: String?,
     var Stavke: List<Item>?
-)
->>>>>>> origin/android/feature/invoices/restful
+) : Serializable
+
