@@ -613,6 +613,10 @@ public function updateProduct($post) {
             return $stmt;
         }
         else {
+            $q = "SELECT Popust FROM Paket_Popust WHERE Id_Paketa = {$post["Id"]}";
+            $stmt3 = $this->conn->query($q);
+            $stmt3 = $stmt3->fetch_assoc();
+            $popust = $stmt3["Popust"];
             $q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Cijena, fin2.Slika, fin2.Kolicina FROM "
                 ."(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, Proizvod_Paket.Kolicina  "
                 ."FROM  "
@@ -638,6 +642,11 @@ public function updateProduct($post) {
         }
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
+        foreach ($stmt as &$i){
+            $i["CijenaStavke"]=strval($i["Cijena"]*$i["Kolicina"]*(100-$popust)/100);
+        }
+        
+        
         
         return $stmt; 
     }
