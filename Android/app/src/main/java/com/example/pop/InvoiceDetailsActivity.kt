@@ -2,6 +2,7 @@ package com.example.pop
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.pop.adapters.InvoiceItemAdapter
 import com.example.webservice.Model.Invoice
 import kotlinx.android.synthetic.main.activity_invoice_details.*
 
@@ -18,5 +19,9 @@ class InvoiceDetailsActivity : AppCompatActivity() {
         layoutInvoiceDetailsSeller.text = invoice.Trgovina
         layoutInvoiceDetailsBuyer.text = invoice.Ime_Klijenta
         layoutInvoiceDetailsTotal.text = invoice.ZavrsnaCijena
+
+        val invoiceItemsAdapter = InvoiceItemAdapter()
+        layoutInvoiceDetailsRecycler.adapter = invoiceItemsAdapter
+        invoiceItemsAdapter.data = invoice.Stavke!!
     }
 }
