@@ -31,6 +31,9 @@
             android:name=".MainMenuSeller"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".MainMenuBuyer"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".RegistrationActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".ManageProductsActivity" />

@@ -20,5 +20,8 @@ class InvoiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             intent.putExtra("invoice", invoice)
             startActivity(it.context, intent, null)
         }
+=======
+        itemView.text_invoice_total.text = invoice.PopustRacuna.toString()
+>>>>>>> origin/android/feature/invoices/restful
     }
 }
