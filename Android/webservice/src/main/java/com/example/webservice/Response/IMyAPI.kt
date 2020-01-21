@@ -86,11 +86,11 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("racuni.php")
-    fun generateInvoice(@Field("Token") Token: String, @Field("GENERATESALE") SELL: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("PopustRacuna") PopustRacuna: String, @Field("Id_Itema[]") Id_Itema: ArrayList<Int>, @Field("Kolicina[]") Kolicina: ArrayList<String>) : Call<OneInvoiceResponse>
+    fun generateInvoice(@Field("Token") Token: String, @Field("GENERATESALE") GENERATESALE: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("PopustRacuna") PopustRacuna: String, @Field("Itemi[]") Itemi: ArrayList<Int>, @Field("Kolicine[]") Kolicine: ArrayList<String>) : Call<OneInvoiceResponse>
 
     @FormUrlEncoded
     @POST("racuni.php")
-    fun finalizeInvoice(@Field("Token") Token: String, @Field("CONFIRMSALE") SELL: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: Int) : Call<OneInvoiceResponse>
+    fun finalizeInvoice(@Field("Token") Token: String, @Field("CONFIRMSALE") CONFIRMSALE: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: Int) : Call<OneInvoiceResponse>
     
     /*@Multipart
     @POST("/upload")

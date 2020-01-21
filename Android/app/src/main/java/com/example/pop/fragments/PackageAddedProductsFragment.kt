@@ -94,7 +94,7 @@ class PackageAddedProductsFragment : Fragment() {
         var prodAmt = ArrayList<String>()
         for (i:Product in productAdapter.getItems()){
             prodIds.add(i.Id!!)
-            prodAmt.add(i.Kolicina)
+            prodAmt.add(i.Kolicina!!)
         }
         val api = Common.api
         api.addToPackage(Session.user.Token, true, id.toString(), prodIds,prodAmt).enqueue(object:Callback<PackageResponse> {

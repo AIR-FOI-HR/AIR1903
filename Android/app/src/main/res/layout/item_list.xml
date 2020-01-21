@@ -97,6 +97,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_image"
             app:layout_constraintTop_toBottomOf="@+id/item_name" />
+        <TextView
+            android:id="@+id/package_price"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/item_expansion"

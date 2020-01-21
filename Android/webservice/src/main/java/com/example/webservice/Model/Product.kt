@@ -5,7 +5,7 @@ class Product(
     override var Naziv: String?,
     override var Opis: String?,
     override var Slika: String?,
-    var Kolicina: String,
+    override var Kolicina: String?,
     var Cijena: String?,
     var CijenaStavke: String?,
     override var expanded: Boolean = false,

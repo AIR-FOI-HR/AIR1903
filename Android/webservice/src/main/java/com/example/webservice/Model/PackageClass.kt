@@ -5,7 +5,7 @@ class PackageClass(
     override var Naziv: String?,
     override var Opis: String?,
     override var Slika: String?,
-    var Kolicina: String?,
+    override var Kolicina: String?,
     var CijenaStavke: String?,
     var Popust: String?,
     var IznosPopusta: String?,
