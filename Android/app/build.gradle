@@ -64,6 +64,8 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
+    implementation 'com.airbnb.android:lottie:3.3.1'
+
     implementation project(path: ':webservice')
     implementation project(path: ':database')
     implementation project(path: ':qr')

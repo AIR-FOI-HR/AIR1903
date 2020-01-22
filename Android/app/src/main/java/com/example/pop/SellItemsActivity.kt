@@ -73,7 +73,8 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
 
 
     private fun startNFC() {
-        //Pokrece placanje sa nfc-om
+        val intent = Intent(this, NFCActivity::class.java)
+        startActivity(intent)
     }
 
     private fun startQR(id:Int) {
@@ -162,15 +163,16 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
 
         dialogView.btn_qr_code.setOnClickListener{
             startQR(idRacuna!!)
-        }
+        }/*
         dialogView.btn_nfc.setOnClickListener{
             //provjeri je li dostupan NFC
             //ako je, ->
             setOutGoingMessage()
             //ako nije, toast message
-        }
+        }*/
 
         dialogView.btn_nfc.setOnClickListener{
+            startNFC()
         }
     }
 }
