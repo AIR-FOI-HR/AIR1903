@@ -19,7 +19,7 @@ if ($db->checkAuth($_POST["Token"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
-    }else if ($_POST["GENERATESALE"] == true){//GITNEW
+    }else if ($_POST["GENERATESALE"] == true){
         $productSell = $db->sellItems($_POST);
         if ($productSell==false){
             $response->STATUS=false;
@@ -36,11 +36,17 @@ if ($db->checkAuth($_POST["Token"])) {
         return;
     }else if ($_POST["CONFIRMSALE"] == true) {
         $saleInvoice = $db->confirmSale($_POST);
-        if ($saleInvoice== false){
+        if ($saleInvoice== -1){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "MISSING AMOUNT";
             $response->DATA = null;
-        }else{
+        }
+        else if ($saleInvoice == -2){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "MISSING BALANCE";
+            $response->DATA = null;
+        }
+        else{
             $response->STATUS = true;
             $response->STATUSMESSAGE = "INVOICE FINALIZED";
             $response->DATA = $saleInvoice;
