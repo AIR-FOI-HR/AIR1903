@@ -1,5 +1,6 @@
 package com.example.webservice.Model
 
+import java.io.Serializable
 import java.util.*
 
 class Invoice (
@@ -17,4 +18,5 @@ class Invoice (
     var IznosPopustaRacuna: String?,
     var ZavrsnaCijena: String?,
     var Stavke: List<Item>?
-)
+) : Serializable
+
