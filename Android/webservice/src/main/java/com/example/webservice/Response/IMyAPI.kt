@@ -3,6 +3,7 @@ package com.example.webservice.Response
 import com.example.webservice.Model.*
 import okhttp3.*
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface IMyAPI {
@@ -95,6 +96,9 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("racuni.php")
     fun finalizeInvoice(@Field("Token") Token: String, @Field("CONFIRMSALE") CONFIRMSALE: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: Int) : Call<OneInvoiceResponse>
+    @FormUrlEncoded
+    @POST("racuni.php")
+    fun deleteInvoice(@Field("Token") Token:String, @Field("DELETE") DELETE:Boolean, @Field("Id_Racuna") Id_Racuna:String):Call<OneInvoiceResponse>
     
     /*@Multipart
     @POST("/upload")
