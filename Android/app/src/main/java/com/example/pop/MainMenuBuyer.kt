@@ -19,10 +19,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
+import com.example.webservice.Model.Invoice
+import com.example.webservice.Model.OneInvoiceResponse
 import com.example.webservice.Response.IMyAPI
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main_menu_seller.*
 import kotlinx.android.synthetic.main.dialog_payment_method.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.math.BigInteger
 
 
 const val MIME_TEXT_PLAIN = "text/plain"
@@ -30,9 +36,8 @@ const val MIME_TEXT_PLAIN = "text/plain"
 class MainMenuBuyer : AppCompatActivity() {
 
     lateinit var mService: IMyAPI
+    lateinit var invoice:Invoice
     //NFC
-    private var nfcAdapter: NfcAdapter? = null
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,15 +48,15 @@ class MainMenuBuyer : AppCompatActivity() {
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
 
-        var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        /*var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        //Log.d("NFC supported", (nfcAdapter != null).toString())
-        //Log.d("NFC enabled", (nfcAdapter?.isEnabled).toString())
+        Log.d("NFC supported", (nfcAdapter != null).toString())
+        Log.d("NFC enabled", (nfcAdapter?.isEnabled).toString())
 
         val isNfcSupported: Boolean = this.nfcAdapter != null
-        //this.nfcAdapter = NfcAdapter.getDefaultAdapter(this)?.let { it }
+        this.nfcAdapter = NfcAdapter.getDefaultAdapter(this)?.let { it }*/
 
-        if (!isNfcSupported) {
+        /*if (!isNfcSupported) {
             Log.d("NFC SUPPORTED_RCV", "=> FALSE")
         }else{
             Log.d("NFC SUPPORTED_RCV", "=> TRUE")
@@ -61,7 +66,7 @@ class MainMenuBuyer : AppCompatActivity() {
             Log.d("NFC ENABLED_RCV", "=> FALSE")
         }else{
             Log.d("NFC ENABLED_RCV", "=> TRUE")
-        }
+        }*/
 
         val dialogView = layoutInflater.run { inflate(R.layout.dialog_payment_method, null) }
         val dialogWindow = PopupWindow(
@@ -70,20 +75,20 @@ class MainMenuBuyer : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        card_sell_items.setOnClickListener{
+        card_sell_items.setOnClickListener {
             dialogWindow.showAtLocation(it, Gravity.CENTER, 0, 0)
             dialogWindow.dimBehind()
         }
-        card_invoices.setOnClickListener{showInvoices()}
-        card_wallet.setOnClickListener{showWalletBalance()}
+        card_invoices.setOnClickListener { showInvoices() }
+        card_wallet.setOnClickListener { showWalletBalance() }
 
         dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow.dismiss() }
-        dialogView.btn_qr_code.setOnClickListener{
+        dialogView.btn_qr_code.setOnClickListener {
             val scanner = IntentIntegrator(this)
             scanner.initiateScan()
         }
 
-        dialogView.btn_nfc.setOnClickListener{
+        dialogView.btn_nfc.setOnClickListener {
             val adapter = NfcAdapter.getDefaultAdapter(this)
             adapter.enableReaderMode(this, this, NfcAdapter.FLAG_READER_NFC_A, null)
 
@@ -91,7 +96,7 @@ class MainMenuBuyer : AppCompatActivity() {
         }
     }
 
-    private fun showWalletBalance(){
+    private fun showWalletBalance() {
         val intent = Intent(this, ShowWalletBalanceActivity::class.java)
         startActivity(intent)
     }
@@ -114,15 +119,47 @@ class MainMenuBuyer : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-            if(result != null){
-                if(result.contents == null){
+            if (result != null) {
+                if (result.contents == null) {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
-                }else{
-                    Toast.makeText(this, "Scanned: " + result.contents, Toast.LENGTH_LONG).show()
+                } else {
+                    /*Toast.makeText(
+                        this,
+                        "Scanned: " + (BigInteger(result.contents) / Session.expander).toString(),
+                        Toast.LENGTH_LONG
+                    ).show()*/
+                    var api = Common.api
+                    api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, (BigInteger(result.contents) / Session.expander).toInt()).enqueue(object :Callback<OneInvoiceResponse>{
+                        override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
+                            Toast.makeText(this@MainMenuBuyer, t.message, Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onResponse(
+                            call: Call<OneInvoiceResponse>,
+                            response: Response<OneInvoiceResponse>
+                        ) {
+                            if (response.body()!!.STATUSMESSAGE=="INVOICE FINALIZED") {
+                                val invoice = response.body()!!.DATA!! as Invoice
+                                var intent =
+                                    Intent(this@MainMenuBuyer, InvoiceDetailsActivity::class.java)
+                                intent.putExtra("invoice", invoice)
+                                startActivity(intent)
+                                finishAffinity()
+                            }
+                            else if (response.body()!!.STATUSMESSAGE=="MISSING AMOUNT"){
+                                Toast.makeText(this@MainMenuBuyer, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    })
+
+
+
+
                 }
-            }else{
+            } else {
                 super.onActivityResult(requestCode, resultCode, data)
             }
         }
@@ -136,14 +173,14 @@ class MainMenuBuyer : AppCompatActivity() {
             Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
             0
         )
-        val adapter = NfcAdapter.getDefaultAdapter(this)
-        adapter.enableForegroundDispatch(this, pendingIntent, null, null)
+        //val adapter = NfcAdapter.getDefaultAdapter(this)
+        //adapter.enableForegroundDispatch(this, pendingIntent, null, null)
     }
 
     override fun onPause() {
         super.onPause()
-        val adapter = NfcAdapter.getDefaultAdapter(this)
-        adapter.disableForegroundDispatch(this)
+        //val adapter = NfcAdapter.getDefaultAdapter(this)
+        //adapter.disableForegroundDispatch(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -201,8 +238,15 @@ class MainMenuBuyer : AppCompatActivity() {
     private fun disableForegroundDispatch(activity: AppCompatActivity, adapter: NfcAdapter?) {
         adapter?.disableForegroundDispatch(activity)
     }
-}
 
-private fun NfcAdapter.enableReaderMode(mainMenuBuyer: MainMenuBuyer, mainMenuBuyer1: MainMenuBuyer, flagReaderNfcA: Int, nothing: Nothing?) {
 
+
+    private fun NfcAdapter.enableReaderMode(
+        mainMenuBuyer: MainMenuBuyer,
+        mainMenuBuyer1: MainMenuBuyer,
+        flagReaderNfcA: Int,
+        nothing: Nothing?
+    ) {
+
+    }
 }
