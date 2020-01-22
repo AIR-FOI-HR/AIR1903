@@ -37,7 +37,13 @@ class QRCodeActivity : AppCompatActivity() {
                 call: Call<OneInvoiceResponse>,
                 response: Response<OneInvoiceResponse>
             ) {
-                if (response.body()!!.DATA!!.Kupac!=null) {
+                if (response.body()!!.DATA!!.Id == null){
+                    Toast.makeText(this@QRCodeActivity, "Transakcija poništena", Toast.LENGTH_SHORT).show()
+                    var intent = Intent(this@QRCodeActivity, MainMenuSeller::class.java)
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                else if (response.body()!!.DATA!!.Kupac!=null) {
                     var intent = Intent(this@QRCodeActivity, InvoiceDetailsActivity::class.java)
                     intent.putExtra("invoice", response.body()!!.DATA)
                     startActivity(intent)
