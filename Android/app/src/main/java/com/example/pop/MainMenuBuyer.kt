@@ -151,6 +151,9 @@ class MainMenuBuyer : AppCompatActivity() {
                             else if (response.body()!!.STATUSMESSAGE=="MISSING AMOUNT"){
                                 Toast.makeText(this@MainMenuBuyer, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
                             }
+                            else if (response.body()!!.STATUSMESSAGE=="MISSING BALANCE"){
+                                Toast.makeText(this@MainMenuBuyer, "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
+                            }
 
                         }
                     })
