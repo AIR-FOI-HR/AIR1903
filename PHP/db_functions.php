@@ -772,12 +772,24 @@ public function setInitialBalance($post) {
         
         
         
-        if ($this->reduceAmount($p)==false) return -1;
+        if ($this->reduceAmount($p)==false){
+            $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            $q = "DELETE FROM Racun WHERE Id = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            return -1;
+        }
         else{
             $clientBalance = $this->getBalance($post);
             //echo "jajsadhj".$clientBalance;
             //echo $clientBalance;
-            if ($response["ZavrsnaCijena"]>$clientBalance) return -2;
+            if ($response["ZavrsnaCijena"]>$clientBalance){
+                $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+                $stmt=$this->conn->query($q);
+                $q = "DELETE FROM Racun WHERE Id = {$idRacuna}";
+                $stmt=$this->conn->query($q);
+                return -2;
+            }
             //var_dump($response);
             $time = time();
             $this->updateBalance($response["Kupac"],$response["ZavrsnaCijena"],$time, false);
