@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GetNfcMessageActivity">
+    android:layout_gravity="center_horizontal"
+    tools:context=".QRCodeActivity">
+
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,4 +18,5 @@
         app:lottie_loop="true"
         app:lottie_fileName="payment.json"
         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

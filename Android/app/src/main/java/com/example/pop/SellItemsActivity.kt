@@ -2,16 +2,13 @@ package com.example.pop
 
 import android.content.Context
 import android.content.Intent
-import android.nfc.NfcAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.nfcm.OutcomingNfcManager
 import com.example.pop.adapters.SellItemsAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
@@ -25,14 +22,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
 
-class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity {
+class SellItemsActivity : AppCompatActivity() {
 
     private var itemsList : List<Item> = listOf()
     val adapter = SellItemsAdapter()
     var totalValue: BigDecimal = BigDecimal(0.0)
     var idRacuna:Int? = null
-    private var nfcAdapter: NfcAdapter? = null
-    private lateinit var outcomingNfcCallback: OutcomingNfcManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sell_items)
@@ -43,37 +39,15 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
         layoutSellItemsRecycler.adapter = adapter
         adapter.data = itemsList
 
-        //NFC
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        val isNfcSupported: Boolean = this.nfcAdapter != null
-        /*if (!isNfcSupported) {
-            Log.d("NFC SUPPORTED_SND", "=> FALSE")
-        }else{
-            Log.d("NFC SUPPORTED_SND", "=> TRUE")
-        }*/
-
-        /*if (!nfcAdapter?.isEnabled!!) {
-            Log.d("NFC ENABLED_SND", "=> FALSE")
-        }else{
-            Log.d("NFC ENABLED_SND", "=> TRUE")
-        }*/
-
-
-        this.outcomingNfcCallback = OutcomingNfcManager(this)
-        this.nfcAdapter?.setOnNdefPushCompleteCallback(outcomingNfcCallback, this)
-        this.nfcAdapter?.setNdefPushMessageCallback(outcomingNfcCallback, this)
-
-
         btn_choose_payment_option.setOnClickListener{
             getInvoiceId()
         }
-
-
     }
 
 
-    private fun startNFC() {
-        val intent = Intent(this, NFCActivity::class.java)
+    private fun startNFC(id:Int) {
+        val intent = Intent(this, SetNfcMessageActivity::class.java)
+        intent.putExtra("InvoiceID", id.toString())
         startActivity(intent)
     }
 
@@ -122,30 +96,8 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
                 }
             }
         })
-
-
     }
 
-    override fun onNewIntent(intent: Intent) {
-        this.intent = intent
-        super.onNewIntent(intent)
-    }
-
-    private fun setOutGoingMessage() {
-        val outMessage = invoice_total_value.text.toString()
-        this.invoice_total_value.text = outMessage
-    }
-
-    override fun getOutcomingMessage(): String = invoice_total_value.text.toString()
-
-    override fun signalResult() {
-        runOnUiThread {
-            Toast.makeText(this, "Payment Successful!", Toast.LENGTH_SHORT).show()
-        }
-
-
-
-    }
 
     private fun showDialog(){
         println("debug33--uslo u showdialog")
@@ -163,16 +115,10 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
 
         dialogView.btn_qr_code.setOnClickListener{
             startQR(idRacuna!!)
-        }/*
-        dialogView.btn_nfc.setOnClickListener{
-            //provjeri je li dostupan NFC
-            //ako je, ->
-            setOutGoingMessage()
-            //ako nije, toast message
-        }*/
+        }
 
         dialogView.btn_nfc.setOnClickListener{
-            startNFC()
+            startNFC(idRacuna!!)
         }
     }
 }
