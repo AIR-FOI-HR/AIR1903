@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeBar">
         <activity android:name=".InvoiceDetailsActivity"></activity>
+        <activity android:name=".BuyActivity"></activity>
         <activity android:name=".QRCodeActivity" />
         <activity android:name=".SellItemsActivity" />
         <activity android:name=".ShowInvoicesActivity" />
