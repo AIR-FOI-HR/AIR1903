@@ -45,6 +45,7 @@ class QRCodeActivity : AppCompatActivity() {
                         override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
                             Toast.makeText(this@QRCodeActivity, t.message, Toast.LENGTH_SHORT)
                                 .show()
+                            loop=false
                         }
 
                         override fun onResponse(
