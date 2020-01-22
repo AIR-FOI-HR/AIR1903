@@ -19,6 +19,9 @@ class InvoiceDetailsActivity : AppCompatActivity() {
         layoutInvoiceDetailsSeller.text = invoice.Trgovina
         layoutInvoiceDetailsBuyer.text = invoice.Ime_Klijenta
         layoutInvoiceDetailsTotal.text = invoice.ZavrsnaCijena
+        layoutInvoiceDetailsInvoiceDiscountValue.text = invoice.PopustRacuna+" %"
+        layoutInvoiceDetailsInvoiceBeforeDiscountValue.text = invoice.CijenaRacuna
+        layoutInvoiceDetailsInvoiceDiscountAmountValue.text = invoice.IznosPopustaRacuna
 
         val invoiceItemsAdapter = InvoiceItemAdapter()
         layoutInvoiceDetailsRecycler.adapter = invoiceItemsAdapter

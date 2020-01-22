@@ -12,13 +12,13 @@ class InvoiceItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         itemView.layoutInvoiceItemsListName.text = item.Naziv
         if(item is Product) {
             itemView.layoutInvoiceItemsListQuantity.text = item.Kolicina
-            itemView.layoutInvoiceItemsListPrice.text = item.CijenaStavke
-            itemView.layoutInvoiceItemsListTotal.text = (item.Kolicina!!.toFloat() * item.CijenaStavke!!.toFloat()).toString()
+            itemView.layoutInvoiceItemsListPrice.text = item.Cijena
+            itemView.layoutInvoiceItemsListTotal.text = item.CijenaStavke
         }
         else if(item is PackageClass) {
             itemView.layoutInvoiceItemsListQuantity.text = item.Kolicina
-            itemView.layoutInvoiceItemsListPrice.text = item.CijenaStavkeNakonPopusta
-            itemView.layoutInvoiceItemsListTotal.text = (item.Kolicina!!.toFloat() * item.CijenaStavkeNakonPopusta!!.toFloat()).toString()
+            itemView.layoutInvoiceItemsListPrice.text = item.CijenaNakonPopusta
+            itemView.layoutInvoiceItemsListTotal.text = item.CijenaStavkeNakonPopusta
         }
     }
 }

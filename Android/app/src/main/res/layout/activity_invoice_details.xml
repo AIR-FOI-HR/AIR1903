@@ -7,6 +7,64 @@
     tools:context=".InvoiceDetailsActivity">
 
     <TextView
+        android:id="@+id/layoutInvoiceDetailsTextDiscountAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Discount Amount"
+        app:layout_constraintBottom_toTopOf="@+id/layoutInvoiceDetailsTextTotal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBeforeDiscount" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsInvoiceDiscountAmountValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextDiscountAmount"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextDiscountAmount"
+        tools:text="Discount" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextBeforeDiscount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Price before discount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextInvoiceDiscount" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsInvoiceBeforeDiscountValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextBeforeDiscount"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextBeforeDiscount"
+        tools:text="Discount" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsInvoiceDiscountValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextInvoiceDiscount"
+        app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextInvoiceDiscount"
+        tools:text="Discount" />
+
+    <TextView
+        android:id="@+id/layoutInvoiceDetailsTextInvoiceDiscount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Discount Percentage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBuyer" />
+
+    <TextView
         android:id="@+id/layoutInvoiceDetailsTextInvoice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +136,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBuyer" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextDiscountAmount" />
 
     <TextView
         android:id="@+id/layoutInvoiceDetailsLocation"
@@ -101,7 +159,7 @@
         tools:text="1.1.2020." />
 
     <TextView
-        android:id="@+id/layoutInvoiceDetailsSeller"
+        android:id="@+id/layoutInvoiceDetailsBuyer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -111,7 +169,7 @@
         tools:text="Buyer" />
 
     <TextView
-        android:id="@+id/layoutInvoiceDetailsBuyer"
+        android:id="@+id/layoutInvoiceDetailsSeller"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

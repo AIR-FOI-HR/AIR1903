@@ -1,5 +1,6 @@
 package com.example.pop.adapters
 
+import android.text.Editable
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.SellItemsActivity
@@ -8,7 +9,9 @@ import com.example.webservice.Model.PackageClass
 import com.example.webservice.Model.Product
 import kotlinx.android.synthetic.main.sell_item_list.view.*
 import kotlinx.android.synthetic.main.activity_sell_items.*
+import kotlinx.android.synthetic.main.activity_sell_items.view.*
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.math.RoundingMode
 
 const val INITIAL_QUANTITY = 1
@@ -50,16 +53,17 @@ class SellItemsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
     private fun updatePrice(item: Item, change: Int) {
         if(item is PackageClass) {
-            itemView.layoutSellItemListPrice.text = item.CijenaStavkeNakonPopusta //Tu treba biti cjena paketa
+            itemView.layoutSellItemListPrice.text = (BigDecimal(itemView.layoutSellItemListPrice.text.toString()) + BigDecimal(item.CijenaStavkeNakonPopusta)*BigDecimal(change)).toString() //Tu treba biti cjena paketa
             parentActivity.totalValue += BigDecimal(item.CijenaStavkeNakonPopusta!!.toDouble() * change).setScale(2, RoundingMode.HALF_EVEN)
-            parentActivity.invoice_total_value.text = parentActivity.totalValue.toString()
+            parentActivity.invoice_total_value.text = (parentActivity.totalValue * BigDecimal(100-15)).toString()
+            //TODO: Zamijeniti 15 sa vrijednosti inputa za popust, dok je dodano
         }
 
         else if(item is Product) {
             val value = itemView.layoutSellItemListPrice.text.toString().toDouble() + (item.Cijena!!.toDouble() * change)
-            itemView.layoutSellItemListPrice.text = value.toString()
+            itemView.layoutSellItemListPrice.text = BigDecimal(value.toString()).toString()
             parentActivity.totalValue += BigDecimal(item.Cijena!!.toDouble() * change).setScale(2, RoundingMode.HALF_EVEN)
-            parentActivity.invoice_total_value.text = parentActivity.totalValue.toString()
+            parentActivity.invoice_total_value.text = (parentActivity.totalValue * BigDecimal(100-15) / BigDecimal(100)).toString()
         }
     }
 
