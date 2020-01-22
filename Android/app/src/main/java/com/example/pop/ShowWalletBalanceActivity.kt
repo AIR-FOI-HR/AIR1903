@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.ProductResponse
 import com.example.webservice.Model.WalletBalanceResponse
 import kotlinx.android.synthetic.main.activity_show_wallet_balance.*
 import retrofit2.Call
@@ -28,18 +27,36 @@ class ShowWalletBalanceActivity : AppCompatActivity() {
 
     private fun getBalance(){
         val api = Common.api
-        api.getWalletBalance(Session.user.Token, true, Session.user.KorisnickoIme).enqueue(object : Callback<WalletBalanceResponse>{
-            override fun onFailure(call: Call<WalletBalanceResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
-            }
+        if (Session.user.Id_Uloge == 1 || Session.user.Id_Uloge==2) {
+            api.getWalletBalanceClient(Session.user.Token, true, Session.user.KorisnickoIme)
+                .enqueue(object : Callback<WalletBalanceResponse> {
+                    override fun onFailure(call: Call<WalletBalanceResponse>, t: Throwable) {
+                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
+                    }
 
-            override fun onResponse(
-                call: Call<WalletBalanceResponse>,
-                response: Response<WalletBalanceResponse>
-            ) {
-                walletBalance.text = response.body()!!.DATA + " HRK"
-            }
-        })
+                    override fun onResponse(
+                        call: Call<WalletBalanceResponse>,
+                        response: Response<WalletBalanceResponse>
+                    ) {
+                        walletBalance.text = response.body()!!.DATA + " HRK"
+                    }
+                })
+        }
+        else if (Session.user.Id_Uloge == 3){
+            api.getWalletBalanceStore(Session.user.Token, true, Session.user.KorisnickoIme)
+                .enqueue(object : Callback<WalletBalanceResponse> {
+                    override fun onFailure(call: Call<WalletBalanceResponse>, t: Throwable) {
+                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onResponse(
+                        call: Call<WalletBalanceResponse>,
+                        response: Response<WalletBalanceResponse>
+                    ) {
+                        walletBalance.text = response.body()!!.DATA + " HRK"
+                    }
+                })
+        }
     }
 
     private fun showInvoices() {

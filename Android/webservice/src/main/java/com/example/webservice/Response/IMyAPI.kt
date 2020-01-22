@@ -74,7 +74,11 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("novcanik.php")
-    fun getWalletBalance(@Field("Token") Token: String, @Field("GET") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<WalletBalanceResponse>
+    fun getWalletBalanceClient(@Field("Token") Token: String, @Field("GETCLIENT") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<WalletBalanceResponse>
+
+    @FormUrlEncoded
+    @POST("novcanik.php")
+    fun getWalletBalanceStore(@Field("Token") Token: String, @Field("GETSTORE") GET: Boolean, @Field("KorisnickoIme") KorisnickoIme: String) : Call<WalletBalanceResponse>
 
     @FormUrlEncoded
     @POST("racuni.php")
