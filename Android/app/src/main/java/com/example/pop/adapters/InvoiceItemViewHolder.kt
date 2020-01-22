@@ -13,7 +13,7 @@ class InvoiceItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         if(item is Product) {
             itemView.layoutInvoiceItemsListQuantity.text = item.Kolicina
             itemView.layoutInvoiceItemsListPrice.text = item.CijenaStavke
-            itemView.layoutInvoiceItemsListTotal.text = (item.Kolicina.toFloat() * item.CijenaStavke!!.toFloat()).toString()
+            itemView.layoutInvoiceItemsListTotal.text = (item.Kolicina!!.toFloat() * item.CijenaStavke!!.toFloat()).toString()
         }
         else if(item is PackageClass) {
             itemView.layoutInvoiceItemsListQuantity.text = item.Kolicina

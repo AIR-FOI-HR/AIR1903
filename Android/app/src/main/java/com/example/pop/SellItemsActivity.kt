@@ -78,12 +78,7 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
         }
 
 
-        dialogView.btn_nfc.setOnClickListener{
-            //provjeri je li dostupan NFC
-            //ako je, ->
-            setOutGoingMessage()
-            //ako nije, toast message
-        }
+
     }
 
 
@@ -107,16 +102,34 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
         wm.updateViewLayout(container, p)
     }
 
-    private fun getInvoiceId(){
+    private fun getInvoiceId() {
         var api = Common.api
         var ids = adapter.getIds()
         var quantities = ArrayList<String>()
         var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(0)
-        for (i in 0..adapter.itemCount-1){
+        for (i in 0..adapter.itemCount - 1) {
             var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(i)
             quantities.add(k!!.itemView.layoutSellItemListQuantity.text.toString())
+            //TODO: Dok se na layout doda polje za popust, ubaciti ovdje umjesto 15.toString()
+            api.generateInvoice(Session.user.Token,true,Session.user.KorisnickoIme, 15.toString(), ids, quantities).enqueue(object: Callback<OneInvoiceResponse>{
+                override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
+                    Toast.makeText(this@SellItemsActivity, t.message, Toast.LENGTH_SHORT).show()
+                }
+                override fun onResponse(call: Call<OneInvoiceResponse>, response: Response<OneInvoiceResponse>){
+                    var resp = response.body()!!.DATA
+                    println("DEBUG33-"+response.body()!!.STATUSMESSAGE)
+                    if (response.body()!!.STATUSMESSAGE == "MISSING AMOUNT"){
+                        Toast.makeText(this@SellItemsActivity, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
 
+                    }
+                    else if (response.body()!!.STATUSMESSAGE == "INVOICE GENERATED"){
+                        idRacuna=response.body()!!.DATA!!.Id as Int
+                        showDialog()
+                    }
+                }
+            })
         }
+    }
 
     override fun onNewIntent(intent: Intent) {
         this.intent = intent
@@ -135,24 +148,6 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
             Toast.makeText(this, "Payment Successful!", Toast.LENGTH_SHORT).show()
         }
 
-        //TODO: Dok se na layout doda polje za popust, ubaciti ovdje umjesto 15.toString()
-        api.generateInvoice(Session.user.Token,true,Session.user.KorisnickoIme, 15.toString(), ids, quantities).enqueue(object: Callback<OneInvoiceResponse>{
-            override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
-                Toast.makeText(this@SellItemsActivity, t.message, Toast.LENGTH_SHORT).show()
-            }
-            override fun onResponse(call: Call<OneInvoiceResponse>, response: Response<OneInvoiceResponse>){
-                var resp = response.body()!!.DATA
-                println("DEBUG33-"+response.body()!!.STATUSMESSAGE)
-                if (response.body()!!.STATUSMESSAGE == "MISSING AMOUNT"){
-                    Toast.makeText(this@SellItemsActivity, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
-
-                }
-                else if (response.body()!!.STATUSMESSAGE == "INVOICE GENERATED"){
-                    idRacuna=response.body()!!.DATA!!.Id as Int
-                    showDialog()
-                }
-            }
-        })
 
 
     }
@@ -172,6 +167,12 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
 
         dialogView.btn_qr_code.setOnClickListener{
             startQR(idRacuna!!)
+        }
+        dialogView.btn_nfc.setOnClickListener{
+            //provjeri je li dostupan NFC
+            //ako je, ->
+            setOutGoingMessage()
+            //ako nije, toast message
         }
 
         dialogView.btn_nfc.setOnClickListener{
