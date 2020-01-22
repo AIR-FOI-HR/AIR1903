@@ -86,7 +86,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("racuni.php")
-    fun getOneInvoice(@Field("Token") Token: String, @Field("Readone") Readall: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: String) : Call<OneInvoiceResponse>
+    fun getOneInvoice(@Field("Token") Token: String, @Field("Readone") Readone: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: String) : Call<OneInvoiceResponse>
 
     @FormUrlEncoded
     @POST("racuni.php")

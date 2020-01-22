@@ -1,8 +1,10 @@
 package com.example.pop
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.pop.adapters.InvoiceItemAdapter
+import com.example.pop_sajamv2.Session
 import com.example.webservice.Model.Invoice
 import kotlinx.android.synthetic.main.activity_invoice_details.*
 
@@ -26,5 +28,19 @@ class InvoiceDetailsActivity : AppCompatActivity() {
         val invoiceItemsAdapter = InvoiceItemAdapter()
         layoutInvoiceDetailsRecycler.adapter = invoiceItemsAdapter
         invoiceItemsAdapter.data = invoice.Stavke!!
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        var intent:Intent
+        if (Session.user.Id_Uloge == 3){
+            intent=Intent(this@InvoiceDetailsActivity, MainMenuSeller::class.java)
+        }
+        else{
+            intent=Intent(this@InvoiceDetailsActivity, MainMenuBuyer::class.java)
+        }
+        startActivity(intent)
+        finishAffinity()
+
     }
 }
