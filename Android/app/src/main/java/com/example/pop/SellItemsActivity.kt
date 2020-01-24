@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.nfc.NfcAdapter
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -29,14 +31,33 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
 
     private var itemsList : List<Item> = listOf()
     val adapter = SellItemsAdapter()
-    var totalValue: BigDecimal = BigDecimal(0.0)
+    var totalValue: Double = 0.0
+    var discountedTotalValue: Double = 0.0
+    var discount: Int = 0
     var idRacuna:Int? = null
     private var nfcAdapter: NfcAdapter? = null
     private lateinit var outcomingNfcCallback: OutcomingNfcManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sell_items)
 
+        input_invoice_discount.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "100"))
+        input_invoice_discount.addTextChangedListener (object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                discount =
+                    if(s.toString().trim().isNotEmpty()) s.toString().toInt()
+                    else 0
+                discountedTotalValue = totalValue * ((100.0 - discount) / 100)
+                invoice_total_value.text = discountedTotalValue.toString()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    
         itemsList = (intent.getSerializableExtra("items") as ItemsWrapper).getItems()
 
 
@@ -97,7 +118,7 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
         var ids = adapter.getIds()
         var quantities = ArrayList<String>()
         var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(0)
-        for (i in 0..adapter.itemCount-1){
+        for (i in 0 until adapter.itemCount){
             var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(i)
             quantities.add(k!!.itemView.layoutSellItemListQuantity.text.toString())
 

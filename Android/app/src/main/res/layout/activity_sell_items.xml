@@ -9,26 +9,59 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:background="@drawable/input"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+
+        <TextView
+            android:id="@+id/text_invoice_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:text="@string/textInvoiceDiscount"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/layoutSellItemsTextTotal"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/input_invoice_discount"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorWhite"
+            android:hint="@string/valueInvoiceDiscount"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@string/valueInvoiceDiscount"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/layoutSellItemsTextHRK"
+            app:layout_constraintStart_toEndOf="@+id/text_invoice_discount" />
+
         <TextView
             android:id="@+id/layoutSellItemsTextTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="32dp"
             android:layout_weight="1"
             android:text="@string/textTotal"
             android:textColor="@color/colorWhite"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/invoice_total_value"
@@ -38,7 +71,7 @@
             android:layout_weight="1"
             android:text="@string/inputHintNumber"
             android:textColor="@color/colorWhite"
-            android:textSize="30sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/layoutSellItemsTextTotal"
             app:layout_constraintStart_toEndOf="@+id/layoutSellItemsTextTotal" />
@@ -54,6 +87,17 @@
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/invoice_total_value"
             app:layout_constraintStart_toEndOf="@+id/invoice_total_value" />
+
+        <TextView
+            android:id="@+id/layoutSellItemsTextHRK2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Percentage"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/input_invoice_discount"
+            app:layout_constraintStart_toEndOf="@+id/input_invoice_discount" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -66,13 +110,13 @@
         app:backgroundTint="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout"
         app:srcCompat="@drawable/img_red_check_mark" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/layoutSellItemsRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"

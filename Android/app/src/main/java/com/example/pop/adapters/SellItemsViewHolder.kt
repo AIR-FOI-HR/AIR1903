@@ -54,19 +54,18 @@ class SellItemsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
     private fun updatePrice(item: Item, change: Int) {
         if(item is PackageClass) {
             itemView.layoutSellItemListPrice.text = (BigDecimal(itemView.layoutSellItemListPrice.text.toString()) + BigDecimal(item.CijenaStavkeNakonPopusta)*BigDecimal(change)).toString() //Tu treba biti cjena paketa
-            parentActivity.totalValue += BigDecimal(item.CijenaStavkeNakonPopusta!!.toDouble() * change).setScale(2, RoundingMode.HALF_EVEN)
-            parentActivity.invoice_total_value.text = (parentActivity.totalValue * BigDecimal(100-15)).toString()
-            //TODO: Zamijeniti 15 sa vrijednosti inputa za popust, dok je dodano
+            parentActivity.totalValue += item.CijenaStavkeNakonPopusta!!.toDouble() * change
+            parentActivity.invoice_total_value.text = parentActivity.totalValue.toString()
+            parentActivity.input_invoice_discount.setText("0")
         }
 
         else if(item is Product) {
             val value = itemView.layoutSellItemListPrice.text.toString().toDouble() + (item.Cijena!!.toDouble() * change)
             itemView.layoutSellItemListPrice.text = BigDecimal(value.toString()).toString()
-            parentActivity.totalValue += BigDecimal(item.Cijena!!.toDouble() * change).setScale(2, RoundingMode.HALF_EVEN)
-            parentActivity.invoice_total_value.text = (parentActivity.totalValue * BigDecimal(100-15) / BigDecimal(100)).toString()
+            parentActivity.totalValue += item.Cijena!!.toDouble() * change
+            parentActivity.invoice_total_value.text = parentActivity.totalValue.toString()
+            parentActivity.input_invoice_discount.setText("0")
         }
     }
-
-
 
 }

@@ -73,5 +73,8 @@
     <string name="textDate">Date:</string>
     <string name="textSeller">Seller:</string>
     <string name="textBuyer">Buyer:</string>
+    <string name="textInvoiceDiscount">DISCOUNT:</string>
+    <string name="valueInvoiceDiscount">0</string>
+    <string name="Percentage">%</string>
 
 </resources>
