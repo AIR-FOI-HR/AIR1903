@@ -1,5 +1,6 @@
 package com.example.pop
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -7,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.pop_sajamv2.Session
 import com.example.qr.QRCode
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.InvoiceResponse
 import com.example.webservice.Model.OneInvoiceResponse
 import kotlinx.android.synthetic.main.activity_qrcode.*
 import kotlinx.coroutines.*
@@ -15,6 +15,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigInteger
+import android.animation.AnimatorListenerAdapter
+import com.example.webservice.Model.Invoice
+import kotlin.concurrent.thread
+
 
 class QRCodeActivity : AppCompatActivity() {
     var deleteInvoice = true
@@ -28,6 +32,12 @@ class QRCodeActivity : AppCompatActivity() {
         val expandedTotal = expand(total)
         imageView.setImageBitmap(QRCode.generateQRCode(expandedTotal))
         //imageView.setOnClickListener { showInvoice(total.toInt()) }
+        animation_loading.addAnimatorListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                super.onAnimationStart(animation)
+                animation_loading.setMinAndMaxFrame(0,15)
+            }
+        })
         showInvoice(total.toInt())
     }
 
@@ -65,13 +75,7 @@ class QRCodeActivity : AppCompatActivity() {
                                 finishAffinity()
 
                             } else if (response.body()!!.DATA!!.Kupac != null) {
-                                var intent =
-                                    Intent(this@QRCodeActivity, InvoiceDetailsActivity::class.java)
-                                intent.putExtra("invoice", response.body()!!.DATA)
-                                deleteInvoice = false
-                                loop = false
-                                startActivity(intent)
-                                finishAffinity()
+                                finishPayment(response.body()!!.DATA)
                             }
                         }
                     })
@@ -79,9 +83,30 @@ class QRCodeActivity : AppCompatActivity() {
             }
         }
 
-
-
     }
+
+    private fun finishPayment(data: Invoice?) {
+        deleteInvoice = false
+        loop = false
+
+        animation_loading.addAnimatorListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationRepeat(animation: Animator?) {
+                super.onAnimationRepeat(animation)
+                animation_loading.setMaxFrame(60)
+                animation_loading.repeatCount = 1
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                super.onAnimationEnd(animation)
+                val intent =
+                    Intent(this@QRCodeActivity, InvoiceDetailsActivity::class.java)
+                intent.putExtra("invoice", data)
+                startActivity(intent)
+                finishAffinity()
+            }
+        })
+    }
+
     private fun expand(total:String):String{
         val x = BigInteger(total)
         val y = x * Session.expander
@@ -90,8 +115,8 @@ class QRCodeActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (deleteInvoice==true){
-            if (cancelled==false){
+        if (deleteInvoice){
+            if (!cancelled){
                 var api = Common.api
                 api.getOneInvoice(Session.user.Token, true,Session.user.KorisnickoIme, intent.getStringExtra("Total")).enqueue(object: Callback<OneInvoiceResponse>{
                     override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {

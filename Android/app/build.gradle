@@ -27,6 +27,7 @@ dependencies {
 
     def support_version = "29.0.0"
     def glide_version = "4.8.0"
+    def lottie_version = "3.3.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -63,6 +64,8 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+
+    implementation "com.airbnb.android:lottie:$lottie_version"
 
     implementation project(path: ':webservice')
     implementation project(path: ':database')
