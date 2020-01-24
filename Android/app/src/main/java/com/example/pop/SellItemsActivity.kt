@@ -26,6 +26,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity {
 
@@ -51,7 +52,7 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
                     if(s.toString().trim().isNotEmpty()) s.toString().toInt()
                     else 0
                 discountedTotalValue = totalValue * ((100.0 - discount) / 100)
-                invoice_total_value.text = discountedTotalValue.toString()
+                invoice_total_value.text = BigDecimal(discountedTotalValue.toString()).setScale(2,RoundingMode.HALF_EVEN).toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -125,7 +126,10 @@ class SellItemsActivity : AppCompatActivity(), OutcomingNfcManager.INfcActivity 
         }
 
         //TODO: Dok se na layout doda polje za popust, ubaciti ovdje umjesto 15.toString()
-        api.generateInvoice(Session.user.Token,true,Session.user.KorisnickoIme, 15.toString(), ids, quantities).enqueue(object: Callback<OneInvoiceResponse>{
+        var disc = input_invoice_discount.text.toString()
+        if (disc == "" || disc.toInt()<0) input_invoice_discount.text=Editable.Factory.getInstance().newEditable(0.toString())
+        else if (disc.toInt()>100) input_invoice_discount.text=Editable.Factory.getInstance().newEditable(100.toString())
+        api.generateInvoice(Session.user.Token,true,Session.user.KorisnickoIme, input_invoice_discount.text.toString(), ids, quantities).enqueue(object: Callback<OneInvoiceResponse>{
             override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
                 Toast.makeText(this@SellItemsActivity, t.message, Toast.LENGTH_SHORT).show()
             }
