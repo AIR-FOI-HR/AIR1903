@@ -12,6 +12,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import com.example.pop_sajamv2.Session
+import com.example.webservice.Common.Common
+import com.example.webservice.Model.Invoice
+import com.example.webservice.Model.OneInvoiceResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.math.BigInteger
 
 class GetNfcMessageActivity : AppCompatActivity() {
 
@@ -30,7 +38,7 @@ class GetNfcMessageActivity : AppCompatActivity() {
         val isNfcSupported: Boolean = this.nfcAdapter != null
         //this.nfcAdapter = NfcAdapter.getDefaultAdapter(this)?.let { it }
 
-        if (!isNfcSupported) {
+        /*if (!isNfcSupported) {
             Log.d("NFC SUPPORTED_RCV", "=> FALSE")
         }else{
             Log.d("NFC SUPPORTED_RCV", "=> TRUE")
@@ -40,7 +48,7 @@ class GetNfcMessageActivity : AppCompatActivity() {
             Log.d("NFC ENABLED_RCV", "=> FALSE")
         }else{
             Log.d("NFC ENABLED_RCV", "=> TRUE")
-        }
+        }*/
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -73,8 +81,40 @@ class GetNfcMessageActivity : AppCompatActivity() {
                 val text = inMessage
                 val duration = Toast.LENGTH_LONG
 
-                val toast = Toast.makeText(applicationContext, inMessage, duration)
-                toast.show()
+                var api = Common.api
+                api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, text.toInt()).enqueue(object :
+                    Callback<OneInvoiceResponse> {
+                    override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
+                        Toast.makeText(this@GetNfcMessageActivity , t.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onResponse(
+                        call: Call<OneInvoiceResponse>,
+                        response: Response<OneInvoiceResponse>
+                    ) {
+                        if (response.body()!!.STATUSMESSAGE=="INVOICE FINALIZED") {
+                            val invoice = response.body()!!.DATA!! as Invoice
+                            var intent =
+                                Intent(this@GetNfcMessageActivity , InvoiceDetailsActivity::class.java)
+                            intent.putExtra("invoice", invoice)
+                            startActivity(intent)
+                            finishAffinity()
+                        }
+                        else if (response.body()!!.STATUSMESSAGE=="MISSING AMOUNT"){
+                            Toast.makeText(this@GetNfcMessageActivity , "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
+                        }
+                        else if (response.body()!!.STATUSMESSAGE=="MISSING BALANCE"){
+                            Toast.makeText(this@GetNfcMessageActivity , "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                })
+
+                //val toast = Toast.makeText(applicationContext, inMessage, duration)
+
+                //toast.show()
+
+
             }
         }
     }
