@@ -48,14 +48,15 @@ class MainMenuBuyer : AppCompatActivity() {
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
 
-        /*var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         Log.d("NFC supported", (nfcAdapter != null).toString())
         Log.d("NFC enabled", (nfcAdapter?.isEnabled).toString())
 
+        /*
         val isNfcSupported: Boolean = this.nfcAdapter != null
-        this.nfcAdapter = NfcAdapter.getDefaultAdapter(this)?.let { it }*/
-
+        this.nfcAdapter = NfcAdapter.getDefaultAdapter(this)?.let { it }
+        */
         /*if (!isNfcSupported) {
             Log.d("NFC SUPPORTED_RCV", "=> FALSE")
         }else{
@@ -89,10 +90,8 @@ class MainMenuBuyer : AppCompatActivity() {
         }
 
         dialogView.btn_nfc.setOnClickListener {
-            val adapter = NfcAdapter.getDefaultAdapter(this)
-            adapter.enableReaderMode(this, this, NfcAdapter.FLAG_READER_NFC_A, null)
-
-            //onNewIntent(intent)
+            val intent = Intent(this, GetNfcMessageActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -166,90 +165,5 @@ class MainMenuBuyer : AppCompatActivity() {
                 super.onActivityResult(requestCode, resultCode, data)
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
-            0
-        )
-        //val adapter = NfcAdapter.getDefaultAdapter(this)
-        //adapter.enableForegroundDispatch(this, pendingIntent, null, null)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        //val adapter = NfcAdapter.getDefaultAdapter(this)
-        //adapter.disableForegroundDispatch(this)
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        val tag: Tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
-        receiveMessageFromDevice(intent)
-    }
-
-    private fun receiveMessageFromDevice(intent: Intent) {
-        val action = intent.action
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
-            val parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-            with(parcelables) {
-                val inNdefMessage = this[0] as NdefMessage
-                val inNdefRecords = inNdefMessage.records
-                val ndefRecord_0 = inNdefRecords[0]
-
-                val inMessage = String(ndefRecord_0.payload)
-                //tvIncomingMessage?.text = inMessage
-
-
-                //toast message
-                val text = inMessage
-                val duration = Toast.LENGTH_LONG
-
-                val toast = Toast.makeText(applicationContext, inMessage, duration)
-                toast.show()
-            }
-        }
-    }
-
-    private fun enableForegroundDispatch(activity: AppCompatActivity, adapter: NfcAdapter?) {
-        val intent = Intent(activity.applicationContext, activity.javaClass)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-
-        val pendingIntent = PendingIntent.getActivity(activity.applicationContext, 0, intent, 0)
-
-        val filters = arrayOfNulls<IntentFilter>(1)
-        val techList = arrayOf<Array<String>>()
-
-        filters[0] = IntentFilter()
-        with(filters[0]) {
-            this?.addAction(NfcAdapter.ACTION_NDEF_DISCOVERED)
-            this?.addCategory(Intent.CATEGORY_DEFAULT)
-            try {
-                this?.addDataType(MIMETYPE_TEXT_PLAIN)
-            } catch (ex: IntentFilter.MalformedMimeTypeException) {
-                throw RuntimeException("Check your MIME type")
-            }
-        }
-
-        adapter?.enableForegroundDispatch(activity, pendingIntent, filters, techList)
-    }
-
-    private fun disableForegroundDispatch(activity: AppCompatActivity, adapter: NfcAdapter?) {
-        adapter?.disableForegroundDispatch(activity)
-    }
-
-
-
-    private fun NfcAdapter.enableReaderMode(
-        mainMenuBuyer: MainMenuBuyer,
-        mainMenuBuyer1: MainMenuBuyer,
-        flagReaderNfcA: Int,
-        nothing: Nothing?
-    ) {
-
     }
 }
