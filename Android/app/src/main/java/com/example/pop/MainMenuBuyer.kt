@@ -1,14 +1,10 @@
 package com.example.pop
 
 import android.app.Activity
-import android.app.PendingIntent
-import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
-import android.nfc.Tag
+import android.nfc.NfcManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -90,8 +86,19 @@ class MainMenuBuyer : AppCompatActivity() {
         }
 
         dialogView.btn_nfc.setOnClickListener {
-            val intent = Intent(this, GetNfcMessageActivity::class.java)
-            startActivity(intent)
+            val manager =
+                applicationContext.getSystemService(Context.NFC_SERVICE) as NfcManager
+            val adapter = manager.defaultAdapter
+            if (adapter != null && adapter.isEnabled) {
+                val intent = Intent(this, GetNfcMessageActivity::class.java)
+                startActivity(intent)
+            }else{
+                val text = "NFC disabled or unavailable!"
+                val duration = Toast.LENGTH_LONG
+
+                val toast = Toast.makeText(applicationContext, text, duration)
+                toast.show()
+            }
         }
     }
 

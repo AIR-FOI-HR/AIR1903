@@ -2,9 +2,9 @@ package com.example.pop
 
 import android.content.Context
 import android.content.Intent
+import android.nfc.NfcManager
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.Gravity
@@ -26,6 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
 import java.math.RoundingMode
+
 
 class SellItemsActivity : AppCompatActivity() {
 
@@ -145,7 +146,18 @@ class SellItemsActivity : AppCompatActivity() {
         }
 
         dialogView.btn_nfc.setOnClickListener{
-            startNFC(idRacuna!!)
+            val manager =
+                applicationContext.getSystemService(Context.NFC_SERVICE) as NfcManager
+            val adapter = manager.defaultAdapter
+            if (adapter != null && adapter.isEnabled) {
+                startNFC(idRacuna!!)
+            }else{
+                val text = "NFC disabled or unavailable!"
+                val duration = Toast.LENGTH_LONG
+
+                val toast = Toast.makeText(applicationContext, text, duration)
+                toast.show()
+            }
         }
     }
 }
