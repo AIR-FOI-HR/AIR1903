@@ -1,17 +1,13 @@
 package com.example.pop
 
 import android.app.PendingIntent
-import android.content.ClipDescription
 import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
-import android.nfc.Tag
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Invoice
@@ -19,7 +15,7 @@ import com.example.webservice.Model.OneInvoiceResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.math.BigInteger
+
 
 class GetNfcMessageActivity : AppCompatActivity() {
 
@@ -28,8 +24,9 @@ class GetNfcMessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_nfc_message)
-
         var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+
+        nfcAdapter.setNdefPushMessage(null, this)
         //check if NFC is supported
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         //Log.d("NFC supported", (nfcAdapter != null).toString())
@@ -56,17 +53,40 @@ class GetNfcMessageActivity : AppCompatActivity() {
         receiveMessageFromDevice(intent)
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         enableForegroundDispatch(this, this.nfcAdapter)
         receiveMessageFromDevice(intent)
     }
 
-    override fun onPause() {
+     */
+
+    override fun onResume() {
+        super.onResume()
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
+            0
+        )
+        val adapter = NfcAdapter.getDefaultAdapter(this)
+        adapter.enableForegroundDispatch(this, pendingIntent, null, null)
+        receiveMessageFromDevice(intent)
+    }
+
+    /*override fun onPause() {
         super.onPause()
         disableForegroundDispatch(this, this.nfcAdapter)
     }
 
+     */
+
+
+    override fun onPause() {
+        super.onPause()
+        val adapter = NfcAdapter.getDefaultAdapter(this)
+        adapter.disableForegroundDispatch(this)
+    }
     private fun receiveMessageFromDevice(intent: Intent) {
         val action = intent.action
         if (NfcAdapter.ACTION_NDEF_DISCOVERED == action) {
