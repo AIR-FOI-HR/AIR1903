@@ -44,10 +44,6 @@ class MainMenuBuyer : AppCompatActivity() {
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
 
-        var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        Log.d("NFC supported", (nfcAdapter != null).toString())
-        Log.d("NFC enabled", (nfcAdapter?.isEnabled).toString())
 
         /*
         val isNfcSupported: Boolean = this.nfcAdapter != null
@@ -76,29 +72,21 @@ class MainMenuBuyer : AppCompatActivity() {
             dialogWindow.showAtLocation(it, Gravity.CENTER, 0, 0)
             dialogWindow.dimBehind()
         }
-        card_invoices.setOnClickListener { showInvoices() }
-        card_wallet.setOnClickListener { showWalletBalance() }
 
         dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow.dismiss() }
+
         dialogView.btn_qr_code.setOnClickListener {
             val scanner = IntentIntegrator(this)
             scanner.initiateScan()
         }
 
-        dialogView.btn_nfc.setOnClickListener {
-            val manager =
-                applicationContext.getSystemService(Context.NFC_SERVICE) as NfcManager
-            val adapter = manager.defaultAdapter
-            if (adapter != null && adapter.isEnabled) {
-                val intent = Intent(this, GetNfcMessageActivity::class.java)
-                startActivity(intent)
-            }else{
-                val text = "NFC disabled or unavailable!"
-                val duration = Toast.LENGTH_LONG
 
-                val toast = Toast.makeText(applicationContext, text, duration)
-                toast.show()
-            }
+        card_invoices.setOnClickListener { showInvoices() }
+        card_wallet.setOnClickListener { showWalletBalance() }
+
+        dialogView.btn_nfc.setOnClickListener {
+            var payment=NFCPayment()
+            payment.pay(this)
         }
     }
 
@@ -124,6 +112,7 @@ class MainMenuBuyer : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        var payment=QRPayment()
 
         if (resultCode == Activity.RESULT_OK) {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -131,42 +120,8 @@ class MainMenuBuyer : AppCompatActivity() {
                 if (result.contents == null) {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
                 } else {
-                    /*Toast.makeText(
-                        this,
-                        "Scanned: " + (BigInteger(result.contents) / Session.expander).toString(),
-                        Toast.LENGTH_LONG
-                    ).show()*/
-                    var api = Common.api
-                    api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, (BigInteger(result.contents) / Session.expander).toInt()).enqueue(object :Callback<OneInvoiceResponse>{
-                        override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
-                            Toast.makeText(this@MainMenuBuyer, t.message, Toast.LENGTH_SHORT).show()
-                        }
-
-                        override fun onResponse(
-                            call: Call<OneInvoiceResponse>,
-                            response: Response<OneInvoiceResponse>
-                        ) {
-                            if (response.body()!!.STATUSMESSAGE=="INVOICE FINALIZED") {
-                                val invoice = response.body()!!.DATA!! as Invoice
-                                var intent =
-                                    Intent(this@MainMenuBuyer, InvoiceDetailsActivity::class.java)
-                                intent.putExtra("invoice", invoice)
-                                startActivity(intent)
-                                finishAffinity()
-                            }
-                            else if (response.body()!!.STATUSMESSAGE=="MISSING AMOUNT"){
-                                Toast.makeText(this@MainMenuBuyer, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
-                            }
-                            else if (response.body()!!.STATUSMESSAGE=="MISSING BALANCE"){
-                                Toast.makeText(this@MainMenuBuyer, "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
-                            }
-
-                        }
-                    })
-
-
-
-
+                    payment.id = (BigInteger(result.contents) / Session.expander).toInt()
+                    payment.pay(this)
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)

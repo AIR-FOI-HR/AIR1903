@@ -92,7 +92,6 @@ class SellItemsActivity : AppCompatActivity() {
 
         }
 
-        //TODO: Dok se na layout doda polje za popust, ubaciti ovdje umjesto 15.toString()
         var disc = input_invoice_discount.text.toString()
         if (disc == "" || disc.toInt() < 0) input_invoice_discount.text =
             Editable.Factory.getInstance().newEditable(0.toString())
@@ -149,12 +148,12 @@ class SellItemsActivity : AppCompatActivity() {
 
         dialogView.btn_qr_code.setOnClickListener {
             payment = QRPayment()
-            payment.startPayment(this, idRacuna!!)
+            payment.createInvoice(this, idRacuna!!)
         }
 
         dialogView.btn_nfc.setOnClickListener {
             payment = NFCPayment()
-            payment.startPayment(this, idRacuna!!)
+            payment.createInvoice(this, idRacuna!!)
         }
     }
 }
