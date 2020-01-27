@@ -3,7 +3,10 @@ package com.example.pop
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.nfc.NfcAdapter
+import android.nfc.NfcManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -80,10 +83,24 @@ class MainMenuBuyer : AppCompatActivity() {
         card_wallet.setOnClickListener { showWalletBalance() }
 
         dialogView.btn_nfc.setOnClickListener {
-            var payment= NFCPayment()
 
             val intent = Intent(this, GetNfcMessageActivity::class.java)
-            payment.pay(this, intent)
+            var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+            nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+            Log.d("NFC supported", (nfcAdapter != null).toString())
+            Log.d("NFC enabled", (nfcAdapter?.isEnabled).toString())
+            val manager =
+                this.getSystemService(Context.NFC_SERVICE) as NfcManager
+            val adapter = manager.defaultAdapter
+            if (adapter != null && adapter.isEnabled) {
+                this.startActivity(intent)
+            }else{
+                val text = "NFC disabled or unavailable!"
+                val duration = Toast.LENGTH_LONG
+
+                val toast = Toast.makeText(this, text, duration)
+                toast.show()
+            }
         }
     }
 

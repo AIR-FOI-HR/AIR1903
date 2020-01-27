@@ -8,6 +8,7 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.nfc.NFCPayment
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Invoice
@@ -100,35 +101,12 @@ class GetNfcMessageActivity : AppCompatActivity() {
                 //toast message
                 val text = inMessage
                 val duration = Toast.LENGTH_LONG
+                var intent =
+                    Intent(this@GetNfcMessageActivity , InvoiceDetailsActivity::class.java)
 
-                var api = Common.api
-                api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, text.toInt()).enqueue(object :
-                    Callback<OneInvoiceResponse> {
-                    override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
-                        Toast.makeText(this@GetNfcMessageActivity , t.message, Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onResponse(
-                        call: Call<OneInvoiceResponse>,
-                        response: Response<OneInvoiceResponse>
-                    ) {
-                        if (response.body()!!.STATUSMESSAGE=="INVOICE FINALIZED") {
-                            val invoice = response.body()!!.DATA!! as Invoice
-                            var intent =
-                                Intent(this@GetNfcMessageActivity , InvoiceDetailsActivity::class.java)
-                            intent.putExtra("invoice", invoice)
-                            startActivity(intent)
-                            finishAffinity()
-                        }
-                        else if (response.body()!!.STATUSMESSAGE=="MISSING AMOUNT"){
-                            Toast.makeText(this@GetNfcMessageActivity , "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
-                        }
-                        else if (response.body()!!.STATUSMESSAGE=="MISSING BALANCE"){
-                            Toast.makeText(this@GetNfcMessageActivity , "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
-                        }
-
-                    }
-                })
+                var payment = NFCPayment()
+                payment.id=text.toInt()
+                payment.pay(this@GetNfcMessageActivity,intent)
 
                 //val toast = Toast.makeText(applicationContext, inMessage, duration)
 
