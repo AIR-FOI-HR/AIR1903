@@ -3,27 +3,22 @@ package com.example.pop
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.nfc.NfcAdapter
-import android.nfc.NfcManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.nfc.NFCPayment
 import com.example.pop_sajamv2.Session
+import com.example.qr.QRPayment
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Invoice
-import com.example.webservice.Model.OneInvoiceResponse
 import com.example.webservice.Response.IMyAPI
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main_menu_seller.*
 import kotlinx.android.synthetic.main.dialog_payment_method.view.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.math.BigInteger
 
 
@@ -85,8 +80,10 @@ class MainMenuBuyer : AppCompatActivity() {
         card_wallet.setOnClickListener { showWalletBalance() }
 
         dialogView.btn_nfc.setOnClickListener {
-            var payment=NFCPayment()
-            payment.pay(this)
+            var payment= NFCPayment()
+
+            val intent = Intent(this, GetNfcMessageActivity::class.java)
+            payment.pay(this, intent)
         }
     }
 
@@ -112,7 +109,7 @@ class MainMenuBuyer : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        var payment=QRPayment()
+        var payment= QRPayment()
 
         if (resultCode == Activity.RESULT_OK) {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -121,7 +118,9 @@ class MainMenuBuyer : AppCompatActivity() {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
                 } else {
                     payment.id = (BigInteger(result.contents) / Session.expander).toInt()
-                    payment.pay(this)
+                    var intent =
+                        Intent(this, InvoiceDetailsActivity::class.java)
+                    payment.pay(this, intent)
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)

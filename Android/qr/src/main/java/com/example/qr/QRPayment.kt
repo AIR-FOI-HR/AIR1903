@@ -1,4 +1,4 @@
-package com.example.pop
+package com.example.qr
 
 import android.app.Activity
 import android.content.Context
@@ -17,13 +17,13 @@ class QRPayment : com.example.core.PaymentInterface {
     var id :Int = 0
 
 
-    override fun createInvoice(context: Context, id: Int) {
-        val intent = Intent(context, QRCodeActivity::class.java)
+    override fun createInvoice(context: Context, id: Int, intent: Intent) {
+
         intent.putExtra("Total", id.toString())
         context.startActivity(intent)
     }
 
-    override fun pay(context: Context) {
+    override fun pay(context: Context, intent: Intent) {
         var api = Common.api
         api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, id).enqueue(object :
             Callback<OneInvoiceResponse> {
@@ -37,8 +37,7 @@ class QRPayment : com.example.core.PaymentInterface {
             ) {
                 if (response.body()!!.STATUSMESSAGE=="INVOICE FINALIZED") {
                     val invoice = response.body()!!.DATA!! as Invoice
-                    var intent =
-                        Intent(context, InvoiceDetailsActivity::class.java)
+
                     intent.putExtra("invoice", invoice)
                     context.startActivity(intent)
                     finishAffinity(context as Activity)

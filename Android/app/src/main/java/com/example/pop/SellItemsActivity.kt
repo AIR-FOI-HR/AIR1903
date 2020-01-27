@@ -2,7 +2,6 @@ package com.example.pop
 
 import android.content.Context
 import android.content.Intent
-import android.nfc.NfcManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
@@ -13,8 +12,10 @@ import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.nfc.NFCPayment
 import com.example.pop.adapters.SellItemsAdapter
 import com.example.pop_sajamv2.Session
+import com.example.qr.QRPayment
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Item
 import com.example.webservice.Model.OneInvoiceResponse
@@ -139,7 +140,7 @@ class SellItemsActivity : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        var payment: PaymentInterface
+        var payment: com.example.core.PaymentInterface
 
         dialogWindow.showAtLocation(linearLayout, Gravity.CENTER, 0, 0)
         dialogWindow.dimBehind()
@@ -148,12 +149,14 @@ class SellItemsActivity : AppCompatActivity() {
 
         dialogView.btn_qr_code.setOnClickListener {
             payment = QRPayment()
-            payment.createInvoice(this, idRacuna!!)
+            val intent = Intent(this, QRCodeActivity::class.java)
+            payment.createInvoice(this, idRacuna!!, intent)
         }
 
         dialogView.btn_nfc.setOnClickListener {
             payment = NFCPayment()
-            payment.createInvoice(this, idRacuna!!)
+            val intent = Intent(this, SetNfcMessageActivity::class.java)
+            payment.createInvoice(this, idRacuna!!, intent)
         }
     }
 }
