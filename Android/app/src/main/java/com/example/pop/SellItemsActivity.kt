@@ -30,12 +30,12 @@ import java.math.RoundingMode
 
 class SellItemsActivity : AppCompatActivity() {
 
-    private var itemsList : List<Item> = listOf()
+    private var itemsList: List<Item> = listOf()
     val adapter = SellItemsAdapter()
     var totalValue: Double = 0.0
     var discountedTotalValue: Double = 0.0
     var discount: Int = 0
-    var idRacuna:Int? = null
+    var idRacuna: Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,43 +43,32 @@ class SellItemsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sell_items)
 
         input_invoice_discount.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "100"))
-        input_invoice_discount.addTextChangedListener (object : TextWatcher {
+        input_invoice_discount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 discount =
-                    if(s.toString().trim().isNotEmpty()) s.toString().toInt()
+                    if (s.toString().trim().isNotEmpty()) s.toString().toInt()
                     else 0
                 discountedTotalValue = totalValue * ((100.0 - discount) / 100)
-                invoice_total_value.text = BigDecimal(discountedTotalValue.toString()).setScale(2,RoundingMode.HALF_EVEN).toString()
+                invoice_total_value.text =
+                    BigDecimal(discountedTotalValue.toString()).setScale(2, RoundingMode.HALF_EVEN)
+                        .toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
         })
-    
+
         itemsList = (intent.getSerializableExtra("items") as ItemsWrapper).getItems()
 
 
         layoutSellItemsRecycler.adapter = adapter
         adapter.data = itemsList
 
-        btn_choose_payment_option.setOnClickListener{
+        btn_choose_payment_option.setOnClickListener {
             getInvoiceId()
         }
-    }
-
-
-    private fun startNFC(id:Int) {
-        val intent = Intent(this, SetNfcMessageActivity::class.java)
-        intent.putExtra("InvoiceID", id.toString())
-        startActivity(intent)
-    }
-
-    private fun startQR(id:Int) {
-        val intent = Intent(this, QRCodeActivity::class.java)
-        intent.putExtra("Total", id.toString())
-        startActivity(intent)
     }
 
     private fun PopupWindow.dimBehind() {
@@ -92,12 +81,12 @@ class SellItemsActivity : AppCompatActivity() {
         wm.updateViewLayout(container, p)
     }
 
-    private fun getInvoiceId(){
+    private fun getInvoiceId() {
         var api = Common.api
         var ids = adapter.getIds()
         var quantities = ArrayList<String>()
         var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(0)
-        for (i in 0 until adapter.itemCount){
+        for (i in 0 until adapter.itemCount) {
             var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(i)
             quantities.add(k!!.itemView.layoutSellItemListQuantity.text.toString())
 
@@ -105,21 +94,37 @@ class SellItemsActivity : AppCompatActivity() {
 
         //TODO: Dok se na layout doda polje za popust, ubaciti ovdje umjesto 15.toString()
         var disc = input_invoice_discount.text.toString()
-        if (disc == "" || disc.toInt()<0) input_invoice_discount.text=Editable.Factory.getInstance().newEditable(0.toString())
-        else if (disc.toInt()>100) input_invoice_discount.text=Editable.Factory.getInstance().newEditable(100.toString())
-        api.generateInvoice(Session.user.Token,true,Session.user.KorisnickoIme, input_invoice_discount.text.toString(), ids, quantities).enqueue(object: Callback<OneInvoiceResponse>{
+        if (disc == "" || disc.toInt() < 0) input_invoice_discount.text =
+            Editable.Factory.getInstance().newEditable(0.toString())
+        else if (disc.toInt() > 100) input_invoice_discount.text =
+            Editable.Factory.getInstance().newEditable(100.toString())
+        api.generateInvoice(
+            Session.user.Token,
+            true,
+            Session.user.KorisnickoIme,
+            input_invoice_discount.text.toString(),
+            ids,
+            quantities
+        ).enqueue(object : Callback<OneInvoiceResponse> {
             override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
                 Toast.makeText(this@SellItemsActivity, t.message, Toast.LENGTH_SHORT).show()
             }
-            override fun onResponse(call: Call<OneInvoiceResponse>, response: Response<OneInvoiceResponse>){
-                var resp = response.body()!!.DATA
-                println("DEBUG33-"+response.body()!!.STATUSMESSAGE)
-                if (response.body()!!.STATUSMESSAGE == "MISSING AMOUNT"){
-                    Toast.makeText(this@SellItemsActivity, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
 
-                }
-                else if (response.body()!!.STATUSMESSAGE == "INVOICE GENERATED"){
-                    idRacuna=response.body()!!.DATA!!.Id as Int
+            override fun onResponse(
+                call: Call<OneInvoiceResponse>,
+                response: Response<OneInvoiceResponse>
+            ) {
+                var resp = response.body()!!.DATA
+                println("DEBUG33-" + response.body()!!.STATUSMESSAGE)
+                if (response.body()!!.STATUSMESSAGE == "MISSING AMOUNT") {
+                    Toast.makeText(
+                        this@SellItemsActivity,
+                        "Nekog od proizvoda nema na skladištu",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else if (response.body()!!.STATUSMESSAGE == "INVOICE GENERATED") {
+                    idRacuna = response.body()!!.DATA!!.Id as Int
                     showDialog()
                 }
             }
@@ -127,7 +132,7 @@ class SellItemsActivity : AppCompatActivity() {
     }
 
 
-    private fun showDialog(){
+    private fun showDialog() {
         println("debug33--uslo u showdialog")
         val dialogView = layoutInflater.run { inflate(R.layout.dialog_payment_method, null) }
         val dialogWindow = PopupWindow(
@@ -135,29 +140,22 @@ class SellItemsActivity : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+        var payment: PaymentInterface
 
         dialogWindow.showAtLocation(linearLayout, Gravity.CENTER, 0, 0)
         dialogWindow.dimBehind()
 
         dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow.dismiss() }
 
-        dialogView.btn_qr_code.setOnClickListener{
-            startQR(idRacuna!!)
+        dialogView.btn_qr_code.setOnClickListener {
+            payment = QRPayment()
+            payment.startPayment(this, idRacuna!!)
         }
 
-        dialogView.btn_nfc.setOnClickListener{
-            val manager =
-                applicationContext.getSystemService(Context.NFC_SERVICE) as NfcManager
-            val adapter = manager.defaultAdapter
-            if (adapter != null && adapter.isEnabled) {
-                startNFC(idRacuna!!)
-            }else{
-                val text = "NFC disabled or unavailable!"
-                val duration = Toast.LENGTH_LONG
-
-                val toast = Toast.makeText(applicationContext, text, duration)
-                toast.show()
-            }
+        dialogView.btn_nfc.setOnClickListener {
+            payment = NFCPayment()
+            payment.startPayment(this, idRacuna!!)
         }
     }
 }
+
