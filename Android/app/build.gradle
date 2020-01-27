@@ -73,4 +73,5 @@ dependencies {
     implementation project(path: ':database')
     implementation project(path: ':qr')
     implementation project(path: ':nfc')
+    implementation project(path: ':core')
 }

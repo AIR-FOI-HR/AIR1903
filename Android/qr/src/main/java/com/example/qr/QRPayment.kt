@@ -12,9 +12,8 @@ import com.example.webservice.Model.OneInvoiceResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.math.BigInteger
 
-class QRPayment : PaymentInterface {
+class QRPayment : com.example.core.PaymentInterface {
     var id :Int = 0
 
 

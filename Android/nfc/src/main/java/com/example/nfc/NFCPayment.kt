@@ -7,7 +7,7 @@ import android.nfc.NfcManager
 import android.util.Log
 import android.widget.Toast
 
-class NFCPayment : PaymentInterface {
+class NFCPayment : com.example.core.PaymentInterface {
     override fun createInvoice(context: Context, id: Int) {
         val manager =
             context.getSystemService(Context.NFC_SERVICE) as NfcManager

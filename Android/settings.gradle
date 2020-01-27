@@ -1,2 +1,2 @@
-include ':app', ':webservice', ':database', ':qr', ':nfc'
+include ':app', ':webservice', ':database', ':qr', ':nfc', ':core'
 rootProject.name='POP'
