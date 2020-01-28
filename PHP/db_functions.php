@@ -666,7 +666,7 @@ public function getBalance($post) {
         return $response;
     }
     public function getBalanceStore($post) {
-        echo "wat";
+        //echo "wat";
         $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
@@ -753,6 +753,15 @@ public function setInitialBalance($post) {
             return false;
         }  
         
+    }
+	
+	public function deleteInvoice($post){
+        $idRacuna = $post["Id_Racuna"];
+        $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+        $stmt=$this->conn->query($q);
+        $q = "DELETE FROM Racun WHERE Id = {$idRacuna}";
+        $stmt=$this->conn->query($q);
+        return null;
     }
 	
 	public function confirmSale($post){

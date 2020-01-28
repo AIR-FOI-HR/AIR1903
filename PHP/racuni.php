@@ -55,6 +55,14 @@ if ($db->checkAuth($_POST["Token"])) {
         echo $response;
         return;
     }
+	else if (isset($_POST["DELETE"]) && $_POST["DELETE"] == true){
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "DELETED";
+        $response->DATA=$db->deleteInvoice($_POST);
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
     else if (isset($_POST["Readone"]) && $_POST["Readone"] == true){
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
