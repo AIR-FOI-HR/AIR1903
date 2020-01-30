@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/registration1"
+    android:fillViewport="true"
+    android:focusable="true"
+    android:isScrollContainer="false"
+    tools:context=".fragments.RegistrationStep1Fragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/registrationFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true">
+
+
+        <EditText
+            android:id="@+id/layoutRegistrationInputName"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_input"
+            android:ems="10"
+            android:hint="@string/inputHintName"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textColor="@color/color_text_primary"
+            app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationInputSurname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/layoutRegistrationInputSurname"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/rounded_input"
+            android:ems="10"
+            android:hint="@string/inputHintSurname"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textColor="@color/color_text_primary"
+            app:layout_constraintBottom_toTopOf="@+id/layoutRegistrationButtonNext"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputName"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Button
+            android:id="@+id/layoutRegistrationButtonNext"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="250dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/buttonNext"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRegistrationInputSurname"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/stepIndicator1"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="80dp"
+            android:contentDescription="@string/stepIndicator1"
+            android:src="@drawable/indicator_selected"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stepIndicator2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/stepIndicator2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="82dp"
+            android:contentDescription="@string/stepIndicator2"
+            android:src="@drawable/indicator_unselected"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/stepIndicator3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/stepIndicator1" />
+
+        <ImageView
+            android:id="@+id/stepIndicator3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="82dp"
+            android:contentDescription="@string/stepIndicator3"
+            android:src="@drawable/indicator_unselected"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/stepIndicator2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

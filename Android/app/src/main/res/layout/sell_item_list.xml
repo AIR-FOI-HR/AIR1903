@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/layoutSellItemListName"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_input"
+        android:padding="10dp"
+        android:text="@string/hint_product_name"
+        app:layout_constraintEnd_toStartOf="@+id/layoutSellItemListQuantity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/layoutSellItemListQuantity"
+        android:layout_width="120dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_input"
+        android:hint="@string/hint_quantity"
+        android:importantForAutofill="no"
+        android:padding="10dp"
+        android:text="@string/text_quantity_default"
+        android:textAlignment="center"
+        android:textColor="@color/color_text_primary"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <TextView
+        android:id="@+id/layoutSellItemListPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/text_quantity_default"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutSellItemListName"
+        app:layout_constraintEnd_toStartOf="@+id/layoutSellItemListTextHRK"
+        app:layout_constraintTop_toTopOf="@+id/layoutSellItemListName" />
+
+    <TextView
+        android:id="@+id/layoutSellItemListTextHRK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/textHRK"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutSellItemListName"
+        app:layout_constraintEnd_toEndOf="@+id/layoutSellItemListName"
+        app:layout_constraintTop_toTopOf="@+id/layoutSellItemListName" />
+
+    <Button
+        android:id="@+id/layoutSellItemListButtonDecrease"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/img_decrease_quantity"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutSellItemListQuantity"
+        app:layout_constraintStart_toStartOf="@+id/layoutSellItemListQuantity"
+        app:layout_constraintTop_toTopOf="@+id/layoutSellItemListQuantity" />
+
+    <Button
+        android:id="@+id/layoutSellItemListButtonIncrease"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/img_add_quantity"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutSellItemListQuantity"
+        app:layout_constraintEnd_toEndOf="@+id/layoutSellItemListQuantity"
+        app:layout_constraintTop_toTopOf="@+id/layoutSellItemListQuantity" />
+</androidx.constraintlayout.widget.ConstraintLayout>
