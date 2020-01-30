@@ -9,13 +9,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nfc.NFCPayment
-import com.example.pop_sajamv2.Session
-import com.example.webservice.Common.Common
-import com.example.webservice.Model.Invoice
-import com.example.webservice.Model.OneInvoiceResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class GetNfcMessageActivity : AppCompatActivity() {
@@ -30,23 +23,7 @@ class GetNfcMessageActivity : AppCompatActivity() {
         nfcAdapter.setNdefPushMessage(null, this)
         //check if NFC is supported
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-        //Log.d("NFC supported", (nfcAdapter != null).toString())
-        //Log.d("NFC enabled", (nfcAdapter?.isEnabled).toString())
-
         val isNfcSupported: Boolean = this.nfcAdapter != null
-        //this.nfcAdapter = NfcAdapter.getDefaultAdapter(this)?.let { it }
-
-        /*if (!isNfcSupported) {
-            Log.d("NFC SUPPORTED_RCV", "=> FALSE")
-        }else{
-            Log.d("NFC SUPPORTED_RCV", "=> TRUE")
-        }
-
-        if (!nfcAdapter?.isEnabled!!) {
-            Log.d("NFC ENABLED_RCV", "=> FALSE")
-        }else{
-            Log.d("NFC ENABLED_RCV", "=> TRUE")
-        }*/
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -54,13 +31,6 @@ class GetNfcMessageActivity : AppCompatActivity() {
         receiveMessageFromDevice(intent)
     }
 
-    /*override fun onResume() {
-        super.onResume()
-        enableForegroundDispatch(this, this.nfcAdapter)
-        receiveMessageFromDevice(intent)
-    }
-
-     */
 
     override fun onResume() {
         super.onResume()
@@ -74,13 +44,6 @@ class GetNfcMessageActivity : AppCompatActivity() {
         adapter.enableForegroundDispatch(this, pendingIntent, null, null)
         receiveMessageFromDevice(intent)
     }
-
-    /*override fun onPause() {
-        super.onPause()
-        disableForegroundDispatch(this, this.nfcAdapter)
-    }
-
-     */
 
 
     override fun onPause() {
@@ -107,12 +70,6 @@ class GetNfcMessageActivity : AppCompatActivity() {
                 var payment = NFCPayment()
                 payment.id=text.toInt()
                 payment.pay(this@GetNfcMessageActivity,intent)
-
-                //val toast = Toast.makeText(applicationContext, inMessage, duration)
-
-                //toast.show()
-
-
             }
         }
     }

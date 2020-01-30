@@ -3,14 +3,15 @@ package com.example.pop.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pop.*
+import com.example.pop.LoginActivity
+import com.example.pop.ManageProductsActivity
+import com.example.pop.R
 import com.example.pop.adapters.ItemClickListener
 import com.example.pop.adapters.ItemRecyclerAdapter
 import com.example.pop_sajamv2.Session
@@ -45,10 +46,6 @@ class ProductsFragment : Fragment(), ItemClickListener {
 
         product_list.adapter = itemAdapter
         itemAdapter.notifyDataSetChanged()
-        Log.e("ALDIN", "PORUKA")
-        products?.forEach{
-            Log.e("Nakon dohvata", it.Naziv)
-        }
     }
 
     override fun onItemClick(view: View, position: Int) {
@@ -56,24 +53,20 @@ class ProductsFragment : Fragment(), ItemClickListener {
 
         Toast.makeText(context, product.Naziv, Toast.LENGTH_SHORT).show()
         selectProduct(product,position)
-        selectedProducts.forEach{
-            Log.e("Dodani proizvodi", it.Naziv)
-        }
     }
 
     override fun onItemLongClick(view: View?, position: Int) {
         val product: Product = products!![position]
         product.expanded = product.expanded.not()
-        Log.e("EXPAND", product.expanded.toString())
         itemAdapter.notifyItemChanged(position)
     }
 
     override fun onItemDeleteClick(view: View?, position: Int) {
-        Toast.makeText(context, "DELETE" + (products!![position].Naziv), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "DELETE" + (products!![position].Naziv), Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemEditClick(view: View?, position: Int) {
-        Toast.makeText(context, "EDIT" + (products!![position].Naziv), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "EDIT" + (products!![position].Naziv), Toast.LENGTH_SHORT).show()
     }
 
     private fun selectProduct(selectedProduct: Product, position: Int) {
@@ -99,9 +92,6 @@ class ProductsFragment : Fragment(), ItemClickListener {
 
             override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
                 products = response.body()!!.DATA
-                products?.forEach {
-                    Log.e("LISTA", it.Naziv)
-                }
                 when {
                     response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
                         val intent = Intent(activity, LoginActivity::class.java)
@@ -126,15 +116,5 @@ class ProductsFragment : Fragment(), ItemClickListener {
         intent.putExtra("previousActivity", 1)
         context?.startActivity(intent)
     }
-
-   /* private fun createPackage() {
-        val selectedProducts : List<Item> = itemAdapter.getSelectedItems()
-        val intent = Intent(context, ManagePackagesActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("productList", selectedProducts as Serializable)
-        context?.startActivity(intent)
-    }*/
-
-
 
 }

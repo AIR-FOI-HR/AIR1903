@@ -83,11 +83,8 @@ class PackageAddedProductsFragment : Fragment() {
         var id=0
         try {
             id = (activity!!.intent.extras!!.get("item") as PackageClass).Id!!
-            println("DEBUG33-try-"+id)
         } catch (e:kotlin.TypeCastException){
-            //id = arguments!!.getInt("packageId")
             id=(activity!!.intent.extras!!.getInt("packetId"))
-            println("DEBUG33-catch-"+id)
         }
 
         var prodIds = ArrayList<Int>()

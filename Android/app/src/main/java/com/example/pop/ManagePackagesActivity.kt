@@ -1,9 +1,8 @@
 package com.example.pop
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.content.Intent
-import kotlinx.android.synthetic.main.activity_manage_packages.*
 
 var packageTouchX : Float = 0f
 

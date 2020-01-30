@@ -3,12 +3,11 @@ package com.example.pop.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pop.LoginActivity
 import com.example.pop.ManagePackagesActivity
@@ -17,10 +16,8 @@ import com.example.pop.adapters.ItemClickListener
 import com.example.pop.adapters.ItemRecyclerAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.Item
 import com.example.webservice.Model.PackageClass
 import com.example.webservice.Model.PackageResponse
-import com.example.webservice.Model.Product
 import kotlinx.android.synthetic.main.fragment_packages_tab.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -56,24 +53,20 @@ class PackagesFragment : Fragment(), ItemClickListener {
         val mPackage: PackageClass = packages!![position]
         Toast.makeText(context, mPackage.Naziv, Toast.LENGTH_SHORT).show()
         selectProduct(mPackage, position)
-        selectedPackages.forEach{
-            Log.e("Dodani proizvodi", it.Naziv)
-        }
     }
 
     override fun onItemLongClick(view: View?, position: Int) {
         val mPackage: PackageClass = packages!![position]
         mPackage.expanded = mPackage.expanded.not()
-        Log.e("EXPAND", mPackage.expanded.toString())
         itemAdapter.notifyItemChanged(position)
     }
 
     override fun onItemDeleteClick(view: View?, position: Int) {
-        Toast.makeText(context, "DELETE" + (packages!![position].Naziv), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "DELETE" + (packages!![position].Naziv), Toast.LENGTH_SHORT).show()
     }
 
     override fun onItemEditClick(view: View?, position: Int) {
-        Toast.makeText(context, "EDIT" + (packages!![position].Naziv), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "EDIT" + (packages!![position].Naziv), Toast.LENGTH_SHORT).show()
     }
 
     private fun selectProduct(selectedPackage: PackageClass, position: Int) {

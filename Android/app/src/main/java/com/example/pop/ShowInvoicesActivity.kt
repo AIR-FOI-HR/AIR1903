@@ -1,26 +1,18 @@
 package com.example.pop
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.pop.adapters.InvoiceAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Invoice
-import kotlinx.android.synthetic.main.activity_show_invoices.*
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.Month
-import java.time.format.DateTimeFormatter
-import java.util.*
-import retrofit2.Callback
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.widget.Toast
 import com.example.webservice.Model.InvoiceResponse
+import kotlinx.android.synthetic.main.activity_show_invoices.*
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.ArrayList
 
 
 class ShowInvoicesActivity : AppCompatActivity() {
@@ -34,15 +26,12 @@ class ShowInvoicesActivity : AppCompatActivity() {
         invoiceAdapter = InvoiceAdapter()
         layoutShowReceiptsRecycler.adapter = invoiceAdapter
         getInvoices()
-        //adapter.data = getInvoices()
     }
 
     private fun getInvoices(){
         val api = Common.api
         api.getAllInvoices(Session.user.Token, true, Session.user.KorisnickoIme).enqueue(object: Callback<InvoiceResponse>{
             override fun onFailure(call: Call<InvoiceResponse>, t: Throwable) {
-                println("DEBUG33-Neuspješno")
-                println("DEBUG33-"+t.message)
                 Toast.makeText(this@ShowInvoicesActivity, t.message, Toast.LENGTH_SHORT).show()
             }
 
@@ -64,7 +53,6 @@ class ShowInvoicesActivity : AppCompatActivity() {
                         finishAffinity()
                     }
                     response.body()!!.STATUSMESSAGE == "SUCCESS" -> {
-                        println("DEBUG33-Uspješno primljeno")
                         invoiceAdapter.data=invoices
                     }
                     else -> {
@@ -73,13 +61,9 @@ class ShowInvoicesActivity : AppCompatActivity() {
                             response.body()!!.STATUSMESSAGE,
                             Toast.LENGTH_LONG
                         ).show()
-                        println("DEBUG33-ELSE")
                     }
                 }
-                //if (packages != null) itemAdapter.submitList(packages!!)
             }
         })
-
-
     }
 }

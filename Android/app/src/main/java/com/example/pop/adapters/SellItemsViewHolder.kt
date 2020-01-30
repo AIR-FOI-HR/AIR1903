@@ -1,18 +1,14 @@
 package com.example.pop.adapters
 
-import android.text.Editable
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.SellItemsActivity
 import com.example.webservice.Model.Item
 import com.example.webservice.Model.PackageClass
 import com.example.webservice.Model.Product
-import kotlinx.android.synthetic.main.sell_item_list.view.*
 import kotlinx.android.synthetic.main.activity_sell_items.*
-import kotlinx.android.synthetic.main.activity_sell_items.view.*
+import kotlinx.android.synthetic.main.sell_item_list.view.*
 import java.math.BigDecimal
-import java.math.BigInteger
-import java.math.RoundingMode
 
 const val INITIAL_QUANTITY = 1
 

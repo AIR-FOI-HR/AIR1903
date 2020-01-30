@@ -22,8 +22,4 @@ object QRCode {
 
         return bitmap
     }
-
-    fun readQRCode(){
-        
-    }
 }

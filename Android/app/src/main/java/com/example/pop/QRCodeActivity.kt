@@ -17,7 +17,6 @@ import retrofit2.Response
 import java.math.BigInteger
 import android.animation.AnimatorListenerAdapter
 import com.example.webservice.Model.Invoice
-import kotlin.concurrent.thread
 
 
 class QRCodeActivity : AppCompatActivity() {
@@ -31,7 +30,6 @@ class QRCodeActivity : AppCompatActivity() {
         val total = intent.getStringExtra("Total")
         val expandedTotal = expand(total)
         imageView.setImageBitmap(QRCode.generateQRCode(expandedTotal))
-        //imageView.setOnClickListener { showInvoice(total.toInt()) }
         animation_loading.addAnimatorListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?) {
                 super.onAnimationStart(animation)

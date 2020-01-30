@@ -1,12 +1,10 @@
 package com.example.pop.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.R
 import com.example.webservice.Model.Item
-
 
 
 class SellItemsAdapter : RecyclerView.Adapter<SellItemsViewHolder>(){

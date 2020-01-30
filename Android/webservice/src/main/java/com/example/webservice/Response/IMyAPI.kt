@@ -99,10 +99,5 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("racuni.php")
     fun deleteInvoice(@Field("Token") Token:String, @Field("DELETE") DELETE:Boolean, @Field("Id_Racuna") Id_Racuna:String):Call<OneInvoiceResponse>
-    
-    /*@Multipart
-    @POST("/upload")
-    fun uploadImage(@Part file: MultipartBody.Part, @Part("name") requestBody: RequestBody) : Call<ResponseBody>
-*/
-}
 
+}

@@ -39,7 +39,6 @@ class SetNfcMessageActivity : AppCompatActivity(), OutcomingNfcManager.INfcActiv
 
         invoiceId = intent.getStringExtra("InvoiceID")!!
 
-        val text : String = "HELLO"
         setOutGoingMessage()
     }
 
@@ -50,10 +49,9 @@ class SetNfcMessageActivity : AppCompatActivity(), OutcomingNfcManager.INfcActiv
 
     //val textToShow : String = invoiceId
     private fun setOutGoingMessage() {
-        println("DEBUG33--"+invoiceId)
         val outMessage = invoiceId
         var api = Common.api
-        val asdf = GlobalScope.launch {
+        val coroutine = GlobalScope.launch {
             while (loop) {
                 api.getOneInvoice(
                     Session.user.Token,

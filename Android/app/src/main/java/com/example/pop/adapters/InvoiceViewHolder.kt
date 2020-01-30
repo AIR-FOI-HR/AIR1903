@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.InvoiceDetailsActivity
-import com.example.pop.R
 import com.example.webservice.Model.Invoice
 import kotlinx.android.synthetic.main.invoice_list_item.view.*
 

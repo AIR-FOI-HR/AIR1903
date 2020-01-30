@@ -3,9 +3,7 @@ package com.example.nfc
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.nfc.NfcAdapter
 import android.nfc.NfcManager
-import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.finishAffinity
 import com.example.pop_sajamv2.Session

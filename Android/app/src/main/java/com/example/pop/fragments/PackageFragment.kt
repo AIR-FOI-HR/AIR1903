@@ -94,7 +94,6 @@ class PackageFragment : Fragment() {
         if (intent.hasExtra("item")) {
             if (intent.getSerializableExtra("item") != null) {
                 packageClass = intent.getSerializableExtra("item") as PackageClass
-                println ("DEBUG33--"+packageClass.Id)
 
 
 
@@ -318,13 +317,6 @@ class PackageFragment : Fragment() {
                             "Paket uspješno dodan",
                             Toast.LENGTH_SHORT
                         ).show()
-                        /*val intent = Intent(appContext, previousActivity)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        appContext.startActivity(intent)
-                        (appContext as Activity).overridePendingTransition(0, 0)
-                        (appContext as Activity).finish()
-                        (appContext as Activity).overridePendingTransition(0, 0)*/
                         activity!!.intent.putExtra("packetId", (response.body()!!.DATA as PackageClass).Id!!)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
@@ -520,13 +512,6 @@ class PackageFragment : Fragment() {
                             "Paket uspješno uređen",
                             Toast.LENGTH_SHORT
                         ).show()
-                        //val intent = Intent(appContext, previousActivity)
-                        //intent.flags =
-                        //    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        //appContext.startActivity(intent)
-                        //(appContext as Activity).overridePendingTransition(0, 0)
-                        //(appContext as Activity).finish()
-                        //(appContext as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
                         Toast.makeText(
@@ -571,14 +556,6 @@ class PackageFragment : Fragment() {
                             "Paket uspješno uređen",
                             Toast.LENGTH_SHORT
                         ).show()
-                        //activity!!.finish()
-                        //val intent = Intent(appContext, previousActivity)
-                        //intent.flags =
-                        //    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        //appContext.startActivity(intent)
-                        //(appContext as Activity).overridePendingTransition(0, 0)
-                        //(appContext as Activity).finish()
-                        //(appContext as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)

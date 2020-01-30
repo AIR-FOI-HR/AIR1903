@@ -6,14 +6,12 @@ import android.content.Intent
 import android.nfc.NfcAdapter
 import android.nfc.NfcManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.nfc.NFCPayment
 import com.example.pop_sajamv2.Session
 import com.example.qr.QRPayment
 import com.example.webservice.Common.Common
@@ -41,23 +39,6 @@ class MainMenuBuyer : AppCompatActivity() {
 
         username.text = Session.user.Ime + " " + Session.user.Prezime;
 
-
-
-        /*
-        val isNfcSupported: Boolean = this.nfcAdapter != null
-        this.nfcAdapter = NfcAdapter.getDefaultAdapter(this)?.let { it }
-        */
-        /*if (!isNfcSupported) {
-            Log.d("NFC SUPPORTED_RCV", "=> FALSE")
-        }else{
-            Log.d("NFC SUPPORTED_RCV", "=> TRUE")
-        }
-
-        if (!nfcAdapter?.isEnabled!!) {
-            Log.d("NFC ENABLED_RCV", "=> FALSE")
-        }else{
-            Log.d("NFC ENABLED_RCV", "=> TRUE")
-        }*/
 
         val dialogView = layoutInflater.run { inflate(R.layout.dialog_payment_method, null) }
         val dialogWindow = PopupWindow(
@@ -87,8 +68,6 @@ class MainMenuBuyer : AppCompatActivity() {
             val intent = Intent(this, GetNfcMessageActivity::class.java)
             var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
             nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-            Log.d("NFC supported", (nfcAdapter != null).toString())
-            Log.d("NFC enabled", (nfcAdapter?.isEnabled).toString())
             val manager =
                 this.getSystemService(Context.NFC_SERVICE) as NfcManager
             val adapter = manager.defaultAdapter

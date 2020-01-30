@@ -115,7 +115,6 @@ class SellItemsActivity : AppCompatActivity() {
                 response: Response<OneInvoiceResponse>
             ) {
                 var resp = response.body()!!.DATA
-                println("DEBUG33-" + response.body()!!.STATUSMESSAGE)
                 if (response.body()!!.STATUSMESSAGE == "MISSING AMOUNT") {
                     Toast.makeText(
                         this@SellItemsActivity,
@@ -133,7 +132,6 @@ class SellItemsActivity : AppCompatActivity() {
 
 
     private fun showDialog() {
-        println("debug33--uslo u showdialog")
         val dialogView = layoutInflater.run { inflate(R.layout.dialog_payment_method, null) }
         val dialogWindow = PopupWindow(
             dialogView,

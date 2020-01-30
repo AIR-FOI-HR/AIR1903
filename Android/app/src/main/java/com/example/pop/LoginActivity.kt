@@ -65,10 +65,6 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
-    /*private fun showProducts(){
-       val intent = Intent(this, ShowProductsActivity::class.java)
-       startActivity(intent)
-   }*/
     private fun showMainMenu(){
         val intent = if(Session.user.Id_Uloge == 1)
                                 Intent(this, MainMenuBuyer::class.java)
