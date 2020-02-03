@@ -19,11 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeBar">
-        <activity android:name=".GetNfcMessageActivity"></activity>
+        <activity android:name="com.example.nfc.GetNfcMessageActivity"></activity>
         <activity android:name=".fragments.GetNfcMessageActivity" />
         <activity android:name=".InvoiceDetailsActivity" />
         <activity android:name="com.example.qr.QRCodeActivity" />
-        <activity android:name=".SetNfcMessageActivity" />
+        <activity android:name="com.example.nfc.SetNfcMessageActivity" />
         <activity android:name=".SellItemsActivity" />
         <activity android:name=".ShowInvoicesActivity" />
         <activity android:name=".ShowWalletBalanceActivity" />

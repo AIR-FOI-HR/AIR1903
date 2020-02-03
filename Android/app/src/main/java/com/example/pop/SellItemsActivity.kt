@@ -14,6 +14,7 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nfc.NFCPayment
+import com.example.nfc.SetNfcMessageActivity
 import com.example.pop.adapters.SellItemsAdapter
 import com.example.pop_sajamv2.Session
 import com.example.qr.QRCodeActivity
@@ -153,7 +154,6 @@ class SellItemsActivity : AppCompatActivity() {
             val menuIntent = Intent(this, MainMenuSeller::class.java)
             val detailsIntent = Intent(this, InvoiceDetailsActivity::class.java)
             intent.putExtra("Total", idRacuna!!)
-            println("DEBUG33--**--"+idRacuna!!)
             intent.putExtra("menuIntent", menuIntent)
             intent.putExtra("detailsIntent", detailsIntent)
 
@@ -163,6 +163,11 @@ class SellItemsActivity : AppCompatActivity() {
         dialogView.btn_nfc.setOnClickListener {
             payment = NFCPayment()
             val intent = Intent(this, SetNfcMessageActivity::class.java)
+            val menuIntent = Intent(this, MainMenuSeller::class.java)
+            val detailsIntent = Intent(this, InvoiceDetailsActivity::class.java)
+            intent.putExtra("menuIntent", menuIntent)
+            intent.putExtra("detailsIntent", detailsIntent)
+
             val manager =
                 getSystemService(Context.NFC_SERVICE) as NfcManager
             val adapter = manager.defaultAdapter

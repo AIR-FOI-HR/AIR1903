@@ -1,4 +1,4 @@
-package com.example.pop
+package com.example.nfc
 
 import android.content.Intent
 import android.nfc.NfcAdapter
@@ -24,9 +24,15 @@ class SetNfcMessageActivity : AppCompatActivity(), OutcomingNfcManager.INfcActiv
     private var nfcAdapter: NfcAdapter? = null
     lateinit var invoiceId:String
     private lateinit var outcomingNfcCallback: OutcomingNfcManager
+    lateinit var menuIntent :Intent
+    lateinit var detailsIntent:Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_nfc_message)
+
+        menuIntent = intent.extras!!.get("menuIntent") as Intent
+        detailsIntent = intent.extras!!.get("detailsIntent") as Intent
 
         //NFC
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
@@ -76,7 +82,8 @@ class SetNfcMessageActivity : AppCompatActivity(), OutcomingNfcManager.INfcActiv
                                     "Transakcija poništena",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                var intent = Intent(this@SetNfcMessageActivity , MainMenuSeller::class.java)
+                                var intent = menuIntent
+                                    //Intent(this@SetNfcMessageActivity , MainMenuSeller::class.java)
                                 cancelled = true
                                 loop = false
                                 startActivity(intent)
@@ -85,8 +92,8 @@ class SetNfcMessageActivity : AppCompatActivity(), OutcomingNfcManager.INfcActiv
                             } else if (response.body()!!.DATA!!.Kupac != null) {
                                 deleteInvoice = false
                                 loop = false
-                                val intent =
-                                    Intent(this@SetNfcMessageActivity , InvoiceDetailsActivity::class.java)
+                                val intent = detailsIntent
+                                    //Intent(this@SetNfcMessageActivity , InvoiceDetailsActivity::class.java)
                                 intent.putExtra("invoice", response.body()!!.DATA)
                                 startActivity(intent)
                                 finishAffinity()

@@ -1,4 +1,4 @@
-package com.example.pop
+package com.example.nfc
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -8,18 +8,23 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.nfc.NFCPayment
 import com.example.webservice.Model.Invoice
 
 
 class GetNfcMessageActivity : AppCompatActivity() {
 
+    val MIME_TEXT_PLAIN = "text/plain"
     private var nfcAdapter: NfcAdapter? = null
+
+    lateinit var menuIntent :Intent
+    lateinit var detailsIntent:Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_nfc_message)
         var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+
+        detailsIntent = intent.extras!!.get("detailsIntent") as Intent
 
         nfcAdapter.setNdefPushMessage(null, this)
         //check if NFC is supported
@@ -65,8 +70,8 @@ class GetNfcMessageActivity : AppCompatActivity() {
                 //toast message
                 val text = inMessage
                 val duration = Toast.LENGTH_LONG
-                var intent =
-                    Intent(this@GetNfcMessageActivity , InvoiceDetailsActivity::class.java)
+                var intent =detailsIntent
+                    //Intent(this@GetNfcMessageActivity , InvoiceDetailsActivity::class.java)
 
                 var payment = NFCPayment()
                 payment.id=text.toInt()

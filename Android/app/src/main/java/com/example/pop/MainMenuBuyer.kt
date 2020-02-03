@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.nfc.GetNfcMessageActivity
 import com.example.pop_sajamv2.Session
 import com.example.qr.QRPayment
 import com.example.webservice.Common.Common
@@ -66,6 +67,8 @@ class MainMenuBuyer : AppCompatActivity() {
         dialogView.btn_nfc.setOnClickListener {
 
             val intent = Intent(this, GetNfcMessageActivity::class.java)
+            val intent2 = Intent(this, InvoiceDetailsActivity::class.java)
+            intent.putExtra("detailsIntent", intent2)
             var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
             nfcAdapter = NfcAdapter.getDefaultAdapter(this)
             val manager =
