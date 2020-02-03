@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nfc.NFCPayment
+import com.example.webservice.Model.Invoice
 
 
 class GetNfcMessageActivity : AppCompatActivity() {
@@ -69,7 +70,21 @@ class GetNfcMessageActivity : AppCompatActivity() {
 
                 var payment = NFCPayment()
                 payment.id=text.toInt()
-                payment.pay(this@GetNfcMessageActivity,intent)
+                var response = payment.pay(this@GetNfcMessageActivity)
+                lateinit var invoice: Invoice
+
+                if (response.STATUSMESSAGE=="INVOICE FINALIZED") {
+                    invoice = response.DATA!! as Invoice
+                    intent.putExtra("invoice", invoice)
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                else if (response.STATUSMESSAGE=="MISSING AMOUNT"){
+                    Toast.makeText(this@GetNfcMessageActivity, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
+                }
+                else if (response.STATUSMESSAGE=="MISSING BALANCE"){
+                    Toast.makeText(this@GetNfcMessageActivity, "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

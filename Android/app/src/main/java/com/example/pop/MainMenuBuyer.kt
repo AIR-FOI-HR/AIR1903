@@ -28,7 +28,7 @@ const val MIME_TEXT_PLAIN = "text/plain"
 class MainMenuBuyer : AppCompatActivity() {
 
     lateinit var mService: IMyAPI
-    lateinit var invoice:Invoice
+    //lateinit var invoice:Invoice
     //NFC
 
 
@@ -114,9 +114,28 @@ class MainMenuBuyer : AppCompatActivity() {
                     Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
                 } else {
                     payment.id = (BigInteger(result.contents) / Session.expander).toInt()
+
                     var intent =
                         Intent(this, InvoiceDetailsActivity::class.java)
-                    payment.pay(this, intent)
+
+                    var response = payment.pay(this)
+
+                    lateinit var invoice:Invoice
+
+                    if (response.STATUSMESSAGE=="INVOICE FINALIZED") {
+                        invoice = response.DATA!! as Invoice
+                        intent.putExtra("invoice", invoice)
+                        startActivity(intent)
+                        finishAffinity()
+                    }
+                    else if (response.STATUSMESSAGE=="MISSING AMOUNT"){
+                        Toast.makeText(this, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
+                    }
+                    else if (response.STATUSMESSAGE=="MISSING BALANCE"){
+                        Toast.makeText(this, "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
+                    }
+
+
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)

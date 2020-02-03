@@ -1,39 +1,37 @@
 package com.example.nfc
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.nfc.NfcManager
-import android.widget.Toast
-import androidx.core.app.ActivityCompat.finishAffinity
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Invoice
 import com.example.webservice.Model.OneInvoiceResponse
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
 class NFCPayment : com.example.core.PaymentInterface {
     var id :Int = 0
-    override fun createInvoice(context: Context, id: Int, intent: Intent) {
-        val manager =
-            context.getSystemService(Context.NFC_SERVICE) as NfcManager
-        val adapter = manager.defaultAdapter
-        if (adapter != null && adapter.isEnabled) {
-            intent.putExtra("InvoiceID", id.toString())
-            context.startActivity(intent)
-        }else{
-            val text = "NFC disabled or unavailable!"
-            val duration = Toast.LENGTH_LONG
+    lateinit var invoice: Invoice
 
-            val toast = Toast.makeText(context, text, duration)
-            toast.show()
-        }
-    }
-
-    override fun pay(context: Context, intent: Intent) {
+    override fun pay(context: Context):OneInvoiceResponse {
         var api = Common.api
+
+        var call: Call<OneInvoiceResponse> = api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, id)
+
+        lateinit var response:Response<OneInvoiceResponse>
+        runBlocking {
+            var crt = GlobalScope.async {
+
+                response = call.execute()
+
+            }
+            println(crt.await())
+        }
+        return response.body()!!
+
+        /*var api = Common.api
         api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, id).enqueue(object :
             Callback<OneInvoiceResponse> {
             override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
@@ -45,7 +43,7 @@ class NFCPayment : com.example.core.PaymentInterface {
                 response: Response<OneInvoiceResponse>
             ) {
                 if (response.body()!!.STATUSMESSAGE=="INVOICE FINALIZED") {
-                    val invoice = response.body()!!.DATA!! as Invoice
+                    invoice = response.body()!!.DATA!! as Invoice
 
                     intent.putExtra("invoice", invoice)
                     context.startActivity(intent)
@@ -59,7 +57,8 @@ class NFCPayment : com.example.core.PaymentInterface {
                 }
 
             }
-        })
+        })*/
+        //return invoice
     }
 
 }

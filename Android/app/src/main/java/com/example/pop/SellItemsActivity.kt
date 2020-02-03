@@ -2,6 +2,7 @@ package com.example.pop
 
 import android.content.Context
 import android.content.Intent
+import android.nfc.NfcManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
@@ -148,13 +149,27 @@ class SellItemsActivity : AppCompatActivity() {
         dialogView.btn_qr_code.setOnClickListener {
             payment = QRPayment()
             val intent = Intent(this, QRCodeActivity::class.java)
-            payment.createInvoice(this, idRacuna!!, intent)
+            intent.putExtra("Total", idRacuna!!)
+            startActivity(intent)
         }
 
         dialogView.btn_nfc.setOnClickListener {
             payment = NFCPayment()
             val intent = Intent(this, SetNfcMessageActivity::class.java)
-            payment.createInvoice(this, idRacuna!!, intent)
+            val manager =
+                getSystemService(Context.NFC_SERVICE) as NfcManager
+            val adapter = manager.defaultAdapter
+            if (adapter != null && adapter.isEnabled) {
+                intent.putExtra("InvoiceID", idRacuna!!.toString())
+                startActivity(intent)
+            }else{
+                val text = "NFC disabled or unavailable!"
+                val duration = Toast.LENGTH_LONG
+
+                val toast = Toast.makeText(this, text, duration)
+                toast.show()
+            }
+
         }
     }
 }

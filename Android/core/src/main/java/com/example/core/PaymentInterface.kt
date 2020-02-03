@@ -2,8 +2,9 @@ package com.example.core
 
 import android.content.Context
 import android.content.Intent
+import com.example.webservice.Model.Invoice
+import com.example.webservice.Model.OneInvoiceResponse
 
 interface PaymentInterface {
-    fun createInvoice(context: Context, id:Int, intent: Intent)
-    fun pay(context: Context, intent: Intent)
+    fun pay(context: Context): OneInvoiceResponse
 }
