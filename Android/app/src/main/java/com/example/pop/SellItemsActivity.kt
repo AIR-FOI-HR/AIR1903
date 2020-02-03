@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.nfc.NFCPayment
 import com.example.pop.adapters.SellItemsAdapter
 import com.example.pop_sajamv2.Session
+import com.example.qr.QRCodeActivity
 import com.example.qr.QRPayment
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.Item
@@ -149,7 +150,13 @@ class SellItemsActivity : AppCompatActivity() {
         dialogView.btn_qr_code.setOnClickListener {
             payment = QRPayment()
             val intent = Intent(this, QRCodeActivity::class.java)
+            val menuIntent = Intent(this, MainMenuSeller::class.java)
+            val detailsIntent = Intent(this, InvoiceDetailsActivity::class.java)
             intent.putExtra("Total", idRacuna!!)
+            println("DEBUG33--**--"+idRacuna!!)
+            intent.putExtra("menuIntent", menuIntent)
+            intent.putExtra("detailsIntent", detailsIntent)
+
             startActivity(intent)
         }
 

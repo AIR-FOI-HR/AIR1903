@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    tools:context=".QRCodeActivity">
+    tools:context="com.example.qr.QRCodeActivity">
 
     <ImageView
         android:id="@+id/imageView"

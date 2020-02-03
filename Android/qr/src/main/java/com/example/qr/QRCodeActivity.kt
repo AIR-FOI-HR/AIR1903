@@ -1,4 +1,4 @@
-package com.example.pop
+package com.example.qr
 
 import android.animation.Animator
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pop_sajamv2.Session
-import com.example.qr.QRCode
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.OneInvoiceResponse
 import kotlinx.android.synthetic.main.activity_qrcode.*
@@ -23,11 +22,15 @@ class QRCodeActivity : AppCompatActivity() {
     var deleteInvoice = true
     var cancelled=false
     var loop = true
+    lateinit var menuIntent :Intent
+    lateinit var detailsIntent:Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrcode)
-        val total = intent.getStringExtra("Total")
+        val total = intent.extras!!.get("Total").toString()
+        menuIntent = intent.extras!!.get("menuIntent") as Intent
+        detailsIntent = intent.extras!!.get("detailsIntent") as Intent
         val expandedTotal = expand(total)
         imageView.setImageBitmap(QRCode.generateQRCode(expandedTotal))
         animation_loading.addAnimatorListener(object : AnimatorListenerAdapter() {
@@ -66,7 +69,8 @@ class QRCodeActivity : AppCompatActivity() {
                                     "Transakcija poništena",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                var intent = Intent(this@QRCodeActivity, MainMenuSeller::class.java)
+                                var intent = menuIntent
+                                    //Intent(this@QRCodeActivity, MainMenuSeller::class.java)
                                 cancelled = true
                                 loop = false
                                 startActivity(intent)
@@ -96,8 +100,8 @@ class QRCodeActivity : AppCompatActivity() {
 
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
-                val intent =
-                    Intent(this@QRCodeActivity, InvoiceDetailsActivity::class.java)
+                val intent = detailsIntent
+                    //Intent(this@QRCodeActivity, InvoiceDetailsActivity::class.java)
                 intent.putExtra("invoice", data)
                 startActivity(intent)
                 finishAffinity()
@@ -116,7 +120,7 @@ class QRCodeActivity : AppCompatActivity() {
         if (deleteInvoice){
             if (!cancelled){
                 var api = Common.api
-                api.getOneInvoice(Session.user.Token, true,Session.user.KorisnickoIme, intent.getStringExtra("Total")).enqueue(object: Callback<OneInvoiceResponse>{
+                api.getOneInvoice(Session.user.Token, true,Session.user.KorisnickoIme, intent.extras!!.get("Total").toString()).enqueue(object: Callback<OneInvoiceResponse>{
                     override fun onFailure(call: Call<OneInvoiceResponse>, t: Throwable) {
                         Toast.makeText(this@QRCodeActivity, t.message, Toast.LENGTH_SHORT).show()
                     }
@@ -126,7 +130,7 @@ class QRCodeActivity : AppCompatActivity() {
                         response: Response<OneInvoiceResponse>
                     ) {
                         if (response.body()!!.DATA!!.Id!=null){
-                            api.deleteInvoice(Session.user.Token, true, intent.getStringExtra("Total")).enqueue(object: Callback<OneInvoiceResponse>{
+                            api.deleteInvoice(Session.user.Token, true, intent.extras!!.get("Total").toString()).enqueue(object: Callback<OneInvoiceResponse>{
                                 override fun onFailure(
                                     call2: Call<OneInvoiceResponse>,
                                     t2: Throwable

@@ -22,7 +22,7 @@
         <activity android:name=".GetNfcMessageActivity"></activity>
         <activity android:name=".fragments.GetNfcMessageActivity" />
         <activity android:name=".InvoiceDetailsActivity" />
-        <activity android:name=".QRCodeActivity" />
+        <activity android:name="com.example.qr.QRCodeActivity" />
         <activity android:name=".SetNfcMessageActivity" />
         <activity android:name=".SellItemsActivity" />
         <activity android:name=".ShowInvoicesActivity" />
