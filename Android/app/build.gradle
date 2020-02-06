@@ -67,7 +67,7 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:$lottie_version"
 
-    implementation 'com.airbnb.android:lottie:3.3.1'
+    implementation 'com.github.HITGIF:TextFieldBoxes:1.4.5'
 
     implementation project(path: ':webservice')
     implementation project(path: ':qr')
