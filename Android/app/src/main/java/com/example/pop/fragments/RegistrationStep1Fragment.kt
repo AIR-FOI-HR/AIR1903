@@ -16,13 +16,13 @@ import kotlin.math.abs
 
 class RegistrationStep1Fragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
-        RegistrationData.Ime = v?.layoutRegistrationInputName?.text.toString()
+        RegistrationData.Ime = v?.input_registration_name?.text.toString()
         if (RegistrationData.Ime == ""){
             Toast.makeText(activity, R.string.toastEmptyName, Toast.LENGTH_SHORT).show()
             return
         }
 
-        RegistrationData.Prezime = v?.layoutRegistrationInputSurname?.text.toString()
+        RegistrationData.Prezime = v?.input_registration_surname?.text.toString()
         if (RegistrationData.Prezime ==""){
             Toast.makeText(activity, R.string.toastEmptySurname, Toast.LENGTH_SHORT).show()
             return
@@ -37,7 +37,7 @@ class RegistrationStep1Fragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_registration_first, container, false)
-        view.layoutRegistrationButtonNext.setOnClickListener {
+        view.btn_registration_next.setOnClickListener {
             onClick(view)
         }
 

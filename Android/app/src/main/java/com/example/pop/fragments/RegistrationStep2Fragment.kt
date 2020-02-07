@@ -22,21 +22,21 @@ import kotlin.math.abs
 class RegistrationStep2Fragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
-        if (!checkPassword(v?.layoutRegistrationInputPassword?.text.toString(),v?.layoutRegistrationInputPasswordConfirm?.text.toString())){
+        if (!checkPassword(v?.input_registration_password?.text.toString(),v?.input_registration_confirm_password?.text.toString())){
             Toast.makeText(activity, R.string.toastPasswordsDontMatch,Toast.LENGTH_SHORT).show()
         }
         else{
-            RegistrationData.Lozinka = v?.layoutRegistrationInputPassword?.text.toString()
+            RegistrationData.Lozinka = v?.input_registration_password?.text.toString()
             if (RegistrationData.Lozinka ==""){
                 Toast.makeText(activity, R.string.toastEmptyPassword, Toast.LENGTH_SHORT).show()
                 return
             }
-            RegistrationData.Email = v?.layoutRegistrationInputEmail?.text.toString()
+            RegistrationData.Email = v?.input_registration_email?.text.toString()
             if (RegistrationData.Email ==""){
                 Toast.makeText(activity, R.string.toastEmptyEmail, Toast.LENGTH_SHORT).show()
                 return
             }
-            RegistrationData.KorisnickoIme = v?.layoutRegistrationInputUsername?.text.toString()
+            RegistrationData.KorisnickoIme = v?.input_registration_username?.text.toString()
             if (RegistrationData.KorisnickoIme ==""){
                 Toast.makeText(activity, R.string.toastEmptyUsername, Toast.LENGTH_SHORT).show()
                 return
@@ -75,7 +75,7 @@ class RegistrationStep2Fragment : Fragment(), View.OnClickListener {
     ): View? {
         mService = Common.api
         val view: View = inflater.inflate(R.layout.fragment_registration_second, container, false)
-        view.layoutRegistrationButtonRegister.setOnClickListener {
+        view.btn_registration_finish.setOnClickListener {
             onClick(view)
         }
 
