@@ -69,6 +69,8 @@ dependencies {
 
     implementation 'com.github.HITGIF:TextFieldBoxes:1.4.5'
 
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
     implementation project(path: ':webservice')
     implementation project(path: ':qr')
     implementation project(path: ':nfc')
