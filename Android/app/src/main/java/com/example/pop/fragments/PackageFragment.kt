@@ -30,7 +30,6 @@ import com.example.webservice.Response.IMyAPI
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_sell_items.*
 import kotlinx.android.synthetic.main.fragment_package.*
 import kotlinx.android.synthetic.main.dialog_add_image.view.*
 import kotlinx.android.synthetic.main.fragment_package.view.*
@@ -74,7 +73,7 @@ class PackageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createdView=view
-        createdView.btn_add_package.setOnClickListener {
+        createdView.btn_finish_package.setOnClickListener {
             it.findNavController().navigate(R.id.action_packageFragment_to_packageProductsListing)
         }
     }
@@ -131,7 +130,7 @@ class PackageFragment : Fragment() {
         image_package_picture.setOnClickListener { addImage() }
         input_package_discount.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "100"))
 
-        btn_add_package.setOnClickListener {
+        btn_finish_package.setOnClickListener {
             if (intent.hasExtra("item")) {
                 updatePackageWithImage(
                     packageClass.Id!!,

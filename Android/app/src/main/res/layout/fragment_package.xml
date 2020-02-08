@@ -102,7 +102,7 @@
                 android:layout_marginEnd="60dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/add_image"
-                app:layout_constraintBottom_toTopOf="@+id/btn_add_package"
+                app:layout_constraintBottom_toTopOf="@+id/btn_finish_package"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_discount"
@@ -114,7 +114,7 @@
                 app:riv_tile_mode="clamp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_add_package"
+                android:id="@+id/btn_finish_package"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
