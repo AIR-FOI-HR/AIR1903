@@ -24,8 +24,8 @@
 
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="130dp"
+            android:layout_height="140dp"
             android:layout_margin="0dp"
             android:layout_marginBottom="131dp"
             android:adjustViewBounds="true"
@@ -69,7 +69,7 @@
         <TextView
             android:id="@+id/item_name"
             android:layout_width="0dp"
-            android:layout_height="29dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
