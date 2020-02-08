@@ -13,9 +13,9 @@
         android:id="@+id/field_boxes_registration_name"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="50dp"
 
         app:hasClearButton="true"
         app:labelText="@string/inputHintName"
@@ -44,10 +44,10 @@
         android:id="@+id/field_boxes_registration_surname"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="40dp"
 
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="50dp"
 
         app:hasClearButton="true"
         app:labelText="@string/inputHintSurname"
@@ -74,9 +74,9 @@
         android:id="@+id/btn_registration_next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/rounded_button"
 
         android:text="@string/buttonNext"

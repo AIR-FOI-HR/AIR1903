@@ -26,7 +26,7 @@
       </configuration>
     </facet>
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false" pureKotlinSourceFolders="C:\Users\Ind3Z\Desktop\AiR-Projekt\Sprint 6\Android\core\src\debug\kotlin;C:\Users\Ind3Z\Desktop\AiR-Projekt\Sprint 6\Android\core\src\debug\java;C:\Users\Ind3Z\Desktop\AiR-Projekt\Sprint 6\Android\core\src\release\kotlin;C:\Users\Ind3Z\Desktop\AiR-Projekt\Sprint 6\Android\core\src\release\java;C:\Users\Ind3Z\Desktop\AiR-Projekt\Sprint 6\Android\core\src\debugAndroidTest\kotlin;C:\Users\Ind3Z\Desktop\AiR-Projekt\Sprint 6\Android\core\src\debugUnitTest\kotlin;C:\Users\Ind3Z\Desktop\AiR-Projekt\Sprint 6\Android\core\src\releaseUnitTest\kotlin">
+      <configuration version="3" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false">
         <compilerSettings>
           <option name="additionalArguments" value="-Xallow-no-source-files" />
         </compilerSettings>
