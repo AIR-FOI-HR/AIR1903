@@ -76,5 +76,6 @@
     <string name="textInvoiceDiscount">POPUST:</string>
     <string name="valueInvoiceDiscount">0</string>
     <string name="Percentage">%</string>
+    <string name="hint_product_quantity">Količina</string>
 
 </resources>
