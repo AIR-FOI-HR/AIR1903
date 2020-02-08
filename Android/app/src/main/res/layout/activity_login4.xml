@@ -10,24 +10,30 @@
         android:id="@+id/loginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_login"
+        android:background="@color/colorSmokeBackground"
         tools:context=".LoginActivity">
 
         <ImageView
-            android:layout_width="105dp"
-            android:layout_height="93dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/foi_logo"
+            android:id="@+id/img_foi_logo_login"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="64dp"
+            android:background="@drawable/foi_white_bg"
+            android:backgroundTint="@color/colorFoi"
+            app:layout_constraintBottom_toTopOf="@+id/text_field_boxes_username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
             android:id="@+id/text_field_boxes_username"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="320dp"
             android:layout_marginEnd="50dp"
             android:src="@drawable/rounded_input"
 
@@ -38,7 +44,6 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:maxCharacters="30"
             app:primaryColor="@color/colorFoiAlternate"
             app:secondaryColor="@color/colorFoi">
 
@@ -46,6 +51,7 @@
                 android:id="@+id/input_login_username"
                 android:layout_width="352dp"
                 android:layout_height="wrap_content"
+                android:inputType="text"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -54,7 +60,7 @@
         <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
             android:id="@+id/text_field_boxes_password"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="50dp"
@@ -67,7 +73,6 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_field_boxes_username"
-            app:maxCharacters="20"
             app:primaryColor="@color/colorFoiAlternate"
             app:secondaryColor="@color/colorFoi">
 

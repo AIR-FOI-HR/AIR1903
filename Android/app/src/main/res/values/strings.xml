@@ -76,5 +76,7 @@
     <string name="textInvoiceDiscount">DISCOUNT:</string>
     <string name="valueInvoiceDiscount">0</string>
     <string name="Percentage">%</string>
+    <string name="text_logo">FOI</string>
+    <string name="hint_product_quantity">Quantity</string>
 
 </resources>

@@ -8,7 +8,7 @@ import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.ApiResponseUser
 import com.example.webservice.Response.IMyAPI
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login4.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,14 +18,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_login4)
         mService = Common.api
 
         val keyboard = HideKeyboard()
         loginLayout.setOnClickListener{keyboard.hideKeyboard(this)}
-        layoutLoginInputUsername.setOnClickListener{layoutLoginInputUsername.setCursorVisible(true)}
+        input_login_username.setOnClickListener{input_login_username.setCursorVisible(true)}
 
-        btn_add_product_image.setOnClickListener{authenticateUser(layoutLoginInputUsername.text.toString(),layoutLoginInputPassword.text.toString())}
+        btn_login.setOnClickListener{authenticateUser(input_login_username.text.toString(),input_login_password.text.toString())}
         layoutLoginButtonRegister.setOnClickListener{startActivity(Intent(this@LoginActivity,RegistrationActivity::class.java))}
     }
         private fun authenticateUser(KorisnickoIme: String, Lozinka: String) {

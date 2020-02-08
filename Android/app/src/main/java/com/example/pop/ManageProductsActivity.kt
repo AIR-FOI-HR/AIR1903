@@ -11,6 +11,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.Toast
@@ -26,6 +29,7 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_manage_products.*
+import kotlinx.android.synthetic.main.activity_sell_items.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -44,6 +48,7 @@ class ManageProductsActivity : AppCompatActivity() {
     private lateinit var image: File
     private lateinit var productUrl: String
     lateinit var previousActivity: Class<*>
+    val pattern = Regex(pattern = "^(([1-9][0-9]{0,4})|(0))(\\.[0-9]{1,2})?\$")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,37 +65,51 @@ class ManageProductsActivity : AppCompatActivity() {
             if (intent.getSerializableExtra("item") != null) {
                 product = intent.getSerializableExtra("item") as Product
                 productUrl = product.Slika!!
-                layoutManageProductsInputName.setText(product.Naziv)
-                layoutManageProductsInputValue.setText(product.Cijena)
-                layoutManageProductsInputDescription.setText(product.Opis)
-                image_item_picture.setImageResource(R.drawable.prijava_bg)
-                input_quantity.setText(product.Kolicina)
+                input_product_name.setText(product.Naziv)
+                input_product_price.setText(product.Cijena)
+                input_product_description.setText(product.Opis)
+                image_product_picture.setImageResource(R.drawable.prijava_bg)
+                input_product_quantity.setText(product.Kolicina)
             }
-            Picasso.get().load(productUrl).into(image_item_picture)
+            Picasso.get().load(productUrl).into(image_product_picture)
 
         }
 
-        btn_add_products.setOnClickListener { changeQuantity(1) }
-        btn_decrease_products.setOnClickListener { changeQuantity(-1) }
-        image_item_picture.setOnClickListener { addImage() }
+
+        input_product_price.filters = arrayOf<InputFilter>(InputFilterMinMax("1", "9999"))
+        input_product_quantity.filters = arrayOf<InputFilter>(InputFilterMinMax("1", "9999"))
+
+      /*  input_product_price.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                if(!pattern.matches(input_product_price.toString()))
+                    input_product_price.setText("0") // LOOPa vjecno
+            }
+        })*/
 
 
-        layoutManageProductsButtonSubmit.setOnClickListener {
+
+
+        image_product_picture.setOnClickListener { addImage() }
+        btn_finish_product.setOnClickListener {
             if (intent.hasExtra("item")) {
                 editProduct(
                     product.Id!!,
-                    layoutManageProductsInputName.text.toString(),
-                    layoutManageProductsInputDescription.text.toString(),
-                    layoutManageProductsInputValue.text.toString(),
-                    input_quantity.text.toString().toInt(),
+                    input_product_name.text.toString(),
+                    input_product_description.text.toString(),
+                    input_product_price.text.toString(),
+                    input_product_quantity.text.toString().toInt(),
                     imageFile
                 )
             } else {
                 addProduct(
-                    layoutManageProductsInputName.text.toString(),
-                    layoutManageProductsInputDescription.text.toString(),
-                    layoutManageProductsInputValue.text.toString(),
-                    input_quantity.text.toString().toInt(),
+                    input_product_name.text.toString(),
+                    input_product_description.text.toString(),
+                    input_product_price.text.toString(),
+                    input_product_quantity.text.toString().toInt(),
                     imageFile
                 )
             }
@@ -146,6 +165,7 @@ class ManageProductsActivity : AppCompatActivity() {
             else{ // <Marshmallow
                 getImageFromCamera()
             }
+            dialogWindow.dismiss()
         }
 
         dialogWindow.showAtLocation(manage_products, Gravity.CENTER, 0, 0)
@@ -231,7 +251,7 @@ class ManageProductsActivity : AppCompatActivity() {
                     )
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(image_item_picture)
+                    .into(image_product_picture)
                 productUrl = ""
             }
         }
@@ -239,7 +259,7 @@ class ManageProductsActivity : AppCompatActivity() {
         if (data?.data != null) {
             val uri: Uri = data.data!!
             if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-                image_item_picture.setImageURI(uri)
+                image_product_picture.setImageURI(uri)
             }
 
 
@@ -284,12 +304,12 @@ class ManageProductsActivity : AppCompatActivity() {
     }
 
     private fun changeQuantity(value: Int) {
-        var newValue = input_quantity.text.toString().toIntOrNull()
+        var newValue = input_product_quantity.text.toString().toIntOrNull()
         if (newValue != null) {
             newValue += value
             if (newValue < 0) newValue = 0
-            input_quantity.setText(newValue.toString())
-        } else input_quantity.setText("0")
+            input_product_quantity.setText(newValue.toString())
+        } else input_product_quantity.setText("0")
     }
 
     private fun addProduct(
