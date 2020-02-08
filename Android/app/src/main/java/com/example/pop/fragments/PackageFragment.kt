@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputFilter
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.Toast
@@ -29,9 +30,9 @@ import com.example.webservice.Response.IMyAPI
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_sell_items.*
 import kotlinx.android.synthetic.main.fragment_package.*
 import kotlinx.android.synthetic.main.dialog_add_image.view.*
-import kotlinx.android.synthetic.main.fragment_package.layoutManagePacketsInputValue
 import kotlinx.android.synthetic.main.fragment_package.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -98,9 +99,9 @@ class PackageFragment : Fragment() {
 
 
                 packageUrl = packageClass.Slika!!
-                layoutManagePacketsInputName.setText(packageClass.Naziv)
-                layoutManagePacketsInputValue.setText(packageClass.Popust)
-                layoutManagePacketsInputDescription.setText(packageClass.Opis)
+                input_package_name.setText(packageClass.Naziv)
+                input_package_discount.setText(packageClass.Popust)
+                input_package_description.setText(packageClass.Opis)
                 image_package_picture.setImageResource(R.drawable.prijava_bg)
                 //package_quantity.setText(packageClass.Kolicina)
             }
@@ -125,27 +126,27 @@ class PackageFragment : Fragment() {
 
         }
 
+        val keyboard = HideKeyboard()
+        fragment_package.setOnClickListener{keyboard.hideKeyboard(fragment_package)}
         image_package_picture.setOnClickListener { addImage() }
-
+        input_package_discount.filters = arrayOf<InputFilter>(InputFilterMinMax("0", "100"))
 
         btn_add_package.setOnClickListener {
             if (intent.hasExtra("item")) {
                 updatePackageWithImage(
                     packageClass.Id!!,
-                    layoutManagePacketsInputName.text.toString(),
-                    layoutManagePacketsInputDescription.text.toString(),
-                    layoutManagePacketsInputValue.text.toString(),
-                    //package_quantity.text.toString().toInt(),
+                    input_package_name.text.toString(),
+                    input_package_description.text.toString(),
+                    input_package_discount.text.toString(),
                     1,
                     imageFile
                 )
 
             } else {
                 addPackage(
-                    layoutManagePacketsInputName.text.toString(),
-                    layoutManagePacketsInputDescription.text.toString(),
-                    layoutManagePacketsInputValue.text.toString(),
-                    //package_quantity.text.toString().toInt(),
+                    input_package_name.text.toString(),
+                    input_package_description.text.toString(),
+                    input_package_discount.text.toString(),
                     1,
                     imageFile
                 )

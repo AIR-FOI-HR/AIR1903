@@ -7,163 +7,111 @@
     android:layout_height="match_parent"
     tools:context=".fragments.PackageFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/manage_packets"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/layoutManagePacketsInputName"
-                android:layout_width="283dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="64dp"
-                android:layout_marginEnd="64dp"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/rounded_input"
-                android:hint="@string/hint_package_name"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:padding="10dp"
-                android:textColor="@color/color_text_primary"
-                app:layout_constraintBottom_toTopOf="@+id/layoutManagePacketsInputDescription"
+            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                android:id="@+id/field_boxes_package_name"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp"
+                app:hasClearButton="true"
+                app:labelText="@string/hint_package_name"
+                app:layout_constraintBottom_toTopOf="@+id/field_boxes_package_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintVertical_chainStyle="packed"
+                app:maxCharacters="25"
+                app:primaryColor="@color/colorFoiAlternate"
+                app:secondaryColor="@color/colorFoi">
 
-            <EditText
-                android:id="@+id/layoutManagePacketsInputDescription"
-                android:layout_width="283dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="64dp"
-                android:layout_marginEnd="64dp"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/rounded_input"
-                android:hint="@string/hint_package_description"
-                android:importantForAutofill="no"
-                android:inputType="textMultiLine|text"
-                android:padding="10dp"
-                android:singleLine="false"
-                android:textAlignment="inherit"
-                android:textColor="@color/color_text_primary"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                    android:id="@+id/input_package_name"
+                    android:layout_width="352dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:textColor="#000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                android:id="@+id/field_boxes_package_description"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="60dp"
+                app:hasClearButton="true"
+                app:labelText="@string/hint_package_description"
+                app:layout_constraintBottom_toTopOf="@+id/field_boxes_package_discount"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutManagePacketsInputName"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_name"
+                app:maxCharacters="150"
+                app:primaryColor="@color/colorFoiAlternate"
+                app:secondaryColor="@color/colorFoi">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="283dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="64dp"
-                android:layout_marginEnd="64dp"
-                android:baselineAligned="true"
-                android:orientation="horizontal"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toTopOf="@+id/view"
+                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                    android:id="@+id/input_package_description"
+                    android:layout_width="352dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:textColor="#000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+
+            <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+                android:id="@+id/field_boxes_package_discount"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="60dp"
+                app:labelText="@string/hint_package_discount"
+                app:layout_constraintBottom_toTopOf="@+id/image_package_picture"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutManagePacketsInputDescription"
-                app:layout_constraintVertical_chainStyle="packed">
+                app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_description"
+                app:primaryColor="@color/colorFoiAlternate"
+                app:secondaryColor="@color/colorFoi">
 
-                <EditText
-                    android:id="@+id/layoutManagePacketsInputValue"
-                    android:layout_width="283dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/rounded_input"
-                    android:hint="@string/hint_package_discount"
-                    android:importantForAutofill="no"
-                    android:inputType="numberDecimal"
-                    android:padding="10dp"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <!--app:layout_constraintEnd_toStartOf="@+id/package_quantity"-->
-
-                <!--<EditText
-                    android:id="@+id/package_quantity"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rounded_input"
-                    android:hint="@string/hint_quantity"
-                    android:importantForAutofill="no"
+                <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+                    android:id="@+id/input_package_discount"
+                    android:layout_width="352dp"
+                    android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:padding="10dp"
-                    android:text="@string/text_quantity_default"
-                    android:textAlignment="center"
-                    android:textColor="@color/color_text_primary"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="#000000"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/layoutManagePacketsInputValue"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:suffix="@string/Percentage"
+                    app:suffixTextColor="@color/colorFoi" />
+            </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
 
-                <Button
-                    android:id="@+id/btn_decrease_packages"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/img_decrease_quantity"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/package_quantity"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btn_add_packages"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/img_add_quantity"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />-->
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="290dp"
-                android:layout_height="265dp"
-                android:background="@drawable/border_product_image"
-                app:layout_constraintBottom_toBottomOf="@+id/image_package_picture"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/image_package_picture" />
-
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/image_package_picture"
-                android:layout_width="283dp"
-                android:layout_height="250dp"
-                android:layout_marginBottom="64dp"
-                android:adjustViewBounds="true"
-                android:background="@color/colorFoi"
-                android:contentDescription="@string/imageProduct"
-                android:cropToPadding="true"
-                android:padding="4dp"
+                android:layout_width="0dp"
+                android:layout_height="240dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="60dp"
                 android:scaleType="centerCrop"
+                android:src="@drawable/add_image"
                 app:layout_constraintBottom_toTopOf="@+id/btn_add_package"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/add_image" />
-
+                app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_discount"
+                app:riv_border_color="@color/colorFoi"
+                app:riv_border_width="2dp"
+                app:riv_corner_radius="5dp"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="clamp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_add_package"
@@ -175,8 +123,5 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/img_check_mark" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 </FrameLayout>

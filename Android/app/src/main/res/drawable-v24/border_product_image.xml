@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<item>
     <solid android:color="@color/colorFoi" />
     <stroke android:width="10dp" android:color="@color/colorFoi" />
     <corners android:radius="5dp"/>
-</shape>
+</item>
+<item android:drawable="@drawable/add_image" />
+</layer-list>
