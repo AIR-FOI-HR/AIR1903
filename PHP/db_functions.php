@@ -1362,6 +1362,19 @@ public function sellPackages($post) {
         
     }
     
+    public function setRoleAdmin($post){
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}'";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+    
+        $q = "UPDATE Korisnik SET Id_Uloge=2 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}'";
+        $stmt = $this->conn->query($q);
+        
+        $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+    }
 
 
 }
