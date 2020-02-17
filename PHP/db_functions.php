@@ -1306,6 +1306,16 @@ public function sellPackages($post) {
         else return 1;
     }
     
+    public function isAdmin($korIme){
+        $q = "SELECT KorisnickoIme, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$korIme}'";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        if ($user["Id_Uloge"]!=2){
+            return false;
+        }
+        else return true;
+    }
+    
 
 
 }
