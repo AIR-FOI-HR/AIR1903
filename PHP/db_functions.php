@@ -654,8 +654,12 @@ public function getAllPackeges($post) {
 	public function getBalance($post) {
         $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
+        if ($stmt->num_rows == 0){
+            return -1;
+        }
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
+        
         
         //echo "User id" . $userId;
         $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = {$userId} ORDER BY UnixVrijeme DESC LIMIT 1";
@@ -685,26 +689,7 @@ public function getAllPackeges($post) {
         
         return $response;
     }
-
-        //echo "wat";
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
-        $stmt=$this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $userId = $stmt["Id"];
-        
-        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
-        $stmt=$this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $storeId = $stmt["Id_Trgovina"];
-        
-        //echo "User id" . $userId;
-        $q = "SELECT StanjeRacuna FROM Trgovina_StanjeRacuna WHERE Id_Trgovine = {$storeId} ORDER BY UnixVrijeme DESC LIMIT 1";
-        $stmt = $this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $response = $stmt["StanjeRacuna"];
-        
-        return $response;
-    }
+	
 	public function setInitialBalance($post) {
         $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
@@ -1394,6 +1379,19 @@ public function sellPackages($post) {
         $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
         $stmt = $this->conn->query($q);
         
+    }
+	
+	public function deleteUser($post){
+        $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+        
+        $q = "UPDATE Korisnik SET Obrisan=1 WHERE Id={$id}";
+        $stmt = $this->conn->query($q);
     }
 
 

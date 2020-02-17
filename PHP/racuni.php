@@ -13,6 +13,14 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
+		$userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $response->STATUS = true;
         $response->STATUSMESSAGE = "SUCCESS";
         $response->DATA = $db->getAllInvoices($_POST);
