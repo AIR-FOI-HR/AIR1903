@@ -15,16 +15,16 @@
 
 					<h3>Prijava</h3>
 
-					<form method="POST" action="{{ route('login') }}" class="clearfix mt-4">
+					<form method="POST" action="{{ route('authenticate') }}" class="clearfix mt-4">
 						
 						@csrf
 						
 						<div class="form-group">
-							<label for="email" class="col-form-label mb-2 block">E-mail</label>
+							<label for="username" class="col-form-label mb-2 block">Korisničko ime</label>
 
-							<input id="email" class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="E-mail" autofocus>
+							<input id="username" class="form-control @error('username') is-invalid @enderror" type="text" name="username" value="{{ old('username') }}" required autocomplete="username" placeholder="Korisničko ime" autofocus>
 
-							@error('email')
+							@error('username')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -55,6 +55,4 @@
                 </div>
             </div>
 		</div>
-
-
 @endsection
