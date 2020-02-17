@@ -24,10 +24,41 @@ if ($db->checkAuth($_POST["Token"])) {
         echo $response;
     }
     if(isset($_POST["SET"])){
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["KorisnickoImeKorisnik"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USER USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
+        $userExists = $db->userExistsLogin($p);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $setUserBalance = $db->setInitialBalance($_POST);
         $response->STATUS = true;
-        $response->STATUSMESSAGE = "Stanje računa: ";
-        $response->DATA = $setUserBalance;
+        $response->STATUSMESSAGE = "BALANCE SET";
+        $response->DATA["StanjeRacuna"] = $setUserBalance;
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
@@ -41,5 +72,3 @@ if ($db->checkAuth($_POST["Token"])) {
     }
 }
 ?>
-
-

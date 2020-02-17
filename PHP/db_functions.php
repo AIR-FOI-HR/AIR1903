@@ -705,8 +705,8 @@ public function getAllPackeges($post) {
         
         return $response;
     }
-public function setInitialBalance($post) {
-        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+	public function setInitialBalance($post) {
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -718,8 +718,8 @@ public function setInitialBalance($post) {
         
         return $response;
     }
- //funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
-	public function sellItems($post) {
+    //funckija za smanjenje količine proizvoda prilikom prodaje, funkcija također mijenja stanje novčanika kupca i prodavača
+    public function sellItems($post) {
         //$prodavac = $post["KorisnickoIme"];
         $popustRacuna = $post["PopustRacuna"];
         $vrijemeProdaje = date("Y-m-d H:i:s");
