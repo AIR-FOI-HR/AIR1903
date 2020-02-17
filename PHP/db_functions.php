@@ -1328,6 +1328,26 @@ public function sellPackages($post) {
         else return true;
     }
     
+    public function setRoleTrader($post){
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}'";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+        $q = "SELECT * FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+        $isInStore = $stmt->fetch_assoc();
+        if ($isInStore!=false){
+            $q = "DELETE FROM Trgovina_Korisnik WHERE  Id_Korisnik = {$id}";
+            $stmt = $this->conn->query($q);
+        }
+        
+        $q = "INSERT INTO Trgovina_Korisnik (Id, Id_Trgovina, Id_Korisnik) VALUES (null, {$post["Id_Trgovine"]}, {$id})";
+        $stmt = $this->conn->query($q);
+        $q = "UPDATE Korisnik SET Id_Uloge=3 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}'";
+        $stmt = $this->conn->query($q);
+    }
+    
 
 
 }
