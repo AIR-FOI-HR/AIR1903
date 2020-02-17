@@ -1270,6 +1270,33 @@ public function sellPackages($post) {
         $response[1]=$vv;
         return $response;
     }
+	
+	public function confirmRegistration($post){
+        if ($post["CONFIRM"]=="true"){
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+            $stmt = $this->conn->query($q);
+            $user = $stmt->fetch_assoc();
+            if (!empty($user)){
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+                $stmt = $this->conn->query($q);
+                return true;
+            }
+            else
+                return false;
+        }
+        elseif ($post["CONFIRM"]=="false"){
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+            $stmt = $this->conn->query($q);
+            $user = $stmt->fetch_assoc();
+            if (!empty($user)){
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+                $stmt = $this->conn->query($q);
+                return true;
+            }
+            else
+                return false;
+        }
+    }
 
 
 }
