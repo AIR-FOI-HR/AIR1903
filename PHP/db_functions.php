@@ -1306,6 +1306,18 @@ public function sellPackages($post) {
         else return 1;
     }
     
+    public function getAllUsers($post){
+        $admin = $this->isAdmin($post["KorisnickoIme"]);
+        if (!$admin){
+            return false;
+        }
+        
+        $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id)";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_all(MYSQLI_ASSOC);
+        return $user;
+    }
+    
     public function isAdmin($korIme){
         $q = "SELECT KorisnickoIme, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$korIme}'";
         $stmt = $this->conn->query($q);
