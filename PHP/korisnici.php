@@ -3,9 +3,10 @@
 //error_reporting(E_ALL); 
 require_once 'db_function.php';
 $db = new DB_Functions();
+require_once 'responseTemplate.php';
 header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"])) {
-    if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
+    if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {//gitnew
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "NO USERNAME";
@@ -45,6 +46,23 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
+        $userExists = $db->userExistsLogin($p);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
+        $loginCheck = $db->userConfirmed($p);
+        if ($loginCheck==0){
+            $response->STATUS=false;
+            $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
+            $response = json_encode($response);
+            echo $response;
+            return;
+        }
         $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
         if ($authorised==false){
             $response->STATUS = false;
@@ -54,14 +72,7 @@ if ($db->checkAuth($_POST["Token"])) {
             return;
         }
         $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
-        $userExists = $db->userExistsLogin($p);
-        if ($userExists==false){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
+        
         
         $db->setRoleTrader($_POST);
         $response->STATUS=true;
@@ -88,19 +99,29 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
-        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
-        if ($authorised==false){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "UNAUTHORISED";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
+        
         $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
         $userExists = $db->userExistsLogin($p);
         if ($userExists==false){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
+        $loginCheck = $db->userConfirmed($p);
+        if ($loginCheck==0){
+            $response->STATUS=false;
+            $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
+            $response = json_encode($response);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
@@ -130,6 +151,58 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
+        
+        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
+        $userExists = $db->userExistsLogin($p);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
+        $loginCheck = $db->userConfirmed($p);
+        if ($loginCheck==0){
+            $response->STATUS=false;
+            $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
+            $response = json_encode($response);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        $db->setRoleAdmin($_POST);
+        $response->STATUS=true;
+        $response->STATUSMESSAGE = "ADMIN ADDED";
+        $response->DATA["KorisnickoImeKorisnik"]=$_POST["KorisnickoImeKorisnik"];
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
+    
+    if (isset($_POST["DELETE"]) && $_POST["DELETE"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["KorisnickoImeKorisnik"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USER USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
         if ($authorised==false){
             $response->STATUS = false;
@@ -148,9 +221,9 @@ if ($db->checkAuth($_POST["Token"])) {
             return;
         }
         
-        $db->setRoleAdmin($_POST);
+        $db->deleteUser($_POST);
         $response->STATUS=true;
-        $response->STATUSMESSAGE = "ADMIN ADDED";
+        $response->STATUSMESSAGE = "DELETED";
         $response->DATA["KorisnickoImeKorisnik"]=$_POST["KorisnickoImeKorisnik"];
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;

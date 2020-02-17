@@ -55,7 +55,7 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];//gitnew
+        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
         $userExists = $db->userExistsLogin($p);
         if ($userExists==false){
             $response->STATUS = false;
