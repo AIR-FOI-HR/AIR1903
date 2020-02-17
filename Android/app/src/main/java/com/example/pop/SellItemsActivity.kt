@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.example.core.BaseActivity
 import com.example.nfc.NFCPayment
 import com.example.nfc.SetNfcMessageActivity
 import com.example.pop.adapters.SellItemsAdapter
@@ -32,7 +32,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 
-class SellItemsActivity : AppCompatActivity() {
+class SellItemsActivity : BaseActivity() {
 
     private var itemsList: List<Item> = listOf()
     val adapter = SellItemsAdapter()

@@ -1,14 +1,14 @@
 package com.example.pop
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.core.BaseActivity
 import com.example.webservice.Common.Common
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.activity_main_menu_seller.*
 import com.example.pop_sajamv2.Session
 
-class MainMenuSeller : AppCompatActivity() {
+class MainMenuSeller : BaseActivity() {
     lateinit var mService: IMyAPI
 
     override fun onCreate(savedInstanceState: Bundle?) {

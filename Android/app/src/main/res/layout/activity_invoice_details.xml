@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Discount Amount"
+        android:text="@string/invoice_discount_amount"
         app:layout_constraintBottom_toTopOf="@+id/layoutInvoiceDetailsTextTotal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBeforeDiscount" />
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Price before discount"
+        android:text="@string/invoice_price_before_discount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextInvoiceDiscount" />
 
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Discount Percentage"
+        android:text="@string/invoice_discount_percentage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBuyer" />
 

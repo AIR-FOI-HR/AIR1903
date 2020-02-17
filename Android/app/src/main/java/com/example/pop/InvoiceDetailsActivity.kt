@@ -1,14 +1,14 @@
 package com.example.pop
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.core.BaseActivity
 import com.example.pop.adapters.InvoiceItemAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Model.Invoice
 import kotlinx.android.synthetic.main.activity_invoice_details.*
 
-class InvoiceDetailsActivity : AppCompatActivity() {
+class InvoiceDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

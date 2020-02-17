@@ -77,5 +77,18 @@
     <string name="valueInvoiceDiscount">0</string>
     <string name="Percentage">%</string>
     <string name="hint_product_quantity">Količina</string>
+    <string name="main_menu">Glavni izbornik</string>
+    <string name="main_menu_buy">KUPI</string>
+    <string name="main_menu_invoices">RAČUNI</string>
+    <string name="main_menu_settings">POSTAVKE</string>
+    <string name="main_menu_wallet">NOVČANIK</string>
+    <string name="text_logo">FOI</string>
+    <string name="wallet_balance">Stanje računa</string>
+    <string name="wallet_details">Detalji</string>
+    <string name="invoice_discount_amount">Iznos popusta</string>
+    <string name="invoice_discount_percentage">Postotak popusta</string>
+    <string name="invoice_price_before_discount">Cijena prije popusta</string>
+    <string name="main_menu_sell">PRODAJ</string>
+    <string name="entrepreneurial_venture">Poduzetnički pothvat</string>
 
 </resources>

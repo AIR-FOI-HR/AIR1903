@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.example.core.BaseActivity
 import com.example.nfc.GetNfcMessageActivity
 import com.example.pop_sajamv2.Session
 import com.example.qr.QRPayment
@@ -26,7 +26,7 @@ import java.math.BigInteger
 
 const val MIME_TEXT_PLAIN = "text/plain"
 
-class MainMenuBuyer : AppCompatActivity() {
+class MainMenuBuyer : BaseActivity() {
 
     lateinit var mService: IMyAPI
     //lateinit var invoice:Invoice

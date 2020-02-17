@@ -11,15 +11,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
 import android.text.InputFilter
-import android.text.TextWatcher
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.graphics.scale
+import com.example.core.BaseActivity
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.NewProductResponse
@@ -29,7 +27,6 @@ import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_manage_products.*
-import kotlinx.android.synthetic.main.activity_sell_items.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -41,7 +38,7 @@ import java.io.FileOutputStream
 import kotlinx.android.synthetic.main.dialog_add_image.view.*
 
 
-class ManageProductsActivity : AppCompatActivity() {
+class ManageProductsActivity : BaseActivity() {
     private lateinit var mService: IMyAPI
     private lateinit var product: Product
     private var imageFile: File? = null

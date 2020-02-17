@@ -1,14 +1,14 @@
 package com.example.pop
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.core.BaseActivity
 import com.example.pop.adapters.ShowItemsPagerAdapter
 import com.example.webservice.Model.Item
 import kotlinx.android.synthetic.main.activity_tab_layout.*
 
 
-class ShowItemsActivity : AppCompatActivity(){
+class ShowItemsActivity : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

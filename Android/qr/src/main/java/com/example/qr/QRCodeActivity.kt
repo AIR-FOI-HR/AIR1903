@@ -15,10 +15,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigInteger
 import android.animation.AnimatorListenerAdapter
+import com.example.core.BaseActivity
 import com.example.webservice.Model.Invoice
 
 
-class QRCodeActivity : AppCompatActivity() {
+class QRCodeActivity : BaseActivity() {
     var deleteInvoice = true
     var cancelled=false
     var loop = true

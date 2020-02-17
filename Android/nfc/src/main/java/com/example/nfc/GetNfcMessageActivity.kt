@@ -8,10 +8,11 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.core.BaseActivity
 import com.example.webservice.Model.Invoice
 
 
-class GetNfcMessageActivity : AppCompatActivity() {
+class GetNfcMessageActivity : BaseActivity() {
 
     val MIME_TEXT_PLAIN = "text/plain"
     private var nfcAdapter: NfcAdapter? = null

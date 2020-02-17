@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Main Menu"
+            android:text="@string/main_menu"
             android:textColor="#FFF"
             android:textSize="34sp" />
 
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="BUY"
+                    android:text="@string/main_menu_buy"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
@@ -115,7 +115,7 @@
                     android:layout_width="150dp"
                     android:layout_height="22dp"
                     android:layout_marginTop="10dp"
-                    android:text="INVOICES"
+                    android:text="@string/main_menu_invoices"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
@@ -159,7 +159,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="WALLET"
+                    android:text="@string/main_menu_wallet"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
@@ -201,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="SETTINGS"
+                    android:text="@string/main_menu_settings"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 

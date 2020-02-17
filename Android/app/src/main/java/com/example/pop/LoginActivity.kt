@@ -1,9 +1,9 @@
 package com.example.pop
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.core.BaseActivity
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.ApiResponseUser
@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     private lateinit var mService:IMyAPI
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
                         Session.user.DozvolaUvidUStatistiku = resp.DozvolaUvidUStatistiku
                         Session.user.LoginTime = resp.LoginTime
                         Session.user.Token = resp.Token
+                        Session.user.Jezik = resp.Jezik
 
                         showMainMenu()
                     }
@@ -66,6 +67,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
     private fun showMainMenu(){
+        application
         val intent = if(Session.user.Id_Uloge == 1)
                                 Intent(this, MainMenuBuyer::class.java)
                             else

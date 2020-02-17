@@ -14,6 +14,7 @@ class User {
     var Naziv_Uloge:String=""
     var LoginTime:Int=0
     var Token:String=""
+    var Jezik:Int=0
 
     fun reset(){
         Ime=""
@@ -29,6 +30,7 @@ class User {
         Naziv_Uloge=""
         LoginTime=0
         Token=""
+        Jezik=0
     }
 
 }

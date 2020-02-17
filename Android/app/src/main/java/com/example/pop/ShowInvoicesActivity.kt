@@ -3,7 +3,7 @@ package com.example.pop
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.example.core.BaseActivity
 import com.example.pop.adapters.InvoiceAdapter
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
@@ -15,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class ShowInvoicesActivity : AppCompatActivity() {
+class ShowInvoicesActivity : BaseActivity() {
     private lateinit var invoiceAdapter :InvoiceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
