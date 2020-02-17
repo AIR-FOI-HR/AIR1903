@@ -26,6 +26,15 @@ if ($loginCheck==0){
     return;
 }
 
+$loginCheck = $db->userConfirmed($_POST);
+if ($loginCheck==0){
+    $response->STATUS=false;
+    $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
+    $response = json_encode($response);
+    echo $response;
+    return;
+}
+
 $loginCheck = $db->checkPassword($_POST);
 
 if ($loginCheck[0]["Forbidden"]==true){

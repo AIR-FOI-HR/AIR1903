@@ -1297,6 +1297,15 @@ public function sellPackages($post) {
                 return false;
         }
     }
+    
+    public function userConfirmed($post){
+        $q = "SELECT KorisnickoIme, PrijavaPotvrdena FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        if ($user["PrijavaPotvrdena"]==0) return 0;
+        else return 1;
+    }
+    
 
 
 }
