@@ -14,7 +14,7 @@ class InvoiceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.text_invoice_date.text = invoice.DatumIzdavanja
         itemView.text_invoice_total.text = invoice.ZavrsnaCijena
 
-        itemView.setOnClickListener {
+        itemView.btn_show_invoice.setOnClickListener {
             val intent = Intent(it.context, InvoiceDetailsActivity::class.java)
             intent.putExtra("invoice", invoice)
             startActivity(it.context, intent, null)
