@@ -80,5 +80,13 @@ if ($db->checkAuth($_POST["Token"])) {
         echo $response;
         return;
     }
+    if(isset($_POST["STATISTICS"])){
+        $dataForStatistics = $db->getSumOfInvoices($_POST);
+        $response->STATUS = true;
+        $response->STATUSMESSAGE = "Ukupna cijena: ";
+        $response->DATA = $dataForStatistics;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+    }
 }
 ?>
