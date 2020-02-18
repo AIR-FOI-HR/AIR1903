@@ -1342,7 +1342,7 @@ public function getSumOfInvoices($post){
                     $i["CijenaNakonPopusta"] = strval(round($cijenaPaketa * $i["Popust"] / 100, 2));
                     $i["IznosPopusta"] = strval(round($i["Popust"] * $i["CijenaStavke"] / 100, 2));
                     $i["CijenaStavkeNakonPopusta"] = strval($i["CijenaStavke"] - $i["IznosPopusta"]);
-                    $response1["CijenaRacuna"] += $i["CijenaStavkeNakonPopusta"];
+                    $cijenaRacuna += $i["CijenaStavkeNakonPopusta"];
                 } else { // ako je proizvod
                     $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = {$i["Id"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
                     $i["ItemType"] = "Proizvod";
@@ -1350,18 +1350,14 @@ public function getSumOfInvoices($post){
                     $stmt3 = $stmt3->fetch_assoc();
                     $i["Cijena"] = $stmt3["Cijena"];
                     $i["CijenaStavke"] = strval($i["Cijena"] * $i["Kolicina"]);
-                    $response1["CijenaRacuna"] += $i["CijenaStavke"];
+                    $cijenaRacuna += $i["CijenaStavke"];
                 }
             }
 
-            $response1["ZavrsnaCijena"] = strval($response1["CijenaRacuna"] - $response1["IznosPopustaRacuna"]);
+            $response1["ZavrsnaCijena"] = strval($cijenaRacuna - $response1["IznosPopustaRacuna"]);
             array_push($vv,$response1);
         }
         
-        
-        
-        //var_dump($vv);
-        //$response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
         $response=$vv;
         return $response;
     }
