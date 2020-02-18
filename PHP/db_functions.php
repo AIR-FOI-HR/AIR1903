@@ -1309,7 +1309,49 @@ public function getSumOfInvoices($post){
 
             foreach ($stmt as &$i) {
 
-              
+                $q = "SELECT Id_Itema Id FROM Proizvod WHERE Id_Itema = {$i["Id"]}";
+                $stmt2 = $this->conn->query($q);
+                $stmt2 = $stmt2->fetch_assoc();
+                $k = $stmt2["Id"];
+                //echo $i;
+                if ($k == NULL) { // ako je paket
+                    $i["ItemType"] = "Paket";
+                    $i["Cijena"] = 0;
+                    $i["CijenaNakonPopusta"] = 0;
+                    $i["CijenaStavke"] = 0;
+                    $i["Popust"] = 0;
+                    $i["IznosPopusta"] = 0;
+                    $i["CijenaStavkeNakonPopusta"] = 0;
+
+                    $cijenaPaketa = 0;
+                    $p["Id"] = $i["Id"];
+                    $p["UnixDatum"] = $unixDatum;
+
+                    $stmt3 = $this->getContentsOfPackage($p);
+                    $i["StavkePaketa"] = $stmt3;
+                    foreach ($i["StavkePaketa"] as &$j) {
+                        $j["CijenaStavke"] = strval($j["Cijena"] * $j["Kolicina"]);
+                        $cijenaPaketa += $j["Cijena"] * $j["Kolicina"];
+                    }
+                    $i["Cijena"] = strval($cijenaPaketa);
+                    $i["CijenaStavke"] = strval($cijenaPaketa * $i["Kolicina"]);
+                    $q = "SELECT Popust FROM Paket_Popust WHERE Id_Paketa = {$i["Id"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
+                    $stmt3 = $this->conn->query($q);
+                    $stmt3 = $stmt3->fetch_assoc();
+                    $i["Popust"] = $stmt3["Popust"];
+                    $i["CijenaNakonPopusta"] = strval(round($cijenaPaketa * $i["Popust"] / 100, 2));
+                    $i["IznosPopusta"] = strval(round($i["Popust"] * $i["CijenaStavke"] / 100, 2));
+                    $i["CijenaStavkeNakonPopusta"] = strval($i["CijenaStavke"] - $i["IznosPopusta"]);
+                    $response1["CijenaRacuna"] += $i["CijenaStavkeNakonPopusta"];
+                } else { // ako je proizvod
+                    $q = "SELECT Cijena FROM Proizvod_Cijena WHERE Id_Proizvod = {$i["Id"]} AND UnixVrijeme < {$unixDatum} ORDER BY UnixVrijeme DESC LIMIT 1";
+                    $i["ItemType"] = "Proizvod";
+                    $stmt3 = $this->conn->query($q);
+                    $stmt3 = $stmt3->fetch_assoc();
+                    $i["Cijena"] = $stmt3["Cijena"];
+                    $i["CijenaStavke"] = strval($i["Cijena"] * $i["Kolicina"]);
+                    $response1["CijenaRacuna"] += $i["CijenaStavke"];
+                }
             }
 
             $response1["ZavrsnaCijena"] = strval($response1["CijenaRacuna"] - $response1["IznosPopustaRacuna"]);
