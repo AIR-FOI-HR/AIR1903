@@ -63,26 +63,26 @@ class DB_Functions {
     }
     
     public function userExistsRegister($post) {
-        $q="SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='".$post["KorisnickoIme"]."'";
+        $q = "SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
-        
+
         if ($stmt->num_rows > 0) {
             $stmt->close();
             return "KorisnickoIme";
         }
-        
-        $q="SELECT Email FROM Korisnik WHERE Email='".$post["Email"]."'";
+
+        $q = "SELECT Email FROM Korisnik WHERE Email='{$post["Email"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
-        
+
         if ($stmt->num_rows > 0) {
             $stmt->close();
             return "Email";
         }
         return 0;
     }
-    
+
     public function userExistsLogin($post) {
-        $q="SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='".$post["KorisnickoIme"]."'";
+        $q = "SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
         if ($stmt->num_rows > 0) {
             return 1;
@@ -101,66 +101,66 @@ class DB_Functions {
     }
 
 	public function checkPassword($post) {
-        $q="SELECT LozinkaSalt, LozinkaHash, KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $q = "SELECT LozinkaSalt, LozinkaHash, KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        
+
         $iterations = 10000;
-        
-        $response["Forbidden"]=false;
-        $response["KrivePrijave"]=0;
-        $response2=null;
-        
-        if ($stmt["KrivePrijave"]>=3){
-            $response["Forbidden"]=true;
+
+        $response["Forbidden"] = false;
+        $response["KrivePrijave"] = 0;
+        $response2 = null;
+
+        if ($stmt["KrivePrijave"] >= 3) {
+            $response["Forbidden"] = true;
             return [$response, $response2];
         }
-        
+
         $salt = base64_decode($stmt["LozinkaSalt"]);
         $hashDB = $stmt["LozinkaHash"];
-        
+
         $hash = hash_pbkdf2("sha256", $post["Lozinka"], $salt, $iterations);
-        $hash= base64_encode(pack('H*',$hash));
-        
-        
-        if($hash==$hashDB){
-            $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.StanjeRacuna, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $hash = base64_encode(pack('H*', $hash));
+
+
+        if ($hash == $hashDB) {
+            $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.Jezik, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             $response2["Ime"] = $stmt["Ime"];
             $response2["Prezime"] = $stmt["Prezime"];
             $response2["Email"] = $stmt["Email"];
             $response2["KorisnickoIme"] = $stmt["KorisnickoIme"];
-            $response2["StanjeRacuna"] = $stmt["StanjeRacuna"];
+            $response2["StanjeRacuna"] = $this->getBalance($post);
             $response2["DozvolaUpravljanjeUlogama"] = $stmt["DozvolaUpravljanjeUlogama"];
             $response2["DozvolaUpravljanjeStanjemRacuna"] = $stmt["DozvolaUpravljanjeStanjemRacuna"];
             $response2["DozvolaPregledTransakcija"] = $stmt["DozvolaPregledTransakcija"];
             $response2["DozvolaUvidUStatistiku"] = $stmt["DozvolaUvidUStatistiku"];
             $response2["Id_Uloge"] = $stmt["Id_Uloge"];
             $response2["Naziv_Uloge"] = $stmt["Naziv"];
+            $response2["Jezik"] = $stmt["Jezik"];
             $response2["LoginTime"] = time();
-            $response2["Token"]=$this->generateAuth();
-            
+            $response2["Token"] = $this->generateAuth();
+
             $response2 = json_encode($response2);
-            
-            $q = "UPDATE Korisnik SET KrivePrijave = 0 WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+
+            $q = "UPDATE Korisnik SET KrivePrijave = 0 WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
             $stmt = $this->conn->query($q);
-            
+
+            return [$response, $response2];
+        } else {
+            $q = "UPDATE Korisnik SET KrivePrijave = KrivePrijave+1 WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+            $q = "SELECT KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+            $stmt = $stmt->fetch_assoc();
+            $response["KrivePrijave"] = $stmt["KrivePrijave"];
             return [$response, $response2];
         }
-        else{
-            $q = "UPDATE Korisnik SET KrivePrijave = KrivePrijave+1 WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
-            $stmt = $this->conn->query($q);
-            $q = "SELECT KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
-            $stmt = $this->conn->query($q);
-            $stmt=$stmt->fetch_assoc();
-            $response["KrivePrijave"]=$stmt["KrivePrijave"];
-            return [$response, $response2];
-        }
-        
     }
-	public function getAllProducts($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+
+    public function getAllProducts($post) {
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -226,7 +226,7 @@ class DB_Functions {
     }
 	
 	public function addNewProduct($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -298,14 +298,14 @@ class DB_Functions {
         $response = null;
         return $response;
     }
-public function checkProductEmpty($post) {
+	public function checkProductEmpty($post) {
          if(!isset($post["Naziv"])|| empty($post["Naziv"]) || !isset($post["Cijena"]) || empty($post["Cijena"]) || !isset($post["Opis"])||  empty($post["Opis"]) || isset($post["Id"])){
             return 0;
         }else{
             return 1;
         }    
     }
-public function isDelete($post) {
+	public function isDelete($post) {
       if(!isset($post["Id"]) || isset($post["Naziv"]) || isset($post["Cijena"]) || isset($post["Opis"])){
             return 0;
         }else{
@@ -339,14 +339,14 @@ public function isDelete($post) {
         }
         return $json_array;
     }
-public function isUpdate($post) {
+	public function isUpdate($post) {
         if(isset($post["Id"]) && isset($post["Naziv"]) && isset($post["Cijena"]) && isset($post["Opis"]) && isset($post["Slika"])){
             return 1;
         }else{
             return 0;
         }
     }
-public function updateProduct($post) {
+	public function updateProduct($post) {
         if (!isset($_FILES['Slika'])) {
             if ($post["Slika"]=="") $slika = 'https://cortex.foi.hr/pop/Slike/defaultPicture.png';
             else $slika = $post["Slika"];
@@ -398,7 +398,7 @@ public function updateProduct($post) {
         
     }
     public function addNewPackage($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -524,7 +524,7 @@ public function updateProduct($post) {
         return $response;
     }
     public function getAllPackeges($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -651,11 +651,15 @@ public function updateProduct($post) {
         return $stmt; 
     }
 
-public function getBalance($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+	public function getBalance($post) {
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
+        if ($stmt->num_rows == 0){
+            return -1;
+        }
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
+        
         
         //echo "User id" . $userId;
         $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = {$userId} ORDER BY UnixVrijeme DESC LIMIT 1";
@@ -667,7 +671,7 @@ public function getBalance($post) {
     }
     public function getBalanceStore($post) {
         //echo "wat";
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -685,8 +689,8 @@ public function getBalance($post) {
         
         return $response;
     }
-public function setInitialBalance($post) {
-        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+	public function setInitialBalance($post) {
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -710,7 +714,7 @@ public function setInitialBalance($post) {
         $idKupca="null";
         
         
-        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idProdavaca = $stmt["Id"];
@@ -751,8 +755,7 @@ public function setInitialBalance($post) {
             $q="DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
             $stmt = $this->conn->query($q);
             return false;
-        }  
-        
+        }
     }
 	
 	public function deleteInvoice($post){
@@ -765,7 +768,7 @@ public function setInitialBalance($post) {
     }
 	
 	public function confirmSale($post){
-        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idKupca = $stmt["Id"];
@@ -806,6 +809,7 @@ public function setInitialBalance($post) {
             return $response;
         }
     }
+	
     public function updateBalance($id, $kolicina, $time, $trgovina){
         if ($trgovina==false){
             $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = {$id} ORDER BY UnixVrijeme DESC LIMIT 1";
@@ -826,7 +830,7 @@ public function setInitialBalance($post) {
         }
     }
 	
-public function sellPackages($post) {
+	public function sellPackages($post) {
 	$kolicinaProdanihPaketa = $post["Kolicina"];
         $q = "SELECT Kolicina FROM Trgovina_Item WHERE Id_Itema = '{$post["Id_Itema"]}'";
         $stmt = $this->conn->query($q);
@@ -1040,7 +1044,7 @@ public function sellPackages($post) {
     }
 	
 	public function getInvoice($post) {
-        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idKorisnika = $stmt["Id"];
@@ -1270,7 +1274,8 @@ public function sellPackages($post) {
         $response[1]=$vv;
         return $response;
     }
-public function getSumOfInvoices($post){ 
+	
+	public function getSumOfInvoices($post){ 
         $vv=[];
         $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
@@ -1360,6 +1365,150 @@ public function getSumOfInvoices($post){
         
         $response=$vv;
         return $response;
+    }
+	
+	public function confirmRegistration($post){
+        if ($post["CONFIRM"]=="true"){
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+            $user = $stmt->fetch_assoc();
+            if (!empty($user)){
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+                $stmt = $this->conn->query($q);
+                return true;
+            }
+            else
+                return false;
+        }
+        elseif ($post["CONFIRM"]=="false"){
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND k.Obrisan=0";
+            $stmt = $this->conn->query($q);
+            $user = $stmt->fetch_assoc();
+            if (!empty($user)){
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+                $stmt = $this->conn->query($q);
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+    
+    public function userConfirmed($post){
+        $q = "SELECT KorisnickoIme, PrijavaPotvrdena FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        if ($user["PrijavaPotvrdena"]==0) return 0;
+        else return 1;
+    }
+    
+    public function getAllUsers($post){//GITNEW
+        $admin = $this->isAdmin($post["KorisnickoIme"]);
+        if (!$admin){
+            return false;
+        }
+        
+        $q = "SELECT k.Id, k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.Jezik, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE k.Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_all(MYSQLI_ASSOC);
+        foreach ($user as &$i){
+            if ($i["Id_Uloge"]==3){
+                $q = "SELECT t.Id, t.Naziv FROM Trgovina_Korisnik k JOIN Trgovina t ON k.Id_Trgovina = t.Id WHERE k.Id_Korisnik = {$i["Id"]}";
+                $stmt2 = $this->conn->query($q);
+                $stmt2 = $stmt2->fetch_assoc();
+                $i["Id_Trgovine"]=$stmt2["Id"];
+                $i["Naziv_Trgovine"]=$stmt2["Naziv"];
+                
+                $p["KorisnickoIme"]= $i["KorisnickoIme"];
+                $balance = $this->getBalanceStore($p);
+                $i["StanjeRacunaTrgovine"]=$balance;
+            }
+            if ($i["Id_Uloge"]==1){
+                $p["KorisnickoIme"]= $i["KorisnickoIme"];
+                $balance = $this->getBalance($p);
+                $i["StanjeRacuna"]=$balance;
+            }
+            //var_dump($i);
+        }
+        return $user;
+    }
+    
+    public function isAdmin($korIme){
+        $q = "SELECT KorisnickoIme, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$korIme}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        if ($user["Id_Uloge"]!=2){
+            return false;
+        }
+        else return true;
+    }
+    
+    public function setRoleTrader($post){
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+        $q = "SELECT * FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+        $isInStore = $stmt->fetch_assoc();
+        if ($isInStore!=false){
+            $q = "DELETE FROM Trgovina_Korisnik WHERE  Id_Korisnik = {$id}";
+            $stmt = $this->conn->query($q);
+        }
+        
+        $q = "INSERT INTO Trgovina_Korisnik (Id, Id_Trgovina, Id_Korisnik) VALUES (null, {$post["Id_Trgovine"]}, {$id})";
+        $stmt = $this->conn->query($q);
+        $q = "UPDATE Korisnik SET Id_Uloge=3 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+    }
+    
+    public function setRoleCustomer($post){
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+    
+        $q = "UPDATE Korisnik SET Id_Uloge=1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        
+        $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+    }
+    
+    public function setRoleAdmin($post){
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+    
+        $q = "UPDATE Korisnik SET Id_Uloge=2 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        
+        $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+    }
+    
+    public function deleteUser($post){
+        $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+        
+        $q = "UPDATE Korisnik SET Obrisan=1 WHERE Id={$id}";
+        $stmt = $this->conn->query($q);
+    }
+    
+    public function getRoles(){
+        $q = "SELECT Id, Naziv FROM Uloga";
+        $stmt = $this->conn->query($q);
+        $roles = $stmt->fetch_all(MYSQLI_ASSOC);
+        return $roles;
     }
     
 
