@@ -1369,11 +1369,11 @@ class DB_Functions {
 	
 	public function confirmRegistration($post){
         if ($post["CONFIRM"]=="true"){
-            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
             $stmt = $this->conn->query($q);
             $user = $stmt->fetch_assoc();
             if (!empty($user)){
-                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
                 $stmt = $this->conn->query($q);
                 return true;
             }
@@ -1381,11 +1381,11 @@ class DB_Functions {
                 return false;
         }
         elseif ($post["CONFIRM"]=="false"){
-            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND k.Obrisan=0";
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND k.Obrisan=0";
             $stmt = $this->conn->query($q);
             $user = $stmt->fetch_assoc();
             if (!empty($user)){
-                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
                 $stmt = $this->conn->query($q);
                 return true;
             }
