@@ -29,18 +29,26 @@ class DB_Functions {
     }
 
     public function storeUser($post, $hash) {
-        
-        $q = "INSERT INTO Korisnik (Id ,Ime, Prezime, Email, Id_Uloge, KorisnickoIme, StanjeRacuna, LozinkaSalt, LozinkaHash, DozvolaUpravljanjeUlogama, DozvolaUpravljanjeStanjemRacuna, DozvolaPregledTransakcija, DozvolaUvidUStatistiku) ";
-        $q.="VALUES (null,'{$post["Ime"]}', '{$post["Prezime"]}','{$post["Email"]}', 1, '{$post["KorisnickoIme"]}', 0, '{$hash[0]}', '{$hash[1]}', 0, 0, 0, 0)";
+
+        $q = "INSERT INTO Korisnik (Id ,Ime, Prezime, Email, Id_Uloge, KorisnickoIme, LozinkaSalt, LozinkaHash, DozvolaUpravljanjeUlogama, DozvolaUpravljanjeStanjemRacuna, DozvolaPregledTransakcija, DozvolaUvidUStatistiku) ";
+        $q .= "VALUES (null,'{$post["Ime"]}', '{$post["Prezime"]}','{$post["Email"]}', 1, '{$post["KorisnickoIme"]}','{$hash[0]}', '{$hash[1]}', 0, 0, 0, 0)";
         $stmt = $this->conn->query($q);
-        $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.StanjeRacuna, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $id = $this->conn->insert_id;
+        
+        $time= time();
+        $q = "INSERT INTO Korisnik_StanjeRacuna (StanjeRacuna, UnixVrijeme, Id_Korisnika) VALUES ('0', '$time','$id')";
+        $stmt = $this->conn->query($q);
+        $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
+        $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '$id'";
+        $stmt2 = $this->conn->query($q);
+        $stmt2 = $stmt2->fetch_assoc();
         $response["Ime"] = $stmt["Ime"];
         $response["Prezime"] = $stmt["Prezime"];
         $response["Email"] = $stmt["Email"];
         $response["KorisnickoIme"] = $stmt["KorisnickoIme"];
-        $response["StanjeRacuna"] = $stmt["StanjeRacuna"];
+        $response["StanjeRacuna"] = $stmt2["StanjeRacuna"];
         $response["DozvolaUpravljanjeUlogama"] = $stmt["DozvolaUpravljanjeUlogama"];
         $response["DozvolaUpravljanjeStanjemRacuna"] = $stmt["DozvolaUpravljanjeStanjemRacuna"];
         $response["DozvolaPregledTransakcija"] = $stmt["DozvolaPregledTransakcija"];
@@ -48,9 +56,8 @@ class DB_Functions {
         $response["Id_Uloge"] = $stmt["Id_Uloge"];
         $response["Naziv_Uloge"] = $stmt["Naziv"];
         $response["LoginTime"] = time();
-        
+
         return $response;
-        
     }
 	
 	public function checkRegister($post) {
@@ -702,7 +709,7 @@ class DB_Functions {
         
         return $response;
     }
- //funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
+	//funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
 	public function sellItems($post) {
         //$prodavac = $post["KorisnickoIme"];
         $popustRacuna = $post["PopustRacuna"];
@@ -1402,7 +1409,7 @@ class DB_Functions {
         else return 1;
     }
     
-    public function getAllUsers($post){//GITNEW
+    public function getAllUsers($post){
         $admin = $this->isAdmin($post["KorisnickoIme"]);
         if (!$admin){
             return false;
@@ -1443,52 +1450,56 @@ class DB_Functions {
         else return true;
     }
     
-    public function setRoleTrader($post){
+    public function setRole($post){
         $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_assoc();
         $id=$user["Id"];
-        $q = "SELECT * FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
-        $stmt = $this->conn->query($q);
         
-        $isInStore = $stmt->fetch_assoc();
-        if ($isInStore!=false){
-            $q = "DELETE FROM Trgovina_Korisnik WHERE  Id_Korisnik = {$id}";
+        if ($post["RoleId"]==3){ //Prodavač
+            $q = "SELECT * FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+            $stmt = $this->conn->query($q);
+
+            $isInStore = $stmt->fetch_assoc();
+            if ($isInStore!=false){
+                $q = "DELETE FROM Trgovina_Korisnik WHERE  Id_Korisnik = {$id}";
+                $stmt = $this->conn->query($q);
+            }
+
+            $q = "UPDATE Korisnik SET Id_Uloge=3 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
             $stmt = $this->conn->query($q);
         }
-        
-        $q = "INSERT INTO Trgovina_Korisnik (Id, Id_Trgovina, Id_Korisnik) VALUES (null, {$post["Id_Trgovine"]}, {$id})";
+        elseif($post["RoleId"]==1){ //Kupac
+            $q = "UPDATE Korisnik SET Id_Uloge=1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+
+            $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+            $stmt = $this->conn->query($q);
+        }
+        elseif($post["RoleId"]==2){ //Admin
+            $q = "UPDATE Korisnik SET Id_Uloge=2 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+
+            $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+            $stmt = $this->conn->query($q);
+        }
+        $q = "SELECT Naziv FROM Uloga WHERE Id={$post["RoleId"]}";
         $stmt = $this->conn->query($q);
-        $q = "UPDATE Korisnik SET Id_Uloge=3 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
-        $stmt = $this->conn->query($q);
+        $role = $stmt->fetch_assoc();
+        return $role["Naziv"];
     }
     
-    public function setRoleCustomer($post){
-        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
-        $stmt = $this->conn->query($q);
-        $user = $stmt->fetch_assoc();
-        $id=$user["Id"];
-    
-        $q = "UPDATE Korisnik SET Id_Uloge=1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
-        $stmt = $this->conn->query($q);
-        
     public function deleteUser($post){
         $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
         $stmt = $this->conn->query($q);
         
-    
-    public function setRoleAdmin($post){
         $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_assoc();
         $id=$user["Id"];
-    
-        $q = "UPDATE Korisnik SET Id_Uloge=2 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
-        $stmt = $this->conn->query($q);
         
-        $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+        $q = "UPDATE Korisnik SET Obrisan=1 WHERE Id={$id}";
         $stmt = $this->conn->query($q);
-        
     }
     
     public function getRoles(){

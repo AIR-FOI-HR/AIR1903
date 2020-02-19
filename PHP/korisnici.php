@@ -6,7 +6,7 @@ $db = new DB_Functions();
 require_once 'responseTemplate.php';
 header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"])) {
-    if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {//gitnew
+    if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "NO USERNAME";
@@ -31,7 +31,7 @@ if ($db->checkAuth($_POST["Token"])) {
         return;
     }
     
-    if (isset($_POST["SETROLETRADER"]) && $_POST["SETROLETRADER"] == true) {
+    if (isset($_POST["GETROLES"]) && $_POST["GETROLES"] == true) {
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "NO USERNAME";
@@ -39,14 +39,7 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
-        if (!isset($_POST["KorisnickoImeKorisnik"])){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "NO USER USERNAME";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
-        $userExists = $db->userExistsLogin($p);
+        $userExists = $db->userExistsLogin($_POST);
         if ($userExists==false){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "USER DOESN'T EXIST";
@@ -54,8 +47,7 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
-        $loginCheck = $db->userConfirmed($p);
+        $loginCheck = $db->userConfirmed($_POST);
         if ($loginCheck==0){
             $response->STATUS=false;
             $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
@@ -71,20 +63,19 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
         
-        
-        $db->setRoleTrader($_POST);
+        $db->getRoles();
         $response->STATUS=true;
-        $response->STATUSMESSAGE = "TRADER ADDED";
-        $response->DATA["KorisnickoImeKorisnik"]=$_POST["KorisnickoImeKorisnik"];
-        $response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
+        $response->STATUSMESSAGE = "ROLES GOTTEN";
+        $roles = $db->getRoles();
+        $response->DATA=$roles;
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
     }
     
-    if (isset($_POST["SETROLECUSTOMER"]) && $_POST["SETROLECUSTOMER"] == true) {
+    
+    if (isset($_POST["SETROLE"]) && $_POST["SETROLE"] == true) {
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "NO USERNAME";
@@ -99,7 +90,13 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
-        
+        if (!isset($_POST["RoleId"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO ROLE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
         $userExists = $db->userExistsLogin($p);
         if ($userExists==false){
@@ -109,7 +106,6 @@ if ($db->checkAuth($_POST["Token"])) {
             echo $response;
             return;
         }
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
         $loginCheck = $db->userConfirmed($p);
         if ($loginCheck==0){
             $response->STATUS=false;
@@ -127,66 +123,16 @@ if ($db->checkAuth($_POST["Token"])) {
             return;
         }
         
-        $db->setRoleCustomer($_POST);
+        $role=$db->setRole($_POST);
         $response->STATUS=true;
-        $response->STATUSMESSAGE = "CUSTOMER ADDED";
+        $response->STATUSMESSAGE = "ROLE SET";
         $response->DATA["KorisnickoImeKorisnik"]=$_POST["KorisnickoImeKorisnik"];
+        $response->DATA["Uloga"]=$role;
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
     }
     
-    if (isset($_POST["SETROLEADMIN"]) && $_POST["SETROLEADMIN"] == true) {
-        if (!isset($_POST["KorisnickoIme"])){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "NO USERNAME";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
-        if (!isset($_POST["KorisnickoImeKorisnik"])){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "NO USER USERNAME";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
-        
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
-        $userExists = $db->userExistsLogin($p);
-        if ($userExists==false){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
-        $loginCheck = $db->userConfirmed($p);
-        if ($loginCheck==0){
-            $response->STATUS=false;
-            $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
-            $response = json_encode($response);
-            echo $response;
-            return;
-        }
-        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
-        if ($authorised==false){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "UNAUTHORISED";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
-        
-        $db->setRoleAdmin($_POST);
-        $response->STATUS=true;
-        $response->STATUSMESSAGE = "ADMIN ADDED";
-        $response->DATA["KorisnickoImeKorisnik"]=$_POST["KorisnickoImeKorisnik"];
-        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-        echo $response;
-        return;
-    }
     
     if (isset($_POST["DELETE"]) && $_POST["DELETE"] == true) {
         if (!isset($_POST["KorisnickoIme"])){
