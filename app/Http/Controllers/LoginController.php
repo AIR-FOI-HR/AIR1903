@@ -24,10 +24,13 @@ class LoginController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
-
+        var_dump($result);
         if($result['STATUS'] == true)
         {
-            session()->put('authenticated', time());
+            session(['authenticated' => time()]);
+            session(['token' => $result['DATA']['Token']]);
+            session(['korisnickoIme' => $result['DATA']['KorisnickoIme']]);
+
             return redirect()->intended('/dashboard');
         }
         
