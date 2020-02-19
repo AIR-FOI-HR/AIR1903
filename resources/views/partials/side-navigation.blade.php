@@ -15,8 +15,8 @@
 						<span>Naslovnica</span>
 					</a>
 				</li>
-				<li>
-					<a>
+				<li class="{{ Request::is('users') ? 'active' : '' }}">
+					<a href="{{ route('users.index') }}">
 						<i class="fas fa-users fa-fw"></i>
 						<span>Korisnici</span>
 					</a>

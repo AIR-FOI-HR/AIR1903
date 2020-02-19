@@ -2,14 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Timelog;
-use App\User;
-
-use Session;
-use Carbon\Carbon;
-
 class DashboardController extends Controller
 {
     public function index()

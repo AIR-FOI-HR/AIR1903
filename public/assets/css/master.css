@@ -44,6 +44,21 @@
   box-sizing: border-box;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
+
+table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc_disabled, table.dataTable thead .sorting_desc_disabled{
+  background-position: left center;
+}
 
 .logout-btn{
   color: #212529;
@@ -2132,8 +2147,7 @@ pre code {
 
 .form-control {
   display: block;
-  width: 100%;
-  height: calc(1.6em + 0.75rem + 2px);
+  height: calc(0em + 0.75rem + 2px);
   padding: 0.375rem 0.75rem;
   font-size: 0.9rem;
   font-weight: 400;
@@ -2159,12 +2173,11 @@ pre code {
   border: 0;
 }
 
-.form-control:focus {
+.form-control:focus, .form-control:hover{
   color: #495057;
   background-color: #fff;
-  border-color: #a1cbef;
+  border-color: #ce003d;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
 }
 
 .form-control::-webkit-input-placeholder {
@@ -3660,7 +3673,7 @@ input[type=button].btn-block {
 .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #3490dc;
+  background-color: #ce003d;
 }
 
 .dropdown-item.disabled,
@@ -4035,22 +4048,22 @@ input[type=button].btn-block {
 
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
-  border-color: #3490dc;
-  background-color: #3490dc;
+  border-color: #ce003d;
+  background-color: #ce003d;
 }
 
 .custom-control-input:focus ~ .custom-control-label::before {
-  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+  box-shadow: 0 0 0 0.2rem #ce003e36;
 }
 
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
-  border-color: #a1cbef;
+  border-color: #ce003d;
 }
 
 .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
   color: #fff;
-  background-color: #cce3f6;
-  border-color: #cce3f6;
+  background-color: #ce003d;
+  border-color: #ce003d;
 }
 
 .custom-control-input:disabled ~ .custom-control-label {
@@ -4100,8 +4113,8 @@ input[type=button].btn-block {
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
-  border-color: #3490dc;
-  background-color: #3490dc;
+  border-color: #ce003d;
+  background-color: #ce003d;
 }
 
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::after {
@@ -4189,9 +4202,8 @@ input[type=button].btn-block {
 }
 
 .custom-select:focus {
-  border-color: #a1cbef;
+  border-color: #ce003d;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
 }
 
 .custom-select:focus::-ms-value {
@@ -4216,6 +4228,7 @@ input[type=button].btn-block {
 }
 
 .custom-select-sm {
+  border-width: 2px;
   height: calc(1.5em + 0.5rem + 2px);
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -4224,6 +4237,7 @@ input[type=button].btn-block {
 }
 
 .custom-select-lg {
+  border-width: 2px;
   height: calc(1.5em + 1rem + 2px);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -5320,14 +5334,14 @@ input[type=button].btn-block {
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #3490dc;
+  color: #ce003d;
   background-color: #fff;
   border: 1px solid #dee2e6;
 }
 
 .page-link:hover {
   z-index: 2;
-  color: #1d68a7;
+  color: #ce003d;
   text-decoration: none;
   background-color: #e9ecef;
   border-color: #dee2e6;
@@ -5335,8 +5349,7 @@ input[type=button].btn-block {
 
 .page-link:focus {
   z-index: 2;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+  outline-color: crimson;
 }
 
 .page-item:first-child .page-link {
@@ -11121,7 +11134,7 @@ a.text-dark:focus {
 }
 
 .custom-button {
-  background: #00B0CE;
+  background: #ce003d;
   text-transform: uppercase;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -11169,8 +11182,8 @@ a.text-dark:focus {
 
 .custom-button:hover {
   color: white;
-  background: #0D5EA3;
-  border-color: #0D5EA3;
+  background: #F8B323;
+  border-color: #F8B323;
 }
 
 .custom-checkbox .custom-control-label:before,
@@ -11185,6 +11198,7 @@ a.text-dark:focus {
 
 .alert {
   width: auto;
+  padding: 1rem 2rem 1rem 2rem;
 }
 
 .alert .close {
@@ -11274,7 +11288,7 @@ a.text-dark:focus {
 }
 
 .action-icon.action-icon-primary:hover i {
-  color: #00B0CE;
+  color: #ce003d;
 }
 
 .action-icon.action-icon-danger:hover i {
@@ -11524,6 +11538,7 @@ a.text-dark:focus {
 #app main a.btn,
 #app main button.btn {
   height: auto !important;
+  width: 5rem;
 }
 
 #app main .app-header {
@@ -11577,8 +11592,8 @@ a.text-dark:focus {
 #app main .app-content .table-responsive .dataTables_wrapper .dataTables_paginate .pagination .paginate_button.active .page-link {
   z-index: 1;
   color: #fff;
-  background-color: #00B0CE;
-  border-color: #00B0CE;
+  background-color: #ce003d;
+  border-color: #ce003d;
 }
 
 #app main .app-content .table-responsive .dataTables_wrapper .row:last-child {
@@ -11586,31 +11601,35 @@ a.text-dark:focus {
   padding: 15px;
 }
 
+.input-money {
+  height: 100%;
+  color: #212529;
+  background-color: #f8f9fa;
+  border-radius: 0.25rem;
+  border: 1px solid #f8f9fa;
+  padding: 0.4rem;
+  text-align: center;
+}
+
+.input-money:hover, .input-money:focus {
+  color: #212529;
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+}
+
+.input-money:focus{
+  border-color: #ce003d;
+}
+
 #app main .app-content input {
   border-width: 2px;
   box-shadow: none;
-  background: transparent;
-  padding: 20px;
-  border-radius: 0.25rem;
-  color: #0D5EA3;
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
 }
 
-#app main .app-content input:focus {
-  border-color: #00B0CE;
-}
-
-#app main .app-content input:hover {
-  border-color: #00B0CE;
-}
-
 #app main .app-content input:disabled {
   background-color: #e9ecef;
-}
-
-#app main .app-content input:disabled:hover {
-  border-color: #ced4da;
 }
 
 #app main .app-content textarea {
@@ -11623,7 +11642,7 @@ a.text-dark:focus {
 }
 
 #app main .app-content textarea:focus {
-  border-color: #00B0CE;
+  box-shadow: 0 0 0 0.2rem #ce003d33;
 }
 
 #app main .app-content textarea:hover {
@@ -11677,15 +11696,15 @@ a.text-dark:focus {
 }
 
 #app main .app-content .content-form-group input:focus {
-  border-color: #00B0CE;
+  box-shadow: 0 0 0 0.2rem #ce003d33;
 }
 
 #app main .app-content .content-form-group input:hover {
-  border-color: #00B0CE;
+  box-shadow: 0 0 0 0.2rem #ce003d33;
 }
 
 #app main .app-content .content-form-group input:disabled {
-  background-color: #e9ecef;
+  box-shadow: 0 0 0 0.2rem #ce003d33;
 }
 
 #app main .app-content .content-form-group input:disabled:hover {
@@ -11821,11 +11840,10 @@ a.text-dark:focus {
 
 #app main .app-content.resource-content .resource-content-row__data .dot {
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: 0.5rem;
   border-radius: 50%;
-  margin-bottom: 2px;
-  margin-right: 10px;
 }
 
 #app main .app-content.resource-content .resource-content-row__data .dot.green-dot {

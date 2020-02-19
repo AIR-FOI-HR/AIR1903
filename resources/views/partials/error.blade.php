@@ -1,8 +1,21 @@
-@if (session()->has('error'))
-<div class="alert alert-danger" role="alert">
-    {{ session()->get('error') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-  	</button>
-</div>
+@if(session()->has('error'))
+    <script type="text/javascript">
+        $(window).load(function(){
+            $.notify({
+                message: "{{ session()->get('error') }}" 
+            },{
+                type: 'danger',
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated flipOutX'
+                },
+                placement: {
+                    from: "bottom",
+                    align: "right"
+                },
+                delay: 500,
+	              timer: 3000,
+            });
+        });
+    </script>
 @endif
