@@ -2728,7 +2728,7 @@ textarea.form-control.is-invalid {
 .btn:focus,
 .btn.focus {
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+  box-shadow: 0 0 0 0.2rem #ce003e36;
 }
 
 .btn.disabled,
@@ -4026,12 +4026,12 @@ input[type=button].btn-block {
 
 .custom-control-input:checked ~ .custom-control-label::before {
   color: #fff;
-  border-color: #3490dc;
-  background-color: #3490dc;
+  border-color: #ce003d;
+  background-color: #ce003d;
 }
 
 .custom-control-input:focus ~ .custom-control-label::before {
-  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+  box-shadow: 0 0 0 0.2rem #ce003e36;
 }
 
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
@@ -11216,7 +11216,7 @@ a.text-dark:focus {
   background: transparent;
   padding: 20px;
   border-radius: 0.25rem;
-  color: #0D5EA3;
+  color: #212529;
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
 }
