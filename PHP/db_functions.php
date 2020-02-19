@@ -1472,10 +1472,10 @@ class DB_Functions {
         $q = "UPDATE Korisnik SET Id_Uloge=1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
         $stmt = $this->conn->query($q);
         
+    public function deleteUser($post){
         $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
         $stmt = $this->conn->query($q);
         
-    }
     
     public function setRoleAdmin($post){
         $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
@@ -1491,24 +1491,47 @@ class DB_Functions {
         
     }
     
-    public function deleteUser($post){
-        $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
-        $stmt = $this->conn->query($q);
-        
-        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
-        $stmt = $this->conn->query($q);
-        $user = $stmt->fetch_assoc();
-        $id=$user["Id"];
-        
-        $q = "UPDATE Korisnik SET Obrisan=1 WHERE Id={$id}";
-        $stmt = $this->conn->query($q);
-    }
-    
     public function getRoles(){
         $q = "SELECT Id, Naziv FROM Uloga";
         $stmt = $this->conn->query($q);
         $roles = $stmt->fetch_all(MYSQLI_ASSOC);
         return $roles;
+    }
+	
+	public function getStores(){
+        $q = "SELECT Id, Naziv FROM Trgovina";
+        $stmt = $this->conn->query($q);
+        $stores = $stmt->fetch_all(MYSQLI_ASSOC);
+        return $stores;
+    }
+    
+    public function assignStore($post){
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+        
+        $q = "DELETE FROM Trgovina_Korisnik WHERE  Id_Korisnik = {$id}";
+        $stmt = $this->conn->query($q);
+        
+        if ($post["ASSIGNSTORE"]=="true"){
+            $q = "SELECT Naziv FROM Trgovina WHERE Id={$post["Id_Trgovine"]}";
+            $stmt = $this->conn->query($q);
+            if ($stmt->num_rows==0){
+                return -1;
+            }
+            $q = "INSERT INTO Trgovina_Korisnik (Id, Id_Trgovina, Id_Korisnik) VALUES (null, {$post["Id_Trgovine"]}, {$id})";
+            $stmt = $this->conn->query($q);
+            return 1;
+        }
+        return 0;
+    }
+    
+    public function getStoreName($storeId){
+        $q = "SELECT Naziv FROM Trgovina WHERE Id={$storeId}";
+        $stmt=$this->conn->query($q);
+        $name=$stmt->fetch_assoc();
+        return $name["Naziv"];
     }
     
 
