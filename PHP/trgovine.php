@@ -147,6 +147,50 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         echo $response;
         return;
     }
+    
+    if (isset($_POST["DELETESTORE"]) && $_POST["DELETESTORE"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["Id_Trgovine"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO STORE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        $deleted = $db->deleteStore($_POST);
+        if ($deleted == false){
+            $response->STATUSMESSAGE = "STORE DOESN'T EXIST";
+            $response->STATUS = false;
+            $response->DATA=$_POST["Id_Trgovine"];
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $response->STATUSMESSAGE = "STORE DELETED";
+        $response->STATUS = true;
+        $response->DATA["Naziv_Trgovine"]=$deleted;
+        $response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
+        
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
+    
     if (isset($_POST["BULKCREATESTORE"]) && $_POST["BULKCREATESTORE"] == true) {
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
