@@ -103,6 +103,92 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
+    }
+    if (isset($_POST["CREATESTORE"]) && $_POST["CREATESTORE"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["NazivTrgovine"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO STORE NAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        $created = $db->createStore($_POST);
+        if ($created == false){
+            $response->STATUSMESSAGE = "STORE ALREADY EXISTS";
+            $response->STATUS = false;
+            $response->DATA=$_POST["NazivTrgovine"];
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $response->STATUSMESSAGE = "STORE CREATED";
+        
+        $response->STATUS = true;
+        $response->DATA["NazivTrgovine"]=$_POST["NazivTrgovine"];
+        $response->DATA["Id_Trgovine"]=$created;
+        
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
+    if (isset($_POST["BULKCREATESTORE"]) && $_POST["BULKCREATESTORE"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["BrojTrgovina"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO STORE COUNT";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["Sufiks"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO STORE SUFFIX";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        $created = $db->createStoresInBulk($_POST);
+        $response->STATUSMESSAGE = "{$_POST["BrojTrgovina"]} STORES CREATED";
+        
+        $response->STATUS = true;
+        $response->DATA=$created;
+        
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
+    
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;

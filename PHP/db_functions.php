@@ -1581,6 +1581,65 @@ class DB_Functions {
         $name=$stmt->fetch_assoc();
         return $name["Naziv"];
     }
+	
+	public function createStore($post){
+        $q = "SELECT Naziv FROM Trgovina WHERE Obrisan=0";
+        $stmt= $this->conn->query($q);
+        $storeNames = $stmt->fetch_all(MYSQLI_ASSOC);
+        foreach ($storeNames as &$i){
+            if ($i["Naziv"]==$post["NazivTrgovine"]){
+                return false;
+            }
+        }
+        $q = "INSERT INTO Trgovina (Id, Naziv) VALUES (null, '{$post["NazivTrgovine"]}')";
+        $stmt = $this->conn->query($q);
+        $id=$this->conn->insert_id;
+        $time = time();
+        $q = "INSERT INTO Trgovina_StanjeRacuna (Id_Trgovine, UnixVrijeme, StanjeRacuna) VALUES ({$id}, {$time}, 0)";
+        $stmt = $this->conn->query($q);
+        return $id;
+    }
+    
+    public function deleteStore($post){
+        $q = "SELECT Naziv FROM Trgovina WHERE Id={$post["Id_Trgovine"]} AND Obrisan=0";
+        $stmt=$this->conn->query($q);
+        if ($stmt->num_rows==0){
+            return false;
+        }
+        $q = "UPDATE Trgovina SET Obrisan=1 WHERE Id={$post["Id_Trgovine"]}";
+        $stmt2 = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        return $stmt["Naziv"];
+    }
+    
+    public function createStoresInBulk($post){
+        
+        $ids=[];
+        $offset=1;
+        $time = time();
+        for($i=0;$i<$post["BrojTrgovina"];$i++){
+            again:
+            $num = $i+$offset;
+            $name = "Trgovina {$num}{$post["Sufiks"]}";
+            $q = "SELECT * FROM Trgovina WHERE Naziv='{$name}' AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+            if ($stmt->num_rows==0){
+                //$qI.="(null, '{$name}'), ";
+                $q = "INSERT INTO Trgovina (Id, Naziv) VALUES (null, '{$name}')";
+                $stmt = $this->conn->query($q);
+                $store["Id_Trgovine"]=$this->conn->insert_id;
+                $store["Naziv_Trgovine"]=$name;
+                array_push($ids, $store);
+                $q = "INSERT INTO Trgovina_StanjeRacuna (Id_Trgovine, UnixVrijeme, StanjeRacuna) VALUES ({$store["Id_Trgovine"]}, {$time}, 0)";
+                $stmt = $this->conn->query($q);
+            }
+            else {
+                $offset+=1;
+                goto again;
+            }
+        }
+        return $ids;
+    }
     
 
 }
