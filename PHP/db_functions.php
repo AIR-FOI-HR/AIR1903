@@ -1641,6 +1641,35 @@ class DB_Functions {
         return $ids;
     }
     
+    public function editStore($post){
+        if (isset($post["NazivTrgovine"])){
+            $q = "SELECT Naziv FROM Trgovina WHERE Id = {$post["Id_Trgovine"]} AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+            if ($stmt->num_rows==0){
+                return false;
+            }
+            else {
+                $q = "UPDATE Trgovina SET Naziv = '{$post["NazivTrgovine"]}' WHERE Id={$post["Id_Trgovine"]} AND Obrisan=0";
+                $stmt = $this->conn->query($q);
+                //return true;
+            }
+        }
+        if (isset($post["StanjeRacuna"])){
+            $q = "SELECT Naziv FROM Trgovina WHERE Id = {$post["Id_Trgovine"]} AND Obrisan=0";
+            $stmt = $this->conn->query($q);
+            if ($stmt->num_rows==0){
+                return false;
+            }
+            else {
+                $time=time();
+                $q = "INSERT INTO Trgovina_StanjeRacuna (Id_Trgovine, UnixVrijeme, StanjeRacuna) VALUES ({$post["Id_Trgovine"]}, {$time}, {$_POST["StanjeRacuna"]})";
+                $stmt = $this->conn->query($q);
+                //return true;
+            }
+        }
+        return true;
+    }
+    
 
 }
 ?>

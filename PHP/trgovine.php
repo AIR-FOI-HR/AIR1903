@@ -233,6 +233,66 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         return;
     }
     
+    if (isset($_POST["EDITSTORE"]) && $_POST["EDITSTORE"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["Id_Trgovine"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO STORE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["NazivTrgovine"]) && !isset($_POST["StanjeRacuna"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO STORE NAME OR BALANCE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        $edited = $db->editStore($_POST);
+        if ($edited==true){
+            if (isset($_POST["NazivTrgovine"]) && !isset($_POST["StanjeRacuna"])){
+                $response->STATUSMESSAGE = "STORE NAME EDITED";
+                $response->STATUS = true;
+                $response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
+                $response->DATA["NazivTrgovine"]=$_POST["NazivTrgovine"];
+            }
+            elseif (!isset($_POST["NazivTrgovine"]) && isset($_POST["StanjeRacuna"])){
+                $response->STATUSMESSAGE = "STORE BALANCE EDITED";
+                $response->STATUS = true;
+                $response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
+                $response->DATA["StanjeRacuna"]=$_POST["StanjeRacuna"];
+            }
+            elseif (isset($_POST["NazivTrgovine"]) && isset($_POST["StanjeRacuna"])){
+                $response->STATUSMESSAGE = "STORE NAME AND BALANCE EDITED";
+                $response->STATUS = true;
+                $response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
+                $response->DATA["NazivTrgovine"]=$_POST["NazivTrgovine"];
+                $response->DATA["StanjeRacuna"]=$_POST["StanjeRacuna"];
+            }
+        }
+        else{
+            $response->STATUSMESSAGE = "STORE DOESN'T EXIST";
+            $response->STATUS = false;
+            $response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
+        }
+        
+        
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
