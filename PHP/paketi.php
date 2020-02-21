@@ -5,10 +5,9 @@
 require_once 'db_function.php';
 $db = new DB_Functions();
 header('Content-Type: application/json');
-if ($db->checkAuth($_POST["Token"])) {
+if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     $packageCheck = $db->checkPackageEmpty($_POST);
     if ($_POST["GET"] == true) {
-        //$allPackeges = $db->getAllPackeges($_POST);
         $allPackeges = $db->getPacketsWithProducts($_POST);
         if ($allPackeges[0] == 1) {
             $response->DATA = null;
@@ -83,5 +82,6 @@ else{
     $response->STATUS=false;
     $response->STATUSMESSAGE="OLD TOKEN";
     echo json_encode($response);
+    return;
 }
 ?>

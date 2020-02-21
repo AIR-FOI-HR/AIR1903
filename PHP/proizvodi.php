@@ -1,15 +1,10 @@
 <?php
-
-/* ini_set('display_errors', 1);
-  error_reporting(E_ALL); */
-
+  //ini_set('display_errors', 1);
+  //error_reporting(E_ALL); 
 require_once 'db_function.php';
 $db = new DB_Functions();
-
 header('Content-Type: application/json');
-
-
-if ($db->checkAuth($_POST["Token"])) {
+if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
         $allProducts = $db->getAllProducts($_POST);
         if ($allProducts[0]==1){
@@ -80,5 +75,6 @@ else{
     $response->STATUS=false;
     $response->STATUSMESSAGE="OLD TOKEN";
     echo json_encode($response);
+    return;
 }
 ?>

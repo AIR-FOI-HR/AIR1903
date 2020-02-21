@@ -1,4 +1,6 @@
 <?php
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL); 
 require_once 'db_function.php';
 $db = new DB_Functions();
 
@@ -37,17 +39,9 @@ if ($loginCheck==0){
 
 $loginCheck = $db->checkPassword($_POST);
 
-if ($loginCheck[0]["Forbidden"]==true){
+if ($loginCheck[0]["KrivePrijave"]!=0){
     $response->STATUS=false;
-    $response->STATUSMESSAGE="This account is locked. Login failed 3 or more times. Contact your administrator.";
-    $response=json_encode($response);
-    echo $response;
-    return;
-            
-}
-elseif ($loginCheck[0]["KrivePrijave"]!=0){
-    $response->STATUS=false;
-    $response->STATUSMESSAGE="Wrong password. Login attempt {$loginCheck[0]["KrivePrijave"]} of 3";
+    $response->STATUSMESSAGE="Wrong password.";
     $response=json_encode($response);
     echo $response;
     return;

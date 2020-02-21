@@ -6,7 +6,8 @@ require_once 'db_function.php';
 $db = new DB_Functions();
 header('Content-Type: application/json');
 require_once 'responseTemplate.php';
-if ($db->checkAuth($_POST["Token"])) {
+
+if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     if (isset($_POST["GETCLIENT"]) && $_POST["GETCLIENT"] == true) {
         $userBalance = $db->getBalance($_POST);
         if ($userBalance==-1){
@@ -88,5 +89,11 @@ if ($db->checkAuth($_POST["Token"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
+}
+else{
+    $response->STATUS=false;
+    $response->STATUSMESSAGE="OLD TOKEN";
+    echo json_encode($response);
+    return;
 }
 ?>

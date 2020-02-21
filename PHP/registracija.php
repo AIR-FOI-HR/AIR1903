@@ -1,5 +1,6 @@
 <?php
-
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL); 
 require_once 'db_function.php';
 $db = new DB_Functions();
 
@@ -8,7 +9,7 @@ require_once 'responseTemplate.php';
 header('Content-Type: application/json');
 
 if (isset($_POST["CONFIRM"])){
-    if ($db->checkAuth($_POST["Token"])) {
+    if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "NO USERNAME";
@@ -62,11 +63,11 @@ if (isset($_POST["CONFIRM"])){
         $response->STATUS=false;
         $response->STATUSMESSAGE="OLD TOKEN";
         echo json_encode($response);
+        return;
     }
 }
 
 $registerCheck=$db->checkRegisterEmpty($_POST);
-
 if ($registerCheck!==1){
     $response->STATUS=false;
     $response->STATUSMESSAGE="{$registerCheck} can't be empty";
@@ -74,7 +75,6 @@ if ($registerCheck!==1){
     echo $response;
     return;
 }
-
 $registerCheck=$db->checkRegister($_POST);
 
 if ($registerCheck!==1){
@@ -102,7 +102,7 @@ $regUser = $db->storeUser($_POST, $hash);
 $response->STATUS=true;
 $response->STATUSMESSAGE= "Registration successful";
 
-$response->DATA=$regUser;
+$response->DATA= $regUser;
 
 $response = json_encode($response);
 echo $response;

@@ -5,7 +5,7 @@ require_once 'db_function.php';
 $db = new DB_Functions();
 require_once 'responseTemplate.php';
 header('Content-Type: application/json');
-if ($db->checkAuth($_POST["Token"])) {
+if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
         if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
@@ -181,5 +181,6 @@ else{
     $response->STATUS=false;
     $response->STATUSMESSAGE="OLD TOKEN";
     echo json_encode($response);
+    return;
 }
 ?>

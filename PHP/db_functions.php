@@ -118,9 +118,11 @@ class DB_Functions {
         $response["KrivePrijave"] = 0;
         $response2 = null;
 
-        if ($stmt["KrivePrijave"] >= 3) {
-            $response["Forbidden"] = true;
-            return [$response, $response2];
+        if ($stmt["KrivePrijave"] > 0 && $stmt["KrivePrijave"]<= 5) {
+            sleep($stmt["KrivePrijave"]);
+        }
+        elseif($stmt["KrivePrijave"]>5){
+            sleep(5);
         }
 
         $salt = base64_decode($stmt["LozinkaSalt"]);
@@ -147,7 +149,7 @@ class DB_Functions {
             $response2["Naziv_Uloge"] = $stmt["Naziv"];
             $response2["Jezik"] = $stmt["Jezik"];
             $response2["LoginTime"] = time();
-            $response2["Token"] = $this->generateAuth();
+            $response2["Token"] = $this->generateAuth($response2["KorisnickoIme"]);
 
             $response2 = json_encode($response2);
 
@@ -385,25 +387,43 @@ class DB_Functions {
     }
 	
 	
-    public function generateAuth(){
+    public function generateAuth($korIme) {
         
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$korIme}'";
+        $stmt=$this->conn->query($q);
+        $stmt=$stmt->fetch_assoc();
+        $id=$stmt["Id"];
+
         $auth = openssl_random_pseudo_bytes(128);
         $authString = base64_encode($auth);
-        $time=time()+6*60*60;
-        $q = "INSERT INTO Tokeni (Token, UnixVrijemeIsteka) VALUES ('{$authString}',{$time});";
+        $time = time() + 6 * 60 * 60;
+        $q = "INSERT INTO Tokeni (Token, UnixVrijemeIsteka, Id_Korisnika) VALUES ('{$authString}',{$time}, {$id});";
         $stmt = $this->conn->query($q);
         return $authString;
     }
-    
-    public function checkAuth($token){
-        $time=time();
-        $q = "SELECT ID FROM Tokeni WHERE Token = '{$token}' AND UnixVrijemeIsteka>{$time}";
+
+    public function checkAuth($token, $korIme) {
+        $time = time();
+        
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$korIme}'";
+        $stmt=$this->conn->query($q);
+        $stmt=$stmt->fetch_assoc();
+        $id=$stmt["Id"];
+        
+        $q = "SELECT ID, Id_Korisnika FROM Tokeni WHERE Token = '{$token}' AND UnixVrijemeIsteka>{$time}";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
-        if (sizeof($stmt)!=0) return true;
-        else return false;
-        
+        if (sizeof($stmt) != 0)
+        {
+            if ($stmt["Id_Korisnika"]==$id || $stmt["Id_Korisnika"]==null)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
+	
     public function addNewPackage($post) {
         $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
         $stmt=$this->conn->query($q);
