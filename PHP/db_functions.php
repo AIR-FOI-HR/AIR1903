@@ -1179,8 +1179,7 @@ class DB_Functions {
         
     }
     
-    
-    public function getAllInvoices($post){ 
+    public function getAllInvoices($post){
         $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
@@ -1191,13 +1190,13 @@ class DB_Functions {
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
                     . " JOIN Korisnik k ON r.Kupac = k.Id"
-                    . " WHERE Kupac = {$idKorisnika}";
+                    . " WHERE Kupac = {$idKorisnika} AND k.Obrisan=0 ORDER BY DatumIzdavanja ASC";
         }
         elseif ($idUloge == 2){ //admin
             $q = "SELECT r.Id"
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
-                    . " JOIN Korisnik k ON r.Kupac = k.Id";
+                    . " JOIN Korisnik k ON r.Kupac = k.Id ORDER BY DatumIzdavanja ASC";
         }
         elseif ($idUloge == 3){ //prodavac
             $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$idKorisnika}";
@@ -1208,7 +1207,7 @@ class DB_Functions {
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
                     . " JOIN Korisnik k ON r.Kupac = k.Id"
-                    . " WHERE Id_Trgovine = {$idTrgovine}";
+                    . " WHERE Id_Trgovine = {$idTrgovine} ORDER BY DatumIzdavanja ASC";
         }
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
