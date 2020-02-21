@@ -131,7 +131,7 @@ class QRCodeActivity : BaseActivity() {
                         response: Response<OneInvoiceResponse>
                     ) {
                         if (response.body()!!.DATA!!.Id!=null){
-                            api.deleteInvoice(Session.user.Token, true, intent.extras!!.get("Total").toString()).enqueue(object: Callback<OneInvoiceResponse>{
+                            api.deleteInvoice(Session.user.Token, Session.user.KorisnickoIme, true, intent.extras!!.get("Total").toString()).enqueue(object: Callback<OneInvoiceResponse>{
                                 override fun onFailure(
                                     call2: Call<OneInvoiceResponse>,
                                     t2: Throwable

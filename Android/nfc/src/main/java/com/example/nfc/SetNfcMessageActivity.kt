@@ -129,7 +129,7 @@ class SetNfcMessageActivity : BaseActivity(), OutcomingNfcManager.INfcActivity {
                         response: Response<OneInvoiceResponse>
                     ) {
                         if (response.body()!!.DATA!!.Id!=null){
-                            api.deleteInvoice(Session.user.Token, true, intent.getStringExtra("InvoiceID")).enqueue(object: Callback<OneInvoiceResponse>{
+                            api.deleteInvoice(Session.user.Token, Session.user.KorisnickoIme, true, intent.getStringExtra("InvoiceID")).enqueue(object: Callback<OneInvoiceResponse>{
                                 override fun onFailure(
                                     call2: Call<OneInvoiceResponse>,
                                     t2: Throwable

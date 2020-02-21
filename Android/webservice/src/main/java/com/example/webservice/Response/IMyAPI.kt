@@ -17,8 +17,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("proizvodi.php")
-    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme: String
-    ) : Call<ProductResponse>
+    fun getProducts(@Field("Readall") Readall: Boolean, @Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme: String) : Call<ProductResponse>
 
     @FormUrlEncoded
     @POST("proizvodi.php")
@@ -38,7 +37,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("proizvodi.php")
-    fun deleteProduct(@Field("Token")Token: String, @Field("Id")Id: Int) : Call<NewProductResponse>
+    fun deleteProduct(@Field("Token")Token: String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id")Id: Int) : Call<NewProductResponse>
 
     @FormUrlEncoded
     @POST("paketi.php")
@@ -59,7 +58,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("paketi.php")
-    fun deletePackage(@Field("Token") Token: String,@Field("DELETE") DELETE: Boolean, @Field("Id") Id: String) : Call<NewPackageResponse>
+    fun deletePackage(@Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("DELETE") DELETE: Boolean, @Field("Id") Id: String) : Call<NewPackageResponse>
 
     @FormUrlEncoded
     @POST("paketi.php")
@@ -71,7 +70,7 @@ interface IMyAPI {
 
     @FormUrlEncoded
     @POST("paketi.php")
-    fun addToPackage(@Field("Token") Token: String, @Field("ADDTOPACKET") ADDTOPACKET: Boolean, @Field("Id_Paket") Id_Paket: String, @Field("Id_Proizvod[]") Id_Proizvod: ArrayList<Int>, @Field("Kolicina[]") Kolicina: ArrayList<String>):Call<PackageResponse>
+    fun addToPackage(@Field("Token") Token: String, @Field("KorisnickoIme") KorisnickoIme:String, @Field("ADDTOPACKET") ADDTOPACKET: Boolean, @Field("Id_Paket") Id_Paket: String, @Field("Id_Proizvod[]") Id_Proizvod: ArrayList<Int>, @Field("Kolicina[]") Kolicina: ArrayList<String>):Call<PackageResponse>
 
     @FormUrlEncoded
     @POST("novcanik.php")
@@ -98,6 +97,6 @@ interface IMyAPI {
     fun finalizeInvoice(@Field("Token") Token: String, @Field("CONFIRMSALE") CONFIRMSALE: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: Int) : Call<OneInvoiceResponse>
     @FormUrlEncoded
     @POST("racuni.php")
-    fun deleteInvoice(@Field("Token") Token:String, @Field("DELETE") DELETE:Boolean, @Field("Id_Racuna") Id_Racuna:String):Call<OneInvoiceResponse>
+    fun deleteInvoice(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("DELETE") DELETE:Boolean, @Field("Id_Racuna") Id_Racuna:String):Call<OneInvoiceResponse>
 
 }

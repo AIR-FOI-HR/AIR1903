@@ -94,7 +94,7 @@ class PackageAddedProductsFragment : Fragment() {
             prodAmt.add(i.Kolicina!!)
         }
         val api = Common.api
-        api.addToPackage(Session.user.Token, true, id.toString(), prodIds,prodAmt).enqueue(object:Callback<PackageResponse> {
+        api.addToPackage(Session.user.Token, Session.user.KorisnickoIme, true, id.toString(), prodIds,prodAmt).enqueue(object:Callback<PackageResponse> {
             override fun onFailure(call: Call<PackageResponse>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
             }

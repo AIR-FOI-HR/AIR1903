@@ -6,6 +6,7 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.se.omapi.Session
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pop.*
@@ -123,7 +124,7 @@ class ItemRecyclerAdapter(
         val mService: IMyAPI = Common.api
         item = items[position]
         if (item is Product)
-            mService.deleteProduct(com.example.pop_sajamv2.Session.user.Token, item.Id!!).enqueue(object : retrofit2.Callback<NewProductResponse> {
+            mService.deleteProduct(com.example.pop_sajamv2.Session.user.Token, com.example.pop_sajamv2.Session.user.KorisnickoIme, item.Id!!).enqueue(object : retrofit2.Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
                     Toast.makeText(activityContext, t.message, Toast.LENGTH_SHORT).show()
                     popupWindow.dismiss()
@@ -151,7 +152,7 @@ class ItemRecyclerAdapter(
                 }
             })
         else if (item is PackageClass)
-            mService.deletePackage(com.example.pop_sajamv2.Session.user.Token,true, item.Id!!.toString()).enqueue(object : retrofit2.Callback<NewPackageResponse> {
+            mService.deletePackage(com.example.pop_sajamv2.Session.user.Token, com.example.pop_sajamv2.Session.user.KorisnickoIme,true, item.Id!!.toString()).enqueue(object : retrofit2.Callback<NewPackageResponse> {
                 override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
                     Toast.makeText(activityContext, t.message, Toast.LENGTH_SHORT).show()
                     popupWindow.dismiss()
