@@ -717,16 +717,24 @@ class DB_Functions {
         return $response;
     }
 	public function setInitialBalance($post) {
-        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
-        $stmt=$this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $userId = $stmt["Id"];
         
+        $korisnici = $post["KorisnickoImeKorisnik"];
         $time= time();
-        $q = "INSERT INTO Korisnik_StanjeRacuna (StanjeRacuna, UnixVrijeme, Id_Korisnika) VALUES ('{$post["StanjeRacuna"]}', '{$time}', '{$userId}')";
-        $stmt = $this->conn->query($q);
-        $response = $post["StanjeRacuna"];
+        foreach ($korisnici as &$i){
+            $q = "SELECT Id, Id_Uloge, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$i}' AND Obrisan=0";
+            $stmt=$this->conn->query($q);
+            $stmt = $stmt->fetch_assoc();
+            $userId = $stmt["Id"];
+            $roleId=$stmt["Id_Uloge"];
+            $username=$stmt["KorisnickoIme"];
+
+            if($roleId==1){//kupac
+                $q = "INSERT INTO Korisnik_StanjeRacuna (StanjeRacuna, UnixVrijeme, Id_Korisnika) VALUES ('{$post["StanjeRacuna"]}', '{$time}', '{$userId}')";
+                $stmt = $this->conn->query($q);
+            }
+        }
         
+        $response = $post["StanjeRacuna"];
         return $response;
     }
 	//funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
