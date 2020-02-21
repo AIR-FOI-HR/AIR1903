@@ -1537,9 +1537,19 @@ class DB_Functions {
     }
 	
 	public function getStores(){
-        $q = "SELECT Id, Naziv FROM Trgovina";
+        $q = "SELECT t.Id Id_Trgovine, t.Naziv Naziv_Trgovine, stanje.StanjeRacuna FROM (
+			SELECT c.Id_Trgovine, d.StanjeRacuna, c.UnixVrijeme FROM (
+				SELECT Id_Trgovine, MAX(UnixVrijeme) UnixVrijeme FROM Trgovina_StanjeRacuna GROUP BY Id_Trgovine
+			) c JOIN Trgovina_StanjeRacuna d ON c.Id_Trgovine = d.Id_Trgovine AND d.UnixVrijeme = c.UnixVrijeme
+		) stanje JOIN Trgovina t ON stanje.Id_Trgovine=t.id WHERE t.Obrisan=0";
         $stmt = $this->conn->query($q);
         $stores = $stmt->fetch_all(MYSQLI_ASSOC);
+        foreach ($stores as &$i){
+            $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme FROM Trgovina_Korisnik tk JOIN Korisnik k ON k.Id=tk.Id_Korisnik JOIN Trgovina t ON t.Id=tk.Id_Trgovina WHERE t.Obrisan=0 AND t.Id={$i["Id_Trgovine"]}";
+            $stmt = $this->conn->query($q);
+            $i["BrojZaposlenika"]=$stmt->num_rows;
+            $i["Zaposlenici"]=$stmt->fetch_all(MYSQLI_ASSOC);
+        }
         return $stores;
     }
     
@@ -1566,7 +1576,7 @@ class DB_Functions {
     }
     
     public function getStoreName($storeId){
-        $q = "SELECT Naziv FROM Trgovina WHERE Id={$storeId}";
+        $q = "SELECT Naziv FROM Trgovina WHERE Id={$storeId} AND Obrisan=0";
         $stmt=$this->conn->query($q);
         $name=$stmt->fetch_assoc();
         return $name["Naziv"];

@@ -103,6 +103,9 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
     }
     
 }
