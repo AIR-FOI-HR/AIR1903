@@ -56,14 +56,16 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             echo $response;
             return;
         }
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
-        $userExists = $db->userExistsLogin($p);
-        if ($userExists==false){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
+        foreach ($_POST["KorisnickoImeKorisnik"] as $korisnik){
+            $p["KorisnickoIme"] = $korisnik;
+            $userExists = $db->userExistsLogin($p);
+            if ($userExists==false){
+                $response->STATUS = false;
+                $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+                $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+                echo $response;
+                return;
+            }
         }
         $setUserBalance = $db->setInitialBalance($_POST);
         $response->STATUS = true;
