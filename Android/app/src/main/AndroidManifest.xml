@@ -18,7 +18,9 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeBar">
+        android:theme="@style/AppThemeBar"
+        android:name="com.example.core.BaseApp"
+        >
         <activity android:name="com.example.nfc.GetNfcMessageActivity"></activity>
         <activity android:name=".fragments.GetNfcMessageActivity" />
         <activity android:name=".InvoiceDetailsActivity" />

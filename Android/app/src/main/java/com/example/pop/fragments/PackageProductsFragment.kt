@@ -94,12 +94,12 @@ class PackageProductsFragment : Fragment() {
                 when {
                     response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
                         val intent = Intent(activity, LoginActivity::class.java)
-                        Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         activity?.finishAffinity()
                     }
-                    response.body()!!.STATUSMESSAGE=="SUCCESS" -> {}
+                    response.body()!!.STATUSMESSAGE=="OK" -> {}
                     else -> Toast.makeText(context, response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
                 }
 
@@ -116,7 +116,6 @@ class PackageProductsFragment : Fragment() {
                     for (j:Product in items){
                         if (j.Id==i.Id){
                             i.Kolicina=j.Kolicina
-                            println("DEBUG33-paskd-"+i.Naziv+" -- "+i.Kolicina)
                             finalItems.add(i)
                             chk=1
                             break

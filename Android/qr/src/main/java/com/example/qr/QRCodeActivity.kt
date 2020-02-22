@@ -65,13 +65,9 @@ class QRCodeActivity : BaseActivity() {
                             response: Response<OneInvoiceResponse>
                         ) {
                             if (response.body()!!.DATA!!.Id == null) {
-                                Toast.makeText(
-                                    this@QRCodeActivity,
-                                    "Transakcija poništena",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@QRCodeActivity, getString(R.string.toast_transaction_cancelled), Toast.LENGTH_SHORT).show()
                                 var intent = menuIntent
-                                    //Intent(this@QRCodeActivity, MainMenuSeller::class.java)
+                                //Intent(this@QRCodeActivity, MainMenuSeller::class.java)
                                 cancelled = true
                                 loop = false
                                 startActivity(intent)

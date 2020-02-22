@@ -51,7 +51,7 @@ class ProductsFragment : Fragment(), ItemClickListener {
     override fun onItemClick(view: View, position: Int) {
         val product: Product = products!![position]
 
-        Toast.makeText(context, product.Naziv, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, product.Naziv, Toast.LENGTH_SHORT).show()
         selectProduct(product,position)
     }
 
@@ -92,18 +92,18 @@ class ProductsFragment : Fragment(), ItemClickListener {
 
             override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
                 if (response.body()!!.STATUSMESSAGE=="USER NOT IN STORE"){
-                    Toast.makeText(context, "Korisnik nije dio trgovine", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.toast_user_not_in_store), Toast.LENGTH_LONG).show()
                     return
                 }
                 else if (response.body()!!.STATUSMESSAGE=="OK, NO PRODUCTS"){
-                    Toast.makeText(context, "Trgovina nema proizvode", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.toast_store_no_products), Toast.LENGTH_LONG).show()
                     return
                 }
                 products = response.body()!!.DATA
                 when {
                     response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
                         val intent = Intent(activity, LoginActivity::class.java)
-                        Toast.makeText(context, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         activity?.finishAffinity()

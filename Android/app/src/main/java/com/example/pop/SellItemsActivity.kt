@@ -119,11 +119,7 @@ class SellItemsActivity : BaseActivity() {
             ) {
                 var resp = response.body()!!.DATA
                 if (response.body()!!.STATUSMESSAGE == "MISSING AMOUNT") {
-                    Toast.makeText(
-                        this@SellItemsActivity,
-                        "Nekog od proizvoda nema na skladištu",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@SellItemsActivity,getString(R.string.toast_out_of_stock), Toast.LENGTH_SHORT).show()
 
                 } else if (response.body()!!.STATUSMESSAGE == "INVOICE GENERATED") {
                     idRacuna = response.body()!!.DATA!!.Id as Int
@@ -175,10 +171,7 @@ class SellItemsActivity : BaseActivity() {
                 intent.putExtra("InvoiceID", idRacuna!!.toString())
                 startActivity(intent)
             }else{
-                val text = "NFC disabled or unavailable!"
-                val duration = Toast.LENGTH_LONG
-
-                val toast = Toast.makeText(this, text, duration)
+                val toast = Toast.makeText(this, getString(R.string.toast_nfc_unavailable), Toast.LENGTH_LONG)
                 toast.show()
             }
 

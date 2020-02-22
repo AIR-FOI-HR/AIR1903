@@ -77,10 +77,7 @@ class MainMenuBuyer : BaseActivity() {
             if (adapter != null && adapter.isEnabled) {
                 this.startActivity(intent)
             }else{
-                val text = "NFC disabled or unavailable!"
-                val duration = Toast.LENGTH_LONG
-
-                val toast = Toast.makeText(this, text, duration)
+                val toast = Toast.makeText(this, getString(R.string.toast_nfc_unavailable), Toast.LENGTH_LONG)
                 toast.show()
             }
         }
@@ -114,7 +111,7 @@ class MainMenuBuyer : BaseActivity() {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
             if (result != null) {
                 if (result.contents == null) {
-                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.toast_transaction_cancelled), Toast.LENGTH_LONG).show()
                 } else {
                     payment.id = (BigInteger(result.contents) / Session.expander).toInt()
 
@@ -132,13 +129,11 @@ class MainMenuBuyer : BaseActivity() {
                         finishAffinity()
                     }
                     else if (response.STATUSMESSAGE=="MISSING AMOUNT"){
-                        Toast.makeText(this, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(com.example.core.R.string.toast_out_of_stock), Toast.LENGTH_SHORT).show()
                     }
                     else if (response.STATUSMESSAGE=="MISSING BALANCE"){
-                        Toast.makeText(this, "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(com.example.core.R.string.toast_out_of_balance), Toast.LENGTH_SHORT).show()
                     }
-
-
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)

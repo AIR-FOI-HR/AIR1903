@@ -78,13 +78,9 @@ class SetNfcMessageActivity : BaseActivity(), OutcomingNfcManager.INfcActivity {
                             response: Response<OneInvoiceResponse>
                         ) {
                             if (response.body()!!.DATA!!.Id == null) {
-                                Toast.makeText(
-                                    this@SetNfcMessageActivity ,
-                                    "Transakcija poništena",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@SetNfcMessageActivity,getString(R.string.toast_transaction_cancelled), Toast.LENGTH_SHORT).show()
                                 var intent = menuIntent
-                                    //Intent(this@SetNfcMessageActivity , MainMenuSeller::class.java)
+                                //Intent(this@SetNfcMessageActivity , MainMenuSeller::class.java)
                                 cancelled = true
                                 loop = false
                                 startActivity(intent)
@@ -94,7 +90,7 @@ class SetNfcMessageActivity : BaseActivity(), OutcomingNfcManager.INfcActivity {
                                 deleteInvoice = false
                                 loop = false
                                 val intent = detailsIntent
-                                    //Intent(this@SetNfcMessageActivity , InvoiceDetailsActivity::class.java)
+                                //Intent(this@SetNfcMessageActivity , InvoiceDetailsActivity::class.java)
                                 intent.putExtra("invoice", response.body()!!.DATA)
                                 startActivity(intent)
                                 finishAffinity()
@@ -110,7 +106,7 @@ class SetNfcMessageActivity : BaseActivity(), OutcomingNfcManager.INfcActivity {
 
     override fun signalResult() {
         runOnUiThread {
-            Toast.makeText(this, "Payment Successful!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.toast_payment_successful), Toast.LENGTH_SHORT).show()
         }
     }
 

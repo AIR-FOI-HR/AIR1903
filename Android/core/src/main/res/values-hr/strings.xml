@@ -90,5 +90,21 @@
     <string name="invoice_price_before_discount">Cijena prije popusta</string>
     <string name="main_menu_sell">PRODAJ</string>
     <string name="entrepreneurial_venture">Poduzetnički pothvat</string>
+    <string name="toast_out_of_stock">Nekog od proizvoda nema na skladištu</string>
+    <string name="toast_out_of_balance">Nemate dovoljno novaca na računu</string>
+    <string name="toast_product_added">Proizvod uspješno dodan</string>
+    <string name="toast_session_expired">Sesija istekla, molimo prijavite se ponovno</string>
+    <string name="toast_product_edited">Proizvod uspješno uređen</string>
+    <string name="toast_nfc_unavailable">NFC nedostupan ili isključen!</string>
+    <string name="toast_transaction_cancelled">Transakcija prekinuta</string>
+    <string name="toast_user_not_in_store">Korisnik nije dio trgovine</string>
+    <string name="toast_store_no_invoices">Trgovina nema račune</string>
+    <string name="toast_product_deleted">Proizvod izbrisan</string>
+    <string name="toast_package_added">Paket uspješno dodan</string>
+    <string name="toast_package_edited">Paket uspješno uređen</string>
+    <string name="toast_payment_successful">Plaćanje uspješno!</string>
+    <string name="toast_store_no_products">Trgovina nema proizvode</string>
+    <string name="tab_packages">Paketi</string>
+    <string name="tab_products">Proizvodi</string>
 
 </resources>

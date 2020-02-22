@@ -312,27 +312,16 @@ class PackageFragment : Fragment() {
                     response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
-                        Toast.makeText(
-                            appContext,
-                            "Paket uspješno dodan",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext,getString(R.string.toast_package_added), Toast.LENGTH_SHORT).show()
                         activity!!.intent.putExtra("packetId", (response.body()!!.DATA as PackageClass).Id!!)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
-                        Toast.makeText(
-                            appContext,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(appContext,getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity(appContext as Activity)
                     } else
-                        Toast.makeText(
-                            appContext,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -357,32 +346,20 @@ class PackageFragment : Fragment() {
                     response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
-                        Toast.makeText(
-                            appContext,
-                            "Paket uspješno dodan",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext, getString(R.string.toast_package_added), Toast.LENGTH_SHORT).show()
                         activity!!.intent.putExtra("packetId", (response.body()!!.DATA as PackageClass).Id)
 
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)
-                        Toast.makeText(
-                            appContext,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(appContext,getString(R.string.toast_session_expired),Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity(appContext as Activity)
                     } else
-                        Toast.makeText(
-                            appContext,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
-
         }
     }
 
@@ -498,8 +475,7 @@ class PackageFragment : Fragment() {
             ).enqueue(object :
                 Callback<NewPackageResponse> {
                 override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
-                    Toast.makeText(appContext, t.message, Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(appContext, t.message, Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onResponse(
@@ -507,26 +483,15 @@ class PackageFragment : Fragment() {
                     response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "PACKAGE UPDATED") {
-                        Toast.makeText(
-                            appContext,
-                            "Paket uspješno uređen",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext,getString(R.string.toast_package_edited), Toast.LENGTH_SHORT).show()
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(appContext, LoginActivity::class.java)
-                        Toast.makeText(
-                            appContext,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(appContext, getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity(appContext as Activity)
                     } else
-                        Toast.makeText(
-                            appContext,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext,response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
         } else {
@@ -542,8 +507,7 @@ class PackageFragment : Fragment() {
                 Session.user.KorisnickoIme
             ).enqueue(object : Callback<NewPackageResponse> {
                 override fun onFailure(call: Call<NewPackageResponse>, t: Throwable) {
-                    Toast.makeText(appContext, t.message, Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(appContext, t.message, Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onResponse(
@@ -551,27 +515,16 @@ class PackageFragment : Fragment() {
                     response: Response<NewPackageResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "PACKAGE UPDATED") {
-                        Toast.makeText(
-                            appContext,
-                            "Paket uspješno uređen",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext,getString(R.string.toast_package_edited),Toast.LENGTH_SHORT).show()
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(appContext, LoginActivity::class.java)
-                        Toast.makeText(
-                            appContext,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(appContext, getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity(appContext as Activity)
                     } else
-                        Toast.makeText(
-                            appContext,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(appContext, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
         }

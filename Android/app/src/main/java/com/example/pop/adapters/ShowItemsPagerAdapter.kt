@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.pop.fragments.PackagesFragment
 import com.example.pop.fragments.ProductsFragment
+import com.example.pop_sajamv2.Session
 
 class ShowItemsPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     lateinit var productsFragment : ProductsFragment
@@ -27,9 +28,16 @@ class ShowItemsPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(man
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position){
-            0 -> "Products"
+            0 ->{
+                if (Session.user.Jezik==1) Session.productsHrv
+                else Session.productsEng
+            }
+            1 -> {
+                if (Session.user.Jezik==1) Session.packagesHrv
+                else Session.packagesEng
+            }
             else -> {
-                return "Packages"
+                null
             }
         }
     }

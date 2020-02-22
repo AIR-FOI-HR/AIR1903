@@ -36,11 +36,7 @@ class LoginActivity : BaseActivity() {
 
                 override fun onResponse(call: Call<ApiResponseUser>, response: Response<ApiResponseUser>) {
                     if (!response.body()!!.STATUS)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            response.body()!!.STATUSMESSAGE,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@LoginActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                     else {
                         Toast.makeText(this@LoginActivity, R.string.toastLoginSuccess, Toast.LENGTH_SHORT).show()
                         val resp = response.body()!!.DATA!!

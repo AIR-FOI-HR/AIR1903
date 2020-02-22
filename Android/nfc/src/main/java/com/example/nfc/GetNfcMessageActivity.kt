@@ -86,10 +86,10 @@ class GetNfcMessageActivity : BaseActivity() {
                     finishAffinity()
                 }
                 else if (response.STATUSMESSAGE=="MISSING AMOUNT"){
-                    Toast.makeText(this@GetNfcMessageActivity, "Nekog od proizvoda nema na skladištu", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@GetNfcMessageActivity, getString(R.string.toast_out_of_stock), Toast.LENGTH_SHORT).show()
                 }
                 else if (response.STATUSMESSAGE=="MISSING BALANCE"){
-                    Toast.makeText(this@GetNfcMessageActivity, "Nemate dovoljno novaca na računu", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@GetNfcMessageActivity, getString(R.string.toast_out_of_balance), Toast.LENGTH_SHORT).show()
                 }
             }
         }

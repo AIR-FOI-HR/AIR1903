@@ -9,4 +9,8 @@ object Session {
     fun reset(){
         user.reset()
     }
+    val productsEng="Products"
+    val packagesEng="Packages"
+    val productsHrv="Proizvodi"
+    val packagesHrv="Paketi"
 }

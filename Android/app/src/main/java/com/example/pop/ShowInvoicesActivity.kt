@@ -40,21 +40,17 @@ class ShowInvoicesActivity : BaseActivity() {
                 response: Response<InvoiceResponse>
             ) {
                 if (response.body()!!.STATUSMESSAGE=="USER NOT IN STORE"){
-                    Toast.makeText(this@ShowInvoicesActivity, "Korisnik nije dio trgovine", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ShowInvoicesActivity, getString(R.string.toast_user_not_in_store), Toast.LENGTH_LONG).show()
                     return
                 }else if (response.body()?.STATUSMESSAGE=="SUCCESS, NO INVOICES"){
-                    Toast.makeText(this@ShowInvoicesActivity, "Trgovina nema račune", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ShowInvoicesActivity, getString(R.string.toast_store_no_invoices), Toast.LENGTH_LONG).show()
                     return
                 }
                 var invoices = response.body()!!.DATA as ArrayList<Invoice>
                 when {
                     response.body()!!.STATUSMESSAGE == "OLD TOKEN" -> {
                         val intent = Intent(this@ShowInvoicesActivity, LoginActivity::class.java)
-                        Toast.makeText(
-                            this@ShowInvoicesActivity,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@ShowInvoicesActivity, getString(R.string.toast_session_expired),Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
@@ -63,11 +59,7 @@ class ShowInvoicesActivity : BaseActivity() {
                         invoiceAdapter.data=invoices
                     }
                     else -> {
-                        Toast.makeText(
-                            this@ShowInvoicesActivity,
-                            response.body()!!.STATUSMESSAGE,
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@ShowInvoicesActivity,response.body()!!.STATUSMESSAGE, Toast.LENGTH_LONG).show()
                     }
                 }
             }

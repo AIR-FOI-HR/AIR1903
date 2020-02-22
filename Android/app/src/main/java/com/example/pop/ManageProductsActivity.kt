@@ -350,11 +350,7 @@ class ManageProductsActivity : BaseActivity() {
                     response: Response<NewProductResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno dodan",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity,getString(R.string.toast_product_added), Toast.LENGTH_SHORT ).show()
                         val intent = Intent(this@ManageProductsActivity, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -364,19 +360,12 @@ class ManageProductsActivity : BaseActivity() {
                         (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity, getString(R.string.toast_session_expired),  Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
                     } else
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -391,8 +380,7 @@ class ManageProductsActivity : BaseActivity() {
                 Session.user.KorisnickoIme
             ).enqueue(object : Callback<NewProductResponse> {
                 override fun onFailure(call: Call<NewProductResponse>, t: Throwable) {
-                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@ManageProductsActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
 
                 override fun onResponse(
@@ -400,13 +388,7 @@ class ManageProductsActivity : BaseActivity() {
                     response: Response<NewProductResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "SUCCESS") {
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno dodan",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-
+                        Toast.makeText(this@ManageProductsActivity, getString(R.string.toast_product_added), Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@ManageProductsActivity, previousActivity)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -417,22 +399,14 @@ class ManageProductsActivity : BaseActivity() {
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity,getString(R.string.toast_session_expired) ,Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
                     } else
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
-
         }
     }
 
@@ -483,11 +457,7 @@ class ManageProductsActivity : BaseActivity() {
                     response: Response<NewProductResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "UPDATED") {
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno uređen",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity,getString(R.string.toast_product_edited), Toast.LENGTH_SHORT).show()
                         finish()
                         val intent = Intent(this@ManageProductsActivity, previousActivity)
                         intent.flags =
@@ -498,19 +468,12 @@ class ManageProductsActivity : BaseActivity() {
                         (this@ManageProductsActivity as Activity).overridePendingTransition(0, 0)
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent = Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity,getString(R.string.toast_session_expired) , Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
                     } else
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
         } else {
@@ -535,11 +498,7 @@ class ManageProductsActivity : BaseActivity() {
                     response: Response<NewProductResponse>
                 ) {
                     if (response.body()!!.STATUSMESSAGE == "UPDATED") {
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Proizvod uspješno uređen",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity,getString(R.string.toast_product_edited), Toast.LENGTH_SHORT).show()
                         finish()
                         val intent = Intent(this@ManageProductsActivity, previousActivity)
                         intent.flags =
@@ -551,19 +510,12 @@ class ManageProductsActivity : BaseActivity() {
                     } else if (response.body()!!.STATUSMESSAGE == "OLD TOKEN") {
                         val intent =
                             Intent(this@ManageProductsActivity, LoginActivity::class.java)
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            "Sesija istekla, molimo prijavite se ponovno",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity,getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
                     } else
-                        Toast.makeText(
-                            this@ManageProductsActivity,
-                            response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ManageProductsActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
                 }
             })
         }

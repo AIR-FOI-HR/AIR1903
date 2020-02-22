@@ -139,10 +139,10 @@ class ItemRecyclerAdapter(
                         (activityContext as Activity).overridePendingTransition(0,0)
                         (activityContext as Activity).finishAffinity()
                         (activityContext as Activity).overridePendingTransition(0,0)
-                        Toast.makeText(activityContext,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activityContext,activityContext.getString(R.string.toast_product_deleted), Toast.LENGTH_SHORT).show()
                     }
                     else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
-                        Toast.makeText(activityContext, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activityContext, activityContext.getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         val intent = Intent(activityContext, LoginActivity::class.java)
                         com.example.pop_sajamv2.Session.reset()
                         intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
@@ -167,10 +167,10 @@ class ItemRecyclerAdapter(
                         (activityContext as Activity).overridePendingTransition(0,0)
                         (activityContext as Activity).finish()
                         (activityContext as Activity).overridePendingTransition(0,0)
-                        Toast.makeText(activityContext,"Proizvod izbrisan", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activityContext,activityContext.getString(R.string.toast_product_deleted), Toast.LENGTH_SHORT).show()
                     }
                     else if (response.body()!!.STATUSMESSAGE=="OLD TOKEN"){
-                        Toast.makeText(activityContext, "Sesija istekla, molimo prijavite se ponovno", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activityContext, activityContext.getString(R.string.toast_session_expired), Toast.LENGTH_LONG).show()
                         val intent = Intent(activityContext, LoginActivity::class.java)
                         com.example.pop_sajamv2.Session.reset()
                         intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
