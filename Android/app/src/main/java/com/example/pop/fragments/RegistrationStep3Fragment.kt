@@ -18,6 +18,7 @@ class RegistrationStep3Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (this.activity as RegistrationActivity).currentFragment=3
         val view:View = inflater.inflate(R.layout.fragment_registration_third, container, false)
         view.button.setOnClickListener {
             (activity as RegistrationActivity).startLoginActivity()

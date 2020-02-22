@@ -40,5 +40,12 @@ class ShowItemsActivity : BaseActivity(){
         intent.putExtra("items", ItemsWrapper(selectedItems))
         startActivity(intent)
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        var intent:Intent
+        intent = Intent(this, MainMenuSeller::class.java)
+        startActivity(intent)
+        finishAffinity()
+    }
 
 }

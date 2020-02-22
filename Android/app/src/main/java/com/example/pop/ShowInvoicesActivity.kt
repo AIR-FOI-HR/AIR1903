@@ -39,6 +39,13 @@ class ShowInvoicesActivity : BaseActivity() {
                 call: Call<InvoiceResponse>,
                 response: Response<InvoiceResponse>
             ) {
+                if (response.body()!!.STATUSMESSAGE=="USER NOT IN STORE"){
+                    Toast.makeText(this@ShowInvoicesActivity, "Korisnik nije dio trgovine", Toast.LENGTH_LONG).show()
+                    return
+                }else if (response.body()?.STATUSMESSAGE=="SUCCESS, NO INVOICES"){
+                    Toast.makeText(this@ShowInvoicesActivity, "Trgovina nema račune", Toast.LENGTH_LONG).show()
+                    return
+                }
                 var invoices = response.body()!!.DATA as ArrayList<Invoice>
                 when {
                     response.body()!!.STATUSMESSAGE == "OLD TOKEN" -> {

@@ -91,6 +91,14 @@ class ProductsFragment : Fragment(), ItemClickListener {
             }
 
             override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
+                if (response.body()!!.STATUSMESSAGE=="USER NOT IN STORE"){
+                    Toast.makeText(context, "Korisnik nije dio trgovine", Toast.LENGTH_LONG).show()
+                    return
+                }
+                else if (response.body()!!.STATUSMESSAGE=="OK, NO PRODUCTS"){
+                    Toast.makeText(context, "Trgovina nema proizvode", Toast.LENGTH_LONG).show()
+                    return
+                }
                 products = response.body()!!.DATA
                 when {
                     response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {

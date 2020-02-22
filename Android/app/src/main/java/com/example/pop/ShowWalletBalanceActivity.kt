@@ -53,7 +53,10 @@ class ShowWalletBalanceActivity : BaseActivity() {
                         call: Call<WalletBalanceResponse>,
                         response: Response<WalletBalanceResponse>
                     ) {
-                        walletBalance.text = response.body()!!.DATA + " HRK"
+                        if (response.body()!!.STATUSMESSAGE=="USER NOT IN STORE")
+                            walletBalance.text = "Korisnik nije dio trgovine"
+                        else
+                            walletBalance.text = response.body()!!.DATA + " HRK"
                     }
                 })
         }
