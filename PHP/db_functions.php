@@ -1626,6 +1626,21 @@ class DB_Functions {
         }
         return true;
     }
+	
+	public function createEvent($post){
+        $date = date("Y-m-d");
+        $q = "UPDATE Event SET Aktivan=0";
+        $stmt = $this->conn->query($q);
+        $q = "INSERT INTO Event (Id, Naziv, DatumStvoren, Aktivan) VALUES (null, '{$post["NazivEventa"]}', '{$date}', 1)";
+        $stmt = $this->conn->query($q);
+        $resp["IdEventa"]=$this->conn->insert_id;
+        $resp["NazivEventa"]=$post["NazivEventa"];
+        $resp["DatumStvoren"]=$date;
+        $resp["Aktivan"]=1;
+        return $resp;
+        
+    }
+    
     
 
 }
