@@ -1676,6 +1676,16 @@ class DB_Functions {
         return $stmt["Id_Trgovina"];
     }
     
+    public function checkExistsById($post) {
+        $event = $this->getCurrentEvent();
+        $q = "SELECT KorisnickoIme FROM Korisnik WHERE Id='{$post["Id_Korisnika"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        $stmt = $this->conn->query($q);
+        if ($stmt->num_rows > 0) {
+            return 1;
+        }
+        return 0;
+    }
+    
     
 
 }
