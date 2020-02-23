@@ -97,7 +97,7 @@
 	resourceDeleteBtn.on('click', function() {
 		var resourceId = $(this).attr('data-resource-id');
 		
-		var url = '{{ route("stores.destroy", ":resourceId") }}';
+		var url = '{{ route("events.destroy", ":resourceId") }}';
 		url = url.replace(':resourceId', resourceId);
 		resourceDeleteForm.attr('action', url);
 	});

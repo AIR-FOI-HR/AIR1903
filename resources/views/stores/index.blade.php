@@ -36,7 +36,7 @@
 		@method('PUT')
 	</form>
 
-	<div class="container col-lg-8 col-md-10 col-sm-12">
+	<div class="container col-lg-7 col-md-10 col-sm-12">
 		
 		<div class="app-header">
 			<div class="row d-flex align-items-center">

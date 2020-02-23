@@ -89,7 +89,7 @@
 								<tbody>
 									@if(!empty($users))
 										@foreach ($users as $user)
-											@if ($user['KorisnickoIme'] === session('korisnickoIme'))
+											@if ($user['KorisnickoIme'] == session('korisnickoIme'))
 											<tr style="background: #b7b7b76b;">
 											@else
 											<tr>

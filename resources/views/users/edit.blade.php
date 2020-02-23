@@ -101,7 +101,7 @@
 
 	resourceDeleteBtn.on('click', function() {
 		var resourceName = $(this).attr('data-resource-name');
-		var url = '{{ route("stores.destroy", ":resourceName") }}';
+		var url = '{{ route("users.destroy", ":resourceName") }}';
 		url = url.replace(':resourceName', resourceName);
 		resourceDeleteForm.attr('action', url);
 	});

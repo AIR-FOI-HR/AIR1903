@@ -79,4 +79,19 @@
 @endsection
 
 @section('js')
+<script type="text/javascript">
+
+	var resourceDeleteBtn = $('.resource-delete-btn');
+	var resourceDeleteForm = $('#resource-delete-form');
+	var table = $('#items');
+
+	resourceDeleteBtn.on('click', function() {
+		var resourceId = $(this).attr('data-resource-id');
+		
+		var url = '{{ route("events.destroy", ":resourceId") }}';
+		url = url.replace(':resourceId', resourceId);
+		resourceDeleteForm.attr('action', url);
+	});
+
+</script>
 @endsection
