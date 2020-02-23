@@ -31,8 +31,11 @@ class LoginController extends Controller
             session(['token' => $result['DATA']['Token']]);
             session(['korisnickoIme' => $result['DATA']['KorisnickoIme']]);
 
+            session()->flash('success', "Uspješna prijava korisnika.");
             return redirect()->intended('/dashboard');
         }
+
+        session()->flash('error', "Greška prilikom prijave korisnika.");
         
         return view('login');
     }

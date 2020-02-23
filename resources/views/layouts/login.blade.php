@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/animate/animate.css') }}">
 	
 	<!-- jQuery and bootstrap notify library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="{{ asset('assets/js/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 </head>
 <body>
 	
