@@ -16,9 +16,21 @@ Route::post('/', 'LoginController@authenticate')->name('authenticate');
 Route::group(['middleware' => ['web', 'custom_auth']], function () {
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('logout', 'DashboardController@logout')->name('logout');
+
+    Route::get('invoices', 'InvoiceController@index')->name('invoices.index');
+    Route::get('invoices/{value}', 'InvoiceController@show')->name('invoices.show');
+   
     Route::resource('users', 'UserController')->except(['update']);
-    Route::put('/users/{user}/update/status/{value}', 'UserController@updateStatus')->name('users.updateStatus');
-    Route::put('/users/{user}/update/role/{value}', 'UserController@updateRole')->name('users.updateRole');
-    Route::put('/users/{user}/update/store/{value}', 'UserController@updateStore')->name('users.updateStore');
-    Route::put('/users/{user}/update/money/{value}', 'UserController@updateMoney')->name('users.updateMoney');
+    Route::put('/{user}/update/status/{value}', 'UserController@updateStatus')->name('users.updateStatus');
+    Route::put('/{user}/update/role/{value}', 'UserController@updateRole')->name('users.updateRole');
+    Route::put('/{user}/update/store/{value}', 'UserController@updateStore')->name('users.updateStore');
+    Route::put('/{user}/update/money/{value}', 'UserController@updateMoney')->name('users.updateMoney');
+    Route::put('/users/update/moneyall/{value}', 'UserController@updateMoneyAll')->name('users.updateMoneyAll');
+    Route::put('/{user}/update', 'UserController@update')->name('users.update');
+
+    Route::resource('stores', 'StoreController');
+    Route::put('/stores/create/{sufixValue}/{numberValue}', 'StoreController@createMultiple')->name('stores.createMultiple');
+
+    Route::resource('events', 'EventController');
+    Route::put('/{event}/update/status/', 'EventController@updateStatus')->name('events.updateStatus');
 });

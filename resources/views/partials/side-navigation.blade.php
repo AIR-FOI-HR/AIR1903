@@ -21,16 +21,22 @@
 						<span>Korisnici</span>
 					</a>
 				</li>
-				<li>
-					<a href="">
+				<li class="{{ Request::is('invoices') ? 'active' : '' }}">
+					<a href="{{ route('invoices.index') }}">
 						<i class="fas fa-file-invoice-dollar fa-fw"></i>
 						<span>Računi</span>
 					</a>
 				</li>
-				<li>
-					<a href="">
-						<i class="fas fa-chart-pie fa-fw"></i>
-						<span>Izvještaji</span>
+				<li class="{{ Request::is('stores') ? 'active' : '' }}">
+					<a href="{{ route('stores.index') }}">
+						<i class="fas fa-store fa-fw"></i>
+						<span>Trgovine</span>
+					</a>
+				</li>
+				<li class="{{ Request::is('events') ? 'active' : '' }}">
+					<a href="{{ route('events.index') }}">
+						<i class="fas fa-hourglass-start fa-fw"></i>
+						<span>Događaji</span>
 					</a>
 				</li>
 			</ul>
