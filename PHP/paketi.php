@@ -4,10 +4,26 @@
 
 require_once 'db_function.php';
 $db = new DB_Functions();
+require_once 'responseTemplate.php';
 header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     $packageCheck = $db->checkPackageEmpty($_POST);
     if ($_POST["GET"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $allPackeges = $db->getPacketsWithProducts($_POST);
         if ($allPackeges[0] == 1) {
             $response->DATA = null;
