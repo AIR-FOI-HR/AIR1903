@@ -22,13 +22,42 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             echo $response;
             return;
         }
+        $invoices = $db->getAllInvoices($_POST);
+        if ($invoices===false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER NOT IN STORE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (empty($invoices)){
+            $response->STATUSMESSAGE = "SUCCESS, NO INVOICES";
+            $response->DATA = null;
+        }
+        else{
+            $response->DATA = $invoices;
+            $response->STATUSMESSAGE = "SUCCESS";
+        }
         $response->STATUS = true;
-        $response->STATUSMESSAGE = "SUCCESS";
-        $response->DATA = $db->getAllInvoices($_POST);
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
     }else if ($_POST["GENERATESALE"] == true){
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $productSell = $db->sellItems($_POST);
         if ($productSell==false){
             $response->STATUS=false;
@@ -90,6 +119,13 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     }
     else if (isset($_POST["Readone"]) && $_POST["Readone"] == true){
         $userExists = $db->userExistsLogin($_POST);
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         if ($userExists==false){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "USER DOESN'T EXIST";
@@ -102,13 +138,6 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             $response->STATUS=false;
             $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
             $response = json_encode($response);
-            echo $response;
-            return;
-        }
-        if (!isset($_POST["KorisnickoIme"])){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "NO USERNAME";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
         }
