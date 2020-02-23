@@ -283,6 +283,41 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         echo $response;
         return;
     }
+    
+    if (isset($_POST["SETLANGUAGE"]) && $_POST["SETLANGUAGE"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["Jezik"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO LANGUAGE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        $lang=$db->setLanguage($_POST);
+        $response->STATUS=true;
+        $response->STATUSMESSAGE = "LANGUAGE SET";
+        $response->DATA["KorisnickoIme"]=$_POST["KorisnickoIme"];
+        $response->DATA["Jezik"]=$_POST["Jezik"];
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
+    
 }
 else{
     $response->STATUS=false;
