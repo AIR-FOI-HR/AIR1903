@@ -1652,6 +1652,15 @@ class DB_Functions {
         $stmt = $this->conn->query($q);
         return $stmt->fetch_assoc();
     }
+    public function setCurrentEvent($post){
+        //$q = "SELECT * FROM Event WHERE Aktivan=1";
+        $q = "UPDATE Event SET Aktivan=0";
+        $stmt = $this->conn->query($q);
+        $q = "UPDATE Event SET Aktivan=1 WHERE Id={$post["Id_Eventa"]}";
+        $stmt = $this->conn->query($q);
+        return $this->getCurrentEvent();
+    }
+    
     
 
 }
