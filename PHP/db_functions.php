@@ -22,23 +22,25 @@ class DB_Functions {
         return 1;
     }
     
-    public function checkLogin($post){
-        if(!isset($post["KorisnickoIme"])|| ctype_space($post["KorisnickoIme"]) || empty($post["KorisnickoIme"])) return "KorisnickoIme";
-        if(!isset($post["Lozinka"])|| ctype_space($post["Lozinka"]) || empty($post["Lozinka"])) return "Lozinka";
+    public function checkLogin($post) {
+        if (!isset($post["KorisnickoIme"]) || ctype_space($post["KorisnickoIme"]) || empty($post["KorisnickoIme"]))
+            return "Username";
+        if (!isset($post["Lozinka"]) || ctype_space($post["Lozinka"]) || empty($post["Lozinka"]))
+            return "Password";
         return 1;
     }
 
     public function storeUser($post, $hash) {
-
-        $q = "INSERT INTO Korisnik (Id ,Ime, Prezime, Email, Id_Uloge, KorisnickoIme, LozinkaSalt, LozinkaHash, DozvolaUpravljanjeUlogama, DozvolaUpravljanjeStanjemRacuna, DozvolaPregledTransakcija, DozvolaUvidUStatistiku) ";
-        $q .= "VALUES (null,'{$post["Ime"]}', '{$post["Prezime"]}','{$post["Email"]}', 1, '{$post["KorisnickoIme"]}','{$hash[0]}', '{$hash[1]}', 0, 0, 0, 0)";
+        $event=$this->getCurrentEvent();
+        $q = "INSERT INTO Korisnik (Id ,Ime, Prezime, Email, Id_Uloge, KorisnickoIme, LozinkaSalt, LozinkaHash, DozvolaUpravljanjeUlogama, DozvolaUpravljanjeStanjemRacuna, DozvolaPregledTransakcija, DozvolaUvidUStatistiku, Id_Eventa) ";
+        $q .= "VALUES (null,'{$post["Ime"]}', '{$post["Prezime"]}','{$post["Email"]}', 1, '{$post["KorisnickoIme"]}','{$hash[0]}', '{$hash[1]}', 0, 0, 0, 0, {$event["Id"]})";
         $stmt = $this->conn->query($q);
         $id = $this->conn->insert_id;
         
         $time= time();
         $q = "INSERT INTO Korisnik_StanjeRacuna (StanjeRacuna, UnixVrijeme, Id_Korisnika) VALUES ('0', '$time','$id')";
         $stmt = $this->conn->query($q);
-        $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}'";
+        $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $q = "SELECT StanjeRacuna FROM Korisnik_StanjeRacuna WHERE Id_Korisnika = '$id'";
@@ -70,7 +72,8 @@ class DB_Functions {
     }
     
     public function userExistsRegister($post) {
-        $q = "SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
 
         if ($stmt->num_rows > 0) {
@@ -78,7 +81,7 @@ class DB_Functions {
             return "KorisnickoIme";
         }
 
-        $q = "SELECT Email FROM Korisnik WHERE Email='{$post["Email"]}' AND Obrisan=0";
+        $q = "SELECT Email FROM Korisnik WHERE Email='{$post["Email"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
 
         if ($stmt->num_rows > 0) {
@@ -89,7 +92,8 @@ class DB_Functions {
     }
 
     public function userExistsLogin($post) {
-        $q = "SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         if ($stmt->num_rows > 0) {
             return 1;
@@ -108,7 +112,8 @@ class DB_Functions {
     }
 
 	public function checkPassword($post) {
-        $q = "SELECT LozinkaSalt, LozinkaHash, KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT LozinkaSalt, LozinkaHash, KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
 
@@ -133,7 +138,7 @@ class DB_Functions {
 
 
         if ($hash == $hashDB) {
-            $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.Jezik, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.Jezik, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             $response2["Ime"] = $stmt["Ime"];
@@ -153,14 +158,14 @@ class DB_Functions {
 
             $response2 = json_encode($response2);
 
-            $q = "UPDATE Korisnik SET KrivePrijave = 0 WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $q = "UPDATE Korisnik SET KrivePrijave = 0 WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
 
             return [$response, $response2];
         } else {
-            $q = "UPDATE Korisnik SET KrivePrijave = KrivePrijave+1 WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $q = "UPDATE Korisnik SET KrivePrijave = KrivePrijave+1 WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
-            $q = "SELECT KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+            $q = "SELECT KrivePrijave FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             $response["KrivePrijave"] = $stmt["KrivePrijave"];
@@ -169,7 +174,8 @@ class DB_Functions {
     }
 
     public function getAllProducts($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -188,6 +194,9 @@ class DB_Functions {
         
         
         if ($roleId == 3){ // ako je prodavac
+            if (empty($storeId)){
+                return false;
+            }
             $q="SELECT fin.Id, fin.Naziv, fin.Opis, fin.Cijena, fin.Slika, fin.Kolicina FROM ("
                 ."SELECT svi.*, tp.Id_Trgovine, tp.Kolicina "
                 ."FROM (SELECT a.*, b.Cijena "
@@ -226,16 +235,15 @@ class DB_Functions {
                 ." WHERE svi.Izbrisan=0) fin "
                 ."JOIN Proizvod ON fin.Id = Proizvod.Id_Itema ";
         }
-        
 
-        
         $stmt = $this->conn->query($q);
         $response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
         return $response;
     }
-	
-	public function addNewProduct($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+
+    public function addNewProduct($post) {
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -301,7 +309,8 @@ class DB_Functions {
         
         return $response;
     }
-	public function deleteProduct($post) {
+
+    public function deleteProduct($post) {
         $q = "UPDATE Item SET Izbrisan = 1 WHERE Id = {$post["Id"]}";
         $stmt = $this->conn->query($q);
         $response = null;
@@ -388,8 +397,8 @@ class DB_Functions {
 	
 	
     public function generateAuth($korIme) {
-        
-        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$korIme}'";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$korIme}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt=$stmt->fetch_assoc();
         $id=$stmt["Id"];
@@ -404,8 +413,8 @@ class DB_Functions {
 
     public function checkAuth($token, $korIme) {
         $time = time();
-        
-        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$korIme}'";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme='{$korIme}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt=$stmt->fetch_assoc();
         $id=$stmt["Id"];
@@ -423,9 +432,9 @@ class DB_Functions {
         else
             return false;
     }
-	
     public function addNewPackage($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -550,74 +559,6 @@ class DB_Functions {
         $response["Slika"]=$slika;
         return $response;
     }
-    public function getAllPackeges($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
-        $stmt=$this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $userId = $stmt["Id"];
-        $roleId=$stmt["Id_Uloge"];
-        $response[0]= $stmt["Id_Uloge"];
-        if ($roleId==1){
-            return $response;
-        }
-        $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$userId}";
-        $stmt=$this->conn->query($q);
-        $stmt = $stmt->fetch_assoc();
-        $storeId=$stmt["Id_Trgovina"];
-        
-        //echo "Store id: " . $storeId;
-        
-        if ($roleId == 3){ // ako je prodavac
-            /*$q = "SELECT fin2.Id, fin2.Naziv, fin2.Opis, fin2.Popust, fin2.Slika FROM "
-                    . "(SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
-                    ."FROM "
-                    ."(SELECT svi.*, tp.Id_Trgovine "
-                    ."FROM "
-                    ."(SELECT a.*, b.Popust "
-                    ."FROM Item a "
-                    ."LEFT JOIN "
-                    ."(SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme "
-                    ."FROM "
-                    ."(SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme "
-                    ."FROM Paket_Popust "
-                    ."GROUP BY Id_Paketa) c "
-                    ."JOIN Paket_Popust d "
-                    ."ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b "
-                    ."ON a.Id = b.Id_Paketa) svi "
-                    ."JOIN Trgovina_Item tp "
-                    ."ON tp.Id_Itema = svi.id "
-                    ."WHERE svi.Izbrisan=0) fin "
-                    ."WHERE Id_Trgovine = {$storeId}) fin2 "
-                    ."JOIN Paket ON Paket.Id_Itema=fin2.Id ";*/
-            $q = "SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika, fin.Kolicina FROM (SELECT svi.*, tp.Id_Trgovine, tp.Kolicina FROM (SELECT a.*, b.Popust FROM Item a LEFT JOIN (SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme FROM (SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme FROM Paket_Popust GROUP BY Id_Paketa) c JOIN Paket_Popust d ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b ON a.Id = b.Id_Paketa) svi JOIN Trgovina_Item tp ON tp.Id_Itema = svi.id WHERE svi.Izbrisan=0) fin JOIN Paket ON fin.Id = Paket.Id_Itema WHERE Id_Trgovine = '{$storeId}'";
-            
-        } elseif ($roleId == 2) { // ako je admin
-            /*$q = "SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika "
-                    . "FROM "
-                    . "(SELECT svi.*, tp.Id_Trgovine "
-                    . "FROM "
-                    . "(SELECT a.*, b.Popust "
-                    . "FROM Item a "
-                    . "LEFT JOIN "
-                    . "(SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme "
-                    . "FROM "
-                    . "(SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme "
-                    . "FROM Paket_Popust "
-                    . "GROUP BY Id_Paketa) c "
-                    . "JOIN Paket_Popust d "
-                    . "ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b "
-                    . "ON a.Id = b.Id_Paketa) svi "
-                    . "JOIN Trgovina_Item tp "
-                    . "ON tp.Id_Itema = svi.id "
-                    . "WHERE svi.Izbrisan=0) fin "
-                    . "JOIN Paket ON Paket.Id_Itema=fin.Id ";*/
-            $q = "SELECT fin.Id, fin.Naziv, fin.Opis, fin.Popust, fin.Slika, fin.Kolicina FROM (SELECT svi.*, tp.Id_Trgovine, tp.Kolicina FROM (SELECT a.*, b.Popust FROM Item a LEFT JOIN (SELECT c.Id_Paketa, d.Popust, c.UnixVrijeme FROM (SELECT Id_Paketa, MAX(UnixVrijeme) UnixVrijeme FROM Paket_Popust GROUP BY Id_Paketa) c JOIN Paket_Popust d ON c.Id_Paketa = d.Id_Paketa AND d.UnixVrijeme = c.UnixVrijeme ) b ON a.Id = b.Id_Paketa) svi JOIN Trgovina_Item tp ON tp.Id_Itema = svi.id WHERE svi.Izbrisan=0) fin JOIN Paket ON fin.Id = Paket.Id_Itema ";
-        }
-        $stmt = $this->conn->query($q);
-        $response[1] = $stmt->fetch_all(MYSQLI_ASSOC);
-        return $response;
-        
-    }
 	
 	public function getContentsOfPackage($post){
         if (isset($post["UnixDatum"])){
@@ -672,14 +613,12 @@ class DB_Functions {
         foreach ($stmt as &$i){
             $i["CijenaStavke"]=strval($i["Cijena"]*$i["Kolicina"]*(100-$popust)/100);
         }
-        
-        
-        
         return $stmt; 
     }
 
 	public function getBalance($post) {
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         if ($stmt->num_rows == 0){
             return -1;
@@ -698,7 +637,8 @@ class DB_Functions {
     }
     public function getBalanceStore($post) {
         //echo "wat";
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -709,19 +649,23 @@ class DB_Functions {
         $storeId = $stmt["Id_Trgovina"];
         
         //echo "User id" . $userId;
+        
         $q = "SELECT StanjeRacuna FROM Trgovina_StanjeRacuna WHERE Id_Trgovine = {$storeId} ORDER BY UnixVrijeme DESC LIMIT 1";
+        //echo $q;
         $stmt = $this->conn->query($q);
+        if ($stmt==false) return null;
         $stmt = $stmt->fetch_assoc();
         $response = $stmt["StanjeRacuna"];
         
         return $response;
     }
-	public function setInitialBalance($post) {
-        
+    
+    public function setInitialBalance($post) {
+        $event=$this->getCurrentEvent();
         $korisnici = $post["KorisnickoImeKorisnik"];
         $time= time();
         foreach ($korisnici as &$i){
-            $q = "SELECT Id, Id_Uloge, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$i}' AND Obrisan=0";
+            $q = "SELECT Id, Id_Uloge, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$i}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt=$this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             $userId = $stmt["Id"];
@@ -737,9 +681,9 @@ class DB_Functions {
         $response = $post["StanjeRacuna"];
         return $response;
     }
-	//funkcija za smanjenje kolicine proizvoda prilikom prodaje, funkcija takoder mijenja stanje novcanika kupca i prodavaca
-	public function sellItems($post) {
-        //$prodavac = $post["KorisnickoIme"];
+    //funckija za smanjenje količine proizvoda prilikom prodaje, funkcija također mijenja stanje novčanika kupca i prodavača
+    public function sellItems($post) {
+        $event = $this->getCurrentEvent();
         $popustRacuna = $post["PopustRacuna"];
         $vrijemeProdaje = date("Y-m-d H:i:s");
         $idItema = $post["Itemi"];
@@ -749,7 +693,7 @@ class DB_Functions {
         $idKupca="null";
         
         
-        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idProdavaca = $stmt["Id"];
@@ -759,8 +703,8 @@ class DB_Functions {
         $stmt = $stmt->fetch_assoc();
         $idTrgovine=$stmt["Id_Trgovina"];
         
-        $q = "INSERT INTO Racun(Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac)"
-                . " VALUES (null, '{$mjestoIzdavanja}', '{$vrijemeProdaje}', {$popustRacuna}, {$idTrgovine}, {$idKupca})";
+        $q = "INSERT INTO Racun(Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac, Id_Eventa)"
+                . " VALUES (null, '{$mjestoIzdavanja}', '{$vrijemeProdaje}', {$popustRacuna}, {$idTrgovine}, {$idKupca}, {$event["Id"]})";
         $stmt = $this->conn->query($q);
         $idRacuna=$this->conn->insert_id;
         
@@ -785,9 +729,9 @@ class DB_Functions {
         $goodAmounts = $this->checkAmounts($p);
         if ($goodAmounts==true) return $response;
         else{
-            $q = "DELETE FROM Racun WHERE Id={$idRacuna}";
-            $stmt = $this->conn->query($q);
             $q="DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+            $stmt = $this->conn->query($q);
+            $q = "DELETE FROM Racun WHERE Id={$idRacuna}";
             $stmt = $this->conn->query($q);
             return false;
         }
@@ -803,7 +747,8 @@ class DB_Functions {
     }
 	
 	public function confirmSale($post){
-        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idKupca = $stmt["Id"];
@@ -828,8 +773,6 @@ class DB_Functions {
         }
         else{
             $clientBalance = $this->getBalance($post);
-            //echo "jajsadhj".$clientBalance;
-            //echo $clientBalance;
             if ($response["ZavrsnaCijena"]>$clientBalance){
                 $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
                 $stmt=$this->conn->query($q);
@@ -837,7 +780,6 @@ class DB_Functions {
                 $stmt=$this->conn->query($q);
                 return -2;
             }
-            //var_dump($response);
             $time = time();
             $this->updateBalance($response["Kupac"],$response["ZavrsnaCijena"],$time, false);
             $this->updateBalance($response["Id_Trgovine"], $response["ZavrsnaCijena"],$time, true);
@@ -977,7 +919,7 @@ class DB_Functions {
         return $response;
     }
 	
-	public function checkAmounts($post){ //GITNEW
+	public function checkAmounts($post){ 
         //$kolicine = array();
         $racun = $this->getInvoice($post);
         //var_dump ($racun);
@@ -1180,7 +1122,8 @@ class DB_Functions {
     }
     
     public function getAllInvoices($post){
-        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idKorisnika = $stmt["Id"];
@@ -1190,24 +1133,27 @@ class DB_Functions {
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
                     . " JOIN Korisnik k ON r.Kupac = k.Id"
-                    . " WHERE Kupac = {$idKorisnika} AND k.Obrisan=0 ORDER BY DatumIzdavanja ASC";
+                    . " WHERE Kupac = {$idKorisnika} AND k.Obrisan=0 AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL) AND (r.Id_Eventa={$event["Id"]}) ORDER BY DatumIzdavanja ASC";
         }
         elseif ($idUloge == 2){ //admin
             $q = "SELECT r.Id"
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
-                    . " JOIN Korisnik k ON r.Kupac = k.Id ORDER BY DatumIzdavanja ASC";
+                    . " JOIN Korisnik k ON r.Kupac = k.Id AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL) AND (r.Id_Eventa={$event["Id"]}) ORDER BY DatumIzdavanja ASC";
         }
         elseif ($idUloge == 3){ //prodavac
             $q = "SELECT Id_Trgovina FROM Trgovina_Korisnik WHERE Id_Korisnik = {$idKorisnika}";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
             $idTrgovine = $stmt["Id_Trgovina"];
+            if (empty($idTrgovine)){
+                return false;
+            }
             $q = "SELECT r.Id"
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
                     . " JOIN Korisnik k ON r.Kupac = k.Id"
-                    . " WHERE Id_Trgovine = {$idTrgovine} ORDER BY DatumIzdavanja ASC";
+                    . " WHERE Id_Trgovine = {$idTrgovine} AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL) AND (r.Id_Eventa={$event["Id"]}) ORDER BY DatumIzdavanja ASC";
         }
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
@@ -1223,7 +1169,8 @@ class DB_Functions {
     }
 	
 	public function getPacketsWithProducts($post){
-        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Id, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $userId = $stmt["Id"];
@@ -1309,9 +1256,10 @@ class DB_Functions {
         return $response;
     }
 	
-	public function getSumOfInvoices($post){ 
+	public function getSumOfInvoices($post){
+        $event=$this->getCurrentEvent();
         $vv=[];
-        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}'";
+        $q = "SELECT Id, Id_Uloge From Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idKorisnika = $stmt["Id"];
@@ -1326,7 +1274,7 @@ class DB_Functions {
                     . " FROM Racun r"
                     . " JOIN Trgovina t ON r.Id_Trgovine = t.Id"
                     . " LEFT JOIN Korisnik k ON r.Kupac = k.Id"
-                    . " WHERE r.Id = '$idRacuna'";
+                    . " WHERE r.Id = '$idRacuna' AND (k.Id_Eventa = {$event["Id"]} OR k.Id_Eventa IS NULL)";//MAYBE
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_assoc();
 
@@ -1402,12 +1350,13 @@ class DB_Functions {
     }
 	
 	public function confirmRegistration($post){
+        $event=$this->getCurrentEvent();
         if ($post["CONFIRM"]=="true"){
-            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             $user = $stmt->fetch_assoc();
             if (!empty($user)){
-                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
                 $stmt = $this->conn->query($q);
                 return true;
             }
@@ -1415,11 +1364,11 @@ class DB_Functions {
                 return false;
         }
         elseif ($post["CONFIRM"]=="false"){
-            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND k.Obrisan=0";
+            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND k.Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             $user = $stmt->fetch_assoc();
             if (!empty($user)){
-                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
                 $stmt = $this->conn->query($q);
                 return true;
             }
@@ -1429,7 +1378,8 @@ class DB_Functions {
     }
     
     public function userConfirmed($post){
-        $q = "SELECT KorisnickoIme, PrijavaPotvrdena FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT KorisnickoIme, PrijavaPotvrdena FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoIme"]}' AND Obrisan=0  AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_assoc();
         if ($user["PrijavaPotvrdena"]==0) return 0;
@@ -1437,12 +1387,9 @@ class DB_Functions {
     }
     
     public function getAllUsers($post){
-        $admin = $this->isAdmin($post["KorisnickoIme"]);
-        if (!$admin){
-            return false;
-        }
-        
-        $q = "SELECT k.Id, k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.Jezik, k.PrijavaPotvrdena FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE k.Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT k.Id, k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.Jezik, k.PrijavaPotvrdena "
+                . "FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE k.Obrisan=0 AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_all(MYSQLI_ASSOC);
         foreach ($user as &$i){
@@ -1468,7 +1415,8 @@ class DB_Functions {
     }
     
     public function isAdmin($korIme){
-        $q = "SELECT KorisnickoIme, Id_Uloge FROM Korisnik WHERE KorisnickoIme = '{$korIme}' AND Obrisan=0";
+        $event = $this->getCurrentEvent();
+        $q = "SELECT KorisnickoIme, Id_Uloge FROM Korisnik k WHERE KorisnickoIme = '{$korIme}' AND Obrisan=0 AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_assoc();
         if ($user["Id_Uloge"]!=2){
@@ -1478,7 +1426,8 @@ class DB_Functions {
     }
     
     public function setRole($post){
-        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_assoc();
         $id=$user["Id"];
@@ -1493,18 +1442,20 @@ class DB_Functions {
                 $stmt = $this->conn->query($q);
             }
 
-            $q = "UPDATE Korisnik SET Id_Uloge=3 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+            //$q = "INSERT INTO Trgovina_Korisnik (Id, Id_Trgovina, Id_Korisnik) VALUES (null, {$post["Id_Trgovine"]}, {$id})";
+            //$stmt = $this->conn->query($q);
+            $q = "UPDATE Korisnik SET Id_Uloge=3 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
         }
         elseif($post["RoleId"]==1){ //Kupac
-            $q = "UPDATE Korisnik SET Id_Uloge=1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+            $q = "UPDATE Korisnik SET Id_Uloge=1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
 
             $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
             $stmt = $this->conn->query($q);
         }
         elseif($post["RoleId"]==2){ //Admin
-            $q = "UPDATE Korisnik SET Id_Uloge=2 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+            $q = "UPDATE Korisnik SET Id_Uloge=2 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
 
             $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
@@ -1517,10 +1468,11 @@ class DB_Functions {
     }
     
     public function deleteUser($post){
+        $event=$this->getCurrentEvent();
         $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
         $stmt = $this->conn->query($q);
         
-        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_assoc();
         $id=$user["Id"];
@@ -1537,11 +1489,12 @@ class DB_Functions {
     }
 	
 	public function getStores(){
+        $event = $this->getCurrentEvent();
         $q = "SELECT t.Id Id_Trgovine, t.Naziv Naziv_Trgovine, stanje.StanjeRacuna FROM (
-			SELECT c.Id_Trgovine, d.StanjeRacuna, c.UnixVrijeme FROM (
-				SELECT Id_Trgovine, MAX(UnixVrijeme) UnixVrijeme FROM Trgovina_StanjeRacuna GROUP BY Id_Trgovine
-			) c JOIN Trgovina_StanjeRacuna d ON c.Id_Trgovine = d.Id_Trgovine AND d.UnixVrijeme = c.UnixVrijeme
-		) stanje JOIN Trgovina t ON stanje.Id_Trgovine=t.id WHERE t.Obrisan=0";
+		SELECT c.Id_Trgovine, d.StanjeRacuna, c.UnixVrijeme FROM (
+			SELECT Id_Trgovine, MAX(UnixVrijeme) UnixVrijeme FROM Trgovina_StanjeRacuna GROUP BY Id_Trgovine
+		) c JOIN Trgovina_StanjeRacuna d ON c.Id_Trgovine = d.Id_Trgovine AND d.UnixVrijeme = c.UnixVrijeme
+	) stanje JOIN Trgovina t ON stanje.Id_Trgovine=t.id WHERE t.Obrisan=0  AND (t.Id_Eventa={$event["Id"]})";
         $stmt = $this->conn->query($q);
         $stores = $stmt->fetch_all(MYSQLI_ASSOC);
         foreach ($stores as &$i){
@@ -1554,7 +1507,8 @@ class DB_Functions {
     }
     
     public function assignStore($post){
-        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0";
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt = $this->conn->query($q);
         $user = $stmt->fetch_assoc();
         $id=$user["Id"];
@@ -1563,7 +1517,7 @@ class DB_Functions {
         $stmt = $this->conn->query($q);
         
         if ($post["ASSIGNSTORE"]=="true"){
-            $q = "SELECT Naziv FROM Trgovina WHERE Id={$post["Id_Trgovine"]}";
+            $q = "SELECT Naziv FROM Trgovina WHERE Id={$post["Id_Trgovine"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             if ($stmt->num_rows==0){
                 return -1;
@@ -1583,7 +1537,8 @@ class DB_Functions {
     }
 	
 	public function createStore($post){
-        $q = "SELECT Naziv FROM Trgovina WHERE Obrisan=0";
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Naziv FROM Trgovina WHERE Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt= $this->conn->query($q);
         $storeNames = $stmt->fetch_all(MYSQLI_ASSOC);
         foreach ($storeNames as &$i){
@@ -1591,7 +1546,7 @@ class DB_Functions {
                 return false;
             }
         }
-        $q = "INSERT INTO Trgovina (Id, Naziv) VALUES (null, '{$post["NazivTrgovine"]}')";
+        $q = "INSERT INTO Trgovina (Id, Naziv, Id_Eventa) VALUES (null, '{$post["NazivTrgovine"]}', {$event["Id"]})";
         $stmt = $this->conn->query($q);
         $id=$this->conn->insert_id;
         $time = time();
@@ -1601,7 +1556,8 @@ class DB_Functions {
     }
     
     public function deleteStore($post){
-        $q = "SELECT Naziv FROM Trgovina WHERE Id={$post["Id_Trgovine"]} AND Obrisan=0";
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Naziv FROM Trgovina WHERE Id={$post["Id_Trgovine"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
         $stmt=$this->conn->query($q);
         if ($stmt->num_rows==0){
             return false;
@@ -1613,7 +1569,7 @@ class DB_Functions {
     }
     
     public function createStoresInBulk($post){
-        
+        $event=$this->getCurrentEvent();
         $ids=[];
         $offset=1;
         $time = time();
@@ -1621,11 +1577,11 @@ class DB_Functions {
             again:
             $num = $i+$offset;
             $name = "Trgovina {$num}{$post["Sufiks"]}";
-            $q = "SELECT * FROM Trgovina WHERE Naziv='{$name}' AND Obrisan=0";
+            $q = "SELECT * FROM Trgovina WHERE Naziv='{$name}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             if ($stmt->num_rows==0){
                 //$qI.="(null, '{$name}'), ";
-                $q = "INSERT INTO Trgovina (Id, Naziv) VALUES (null, '{$name}')";
+                $q = "INSERT INTO Trgovina (Id, Naziv, Id_Eventa) VALUES (null, '{$name}', {$event["Id"]})";
                 $stmt = $this->conn->query($q);
                 $store["Id_Trgovine"]=$this->conn->insert_id;
                 $store["Naziv_Trgovine"]=$name;
@@ -1642,20 +1598,21 @@ class DB_Functions {
     }
     
     public function editStore($post){
+        $event=$this->getCurrentEvent();
         if (isset($post["NazivTrgovine"])){
-            $q = "SELECT Naziv FROM Trgovina WHERE Id = {$post["Id_Trgovine"]} AND Obrisan=0";
+            $q = "SELECT Naziv FROM Trgovina WHERE Id = {$post["Id_Trgovine"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             if ($stmt->num_rows==0){
                 return false;
             }
             else {
-                $q = "UPDATE Trgovina SET Naziv = '{$post["NazivTrgovine"]}' WHERE Id={$post["Id_Trgovine"]} AND Obrisan=0";
+                $q = "UPDATE Trgovina SET Naziv = '{$post["NazivTrgovine"]}' WHERE Id={$post["Id_Trgovine"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
                 $stmt = $this->conn->query($q);
                 //return true;
             }
         }
         if (isset($post["StanjeRacuna"])){
-            $q = "SELECT Naziv FROM Trgovina WHERE Id = {$post["Id_Trgovine"]} AND Obrisan=0";
+            $q = "SELECT Naziv FROM Trgovina WHERE Id = {$post["Id_Trgovine"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
             $stmt = $this->conn->query($q);
             if ($stmt->num_rows==0){
                 return false;
