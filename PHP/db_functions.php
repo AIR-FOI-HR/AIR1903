@@ -1734,6 +1734,13 @@ class DB_Functions {
         //echo $q;
     }
     
+    public function editEvent($post){
+        $q = "UPDATE Event SET Naziv = '{$post["Naziv_Eventa"]}' WHERE Id={$post["Id_Eventa"]}";
+        $stmt=$this->conn->query($q);
+        $q = "SELECT * FROM Event WHERE Id={$post["Id_Eventa"]}";
+        $stmt=$this->conn->query($q);
+        return $stmt->fetch_assoc();
+    }
     
 
 }
