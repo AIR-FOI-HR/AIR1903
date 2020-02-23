@@ -2,43 +2,36 @@
 
 @section('title', 'Detalji korisnika')
 
-
 @section('css')
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/flatpickr/flatpickr.min.css') }}">
 @endsection
-
 
 @section('content')
 
-	<div class="modal fade custom-modal" id="event-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade custom-modal" id="resource-delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="exampleModalLabel">Detalji izvještaja</h4>
+					<h4 class="modal-title" id="exampleModalLabel">Brisanje korisnika</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<ul class="list-unstyled pl-3">
-						<li>
-							<strong>Status:</strong> <span id="status"></span></li>
-						<li>
-							<strong>Vrijeme:</strong>
-							<span id="arrival-time"></span>
-							-
-							<span id="departure-time"></span>
-						</li>
-					</ul>
+					Jeste li sigurni da želite obrisati odabranog korisnika ?
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Zatvori</button>
+					<form action="" id="resource-delete-form" method="POST">
+						@csrf
+						@method('DELETE')
+						<button type="submit" class="btn btn-danger">Obriši</button>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="container col-lg-4">
+	<div class="container col-lg-4 col-md-6">
 		<div class="app-header">
 			<div class="row d-flex align-items-center">
 				<div class="col-md-6 col-sm-12 app-header__title">
@@ -46,44 +39,41 @@
 				</div>
 
 				<div class="col-md-6 col-sm-12 app-header__add-btn">
-				{{-- 	@if ($user->id != auth()->user()->id)
-					<button class="btn custom-button custom-button-danger mr-2" data-toggle="modal" data-target="#single-resource-delete-modal">
-						<i class="far fa-trash-alt"></i>
-					</button>
-					@endif --}}
-					<a class="btn custom-button mr-2" href="{{ route('users.index') }}">
-						<i class="fas fa-pencil-alt"></i>
-					</a>
-					<a class="btn custom-button" href="{{ route('users.index') }}">
-						<i class="fas fa-chevron-left"></i>
-					</a>
+					@if ($user['KorisnickoIme'] != session('korisnickoIme'))
+						<a class="btn custom-button mr-2 resource-delete-btn" data-resource-name="{{ $user['KorisnickoIme'] }}" data-toggle="modal" data-target="#resource-delete-modal">
+							<i class="far fa-trash-alt fa-fw"></i>
+						</a>
+					@endif
+						<a class="btn custom-button" href="{{ route('users.index') }}">
+							<i class="fas fa-chevron-left fa-fw"></i>
+						</a>
 				</div>
 			</div>
 		</div>
 
 		<div class="app-content resource-content">
-			<div class="row resource-content-row">
-				<div class="col-md-3 resource-content-row__label">
-					Ime
+			<div class="row resource-content-row pt-4">
+				<div class="col-md-4 resource-content-row__label">
+					Korisničko ime
 				</div>
 
 				<div class="col-md-6 resource-content-row__data">
-					{{ $user['Ime'] }}
+					{{ $user['KorisnickoIme'] }}
 				</div>
 			</div>
 
 			<div class="row resource-content-row">
-				<div class="col-md-3 resource-content-row__label">
-					Prezime
+				<div class="col-md-4 resource-content-row__label">
+					Ime i prezime
 				</div>
 
 				<div class="col-md-6 resource-content-row__data">
-					{{ $user['Prezime'] }}
+					{{ $user['Ime'] }} {{ $user['Prezime'] }}
 				</div>
 			</div>
 
 			<div class="row resource-content-row">
-				<div class="col-md-3 resource-content-row__label">
+				<div class="col-md-4 resource-content-row__label">
 					Email
 				</div>
 
@@ -93,7 +83,7 @@
 			</div>
 
 			<div class="row resource-content-row">
-				<div class="col-md-3 resource-content-row__label">
+				<div class="col-md-4 resource-content-row__label">
 					Uloga
 				</div>
 
@@ -103,7 +93,33 @@
 			</div>
 
 			<div class="row resource-content-row">
-				<div class="col-md-3 resource-content-row__label">
+				<div class="col-md-4 resource-content-row__label">
+					Novac
+				</div>
+
+				<div class="col-md-6 resource-content-row__data">
+					@if(array_key_exists ('StanjeRacuna', $user ))
+						{{ number_format($user['StanjeRacuna'], 2, '.', '') }}
+					@elseif(array_key_exists ('StanjeRacunaTrgovine', $user ))
+						{{ number_format($user['StanjeRacunaTrgovine'], 2, '.', '') }}
+					@else
+						-
+					@endif
+				</div>
+			</div>
+
+			<div class="row resource-content-row">
+				<div class="col-md-4 resource-content-row__label">
+					Trgovina
+				</div>
+
+				<div class="col-md-6 resource-content-row__data">
+					{{ $user['Naziv_Trgovine'] ?? '-'}}
+				</div>
+			</div>
+
+			<div class="row resource-content-row pb-4">
+				<div class="col-md-4 resource-content-row__label">
 					Status
 				</div>
 
@@ -117,20 +133,24 @@
 					@endif
 				</div>
 			</div>
+
 		</div>
 	</div>
 @endsection
 
 @section('js')
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-	<script type="text/javascript" src="{{ asset('assets/js/flatpickr/flatpickr.min.js') }}"></script>
-	<script>
-		var dateInput = $('#date');
-		var initialLocaleCode = 'bs';
-		var eventModal = $('#event-modal');
+<script type="text/javascript">
 
-		function displayEventModal(){
-			eventModal.modal('show');
-		}
-	</script>
+	var resourceDeleteBtn = $('.resource-delete-btn');
+	var resourceDeleteForm = $('#resource-delete-form');
+
+	resourceDeleteBtn.on('click', function() {
+		var resourceName = $(this).attr('data-resource-name');
+		
+		var url = '{{ route("users.destroy", ":resourceName") }}';
+		url = url.replace(':resourceName', resourceName);
+		resourceDeleteForm.attr('action', url);
+	});
+
+</script>
 @endsection

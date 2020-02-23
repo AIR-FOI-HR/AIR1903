@@ -4,7 +4,6 @@
 
 @section('css')
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap-select/bootstrap-select.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/flatpickr/flatpickr.min.css') }}">
 @endsection
 
 @section('content')
@@ -38,7 +37,7 @@
 		@method('PUT')
 	</form>
 
-	<div class="container">
+	<div class="container col-lg-8 col-md-11">
 		
 		<div class="app-header">
 			<div class="row d-flex align-items-center">
@@ -46,11 +45,12 @@
 					<h3>Korisnici</h3>
 				</div>	
 
-			{{--<div class="col-md-6 col-sm-12 app-header__add-btn">
-					<a class="btn custom-button" href="{{ route('users.create') }}">
-						Dodaj korisnika
+				<div class="col-md-6 col-sm-12 app-header__add-btn">
+					<input type="number" min="0.00" max="99999.00"  id="set-money-input" class="form-header-data-input" placeholder="Novčani iznos" aria-controls="resources">
+					<a id="set-money-btn" class="custom-button">
+						Postavi novac
 					</a>
-				</div>--}}
+				</div>
 			</div>
 		</div>
 		
@@ -62,12 +62,6 @@
 		@endif
 
 		<div class="app-content">
-			<form method="POST" action="" id="update-many-resources-form">
-				
-				@csrf
-				
-				<input type="hidden" name="action" id="action-input">
-
 				<div class="row">
 					<div class="col-md-12">
 						<div class="table-responsive bg-white shadow">
@@ -93,128 +87,124 @@
 									</tr>
 								</thead>
 								<tbody>
-									@foreach ($users as $user)
-										@if ($user['KorisnickoIme'] === session('korisnickoIme'))
-										<tr style="background: #b7b7b76b;">
-						        		@else
-						        		<tr>
-										@endif
-										<td class="text-center">
-						        			<div class="custom-control custom-checkbox">
-												@if ($user['PrijavaPotvrdena'] != "0")
-													<input type="checkbox" checked="checked" class="custom-control-input resource-checkboxes single-resource-activate-checkbox" id="resource_{{ $user['KorisnickoIme'] }}" value="{{ $user['KorisnickoIme'] }}">
+									@if(!empty($users))
+										@foreach ($users as $user)
+											@if ($user['KorisnickoIme'] === session('korisnickoIme'))
+											<tr style="background: #b7b7b76b;">
+											@else
+											<tr>
+											@endif
+											<td class="text-center">
+												@if ($user['KorisnickoIme'] != session('korisnickoIme'))
+													<div class="custom-control custom-checkbox">
+														@if ($user['PrijavaPotvrdena'] != "0")
+															<input type="checkbox" checked="checked" class="custom-control-input resource-checkboxes single-resource-activate-checkbox" id="resource_{{ $user['KorisnickoIme'] }}" value="{{ $user['KorisnickoIme'] }}">
+														@else
+															<input type="checkbox" class="custom-control-input resource-checkboxes single-resource-activate-checkbox" id="resource_{{ $user['KorisnickoIme'] }}" value="{{ $user['KorisnickoIme'] }}">
+														@endif
+															<label class="custom-control-label" for="resource_{{ $user['KorisnickoIme'] }}"></label>
+													</div>
 												@else
-													<input type="checkbox" class="custom-control-input resource-checkboxes single-resource-activate-checkbox" id="resource_{{ $user['KorisnickoIme'] }}" value="{{ $user['KorisnickoIme'] }}">
+													<i class="fas fa-ban fa-lg text-center fa-fw"></i>
 												@endif
-													<label class="custom-control-label" for="resource_{{ $user['KorisnickoIme'] }}"></label>
-						                    </div>
-										</td>
-						        		<td class="text-center">
-						        			{{ $user['KorisnickoIme'] }}
-										</td>
-										<td class="text-center">
-											<select class="selectpicker show-tick single-resource-role-select" data-resource-name="{{ $user['KorisnickoIme'] }}" data-width="100%" title="Uloga">
-												@foreach ($roles as $role)
-													@if ($role['Id'] == $user['Id_Uloge'])
-														<option value="{{ $role['Id'] }}" selected>{{ $role['Naziv'] }}</option>
-													@else
-														<option value="{{ $role['Id'] }}" >{{ $role['Naziv'] }}</option>
-													@endif
-												@endforeach
-											</select>
-										</td>
-										<td class="text-center">
-											@if (array_key_exists ('Naziv_Trgovine', $user ))
-												<select class="selectpicker show-tick single-resource-store-select" data-resource-name="{{ $user['KorisnickoIme'] }}" data-width="100%" title="Trgovina">
-												@foreach ($stores as $store)
-													@if ($store['Id'] == $user['Id_Trgovine'])
-														<option value="{{ $store['Id'] }}" selected>{{ $store['Naziv'] }}</option>
-													@else
-														<option value="{{ $store['Id'] }}">{{ $store['Naziv'] }}</option>
-													@endif
-												@endforeach
+											</td>
+											<td class="text-center">
+												{{ $user['KorisnickoIme'] }}
+											</td>
+											<td class="text-center">
+												<select class="selectpicker show-tick single-resource-role-select" data-resource-name="{{ $user['KorisnickoIme'] }}" data-width="100%" title="Uloga">
+													@foreach ($roles as $role)
+														@if ($role['Id'] == $user['Id_Uloge'])
+															<option value="{{ $role['Id'] }}" selected>{{ $role['Naziv'] }}</option>
+														@else
+															<option value="{{ $role['Id'] }}" >{{ $role['Naziv'] }}</option>
+														@endif
+													@endforeach
 												</select>
-											@else
+											</td>
+											<td class="text-center">
+												@if (array_key_exists ('Naziv_Trgovine', $user ) && !empty($stores))
+													<select class="selectpicker show-tick single-resource-store-select" data-resource-name="{{ $user['KorisnickoIme'] }}" data-width="100%" title="Trgovina">
+													@foreach ($stores as $store)
+														@if ($store['Id_Trgovine'] == $user['Id_Trgovine'])
+															<option value="{{ $store['Id_Trgovine'] }}" selected>{{ $store['Naziv_Trgovine'] }}</option>
+														@else
+															<option value="{{ $store['Id_Trgovine'] }}">{{ $store['Naziv_Trgovine'] }}</option>
+														@endif
+													@endforeach
+													</select>
+												@else
+														-
+												@endif
+											</td>
+											<td class="text-center">
+												@if(array_key_exists ('StanjeRacuna', $user ))
+													<input type="number" class="input-money form-control single-resource-money-input" min="0.00" max="99999.00" value="{{ number_format($user['StanjeRacuna'], 2, '.', '') }}" data-resource-name="{{ $user['KorisnickoIme'] }}" />
+												@elseif(array_key_exists ('StanjeRacunaTrgovine', $user ))
+													<input type="number" class="input-money form-control single-resource-money-input" min="0.00" max="99999.00" value="{{ number_format($user['StanjeRacunaTrgovine'], 2, '.', '') }}" data-resource-name="{{ $user['KorisnickoIme'] }}" />
+												@else
 													-
-											@endif
-												{{--@foreach($positions as $position)
-													@if ($position->id == $user->position_id)
-														<option value="{{ $position->id }}" selected>{{ $position->name }}</option>
-													@else
-														<option value="{{ $position->id }}">{{ $position->name }}</option>
-													@endif
-												@endforeach--}}
-										</td>
-										<td class="text-center">
-											@if(array_key_exists ('StanjeRacuna', $user ))
-												<input type="number" class="input-money form-control single-resource-money-input" min="0.00" max="99999.00" value="{{$user['StanjeRacuna']}}" data-resource-name="{{ $user['KorisnickoIme'] }}" />
-											@elseif(array_key_exists ('StanjeRacunaTrgovine', $user ))
-												<input type="number" class="input-money form-control single-resource-money-input" min="0.00" max="99999.00" value="{{$user['StanjeRacunaTrgovine']}}" data-resource-name="{{ $user['KorisnickoIme'] }}" />
-											@else
-												-
-											@endif
-										</td>
-						        		<td class="text-right">
-						        			<a class="action-icon action-icon-primary mr-2" href="{{ route('users.show', $user) }}">
-						        				<i class="far fa-eye fa-fw"></i>
-						        			</a>
-						        			@if ($user['KorisnickoIme'] != session('korisnickoIme'))
-						        			<a class="action-icon action-icon-primary mr-2 ml-2" href="{{ route('users.edit', $user) }}">
-						        				<i class="fas fa-pencil-alt fa-fw"></i>
-						        			</a>
-						        			<button class="action-icon action-icon-danger single-resource-delete-btn" data-resource-name="{{ $user['KorisnickoIme'] }}" data-toggle="modal" data-target="#single-resource-delete-modal" type="button">
-												<i class="far fa-trash-alt fa-fw"></i>
-											</button> 
-											@else
-						        			<a class="action-icon action-icon-primary mr-2 ml-2" href="{{ route('users.edit', $user) }}">
-						        				<i class="fas fa-pencil-alt fa-fw"></i>
-						        			</a>
-						        			<button disabled="disabled" class="action-icon action-icon-danger single-resource-delete-btn" data-resource-name="{{ $user['KorisnickoIme'] }}" data-toggle="modal" data-target="#single-resource-delete-modal" type="button">
-												<i class="fas fa-ban fa-fw"></i>
-											</button> 
-											@endif
-						        		</td>
-									</tr>
-									@endforeach
+												@endif
+											</td>
+											<td class="text-right">
+												<a class="action-icon action-icon-primary mr-2" href="{{ route('users.show', $user) }}">
+													<i class="far fa-eye fa-fw"></i>
+												</a>
+												<a class="action-icon action-icon-primary mr-2 ml-2" href="{{ route('users.edit', $user) }}">
+													<i class="fas fa-pencil-alt fa-fw"></i>
+												</a>
+												@if ($user['KorisnickoIme'] != session('korisnickoIme'))
+												<button class="action-icon action-icon-danger single-resource-delete-btn" data-resource-name="{{ $user['KorisnickoIme'] }}" data-toggle="modal" data-target="#single-resource-delete-modal" type="button">
+													<i class="far fa-trash-alt fa-fw"></i>
+												</button> 
+												@else
+												<button disabled="disabled" class="action-icon action-icon-danger single-resource-delete-btn" data-resource-name="{{ $user['KorisnickoIme'] }}" data-toggle="modal" data-target="#single-resource-delete-modal" type="button">
+													<i class="fas fa-ban fa-fw"></i>
+												</button> 
+												@endif
+											</td>
+										</tr>
+										@endforeach
+									@endif
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-			</form>
-		</div>
+</div>
 	</div>
 @endsection
 
 @section('js')
 	<script type="text/javascript" src="{{ asset('assets/js/bootstrap-select/bootstrap-select.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/js/flatpickr/flatpickr.min.js') }}"></script>
 	<script type="text/javascript">
-		var roleSelect = $('#role-selectpicker');
-		roleSelect.selectpicker();
 
 		var table = $('#resources');
-		var actionInput = $('#action-input');
-		
+
 		var singleResourceDeleteBtn = $('.single-resource-delete-btn');
 		var singleResourceActivateCheckbox = $('.single-resource-activate-checkbox');
-		var resourceDeleteModalTriggerBtn = $('#resource-delete-button');
-		var resourcesDeleteBtn = $('#resources-delete-btn');
 		var singleResourceRoleSelect = $('.single-resource-role-select');
 		var singleResourceStoreSelect = $('.single-resource-store-select'); 
 		var singleResourceMoneyInput = $('.single-resource-money-input');
+		var resourcesMoneySetInput = $('#set-money-input');
+		var resourcesMoneySetBtn = $('#set-money-btn');
 
 		var singleResourceDeleteForm = $('#single-resource-delete-form');
 		var singleResourceUpdateForm = $('#single-resource-update-form');
-
+		
+		$('.selectpicker').selectpicker('refresh');
 	
-
+		var table = $('#resources');
 		table.DataTable({
-		 	'aaSorting': [],
+			'aaSorting': [],
+			'order': [[ 1, 'asc' ]],
 		 	'columnDefs': [
 				{ 
 					'orderable': false, 
 					'targets': 0 
+				},{ 
+					'orderable': false, 
+					'targets': 4 
 				},{ 
 					'orderable': false, 
 					'targets': 5 
@@ -244,9 +234,6 @@
             singleResourceDeleteForm.attr('action', url);
 		});
 
-
-
-
 		singleResourceActivateCheckbox.on('click', function() {
 			var resourceName = $(this).attr('value');
 			var resourceStatus = $(this).is(":checked");
@@ -257,7 +244,7 @@
 				var url = "{{ route('users.updateStatus', ['user' => 'resourceName', 'value' => 'false']) }}";
 			
 			url = url.replace('resourceName', resourceName);
-			console.log(url);
+
 			singleResourceUpdateForm.attr('action', url);
 			singleResourceUpdateForm.submit();
 		});
@@ -289,13 +276,27 @@
 		singleResourceMoneyInput.focusout(function() {
 			var resourceName = $(this).attr('data-resource-name');
 			if(!this.value)
-				this.value = 0
-			var userMoney = this.value;
+				this.value = 0.00
+			this.value = parseFloat(this.value).toFixed(2)
+			var resourceMoney = this.value;
 			
-			var url = "{{ route('users.updateMoney', ['user' => 'resourceName', 'value' => 'userMoney']) }}";
+			var url = "{{ route('users.updateMoney', ['user' => 'resourceName', 'value' => 'resourceMoney']) }}";
 			url = url.replace('resourceName', resourceName);
-			url = url.replace('userMoney', userMoney);
-			console.log(url);
+			url = url.replace('resourceMoney', resourceMoney);
+
+			singleResourceUpdateForm.attr('action', url);
+			singleResourceUpdateForm.submit();
+		});
+
+		resourcesMoneySetBtn.on('click', function() {
+			var resourcesMoney = resourcesMoneySetInput.val();
+			if(!resourcesMoney)
+				resourcesMoney = 0;
+			resourcesMoney = parseFloat(resourcesMoney).toFixed(2);
+
+			var url = "{{ route('users.updateMoneyAll', ['value' => 'resourcesMoney']) }}";
+			url = url.replace('resourcesMoney', resourcesMoney);
+
 			singleResourceUpdateForm.attr('action', url);
 			singleResourceUpdateForm.submit();
 		});
