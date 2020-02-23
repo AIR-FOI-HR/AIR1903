@@ -18,7 +18,7 @@
 
 		<div class="app-content">
 			<div class="row">
-				<div class="col-lg-6 col-md-12 mb-3">
+				<div class="col-lg-6 col-md-6 mb-4">
 					<div class="statistic-card bg-white rounded shadow-sm p-3 text-center">
 						<div class="statistic-card__title">
 							<h1 class="statistic-card__title--clock">
@@ -46,7 +46,7 @@
 							    @case(6)
 							        Subota
 							        @break
-							    @case(7)
+							    @case(0)
 							        Nedjelja
 							        @break
 							@endswitch
@@ -62,7 +62,7 @@
 					</div>
 				</div>
 
-				<div class="col-lg-6 col-md-12 mb-3">
+				<div class="col-lg-6 col-md-6 mb-4">
 					<div class="statistic-card bg-white rounded shadow-sm p-3">
 						<div class="statistic-card__title">
 							<h5 class="text-muted mb-0">Trenutno stanje</h5>
@@ -71,28 +71,75 @@
 						<div class="statistic-card__data">
 							<ul>
 								<li>
-									Potvrđeni korisnici: <span class="text-primary"></span>
+									Aktivirani korisnici: <span class="text-primary">{{ $activated }}</span>
 								</li>
 								<li>
-									Nepotvrđeni korisnici: <span class="text-danger"></span>
+									Deaktivirani korisnici: <span class="text-danger">{{ $deactivated }}</span>
+								</li>
+								<li>
+									Preostali novac: <span class="text-primary">{{ number_format($money, 2, '.', '') }}</span>
+								</li>
+								<li>
+									Potrošeni novac: <span class="text-danger">{{ number_format($spentMoney, 2, '.', '') }}</span>
 								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 				
-				<div class="col-lg-12 col-md-12 mb-3">
+				<div id="card-report" class="col-lg-6 col-md-6 mb-0">
 					<div class="statistic-card bg-white rounded shadow-sm p-3">
-						<div class="statistic-card-title">
-							<h5 class="text-muted mb-0">Izvještaji</h5>
+						<div class="statistic-card-title mb-4">
+							<h5 class="text-muted mb-0">Ljestvica najuspješnijih trgovina</h5>
 						</div>
-						<div class="statistic-card__data">
-							<ul class="list-group list-group-flush pl-0">
-
-							</ul>
+						<div class="statistic-card__data col-lg-12 text-center">
+							@if (!empty($stores) && count($stores) > 4)
+								<ul>
+									<li  class="text-left">
+										<i class="fas fa-medal fa-lg mr-3" style="color: gold"></i>  {{ $stores[0]['Naziv_Trgovine'] }}  <span class="text-success">{{ $stores[0]['StanjeRacuna'] }}</span>
+									</li>
+									<li class="text-left">
+										<i class="fas fa-medal fa-lg mr-3" style="color: silver"></i> {{ $stores[1]['Naziv_Trgovine'] }} <span class="text-success">{{ $stores[1]['StanjeRacuna'] }}</span>  
+									</li>
+									<li class="text-left">
+										<i class="fas fa-medal fa-lg mr-3" style="color: saddlebrown"></i>  {{ $stores[2]['Naziv_Trgovine'] }}  <span class="text-success">{{ $stores[2]['StanjeRacuna'] }}</span> 
+									</li>
+									<li class="text-left">
+										<i class="fas fa-medal fa-lg mr-3"></i> {{ $stores[3]['Naziv_Trgovine'] }} <span class="text-success">{{ $stores[3]['StanjeRacuna'] }}</span>
+									</li>
+									<li class="text-left">
+										<i class="fas fa-medal fa-lg mr-3"></i> {{ $stores[4]['Naziv_Trgovine'] }} <span class="text-success">{{ $stores[4]['StanjeRacuna'] }}</span>
+									</li>
+								</ul>
+							@else
+								<ul>
+									<li class="chart-no-data">
+										Trenutno ne postoji dovoljno trgovina!
+									</li>
+								<ul>
+							@endif
 						</div>
 					</div>
 				</div>
+				<div id="card-report" class="col-lg-6 col-md-6 mb-0">
+					<div class="statistic-card bg-white rounded shadow-sm p-3">
+						<div class="statistic-card-title">
+							<h5 class="text-muted mb-0">Stanje trgovina</h5>
+						</div>
+						<div class="statistic-card__data col-lg-12 text-center">
+							<ul>
+								<li class="chart-no-data">
+								Trenutno ne postoji dovoljno trgovina!
+								</li>
+							<ul>
+							<div id="canvas-holder" style="display: block; height: 249px; width: 100%;">
+								<canvas id="doughnut-chart"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 			</div>
 		</div>
 	</div>
@@ -100,5 +147,117 @@
 
 @section('js')
 	<script type="text/javascript" src="{{ asset('assets/js/bootstrap-select/bootstrap-select.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/js/bootstrap-select/bootstrap-select.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('assets/js/chart-js/Chart.min.js') }}"></script>
+	<script type="text/javascript">
+   
+	var textNoData = $('.chart-no-data');
+	textNoData.hide();
+	
+	var stores = @json($stores);
+	var storesData = [];
+	var storesLabels = [];
+
+	for (store in stores) {
+		storesData.push(stores[store]["StanjeRacuna"]);
+		storesLabels.push(stores[store]["Naziv_Trgovine"]);
+	}
+
+	if(!storesData.length){
+		textNoData.fadeToggle(3000);	
+	}
+
+	var configDoughnutChart = {
+			type: 'doughnut',
+			options: {
+				responsive: true,
+				maintainAspectRatio: false
+			},
+			data: {
+				datasets: [{
+					data: storesData,
+					backgroundColor: [
+						'#CE003D', '#BF360C', '#FF6F00', '#FFB300', '#FF7043', '#8BC34A', '#4CAF50', '#64DD17',	'#3F51B5', '#5D4037', '#263238',
+						'#455A64', '#78909C', '#90A4AE', '#006064', '#004D40', '#4DB6AC', '#00E5FF', '#00B0FF',	'#2979FF', '#3D5AFE', '#EC407A',
+						'#F06292', '#f44336', '#E91E63', '#7B1FA2',	'#1A237E', '#EA80FC', '#E040FB', '#7C4DFF',
+					],
+					label: 'Dataset 1'
+				}],
+				labels:storesLabels
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				legend: {
+					position: 'left',
+					display: true,
+				},
+				title: {
+					display: false,
+					text: 'Novac trgovina'
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				}
+			}
+		};
+		
+		var configLineChart = {
+			type: 'line',
+			options: {
+				responsive: true,
+				maintainAspectRatio: false
+			},
+			data: {
+				labels: [new Date("2020-3-10").toLocaleString(), new Date("2020-3-12").toLocaleString(), new Date("2020-3-15").toLocaleString(), new Date("2020-3-21").toLocaleString()],
+				datasets: [{
+				label: 'Novčani tijek',
+				data: [{
+					x: new Date("2020-2-10 13:3"),
+					y: 12
+					},
+					{
+					x: new Date("2020-2-12 13:2"),
+					y: 20
+					},
+					{
+					x: new Date("2020-2-12 13:15"),
+					y: 17
+					},
+					{
+					x: new Date("2020-2-15 14:2"),
+					y: 21
+					},
+					{
+					x: new Date("2020-2-21 14:12"),
+					y: 18
+					}
+				],
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.2)',
+					'rgba(54, 162, 235, 0.2)',
+					'rgba(255, 206, 86, 0.2)',
+					'rgba(75, 192, 192, 0.2)',
+					'rgba(153, 102, 255, 0.2)',
+					'rgba(255, 159, 64, 0.2)'
+				],
+				borderColor: [
+					'rgba(255,99,132,1)',
+					'rgba(54, 162, 235, 1)',
+					'rgba(255, 206, 86, 1)',
+					'rgba(75, 192, 192, 1)',
+					'rgba(153, 102, 255, 1)',
+					'rgba(255, 159, 64, 1)'
+				],
+				borderWidth: 1
+				}]
+			}
+			};
+	
+		var ctxDoughnutChart = document.getElementById('doughnut-chart').getContext('2d');
+		window.myDoughnutChart = new Chart(ctxDoughnutChart, configDoughnutChart);
+		//var ctxLineChart = document.getElementById("line-chart").getContext("2d");
+		//window.myLineChart = new Chart(ctxLineChart, configLineChart);
+</script>
+
 @endsection
