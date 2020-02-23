@@ -1686,6 +1686,54 @@ class DB_Functions {
         return 0;
     }
     
+    public function editUser($post){
+        $event = $this->getCurrentEvent();
+        $q = "SELECT KorisnickoIme FROM Korisnik "
+                . "WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Id <> {$post["Id_Korisnika"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        //echo $q;
+        $stmt=$this->conn->query($q);
+        if ($stmt->num_rows>0){
+            return -1;
+        }
+        
+        $q = "SELECT KorisnickoIme FROM Korisnik "
+                . "WHERE Email = '{$post["Email"]}' AND Id <> {$post["Id_Korisnika"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        //echo $q;
+        $stmt=$this->conn->query($q);
+        if ($stmt->num_rows>0){
+            return -2;
+        }
+        
+        $q = "UPDATE Korisnik SET Ime = '{$post["Ime"]}', Prezime = '{$post["Prezime"]}', Email = '{$post["Email"]}', KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}'"
+        . " WHERE Id={$post["Id_Korisnika"]} AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        $stmt=$this->conn->query($q);
+        
+        $q = "SELECT k.Id, k.Ime, k.Prezime, k.Email, k.KorisnickoIme, k.DozvolaUpravljanjeUlogama, k.DozvolaUpravljanjeStanjemRacuna, k.DozvolaPregledTransakcija, k.DozvolaUvidUStatistiku, k.Id_Uloge, u.Naziv, k.Jezik, k.PrijavaPotvrdena "
+        . "FROM Korisnik k JOIN Uloga u ON (k.Id_Uloge=u.Id) WHERE k.Id={$post["Id_Korisnika"]} AND k.Obrisan=0 AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL)";
+        $stmt=$this->conn->query($q);
+        $response = $stmt->fetch_assoc();
+        
+        if ($response["Id_Uloge"]==3){
+            $q = "SELECT t.Id, t.Naziv FROM Trgovina_Korisnik k JOIN Trgovina t ON k.Id_Trgovina = t.Id WHERE k.Id_Korisnik = {$response["Id"]}";
+            $stmt2 = $this->conn->query($q);
+            $stmt2 = $stmt2->fetch_assoc();
+            $response["Id_Trgovine"]=$stmt2["Id"];
+            $response["Naziv_Trgovine"]=$stmt2["Naziv"];
+
+            $p["KorisnickoIme"]= $response["KorisnickoIme"];
+            $balance = $this->getBalanceStore($p);
+            $response["StanjeRacunaTrgovine"]=$balance;
+        }
+        if ($response["Id_Uloge"]==1){
+            $p["KorisnickoIme"]= $response["KorisnickoIme"];
+            $balance = $this->getBalance($p);
+            $response["StanjeRacuna"]=$balance;
+        }
+        //var_dump($response);
+        return $response;
+        //echo $q;
+    }
+    
     
 
 }
