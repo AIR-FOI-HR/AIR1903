@@ -9,6 +9,14 @@ require_once 'responseTemplate.php';
 
 if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     if (isset($_POST["GETCLIENT"]) && $_POST["GETCLIENT"] == true) {
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $userBalance = $db->getBalance($_POST);
         if ($userBalance==-1){
             $response->STATUS = false;
@@ -25,6 +33,22 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         return;
     }
     if (isset($_POST["GETSTORE"]) && $_POST["GETSTORE"] == true) {
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $store = $db->getStoreOfUser($_POST["KorisnickoIme"]);
+        if ($store==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER NOT IN STORE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $userBalance = $db->getBalanceStore($_POST);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "Stanje računa: ";
@@ -74,22 +98,30 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
     }
-    if(isset($_POST["SELL"])){
-        $sellProducts = $db->sellItems($_POST);
-        $response->STATUS = true;
-        $response->STATUSMESSAGE = "Stanje računa: ";
-        $response->DATA = $sellProducts;
-        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-        echo $response;
-        return;
-    }
     if(isset($_POST["STATISTICS"])){
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $store = $db->getStoreOfUser($_POST["KorisnickoIme"]);
+        if ($store==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER NOT IN STORE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $dataForStatistics = $db->getSumOfInvoices($_POST);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "Ukupna cijena: ";
         $response->DATA = $dataForStatistics;
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
+        return;
     }
 }
 else{
