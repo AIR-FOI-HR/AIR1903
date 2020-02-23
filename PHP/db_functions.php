@@ -1661,6 +1661,21 @@ class DB_Functions {
         return $this->getCurrentEvent();
     }
     
+    public function getStoreOfUser($korIme){
+        $event = $this->getCurrentEvent();
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$korIme}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        $stmt = $this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idKorisnika = $stmt["Id"];
+        $q = "SELECT Id_Trgovina, Id_Korisnik FROM Trgovina_Korisnik WHERE Id_Korisnik = {$idKorisnika}";
+        $stmt = $this->conn->query($q);
+        if ($stmt->num_rows==0){
+            return false;
+        }
+        $stmt = $stmt->fetch_assoc();
+        return $stmt["Id_Trgovina"];
+    }
+    
     
 
 }
