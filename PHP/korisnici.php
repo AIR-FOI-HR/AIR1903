@@ -14,14 +14,15 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             echo $response;
             return;
         }
-        $users = $db->getAllUsers($_POST);
-        if ($users==false){
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "UNAUTHORISED";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
         }
+        $users = $db->getAllUsers($_POST);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "SUCCESS";
         $response->DATA = $users;
@@ -176,6 +177,112 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         return;
     }
     
+    if (isset($_POST["EDITUSER"]) && $_POST["EDITUSER"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($authorised==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $userExists = $db->checkExistsById($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["Id_Korisnika"]) || empty($_POST["Id_Korisnika"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USER ID";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["KorisnickoImeKorisnik"]) || empty($_POST["KorisnickoImeKorisnik"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USER USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (strlen($_POST["KorisnickoImeKorisnik"])<5){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER USERNAME TOO SHORT";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        if (!isset($_POST["Ime"]) || empty($_POST["Ime"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO NAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (strlen($_POST["Ime"])<3){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NAME TOO SHORT";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        if (!isset($_POST["Prezime"]) || empty($_POST["Prezime"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO SURNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (strlen($_POST["Prezime"])<3){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "SURNAME TOO SHORT";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        if (!isset($_POST["Email"]) || empty($_POST["Email"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO EMAIL";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if(!preg_match("/(\w+\.)*(\w+)@(\w+\.){1,2}(\w{2,5})/", $_POST["Email"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "BAD EMAIL";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $edit = $db->editUser($_POST);
+        if ($edit===-1){
+            echo "Username exists already";
+            return;
+        }
+        if ($edit===-2){
+            echo "Email exists already";
+            return;
+        }
+        $response->STATUS=true;
+        $response->STATUSMESSAGE = "USER EDITED";
+        $response->DATA=$edit;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
 }
 else{
     $response->STATUS=false;
