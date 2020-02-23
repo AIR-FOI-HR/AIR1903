@@ -2,22 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-
-use App\User;
-use App\UserRole;
-use App\UserStatus;
-use App\Permission;
-use App\Position;
-use App\Department;
-use App\Timelog;
-
-use Hash;
-use Session;
-use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -57,63 +41,58 @@ class UserController extends Controller
         $result = json_decode(curl_exec($ch), true);
         $roles = $result['DATA'];
         curl_close($ch);
-
-        var_dump($users);
-
+        
         return view('users.index', compact('users','stores','roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store()
     {
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
+
+    public function show()
     {
-        $user = $request->all();
+        $user = request()->all();
         return view('users.show', compact('user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
+
+    public function edit($id)
     {
-       
+        $user = request()->all();
+        $user['Id'] = $id;
+        return view('users.edit', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+    public function update()
+    {
+        $_POST['Token'] = session('token');
+        $_POST['KorisnickoIme'] = session('korisnickoIme');
+        $_POST['EDITUSER'] = 'true';
+        $_POST['Id_Korisnika'] = request()->input('Id');
+        $_POST['KorisnickoImeKorisnik'] = request()->input('KorisnickoIme');
+        $_POST['Ime'] = request()->input('Ime');
+        $_POST['Prezime'] = request()->input('Prezime');
+        $_POST['Email'] = request()->input('Email');
+
+        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+        
+        if($result['STATUSMESSAGE'] == "USER EDITED" )
+            session()->flash('success', "Uspješno izmijenjen korisnik.");
+        else
+            session()->flash('error', "Greška prilikom izmjene korisnika.");
+
+        return redirect()->route('users.index');
+    }
+
 
     public function updateStatus($user, $value)
     {
@@ -141,6 +120,7 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+
     public function updateRole($user, $value)
     {
         $_POST['Token'] = session('token');
@@ -165,6 +145,7 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+
     public function updateStore($user, $value)
     {
         $_POST['Token'] = session('token');
@@ -188,12 +169,13 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+
     public function updateMoney($user, $value)
     {
         $_POST['Token'] = session('token');
         $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['SET'] = 'true';
-        $_POST['KorisnickoImeKorisnik'] = $user;
+        $_POST['KorisnickoImeKorisnik[]'] = $user;
         $_POST['StanjeRacuna'] = (string)$value;
 
         $ch = curl_init("http://cortex.foi.hr/pop/novcanik.php");
@@ -211,16 +193,51 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+    public function updateMoneyAll($value)
+    {
+        $_POST['Token'] = session('token');
+        $_POST['KorisnickoIme'] = session('korisnickoIme');
+        $_POST['Readall'] = 'true';
+
+        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = json_decode(curl_exec($ch), true);
+        $users = $result['DATA'];
+        curl_close($ch);
+        unset($_POST['Readall']);
+
+        $_POST['SET'] = 'true';
+        $_POST['StanjeRacuna'] = (string)$value;
+
+        foreach ($users as $user){
+            if($user['Naziv'] == 'Kupac')
+                $_POST['KorisnickoImeKorisnik'][] = $user['KorisnickoIme']; 
+        }
+        
+        $_POST = http_build_query($_POST);
+        $ch = curl_init("http://cortex.foi.hr/pop/novcanik.php");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+
+        if($result['STATUSMESSAGE'] == "BALANCE SET")
+            session()->flash('success', "Korisnicima je uspješno promijenjeno novčano stanje.");
+        else
+            session()->flash('error', "Greška prilikom promjene novčanog stanja korisnika.");
+        
+        return redirect()->route('users.index');
+    }
+
+
     public function destroy($user)
     {
-        $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['Token'] = session('token');
+        $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['DELETE'] = 'true';
         $_POST['KorisnickoImeKorisnik'] = $user;
 
