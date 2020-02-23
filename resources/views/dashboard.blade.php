@@ -71,6 +71,9 @@
 						<div class="statistic-card__data">
 							<ul>
 								<li>
+									Događaj: <span>{{ $event }}</span>
+								</li>
+								<li>
 									Aktivirani korisnici: <span class="text-primary">{{ $activated }}</span>
 								</li>
 								<li>
