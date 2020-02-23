@@ -1,37 +1,87 @@
 <?php
-  //ini_set('display_errors', 1);
-  //error_reporting(E_ALL); 
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL); 
 require_once 'db_function.php';
 $db = new DB_Functions();
+require_once 'responseTemplate.php';
 header('Content-Type: application/json');
 if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
     if (isset($_POST["Readall"]) && $_POST["Readall"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         $allProducts = $db->getAllProducts($_POST);
+        if($allProducts==false){
+            $response->DATA = null;
+            $response->STATUS=false;
+            $response->STATUSMESSAGE="USER NOT IN STORE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
         if ($allProducts[0]==1){
             $response->DATA = null;
             $response->STATUS=false;
             $response->STATUSMESSAGE="REGULAR USERS CAN'T READ";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
+            return;
+        }
+        $loginCheck = $db->userConfirmed($_POST);
+        if ($loginCheck==0){
+            $response->STATUS=false;
+            $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
+            $response = json_encode($response);
+            echo $response;
+            return;
         }
         else{
-        $response->DATA = $allProducts[1];
+            if (empty($allProducts[1])){
+                $response->DATA = null;
+                $response->STATUSMESSAGE = "OK, NO PRODUCTS";
+            }
+            else{
+                $response->DATA = $allProducts[1];
+                $response->STATUSMESSAGE = "OK";
+            }
         $response->STATUS = true;
-        $response->STATUSMESSAGE = "OK";
+        
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
+        return;
         }
     } else {
         $productCheck = $db->checkProductEmpty($_POST);
         $isDelete = $db->isDelete($_POST);
         $isUpdate = $db->isUpdate($_POST);
-        if ($productCheckk === 0) {
+        if (!isset($_POST["KorisnickoIme"])){
             $response->STATUS = false;
-            $response->STATUSMESSAGE = "Niste unijeli jedan od potrebnih parametara: ";
+            $response->STATUSMESSAGE = "NO USERNAME";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
-        } else if ($productCheck === 1) {
+        }
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if ($productCheck === 1) {
             $newProduct = $db->addNewProduct($_POST);
             if ($newProduct[0]==1){
                 $response->STATUS = false;
