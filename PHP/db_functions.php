@@ -1734,6 +1734,13 @@ class DB_Functions {
         //echo $q;
     }
     
+    public function setLanguage($post){
+        $event = $this->getCurrentEvent();
+        $q = "UPDATE Korisnik SET Jezik={$post["Jezik"]} WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa={$event["Id"]} OR Id_Eventa IS NULL)";
+        $stmt=$this->conn->query($q);
+        return;
+    }
+    
     public function editEvent($post){
         $q = "UPDATE Event SET Naziv = '{$post["Naziv_Eventa"]}' WHERE Id={$post["Id_Eventa"]}";
         $stmt=$this->conn->query($q);
