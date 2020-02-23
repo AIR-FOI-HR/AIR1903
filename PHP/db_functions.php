@@ -1641,6 +1641,17 @@ class DB_Functions {
         
     }
     
+    public function getAllEvents($post){
+        $q = "SELECT * FROM Event";
+        $stmt = $this->conn->query($q);
+        return $stmt->fetch_all(MYSQLI_ASSOC);
+    }
+    
+    public function getCurrentEvent(){
+        $q = "SELECT * FROM Event WHERE Aktivan=1";
+        $stmt = $this->conn->query($q);
+        return $stmt->fetch_assoc();
+    }
     
 
 }
