@@ -6,6 +6,8 @@ object RegistrationData {
     var KorisnickoIme:String=""
     var Email:String=""
     var Lozinka:String=""
+    var Uloga:Int=0
+    var Trgovina:String = ""
 
     fun Reset(){
         Ime=""
@@ -13,6 +15,8 @@ object RegistrationData {
         KorisnickoIme=""
         Email=""
         Lozinka=""
+        Uloga=0
+        Trgovina= ""
     }
 
 }
