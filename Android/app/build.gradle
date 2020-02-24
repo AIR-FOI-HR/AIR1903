@@ -71,6 +71,8 @@ dependencies {
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
+    implementation 'me.omidh:liquidradiobutton:1.0.01'
+
     implementation project(path: ':webservice')
     implementation project(path: ':qr')
     implementation project(path: ':nfc')
