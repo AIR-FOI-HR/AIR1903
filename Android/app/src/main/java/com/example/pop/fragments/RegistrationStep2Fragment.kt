@@ -21,6 +21,36 @@ import kotlin.math.abs
 
 class RegistrationStep2Fragment : Fragment(), View.OnClickListener {
 
+    private lateinit var mService: IMyAPI
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        (this.activity as RegistrationActivity).currentFragment=2
+        mService = Common.api
+        val view: View = inflater.inflate(R.layout.fragment_registration_second, container, false)
+        view.btn_registration_finish.setOnClickListener {
+            onClick(view)
+        }
+
+        view.setOnTouchListener { v : View, event : MotionEvent ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                val keyboard = HideKeyboard()
+                keyboard.hideKeyboard(registrationStep2)
+                touchX = event.x
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                if(abs(touchX - event.x) > SWIPE_THRESHOLD) {
+                    if(touchX - event.x < 0) v.findNavController().navigateUp()
+                }
+            }
+            true
+        }
+        return view
+    }
+
     override fun onClick(v: View?) {
         if (!checkPassword(v?.input_registration_password?.text.toString(),v?.input_registration_confirm_password?.text.toString())){
             Toast.makeText(activity, R.string.toastPasswordsDontMatch,Toast.LENGTH_SHORT).show()
@@ -66,35 +96,6 @@ class RegistrationStep2Fragment : Fragment(), View.OnClickListener {
         }
     }
 
-    internal lateinit var mService: IMyAPI
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        (this.activity as RegistrationActivity).currentFragment=2
-        mService = Common.api
-        val view: View = inflater.inflate(R.layout.fragment_registration_second, container, false)
-        view.btn_registration_finish.setOnClickListener {
-            onClick(view)
-        }
-
-        view.setOnTouchListener { v : View, event : MotionEvent ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val keyboard = HideKeyboard()
-                keyboard.hideKeyboard(registrationSecond)
-                touchX = event.x
-            }
-            if (event.action == MotionEvent.ACTION_UP) {
-                if(abs(touchX - event.x) > SWIPE_THRESHOLD) {
-                    if(touchX - event.x < 0) v.findNavController().navigateUp()
-                }
-            }
-            true
-        }
-        return view
-    }
 
     private fun checkPassword(
         Lozinka: String,

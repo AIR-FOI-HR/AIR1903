@@ -3,37 +3,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_registration"
-    app:startDestination="@id/registrationFirst">
+    app:startDestination="@id/registrationStep1">
 
     <fragment
-        android:id="@+id/registrationFirst"
+        android:id="@+id/registrationStep1"
         android:name="com.example.pop.fragments.RegistrationStep1Fragment"
         android:label="fragment_registration_first"
         tools:layout="@layout/fragment_registration_first" >
         <action
             android:id="@+id/action_registrationFirst_to_registrationSecond"
-            app:destination="@id/registrationSecond"
+            app:destination="@id/registrationStep2"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/registrationSecond"
+        android:id="@+id/registrationStep2"
         android:name="com.example.pop.fragments.RegistrationStep2Fragment"
         android:label="fragment_registration_second"
         tools:layout="@layout/fragment_registration_second" >
         <action
             android:id="@+id/action_registrationSecond_to_registrationThird"
-            app:destination="@id/registrationThird"
+            app:destination="@+id/registrationStep3"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/registrationThird"
+        android:id="@+id/registrationStep3"
         android:name="com.example.pop.fragments.RegistrationStep3Fragment"
-        android:label="fragment_registration_third"
+        android:label="fragment_registration_third">
+        <action
+            android:id="@+id/action_registrationStep3_to_registrationStep4Seller"
+            app:destination="@+id/registrationStep4Seller"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_registrationStep3_to_registrationStep4Buyer"
+            app:destination="@id/registrationStep4Buyer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationStep5"
+        android:name="com.example.pop.fragments.RegistrationStep5Fragment"
+        android:label="fragment_registration_fifth"
         tools:layout="@layout/fragment_registration_third" />
+    <fragment
+        android:id="@+id/registrationStep4Seller"
+        android:name="com.example.pop.fragments.RegistrationStepSellerFragment"
+        android:label="fragment_registration_fourth">
+        <action
+            android:id="@+id/action_registrationStep4Seller_to_registrationStep5"
+            app:destination="@+id/registrationStep5"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationStep4Buyer"
+        android:name="com.example.pop.fragments.RegistrationStepBuyerFragment"
+        android:label="fragment_registration_fourth">
+        <action
+            android:id="@+id/action_registrationStep4Buyer_to_registrationStep5"
+            app:destination="@+id/registrationStep5"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 </navigation>

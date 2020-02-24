@@ -45,7 +45,7 @@ class RegistrationStep1Fragment : Fragment(), View.OnClickListener {
         view.setOnTouchListener { v : View, event : MotionEvent ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 val keyboard = HideKeyboard()
-                keyboard.hideKeyboard(registrationFirst)
+                keyboard.hideKeyboard(registrationStep1)
                 touchX = event.x
             }
             if (event.action == MotionEvent.ACTION_UP) {
