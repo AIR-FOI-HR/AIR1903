@@ -4,8 +4,8 @@ import java.io.Serializable
 import java.util.*
 
 class Store (
-    val Id : Int?,
-    var Naziv: String?,
+    val Id_Trgovine : Int?,
+    var NazivTrgovine: String?,
     var selected: Boolean = false
 ) : Serializable
 

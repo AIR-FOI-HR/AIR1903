@@ -2,9 +2,17 @@ package com.example.pop
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import com.example.core.BaseActivity
 import com.example.pop_sajamv2.Session
 import kotlinx.android.synthetic.main.activity_registration.*
+import kotlinx.android.synthetic.main.activity_tab_layout.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.example.pop.fragments.RegistrationStep3Fragment
+
 
 const val SWIPE_THRESHOLD = 150
 var touchX : Float = 0f
@@ -31,9 +39,11 @@ class RegistrationActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        var intent:Intent
-        intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finishAffinity()
+        if (currentFragment==5 || currentFragment==3) {
+            var intent: Intent
+            intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
+        }
     }
 }

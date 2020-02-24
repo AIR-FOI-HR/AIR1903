@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.pop.*
 import kotlinx.android.synthetic.main.fragment_registration_first.*
 import kotlinx.android.synthetic.main.fragment_registration_first.view.*
@@ -42,6 +43,9 @@ class RegistrationStep1Fragment : Fragment(), View.OnClickListener {
             onClick(view)
         }
 
+        if (activity!!.intent.hasExtra("Fragment") && activity!!.intent.getIntExtra("Fragment",0)==3){
+            findNavController().navigate(R.id.action_registrationFirst_to_registrationThird)
+        }
         view.setOnTouchListener { v : View, event : MotionEvent ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 val keyboard = HideKeyboard()
@@ -55,6 +59,7 @@ class RegistrationStep1Fragment : Fragment(), View.OnClickListener {
             }
             true
         }
+
         return view
     }
 

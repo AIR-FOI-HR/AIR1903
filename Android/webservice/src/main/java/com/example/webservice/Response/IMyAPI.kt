@@ -95,8 +95,24 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("racuni.php")
     fun finalizeInvoice(@Field("Token") Token: String, @Field("CONFIRMSALE") CONFIRMSALE: Boolean, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Id_Racuna") Id_Racuna: Int) : Call<OneInvoiceResponse>
+
     @FormUrlEncoded
     @POST("racuni.php")
     fun deleteInvoice(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("DELETE") DELETE:Boolean, @Field("Id_Racuna") Id_Racuna:String):Call<OneInvoiceResponse>
 
+    @FormUrlEncoded
+    @POST("trgovine.php")
+    fun createStore(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("CREATESTORE") CREATESTORE:Boolean, @Field("NazivTrgovine") NazivTrgovine:String):Call<OneStoreResponse>
+
+    @FormUrlEncoded
+    @POST("trgovine.php")
+    fun getAllStores(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("Readall") Readall:Boolean):Call<StoresResponse>
+
+    @FormUrlEncoded
+    @POST("trgovine.php")
+    fun assignStore(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("ASSIGNSTORESELF") ASSIGNSTORESELF:Boolean, @Field("Id_Trgovine") Id_Trgovine:Int):Call<OneStoreResponse>
+
+    @FormUrlEncoded
+    @POST("korisnici.php")
+    fun setRole(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("SETOWNROLE") SETOWNROLE:Boolean, @Field("RoleId") RoleId:Int):Call<RoleSetResponse>
 }

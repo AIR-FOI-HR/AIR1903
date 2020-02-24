@@ -45,9 +45,9 @@ class StoreRecyclerAdapter(val context: Context?) : RecyclerView.Adapter<StoreVi
 
     fun submitList(data: ArrayList<Store>){
         stores.addAll(data)
-        Log.e("LISTA: ", stores[0].Naziv + " " + stores[1].Naziv)
+        Log.e("LISTA: ", stores[0].NazivTrgovine + " " + stores[1].NazivTrgovine)
         notifyDataSetChanged()
-        Log.e("LISTA: ", stores[0].Naziv + " " + stores[1].Naziv)
+        Log.e("LISTA: ", stores[0].NazivTrgovine + " " + stores[1].NazivTrgovine)
     }
 
     override fun getItemCount(): Int {

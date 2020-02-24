@@ -98,7 +98,7 @@
     <string name="toast_nfc_unavailable">NFC nedostupan ili isključen!</string>
     <string name="toast_transaction_cancelled">Transakcija prekinuta</string>
     <string name="toast_user_not_in_store">Korisnik nije dio trgovine</string>
-    <string name="toast_store_no_invoices">Trgovina nema račune</string>
+    <string name="toast_store_no_invoices">Nema računa</string>
     <string name="toast_product_deleted">Proizvod izbrisan</string>
     <string name="toast_package_added">Paket uspješno dodan</string>
     <string name="toast_package_edited">Paket uspješno uređen</string>
@@ -110,4 +110,9 @@
     <string name="text_seller">Prodavač</string>
     <string name="text_role_selection">Odaberite svoju ulogu:</string>
     <string name="label_store_name">Naziv trgovine</string>
+    <string name="toast_store_not_set">Molimo odaberite trgovinu</string>
+    <string name="toast_user_has_no_store">Trgovina nije nađena, molim odaberite trgovinu</string>
+    <string name="toast_store_name_blank">Ime trgovine ne smije biti prazno</string>
+    <string name="toast_store_exists">Ime trgovine već postoji</string>
+    <string name="toast_role_not_selected">Molimo odaberite ulogu</string>
 </resources>

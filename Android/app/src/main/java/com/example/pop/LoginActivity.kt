@@ -35,8 +35,21 @@ class LoginActivity : BaseActivity() {
                 }
 
                 override fun onResponse(call: Call<ApiResponseUser>, response: Response<ApiResponseUser>) {
-                    if (!response.body()!!.STATUS)
-                        Toast.makeText(this@LoginActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+                    if (!response.body()!!.STATUS) {
+                        if (response.body()!!.STATUSMESSAGE == "USER NEEDS STORE") {
+
+                        Toast.makeText(this@LoginActivity, getString(R.string.toast_user_has_no_store),Toast.LENGTH_SHORT).show()
+                            var intent = Intent(this@LoginActivity, RegistrationActivity::class.java)
+                            RegistrationData.KorisnickoIme = response.body()!!.DATA!!.KorisnickoIme
+                            Session.user.Token = response.body()!!.DATA!!.Token
+                            intent.putExtra("Fragment",3)
+                            startActivity(intent)
+                            finishAffinity()
+                        }
+                        else
+                            Toast.makeText(this@LoginActivity, response.body()!!.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+
+                    }
                     else {
                         Toast.makeText(this@LoginActivity, R.string.toastLoginSuccess, Toast.LENGTH_SHORT).show()
                         val resp = response.body()!!.DATA!!

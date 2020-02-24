@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
 import com.example.pop.*
+import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.ApiResponseUser
 import com.example.webservice.Response.IMyAPI
@@ -87,8 +88,8 @@ class RegistrationStep2Fragment : Fragment(), View.OnClickListener {
                             Toast.makeText(activity,response!!.body()!!.STATUSMESSAGE,Toast.LENGTH_SHORT).show()
                         }
                         else {
-                            Toast.makeText(activity,
-                                R.string.toastRegistrationSuccess, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(activity, R.string.toastRegistrationSuccess, Toast.LENGTH_SHORT).show()
+                            Session.user.Token=response.body()!!.DATA!!.Token
                             v!!.findNavController().navigate(R.id.action_registrationSecond_to_registrationThird)
                         }
                     }

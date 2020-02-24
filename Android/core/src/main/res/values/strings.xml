@@ -100,7 +100,6 @@
     <string name="toast_package_added">Package added successfully</string>
     <string name="toast_package_edited">Package edited successfully</string>
     <string name="toast_product_deleted">Product deleted</string>
-    <string name="toast_store_no_invoices">Store has no invoices</string>
     <string name="toast_user_not_in_store">User is not in a store</string>
     <string name="toast_store_no_products">Store has no products</string>
     <string name="tab_products">Products</string>
@@ -109,4 +108,10 @@
     <string name="text_seller">Seller</string>
     <string name="text_role_selection">Select your role:</string>
     <string name="label_store_name">Store name</string>
+    <string name="toast_store_name_blank">Store name can\'t be blank</string>
+    <string name="toast_store_exists">A store with that name already exists</string>
+    <string name="toast_user_has_no_store">Store not found, please pick a store</string>
+    <string name="toast_store_not_set">Please select a store</string>
+    <string name="toast_role_not_selected">Please select a role</string>
+    <string name="toast_store_no_invoices">No invoices</string>
 </resources>

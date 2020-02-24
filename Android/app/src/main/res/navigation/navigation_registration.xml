@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_registrationFirst_to_registrationThird"
+            app:destination="@id/registrationStep3"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/registrationStep2"
@@ -57,7 +64,7 @@
         tools:layout="@layout/fragment_registration_third" />
     <fragment
         android:id="@+id/registrationStep4Seller"
-        android:name="com.example.pop.fragments.RegistrationStepSellerFragment"
+        android:name="com.example.pop.fragments.RegistrationStep4SellerFragment"
         android:label="fragment_registration_fourth">
         <action
             android:id="@+id/action_registrationStep4Seller_to_registrationStep5"
@@ -69,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationStep4Buyer"
-        android:name="com.example.pop.fragments.RegistrationStepBuyerFragment"
+        android:name="com.example.pop.fragments.RegistrationStep4BuyerFragment"
         android:label="fragment_registration_fourth">
         <action
             android:id="@+id/action_registrationStep4Buyer_to_registrationStep5"
