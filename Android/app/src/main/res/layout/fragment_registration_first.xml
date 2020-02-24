@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/registrationFirst"
+    android:id="@+id/registrationStep1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/registration1"
     tools:context=".fragments.RegistrationStep1Fragment">
 
 
@@ -13,9 +12,8 @@
         android:id="@+id/field_boxes_registration_name"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
 
         app:hasClearButton="true"
         app:labelText="@string/inputHintName"
@@ -44,10 +42,10 @@
         android:id="@+id/field_boxes_registration_surname"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="40dp"
 
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="64dp"
 
         app:hasClearButton="true"
         app:labelText="@string/inputHintSurname"
@@ -74,59 +72,20 @@
         android:id="@+id/btn_registration_next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/rounded_button"
 
+        android:layout_marginEnd="64dp"
+        android:background="@drawable/rounded_button"
         android:text="@string/buttonNext"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/field_boxes_registration_surname"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <ImageView
-        android:id="@+id/stepIndicator1"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="80dp"
-        android:contentDescription="@string/stepIndicator1"
-        android:src="@drawable/indicator_selected"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/stepIndicator2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/stepIndicator2"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="82dp"
-        android:contentDescription="@string/stepIndicator2"
-        android:src="@drawable/indicator_unselected"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/stepIndicator3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/stepIndicator1" />
-
-    <ImageView
-        android:id="@+id/stepIndicator3"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="82dp"
-        android:contentDescription="@string/stepIndicator3"
-        android:src="@drawable/indicator_unselected"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/stepIndicator2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
