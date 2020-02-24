@@ -106,5 +106,8 @@
     <string name="toast_store_no_products">Trgovina nema proizvode</string>
     <string name="tab_packages">Paketi</string>
     <string name="tab_products">Proizvodi</string>
-
+    <string name="text_buyer">Kupac</string>
+    <string name="text_seller">Prodavač</string>
+    <string name="text_role_selection">Odaberite svoju ulogu:</string>
+    <string name="label_store_name">Naziv trgovine</string>
 </resources>
