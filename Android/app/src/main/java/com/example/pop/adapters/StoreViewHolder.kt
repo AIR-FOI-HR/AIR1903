@@ -14,7 +14,7 @@ class StoreViewHolder(storeView: View) : RecyclerView.ViewHolder(storeView), Vie
         _clickListener: StoreClickListener?
     ) {
         mClickListener = _clickListener
-        itemView.text_store_name.text = store.NazivTrgovine
+        itemView.text_store_name.text = store.NazivTrgovine+" -- "+store.BrojZaposlenika+" emp."
         val selected = store.selected
         itemView.setOnClickListener(this)
         itemView.img_selected_store.visibility = if (selected) View.VISIBLE else View.GONE
