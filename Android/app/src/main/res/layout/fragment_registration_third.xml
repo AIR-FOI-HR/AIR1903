@@ -36,7 +36,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="50dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/btnNextStep"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_step"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +138,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnNextStep"
+            android:id="@+id/btn_next_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"

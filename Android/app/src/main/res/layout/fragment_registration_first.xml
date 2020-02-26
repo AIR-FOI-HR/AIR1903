@@ -49,7 +49,7 @@
 
         app:hasClearButton="true"
         app:labelText="@string/inputHintSurname"
-        app:layout_constraintBottom_toTopOf="@+id/btn_registration_next"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next_step"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,7 @@
     </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
 
     <Button
-        android:id="@+id/btn_registration_next"
+        android:id="@+id/btn_next_step"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"

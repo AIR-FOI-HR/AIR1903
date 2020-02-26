@@ -17,7 +17,7 @@
         android:layout_marginEnd="64dp"
         app:hasClearButton="true"
         app:labelText="@string/label_store_name"
-        app:layout_constraintBottom_toTopOf="@+id/btn_registration_finish"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next_step"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +36,7 @@
 
 
     <Button
-        android:id="@+id/btn_registration_finish"
+        android:id="@+id/btn_next_step"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
