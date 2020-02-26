@@ -39,7 +39,7 @@ class RegistrationStep1Fragment : Fragment(), View.OnClickListener {
     ): View? {
         (this.activity as RegistrationActivity).currentFragment=3
         val view: View = inflater.inflate(R.layout.fragment_registration_first, container, false)
-        view.btn_registration_next.setOnClickListener {
+        view.btn_next_step.setOnClickListener {
             onClick(view)
         }
 

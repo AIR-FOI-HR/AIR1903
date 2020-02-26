@@ -1,7 +1,6 @@
 package com.example.pop.fragments
 
 import android.os.Bundle
-import android.se.omapi.Session
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -27,7 +26,7 @@ class RegistrationStep4SellerFragment : Fragment() {
     ): View? {
         (this.activity as RegistrationActivity).currentFragment=4
         val view:View = inflater.inflate(R.layout.fragment_registration_fourth_seller, container, false)
-        view.btn_registration_finish.setOnClickListener { createStore(view) }
+        view.btn_next_step.setOnClickListener { createStore(view) }
 
         view.setOnTouchListener { _, event : MotionEvent ->
             if (event.action == MotionEvent.ACTION_DOWN) touchX = event.x

@@ -3,15 +3,11 @@ package com.example.pop.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.example.pop.R
 import com.example.pop.RegistrationActivity
-import com.example.pop.SWIPE_THRESHOLD
-import com.example.pop.touchX
 import kotlinx.android.synthetic.main.fragment_registration_fifth.view.*
-import kotlin.math.abs
 
 class RegistrationStep5Fragment : Fragment() {
     override fun onCreateView(
@@ -20,7 +16,7 @@ class RegistrationStep5Fragment : Fragment() {
     ): View? {
         (this.activity as RegistrationActivity).currentFragment=5
         val view:View = inflater.inflate(R.layout.fragment_registration_fifth, container, false)
-        view.btnNextStep.setOnClickListener {
+        view.btn_next_step.setOnClickListener {
             (activity as RegistrationActivity).startLoginActivity()
         }
         return view

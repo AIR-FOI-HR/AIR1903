@@ -1,7 +1,6 @@
 package com.example.pop.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.navigation.findNavController
 import com.example.pop.*
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
-import com.example.webservice.Model.OneStoreResponse
 import com.example.webservice.Model.RoleSetResponse
 import com.example.webservice.Response.IMyAPI
 import kotlinx.android.synthetic.main.fragment_registration_third.*
@@ -38,7 +36,7 @@ class RegistrationStep3Fragment : Fragment(), View.OnClickListener {
         (this.activity as RegistrationActivity).currentFragment=3
         mService = Common.api
         val view: View = inflater.inflate(R.layout.fragment_registration_third, container, false)
-        view.btnNextStep.setOnClickListener { onClick(view) }
+        view.btn_next_step.setOnClickListener { onClick(view) }
         view.radioGroupRole.setOnCheckedChangeListener { group, checkedId ->
             val selectedRadioButton = view.findViewById(checkedId) as RadioButton
             selectedRole = selectedRadioButton.tag.toString().toInt()

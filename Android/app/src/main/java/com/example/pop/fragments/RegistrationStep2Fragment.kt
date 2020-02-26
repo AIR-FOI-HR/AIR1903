@@ -32,7 +32,7 @@ class RegistrationStep2Fragment : Fragment(), View.OnClickListener {
         (this.activity as RegistrationActivity).currentFragment=2
         mService = Common.api
         val view: View = inflater.inflate(R.layout.fragment_registration_second, container, false)
-        view.btn_registration_finish.setOnClickListener {
+        view.btn_next_step.setOnClickListener {
             onClick(view)
         }
 
