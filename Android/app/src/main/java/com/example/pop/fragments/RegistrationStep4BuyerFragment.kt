@@ -1,8 +1,6 @@
 package com.example.pop.fragments
 
 import android.os.Bundle
-import android.se.omapi.Session
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +25,8 @@ class RegistrationStep4BuyerFragment : Fragment(), View.OnClickListener, StoreCl
 
     private lateinit var storeAdapter: StoreRecyclerAdapter
     private var stores: ArrayList<Store>? = ArrayList()
-    var selectedStore : Int=0
+    var selectedStore: Int = 0
+    var selectedPosition: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +34,7 @@ class RegistrationStep4BuyerFragment : Fragment(), View.OnClickListener, StoreCl
     ): View? {
         (this.activity as RegistrationActivity).currentFragment=4
         val view:View = inflater.inflate(R.layout.fragment_registration_fourth_buyer, container, false)
-        view.btnNextStep.setOnClickListener { onClick(view) }
+        view.btn_next_step.setOnClickListener { onClick(view) }
         return view
     }
 
@@ -51,9 +50,14 @@ class RegistrationStep4BuyerFragment : Fragment(), View.OnClickListener, StoreCl
     }
 
     override fun onStoreClick(view: View, position: Int) {
-        val store: Store? = storeAdapter.getStore(position)
+        var store: Store?
+        if(selectedPosition != -1){
+            store = storeAdapter.getStore(selectedPosition)!!
+            selectStore(store, selectedPosition)
+        }
+
+        store = storeAdapter.getStore(position)
         if (store != null) {
-            Log.e("ODABRANA TRGOVINA: ", store.NazivTrgovine.toString())
             selectStore(store, position)
         }
     }
@@ -61,8 +65,10 @@ class RegistrationStep4BuyerFragment : Fragment(), View.OnClickListener, StoreCl
     private fun selectStore(store: Store, position: Int) {
         val selected = store.selected
 
-        if(!selected)
+        if(!selected){
             selectedStore = store.Id_Trgovine!!
+            selectedPosition = position
+        }
         else
             selectedStore = 0
         store.selected = !selected
@@ -71,10 +77,10 @@ class RegistrationStep4BuyerFragment : Fragment(), View.OnClickListener, StoreCl
     }
 
     private fun getStores(){
-        var mService = Common.api
+        val mService = Common.api
         mService.getAllStores(com.example.pop_sajamv2.Session.user.Token, RegistrationData.KorisnickoIme, true).enqueue(object: Callback<StoresResponse>{
             override fun onFailure(call: Call<StoresResponse>, t: Throwable) {
-                Toast.makeText(activity, t!!.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, t.message, Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(
@@ -93,14 +99,14 @@ class RegistrationStep4BuyerFragment : Fragment(), View.OnClickListener, StoreCl
     }
 
     override fun onClick(v: View?) {
-        var mService = Common.api
+        val mService = Common.api
         if (selectedStore==0){
             Toast.makeText(activity, getString(R.string.toast_store_not_set), Toast.LENGTH_SHORT).show()
             return
         }
         mService.assignStore(com.example.pop_sajamv2.Session.user.Token, RegistrationData.KorisnickoIme, true, selectedStore).enqueue(object: Callback<OneStoreResponse>{
             override fun onFailure(call: Call<OneStoreResponse>, t: Throwable) {
-                Toast.makeText(activity, t!!.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, t.message, Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(
