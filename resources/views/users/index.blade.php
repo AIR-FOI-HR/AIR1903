@@ -196,7 +196,7 @@
 	
 		var table = $('#resources');
 		table.DataTable({
-			'pageLength': 100,
+			'pageLength': 25,
 			'lengthMenu': [ 10, 25, 50, 100, 500 ],
 			'aaSorting': [],
 			'order': [[ 1, 'asc' ]],

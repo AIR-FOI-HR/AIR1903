@@ -132,8 +132,8 @@
 		var table = $('#resources');
 
 		table.DataTable({
-			'pageLength': 100,
-			'lengthMenu': [ 10, 25, 50, 100, 500 ],
+			'pageLength': 500,
+			'lengthMenu': [ 10, 25, 50, 100, 500, 1000 ],
 		 	'aaSorting': [],
 		 	'columnDefs': [
 				{ 
