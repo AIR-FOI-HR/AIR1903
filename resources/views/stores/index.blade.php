@@ -158,6 +158,8 @@
 		});
 
 		table.DataTable({
+			'pageLength': 100,
+			'lengthMenu': [ 10, 25, 50, 100, 500 ],
 			'aaSorting': [],
 			'order': [[ 2, 'desc' ]],
 		 	'columnDefs': [
