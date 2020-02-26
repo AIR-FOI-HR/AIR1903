@@ -115,4 +115,5 @@
     <string name="toast_store_name_blank">Ime trgovine ne smije biti prazno</string>
     <string name="toast_store_exists">Ime trgovine već postoji</string>
     <string name="toast_role_not_selected">Molimo odaberite ulogu</string>
+    <string name="toast_buy_from_own_store">Ne možete kupovati iz svoje trgovine</string>
 </resources>

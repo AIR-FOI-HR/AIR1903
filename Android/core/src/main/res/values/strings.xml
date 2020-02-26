@@ -114,4 +114,5 @@
     <string name="toast_store_not_set">Please select a store</string>
     <string name="toast_role_not_selected">Please select a role</string>
     <string name="toast_store_no_invoices">No invoices</string>
+    <string name="toast_buy_from_own_store">You can\'t buy from your own store</string>
 </resources>
