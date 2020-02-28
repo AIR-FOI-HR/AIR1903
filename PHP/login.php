@@ -28,16 +28,13 @@ if ($loginCheck==0){
     return;
 }
 
-$loginCheck = $db->userConfirmed($_POST);
-if ($loginCheck==0){
-    $response->STATUS=false;
-    $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
-    $response = json_encode($response);
-    echo $response;
-    return;
-}
-
 $loginCheck = $db->checkPassword($_POST);
+
+$loginCheck2 = $db->userConfirmed($_POST);
+
+$storeName = $db->getStoreOfUser($_POST["KorisnickoIme"]);
+
+$isAdmin = $db->isAdmin($_POST["KorisnickoIme"]);
 
 if ($loginCheck[0]["KrivePrijave"]!=0){
     $response->STATUS=false;
@@ -47,12 +44,30 @@ if ($loginCheck[0]["KrivePrijave"]!=0){
     return;
 }
 else {
-    $response->STATUS=true;
-    $response->STATUSMESSAGE="Login successful";
-    $response->DATA=json_decode($loginCheck[1]);
-    $response= json_encode($response);
-    echo $response;
-    return;
+    if ($storeName==false&&!$isAdmin){
+        $response->STATUS=false;
+        $response->STATUSMESSAGE="USER NEEDS STORE";
+        $response->DATA["KorisnickoIme"]=$_POST["KorisnickoIme"];
+        $response->DATA["Token"]=$db->generateAuth($_POST["KorisnickoIme"], true);
+        $response = json_encode($response);
+        echo $response;
+        return;
+    }
+    if ($loginCheck2==0){
+        $response->STATUS=false;
+        $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
+        $response = json_encode($response);
+        echo $response;
+        return;
+    }
+    else{
+        $response->STATUS=true;
+        $response->STATUSMESSAGE="Login successful";
+        $response->DATA=json_decode($loginCheck[1]);
+        $response= json_encode($response);
+        echo $response;
+        return;
+    }
 }
 
 ?>
