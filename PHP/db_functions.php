@@ -755,6 +755,21 @@ class DB_Functions {
         
         $idRacuna = $post["Id_Racuna"];
         
+        $q = "SELECT Id_Trgovine FROM Racun WHERE Id={$idRacuna}";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idTrgovineProdavac = $stmt["Id_Trgovine"];
+        
+        $idTrgovineKupac = $this->getStoreOfUser($post["KorisnickoIme"]);
+        
+        if ($idTrgovineKupac==$idTrgovineProdavac){
+            $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            $q = "DELETE FROM Racun WHERE Id = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            return -3;
+        }
+        
         $q = "UPDATE Racun SET Kupac = {$idKupca} WHERE Id = {$idRacuna}";
         $stmt=$this->conn->query($q);
         
