@@ -115,4 +115,8 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("korisnici.php")
     fun setRole(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("SETOWNROLE") SETOWNROLE:Boolean, @Field("RoleId") RoleId:Int):Call<RoleSetResponse>
+
+    @FormUrlEncoded
+    @POST("korisnici.php")
+    fun setLanguage(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("SETLANGUAGE") SETLANGUAGE:Boolean, @Field("Jezik") Jezik:Int):Call<RoleSetResponse>
 }

@@ -22,6 +22,7 @@ class MainMenuSeller : BaseActivity() {
         card_sell_items.setOnClickListener{showItems()}
         card_invoices.setOnClickListener{showInvoices()}
         card_wallet.setOnClickListener{showWalletBalance()}
+        card_settings.setOnClickListener{showLanguageSelect()}
     }
 
     private fun showItems(){
@@ -36,6 +37,11 @@ class MainMenuSeller : BaseActivity() {
 
     private fun showInvoices() {
         val intent = Intent(this, ShowInvoicesActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun showLanguageSelect() {
+        val intent = Intent(this, LanguageSelectActivity::class.java)
         startActivity(intent)
     }
 }

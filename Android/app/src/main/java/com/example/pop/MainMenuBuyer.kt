@@ -53,6 +53,8 @@ class MainMenuBuyer : BaseActivity() {
             dialogWindow.dimBehind()
         }
 
+        card_settings.setOnClickListener{showLanguageSelect()}
+
         dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow.dismiss() }
 
         dialogView.btn_qr_code.setOnClickListener {
@@ -81,6 +83,11 @@ class MainMenuBuyer : BaseActivity() {
                 toast.show()
             }
         }
+    }
+
+    private fun showLanguageSelect() {
+        val intent = Intent(this, LanguageSelectActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showWalletBalance() {

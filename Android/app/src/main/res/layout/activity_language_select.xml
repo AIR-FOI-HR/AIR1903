@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registrationStep3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.RegistrationStep5Fragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:text="@string/language_select_title"
+            android:textAlignment="center"
+            android:textColor="@color/colorFoi"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="311dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="50dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/btn_choose_language"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/language_select_english"
+                app:layout_constraintBottom_toTopOf="@+id/imageView4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="154dp"
+                android:layout_height="105dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/flag_en"
+                app:layout_constraintBottom_toTopOf="@+id/radioGroupRole"
+                app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="57dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/language_select_croatian"
+                app:layout_constraintBottom_toTopOf="@+id/imageView5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="153dp"
+                android:layout_height="105dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/flag_hr"
+                app:layout_constraintBottom_toTopOf="@+id/radioGroupRole"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupRole"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true"
+                android:dividerPadding="50dp"
+                android:gravity="center"
+                android:orientation='horizontal'
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                /<me.omidh.liquidradiobutton.LiquidRadioButton
+                    android:id="@+id/RadioEnglish"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:tag="0"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="20sp"
+                    app:lrb_checkedColor="@color/colorFoi"
+                    app:lrb_explodeCount="4"
+                    app:lrb_inAnimDuration="500"
+                    app:lrb_innerCircleRadius="15dp"
+                    app:lrb_outAnimDuration="500"
+                    app:lrb_outterPadding="8dp"
+                    app:lrb_strokeRadius="23dp"
+                    app:lrb_strokeWidth="1dp"
+                    app:lrb_unCheckedColor="@color/colorFoi" />
+
+                <me.omidh.liquidradiobutton.LiquidRadioButton
+                    android:id="@+id/RadioCroatian"
+                    android:layout_height="wrap_content"
+                    android:tag="1"
+                    android:textSize="20sp"
+                    app:lrb_checkedColor="@color/colorFoi"
+                    app:lrb_explodeCount="4"
+                    app:lrb_inAnimDuration="500"
+                    app:lrb_innerCircleRadius="15dp"
+                    app:lrb_outAnimDuration="500"
+                    app:lrb_outterPadding="8dp"
+                    app:lrb_strokeRadius="23dp"
+                    app:lrb_strokeWidth="1dp"
+                    app:lrb_unCheckedColor="@color/colorFoi" />
+            </RadioGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_choose_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/img_check_mark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

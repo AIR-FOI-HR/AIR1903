@@ -29,6 +29,7 @@
         <activity android:name="com.example.nfc.SetNfcMessageActivity" />
         <activity android:name=".SellItemsActivity" />
         <activity android:name=".ShowInvoicesActivity" />
+        <activity android:name=".LanguageSelectActivity" />
         <activity android:name=".ShowWalletBalanceActivity" />
         <activity
             android:name=".ShowItemsActivity"

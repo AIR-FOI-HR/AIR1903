@@ -116,4 +116,8 @@
     <string name="toast_store_exists">Ime trgovine već postoji</string>
     <string name="toast_role_not_selected">Molimo odaberite ulogu</string>
     <string name="toast_buy_from_own_store">Ne možete kupovati iz svoje trgovine</string>
+    <string name="language_select_croatian">Hrvatski</string>
+    <string name="language_select_english">Engleski</string>
+    <string name="language_select_title">Odaberite jezik</string>
+    <string name="invoice_list_item_invoice">"  | Račun"</string>
 </resources>
