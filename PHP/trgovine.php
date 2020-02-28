@@ -15,14 +15,15 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             return;
         }
         $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
-        if ($authorised==false){
+        $role = $db->getUserRole($_POST["KorisnickoIme"]);
+        if ($authorised==false && $role!=1){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "UNAUTHORISED";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
         }
-        $stores = $db->getStores();
+        $stores = $db->getStores($role);
         $response->STATUS = true;
         $response->STATUSMESSAGE = "SUCCESS";
         $response->DATA= $stores;
@@ -112,7 +113,7 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             echo $response;
             return;
         }
-        if (!isset($_POST["NazivTrgovine"])){
+        if (!isset($_POST["NazivTrgovine"]) || empty($_POST["NazivTrgovine"])){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "NO STORE NAME";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
@@ -120,7 +121,8 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             return;
         }
         $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
-        if ($authorised==false){
+        $role = $db->getUserRole($_POST["KorisnickoIme"]);
+        if ($authorised==false && $role!=3){
             $response->STATUS = false;
             $response->STATUSMESSAGE = "UNAUTHORISED";
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
@@ -128,14 +130,22 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             return;
         }
         
+        
         $created = $db->createStore($_POST);
         if ($created == false){
             $response->STATUSMESSAGE = "STORE ALREADY EXISTS";
             $response->STATUS = false;
-            $response->DATA=$_POST["NazivTrgovine"];
+            $response->DATA["NazivTrgovine"]=$_POST["NazivTrgovine"];
             $response = json_encode($response, JSON_UNESCAPED_UNICODE);
             echo $response;
             return;
+        }
+        
+        if ($role==3){
+            $p["KorisnickoImeKorisnik"]=$_POST["KorisnickoIme"];
+            $p["Id_Trgovine"]=$created;
+            $p["ASSIGNSTORE"]=true;
+            $db->assignStore($p);
         }
         $response->STATUSMESSAGE = "STORE CREATED";
         
@@ -291,6 +301,52 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             $response->STATUS = false;
             $response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
         }
+        
+        
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
+    
+    if (isset($_POST["ASSIGNSTORESELF"]) && $_POST["ASSIGNSTORESELF"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if ((!isset($_POST["Id_Trgovine"]) || empty($_POST["Id_Trgovine"])) && $_POST["ASSIGNSTORESELF"]=="true"){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO STORE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
+        $role = $db->getUserRole($_POST["KorisnickoIme"]);
+        if ($role!=1){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "UNAUTHORISED";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $p["KorisnickoImeKorisnik"]=$_POST["KorisnickoIme"];
+        $p["Id_Trgovine"] = $_POST["Id_Trgovine"];
+        $p["ASSIGNSTORE"]=true;
+        $assigned = $db->assignStore($p);
+        if ($assigned==1){
+            $response->STATUSMESSAGE = "STORE ASSIGNED";
+            //$response->DATA["KorisnickoImeKorisnik"]=$_POST["KorisnickoImeKorisnik"];
+            //$response->DATA["Id_Trgovine"]=$_POST["Id_Trgovine"];
+            //$response->DATA["Naziv_Trgovine"]=$db->getStoreName($_POST["Id_Trgovine"]);
+        }
+        elseif($assigned==0){
+            $response->STATUSMESSAGE = "STORE UNASSIGNED";
+        }
+        
+        $response->STATUS = true;
         
         
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
