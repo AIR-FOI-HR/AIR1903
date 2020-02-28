@@ -86,6 +86,7 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             if ($userExists==false){
                 $response->STATUS = false;
                 $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+                $response->DATA["KorisnickoIme"]=$korisnik;
                 $response = json_encode($response, JSON_UNESCAPED_UNICODE);
                 echo $response;
                 return;

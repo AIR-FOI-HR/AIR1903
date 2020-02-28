@@ -1423,6 +1423,12 @@ class DB_Functions {
                 $i["StanjeRacunaTrgovine"]=$balance;
             }
             if ($i["Id_Uloge"]==1){
+                $q = "SELECT t.Id, t.Naziv FROM Trgovina_Korisnik k JOIN Trgovina t ON k.Id_Trgovina = t.Id WHERE k.Id_Korisnik = {$i["Id"]}";
+                $stmt2 = $this->conn->query($q);
+                $stmt2 = $stmt2->fetch_assoc();
+                $i["Id_Trgovine"]=$stmt2["Id"];
+                $i["Naziv_Trgovine"]=$stmt2["Naziv"];
+                
                 $p["KorisnickoIme"]= $i["KorisnickoIme"];
                 $balance = $this->getBalance($p);
                 $i["StanjeRacuna"]=$balance;
@@ -1506,9 +1512,15 @@ class DB_Functions {
         return $roles;
     }
 	
-	public function getStores(){
+	public function getStores($role){
         $event = $this->getCurrentEvent();
-        $q = "SELECT t.Id Id_Trgovine, t.Naziv Naziv_Trgovine, stanje.StanjeRacuna FROM (
+        if ($role==1){
+            $responseWorkaround = "NazivTrgovine";
+        }
+        elseif($role==2){
+            $responseWorkaround = "Naziv_Trgovine";
+        }
+        $q = "SELECT t.Id Id_Trgovine, t.Naziv {$responseWorkaround}, stanje.StanjeRacuna FROM (
 		SELECT c.Id_Trgovine, d.StanjeRacuna, c.UnixVrijeme FROM (
 			SELECT Id_Trgovine, MAX(UnixVrijeme) UnixVrijeme FROM Trgovina_StanjeRacuna GROUP BY Id_Trgovine
 		) c JOIN Trgovina_StanjeRacuna d ON c.Id_Trgovine = d.Id_Trgovine AND d.UnixVrijeme = c.UnixVrijeme
@@ -1516,10 +1528,10 @@ class DB_Functions {
         $stmt = $this->conn->query($q);
         $stores = $stmt->fetch_all(MYSQLI_ASSOC);
         foreach ($stores as &$i){
-            $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme FROM Trgovina_Korisnik tk JOIN Korisnik k ON k.Id=tk.Id_Korisnik JOIN Trgovina t ON t.Id=tk.Id_Trgovina WHERE t.Obrisan=0 AND t.Id={$i["Id_Trgovine"]}";
+            $q = "SELECT k.Ime, k.Prezime, k.Email, k.KorisnickoIme, u.Naziv Uloga FROM Trgovina_Korisnik tk JOIN Korisnik k ON k.Id=tk.Id_Korisnik JOIN Trgovina t ON t.Id=tk.Id_Trgovina JOIN Uloga u ON u.Id=k.Id_Uloge WHERE t.Obrisan=0 AND t.Id={$i["Id_Trgovine"]}";
             $stmt = $this->conn->query($q);
             $i["BrojZaposlenika"]=$stmt->num_rows;
-            $i["Zaposlenici"]=$stmt->fetch_all(MYSQLI_ASSOC);
+            if ($role==2) $i["Zaposlenici"]=$stmt->fetch_all(MYSQLI_ASSOC);
         }
         return $stores;
     }
