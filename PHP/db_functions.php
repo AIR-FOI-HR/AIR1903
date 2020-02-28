@@ -1763,6 +1763,50 @@ class DB_Functions {
         $stmt=$this->conn->query($q);
         return $stmt->fetch_assoc();
     }
+	
+	public function setOwnRole($post){
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Id, KorisnickoIme FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        $stmt = $this->conn->query($q);
+        $user = $stmt->fetch_assoc();
+        $id=$user["Id"];
+        
+        if ($post["RoleId"]==3){ //Prodavač
+            $q = "SELECT * FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+            $stmt = $this->conn->query($q);
+
+            $isInStore = $stmt->fetch_assoc();
+            if ($isInStore!=false){
+                $q = "DELETE FROM Trgovina_Korisnik WHERE  Id_Korisnik = {$id}";
+                $stmt = $this->conn->query($q);
+            }
+
+            //$q = "INSERT INTO Trgovina_Korisnik (Id, Id_Trgovina, Id_Korisnik) VALUES (null, {$post["Id_Trgovine"]}, {$id})";
+            //$stmt = $this->conn->query($q);
+            $q = "UPDATE Korisnik SET Id_Uloge=3 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+            $stmt = $this->conn->query($q);
+        }
+        elseif($post["RoleId"]==1){ //Kupac
+            $q = "UPDATE Korisnik SET Id_Uloge=1 WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+            $stmt = $this->conn->query($q);
+
+            $q = "DELETE FROM Trgovina_Korisnik WHERE Id_Korisnik = {$id}";
+            $stmt = $this->conn->query($q);
+        }
+        $q = "SELECT Naziv FROM Uloga WHERE Id={$post["RoleId"]}";
+        $stmt = $this->conn->query($q);
+        $role = $stmt->fetch_assoc();
+        return $role["Naziv"];
+    }
+    
+    public function getUserRole($korIme){
+        $event = $this->getCurrentEvent();
+        $q = "SELECT k.KorisnickoIme, k.Id_Uloge "
+            . "FROM Korisnik k WHERE k.KorisnickoIme='{$korIme}' AND k.Obrisan=0 AND (k.Id_Eventa={$event["Id"]} OR k.Id_Eventa IS NULL)";
+        $stmt = $this->conn->query($q);
+        $role = $stmt->fetch_assoc();
+        return $role["Id_Uloge"];
+    }
     
 
 }

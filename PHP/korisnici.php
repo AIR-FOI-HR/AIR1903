@@ -317,6 +317,54 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         echo $response;
         return;
     }
+    if (isset($_POST["SETOWNROLE"]) && $_POST["SETOWNROLE"] == true) {
+        if (!isset($_POST["KorisnickoIme"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO USERNAME";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if (!isset($_POST["RoleId"])){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO ROLE";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $admin = $db->isAdmin($_POST["KorisnickoIme"]);
+        if ($admin==true){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "ADMINS SHOULDN'T USE THIS CALL";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        if ($_POST["RoleId"]==2){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "LOL YOU CAN'T MAKE YOURSELF ADMIN";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        
+        $role=$db->setOwnRole($_POST);
+        $response->STATUS=true;
+        $response->STATUSMESSAGE = "OWN ROLE SET";
+        $response->DATA["KorisnickoIme"]=$_POST["KorisnickoIme"];
+        $response->DATA["Uloga"]=$role;
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
     
 }
 else{
