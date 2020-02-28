@@ -1366,30 +1366,33 @@ class DB_Functions {
 	
 	public function confirmRegistration($post){
         $event=$this->getCurrentEvent();
-        if ($post["CONFIRM"]=="true"){
-            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
-            $stmt = $this->conn->query($q);
-            $user = $stmt->fetch_assoc();
-            if (!empty($user)){
-                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        foreach ($post["KorisnickoImeKorisnik"] as &$korisnik){
+            if ($post["CONFIRM"]=="true"){
+                $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$korisnik}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
                 $stmt = $this->conn->query($q);
-                return true;
+                $user = $stmt->fetch_assoc();
+                if (!empty($user)){
+                    $q = "UPDATE Korisnik SET PrijavaPotvrdena = 1 WHERE KorisnickoIme = '{$korisnik}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+                    $stmt = $this->conn->query($q);
+                    //return true;
+                }
+                else
+                    return false;
             }
-            else
-                return false;
-        }
-        elseif ($post["CONFIRM"]=="false"){
-            $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$post["KorisnickoImeKorisnik"]}' AND k.Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
-            $stmt = $this->conn->query($q);
-            $user = $stmt->fetch_assoc();
-            if (!empty($user)){
-                $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$post["KorisnickoImeKorisnik"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+            elseif ($post["CONFIRM"]=="false"){
+                $q = "SELECT k.KorisnickoIme FROM Korisnik k WHERE KorisnickoIme='{$korisnik}' AND k.Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
                 $stmt = $this->conn->query($q);
-                return true;
+                $user = $stmt->fetch_assoc();
+                if (!empty($user)){
+                    $q = "UPDATE Korisnik SET PrijavaPotvrdena = 0 WHERE KorisnickoIme = '{$korisnik}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+                    $stmt = $this->conn->query($q);
+                    //return true;
+                }
+                else
+                    return false;
             }
-            else
-                return false;
         }
+        return true;
     }
     
     public function userConfirmed($post){

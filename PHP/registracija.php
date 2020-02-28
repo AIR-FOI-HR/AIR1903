@@ -24,15 +24,7 @@ if (isset($_POST["CONFIRM"])){
             echo $response;
             return;
         }
-        $p["KorisnickoIme"] = $_POST["KorisnickoImeKorisnik"];
-        $userExists = $db->userExistsLogin($p);
-        if ($userExists==false){
-            $response->STATUS = false;
-            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
-            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
-            echo $response;
-            return;
-        }
+        
         $authorised = $db->isAdmin($_POST["KorisnickoIme"]);
         if ($authorised==false){
             $response->STATUS = false;
@@ -41,6 +33,20 @@ if (isset($_POST["CONFIRM"])){
             echo $response;
             return;
         }
+        
+        foreach ($_POST["KorisnickoImeKorisnik"] as $korisnik){
+            $p["KorisnickoIme"] = $korisnik;
+            $userExists = $db->userExistsLogin($p);
+            if ($userExists==false){
+                $response->STATUS = false;
+                $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+                $response->DATA["KorisnickoIme"] = $korisnik;
+                $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+                echo $response;
+                return;
+            }
+        }
+        
         $response->STATUS=$db->confirmRegistration($_POST);
         if ($response->STATUS == true && ($_POST["CONFIRM"]=="true" || $_POST["CONFIRM"]=="false")){
             if ($_POST["CONFIRM"]=="true"){
