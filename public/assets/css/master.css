@@ -44,6 +44,12 @@
   box-sizing: border-box;
 }
 
+.selected-resource{
+  background-color:  rgb(255, 220, 144);
+}
+
+
+
 
 #card-report{
   max-height: 800px;
@@ -1902,7 +1908,7 @@ pre code {
 
 .table-hover tbody tr:hover {
   color: #212529;
-  background-color: rgba(0, 0, 0, 0.075);
+  background-color: rgb(255, 220, 144);
 }
 
 .table-primary,
@@ -11647,7 +11653,7 @@ a.text-dark:focus {
   height: auto !important;
 }
 
-#set-money-btn, #details-invoice-btn, #details-store-btn, #add-stores-btn, #add-events-btn{
+#set-money-btn, #details-invoice-btn, #details-store-btn, #add-stores-btn, #add-events-btn, #activate-btn, #select-all-btn{
   cursor: pointer;
   color: white;
   width: auto;
