@@ -31,7 +31,7 @@
 		</div>
 	</div>
 	
-	<div class="container col-lg-6 col-md-8">
+	<div class="container col-lg-6 col-md-10">
 		<div class="app-header">
 			<div class="row d-flex align-items-center">
 				<div class="col-md-6 col-sm-12 app-header__title">
