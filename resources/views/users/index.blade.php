@@ -41,14 +41,20 @@
 		
 		<div class="app-header">
 			<div class="row d-flex align-items-center">
-				<div class="col-md-6 col-sm-12 app-header__title">
+				<div class="col-md-3 col-sm-12 app-header__title">
 					<h3>Korisnici</h3>
 				</div>	
 
-				<div class="col-md-6 col-sm-12 app-header__add-btn">
+				<div class="col-md-9 col-sm-12 app-header__add-btn">
 					<input type="number" min="0.00" max="99999.00"  id="set-money-input" class="form-header-data-input" placeholder="Novčani iznos" aria-controls="resources">
-					<a id="set-money-btn" class="custom-button">
+					<a id="set-money-btn" class="custom-button mr-2">
 						Postavi novac
+					</a>
+					<a id="activate-btn" class="custom-button mr-2">
+						Aktiviraj
+					</a>
+					<a id="select-all-btn" class="custom-button">
+						Označi sve
 					</a>
 				</div>
 			</div>
@@ -65,9 +71,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="table-responsive bg-white shadow">
-							<table id="resources" class="table " style="width: 100%">
+							<table id="resources" class="table table-hover" style="width: 100%">
 								<thead>
-									<tr>
+									<tr class='static'>
 										<th class="text-center">
 											Aktiviran
 										</th>
@@ -90,9 +96,9 @@
 									@if(!empty($users))
 										@foreach ($users as $user)
 											@if ($user['KorisnickoIme'] == session('korisnickoIme'))
-											<tr style="background: #b7b7b76b;">
+												<tr class="static">
 											@else
-											<tr>
+												<tr data-resource-name="{{ $user['KorisnickoIme'] }}">
 											@endif
 											<td class="text-center">
 												@if ($user['KorisnickoIme'] != session('korisnickoIme'))
@@ -177,9 +183,12 @@
 
 @section('js')
 	<script type="text/javascript" src="{{ asset('assets/js/bootstrap-select/bootstrap-select.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('assets/js/multiselect/multiselect.js') }}"></script>
 	<script type="text/javascript">
 
 		var table = $('#resources');
+		var allSelected = false;
+		var selectedResources = [];
 
 		var singleResourceDeleteBtn = $('.single-resource-delete-btn');
 		var singleResourceActivateCheckbox = $('.single-resource-activate-checkbox');
@@ -188,13 +197,20 @@
 		var singleResourceMoneyInput = $('.single-resource-money-input');
 		var resourcesMoneySetInput = $('#set-money-input');
 		var resourcesMoneySetBtn = $('#set-money-btn');
+		var resourcesActivateBtn = $('#activate-btn');
+		var resourcesSelectAllBtn = $('#select-all-btn');
 
 		var singleResourceDeleteForm = $('#single-resource-delete-form');
 		var singleResourceUpdateForm = $('#single-resource-update-form');
 		
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+
 		$('.selectpicker').selectpicker('refresh');
-	
-		var table = $('#resources');
+
 		table.DataTable({
 			'pageLength': 500,
 			'lengthMenu': [ 10, 25, 50, 100, 500 ],
@@ -226,6 +242,22 @@
                 },
             }
 		 });
+		$(function () {
+			console.log("USAO");
+			table.multiSelect({
+				actcls: 'selected-resource',
+				selector: 'tbody tr',
+				except: ['tbody', '.container'],
+				callback: function (items) {
+					selectedResources = [];
+					for (i = 0; i < items.length; i++) {
+						selectedResources[i] = items[i].getAttribute('data-resource-name');
+					}
+					console.log(selectedResources);
+				}
+        	});
+		})
+
 
 		singleResourceDeleteBtn.on('click', function() {
 			var resourceName = $(this).attr('data-resource-name');
@@ -295,12 +327,124 @@
 			if(!resourcesMoney)
 				resourcesMoney = 0;
 			resourcesMoney = parseFloat(resourcesMoney).toFixed(2);
+			
+			var url = "{{ route('users.updateMoneyMultiple') }}";
 
-			var url = "{{ route('users.updateMoneyAll', ['value' => 'resourcesMoney']) }}";
-			url = url.replace('resourcesMoney', resourcesMoney);
+			$.ajax({
+                type: "post",
+                url: url,
+                data: {
+					users: selectedResources,
+					value: resourcesMoney,
+				}, success: function(data){
+					
+					setTimeout(function() {
+     				 	location.reload();
+					}, 2000);
 
-			singleResourceUpdateForm.attr('action', url);
-			singleResourceUpdateForm.submit();
+					$.notify({
+							message: "Korisnicima je uspješno promijenjeno novčano stanje." 
+						},{
+							type: 'success',
+							animate: {
+								enter: 'animated fadeInUp',
+								exit: 'animated flipOutX'
+							},
+							placement: {
+								from: "bottom",
+								align: "right"
+							},
+							delay: 100,
+							timer: 2000,
+					});
+        		}, error : function(){
+					
+					$.notify({
+							message: "Greška prilikom promjene novčanog stanja korisnika." 
+						},{
+							type: 'danger',
+							animate: {
+								enter: 'animated fadeInUp',
+								exit: 'animated flipOutX'
+							},
+							placement: {
+								from: "bottom",
+								align: "right"
+							},
+							delay: 100,
+							timer: 2000,
+					});
+				}
+			});
+		});
+
+		resourcesActivateBtn.on('click', function() {
+			
+			var url = "{{ route('users.updateStatusMultiple') }}";
+
+			$.ajax({
+                type: "post",
+                url: url,
+                data: {
+					users: selectedResources,
+				}, success: function(data){
+					
+					setTimeout(function() {
+     				 	location.reload();
+					}, 2000);
+
+					$.notify({
+							message: "Korisnici su uspješno aktivirani." 
+						},{
+							type: 'success',
+							animate: {
+								enter: 'animated fadeInUp',
+								exit: 'animated flipOutX'
+							},
+							placement: {
+								from: "bottom",
+								align: "right"
+							},
+							delay: 100,
+							timer: 2000,
+					});
+        		}, error : function(){
+					
+					$.notify({
+							message: "Greška prilikom aktivacije korisnika." 
+						},{
+							type: 'danger',
+							animate: {
+								enter: 'animated fadeInUp',
+								exit: 'animated flipOutX'
+							},
+							placement: {
+								from: "bottom",
+								align: "right"
+							},
+							delay: 100,
+							timer: 2000,
+					});
+				}
+			});
+		});
+
+		resourcesSelectAllBtn.on('click', function() {
+			var rows = [];
+			selectedResources = [];
+			
+			if(!allSelected) {
+				$("tr:not('[class*=static]')").addClass('selected-resource');
+				rows = $("tr:not('[class*=static]')")
+				for (i = 0; i < rows.length; i++) {
+						selectedResources[i] = rows[i].getAttribute('data-resource-name');
+				}
+				allSelected = true;
+			} else {
+				$("tr:not('[class*=static]')").removeClass('selected-resource');
+				allSelected = false;
+				selectedResources = [];
+			}
 		});
 
 	</script>
