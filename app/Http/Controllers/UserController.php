@@ -221,6 +221,9 @@ class UserController extends Controller
         $_POST['SET'] = 'true';
         $_POST['StanjeRacuna'] = (string)request('value');
 
+        foreach ($users as $user)
+            $_POST['KorisnickoImeKorisnik'][] = $user; 
+
         $_POST = http_build_query($_POST);
         $ch = curl_init("http://cortex.foi.hr/pop/novcanik.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
