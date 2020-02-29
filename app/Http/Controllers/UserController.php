@@ -98,7 +98,7 @@ class UserController extends Controller
     {
         $_POST['Token'] = session('token');
         $_POST['KorisnickoIme'] = session('korisnickoIme');
-        $_POST['KorisnickoImeKorisnik'] = $user;
+        $_POST['KorisnickoImeKorisnik[]'] = $user;
         $_POST['CONFIRM'] = $value;
 
         $ch = curl_init("http://cortex.foi.hr/pop/registracija.php");
@@ -120,6 +120,25 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+    public function updateStatusMultiple(){
+        $users = request('users');
+        $_POST['Token'] = session('token');
+        $_POST['KorisnickoIme'] = session('korisnickoIme');
+        $_POST['CONFIRM'] = 'true';
+
+        foreach ($users as $user)
+            $_POST['KorisnickoImeKorisnik'][] = $user; 
+
+        $_POST = http_build_query($_POST);
+        $ch = curl_init("http://cortex.foi.hr/pop/registracija.php");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+
+        return redirect()->route('users.index');
+    }
 
     public function updateRole($user, $value)
     {
@@ -194,29 +213,14 @@ class UserController extends Controller
     }
 
 
-    public function updateMoneyAll($value)
+    public function updateMoneyMultiple()
     {
+        $users = request('users');
         $_POST['Token'] = session('token');
         $_POST['KorisnickoIme'] = session('korisnickoIme');
-        $_POST['Readall'] = 'true';
-
-        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = json_decode(curl_exec($ch), true);
-        $users = $result['DATA'];
-        curl_close($ch);
-        unset($_POST['Readall']);
-
         $_POST['SET'] = 'true';
-        $_POST['StanjeRacuna'] = (string)$value;
+        $_POST['StanjeRacuna'] = (string)request('value');
 
-        foreach ($users as $user){
-            if($user['Naziv'] == 'Kupac')
-                $_POST['KorisnickoImeKorisnik'][] = $user['KorisnickoIme']; 
-        }
-        
         $_POST = http_build_query($_POST);
         $ch = curl_init("http://cortex.foi.hr/pop/novcanik.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -224,11 +228,6 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
-
-        if($result['STATUSMESSAGE'] == "BALANCE SET")
-            session()->flash('success', "Korisnicima je uspješno promijenjeno novčano stanje.");
-        else
-            session()->flash('error', "Greška prilikom promjene novčanog stanja korisnika.");
         
         return redirect()->route('users.index');
     }

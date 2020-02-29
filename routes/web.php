@@ -25,7 +25,8 @@ Route::group(['middleware' => ['web', 'custom_auth']], function () {
     Route::put('/{user}/update/role/{value}', 'UserController@updateRole')->name('users.updateRole');
     Route::put('/{user}/update/store/{value}', 'UserController@updateStore')->name('users.updateStore');
     Route::put('/{user}/update/money/{value}', 'UserController@updateMoney')->name('users.updateMoney');
-    Route::put('/users/update/moneyall/{value}', 'UserController@updateMoneyAll')->name('users.updateMoneyAll');
+    Route::post('/users/update/money-multiple/', 'UserController@updateMoneyMultiple')->name('users.updateMoneyMultiple');
+    Route::post('/users/update/status-multiple/', 'UserController@updateStatusMultiple')->name('users.updateStatusMultiple');
     Route::put('/{user}/update', 'UserController@update')->name('users.update');
 
     Route::resource('stores', 'StoreController');
