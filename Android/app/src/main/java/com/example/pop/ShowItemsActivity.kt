@@ -2,6 +2,7 @@ package com.example.pop
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import com.example.core.BaseActivity
 import com.example.pop.adapters.ShowItemsPagerAdapter
 import com.example.webservice.Model.Item
@@ -36,14 +37,17 @@ class ShowItemsActivity : BaseActivity(){
         selectedItems.addAll(fragmentAdapter.packagesFragment.selectedPackages)
         selectedItems.addAll(fragmentAdapter.productsFragment.selectedProducts)
 
-        val intent = Intent(this, SellItemsActivity::class.java)
-        intent.putExtra("items", ItemsWrapper(selectedItems))
-        startActivity(intent)
+        if(selectedItems.isNotEmpty()) {
+            val intent = Intent(this, SellItemsActivity::class.java)
+            intent.putExtra("items", ItemsWrapper(selectedItems))
+            startActivity(intent)
+        } else {
+            Toast.makeText(this@ShowItemsActivity, getString(R.string.toast_no_items_selected),Toast.LENGTH_SHORT).show()
+        }
     }
     override fun onBackPressed() {
         super.onBackPressed()
-        var intent:Intent
-        intent = Intent(this, MainMenuSeller::class.java)
+        val intent = Intent(this, MainMenuSeller::class.java)
         startActivity(intent)
         finishAffinity()
     }

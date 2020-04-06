@@ -32,5 +32,4 @@ class User {
         Token=""
         Jezik=0
     }
-
 }

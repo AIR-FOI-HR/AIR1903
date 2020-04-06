@@ -20,7 +20,7 @@ class InvoiceDetailsActivity : BaseActivity() {
         layoutInvoiceDetailsDate.text = invoice.DatumIzdavanja
         layoutInvoiceDetailsSeller.text = invoice.Trgovina
         layoutInvoiceDetailsBuyer.text = invoice.Ime_Klijenta
-        layoutInvoiceDetailsTotal.text = invoice.ZavrsnaCijena
+        layoutInvoiceDetailsTotal.text = "%.2f".format(invoice.ZavrsnaCijena!!.toDouble())
         layoutInvoiceDetailsInvoiceDiscountValue.text = invoice.PopustRacuna+" %"
         layoutInvoiceDetailsInvoiceBeforeDiscountValue.text = invoice.CijenaRacuna
         layoutInvoiceDetailsInvoiceDiscountAmountValue.text = invoice.IznosPopustaRacuna
