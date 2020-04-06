@@ -134,6 +134,12 @@ class MainMenuBuyer : BaseActivity() {
                     else if (response.STATUSMESSAGE=="MISSING BALANCE"){
                         Toast.makeText(this, getString(com.example.core.R.string.toast_out_of_balance), Toast.LENGTH_SHORT).show()
                     }
+                    else if (response.STATUSMESSAGE=="NO BUYING FROM OWN STORE"){
+                        Toast.makeText(this, getString(com.example.core.R.string.toast_buy_from_own_store), Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                        Toast.makeText(this, response.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
                 super.onActivityResult(requestCode, resultCode, data)
