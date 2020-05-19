@@ -109,6 +109,53 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         echo $response;
         return;
     }
+	else if ($_POST["CONFIRMSALEFROMCODE"] == true) {
+        $userExists = $db->userExistsLogin($_POST);
+        if ($userExists==false){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "USER DOESN'T EXIST";
+            $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+            echo $response;
+            return;
+        }
+        $loginCheck = $db->userConfirmed($_POST);
+        if ($loginCheck==0){
+            $response->STATUS=false;
+            $response->STATUSMESSAGE="This user hasn't been confirmed yet. Please contact your admin.";
+            $response = json_encode($response);
+            echo $response;
+            return;
+        }
+        $saleInvoice = $db->confirmSaleFromCode($_POST);
+        if ($saleInvoice== -1){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "MISSING AMOUNT";
+            $response->DATA = null;
+        }
+        else if ($saleInvoice == -2){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "MISSING BALANCE";
+            $response->DATA = null;
+        }
+        else if ($saleInvoice == -3){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO BUYING FROM OWN STORE";
+            $response->DATA = null;
+        }
+        else if ($saleInvoice == -4){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "INVALID CODE";
+            $response->DATA = null;
+        }
+        else{
+            $response->STATUS = true;
+            $response->STATUSMESSAGE = "INVOICE FINALIZED";
+            $response->DATA = $saleInvoice;
+        }
+        $response = json_encode($response, JSON_UNESCAPED_UNICODE);
+        echo $response;
+        return;
+    }
     else if (isset($_POST["DELETE"]) && $_POST["DELETE"] == true){
         $response->STATUS = true;
         $response->STATUSMESSAGE = "DELETED";

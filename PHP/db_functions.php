@@ -685,7 +685,6 @@ class DB_Functions {
     public function sellItems($post) {
         $event = $this->getCurrentEvent();
         $popustRacuna = $post["PopustRacuna"];
-        $vrijemeProdaje = date("Y-m-d H:i:s");
         $idItema = $post["Itemi"];
         $kolicine = $post["Kolicine"];
         $mjestoIzdavanja = "Fakultet organizacije i informatike";
@@ -703,8 +702,17 @@ class DB_Functions {
         $stmt = $stmt->fetch_assoc();
         $idTrgovine=$stmt["Id_Trgovina"];
         
-        $q = "INSERT INTO Racun(Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac, Id_Eventa)"
-                . " VALUES (null, '{$mjestoIzdavanja}', '{$vrijemeProdaje}', {$popustRacuna}, {$idTrgovine}, {$idKupca}, {$event["Id"]})";
+        generiranjeKodaRacuna:
+        $vrijemeProdaje = date("Y-m-d H:i:s");
+        $kodRacuna = substr(strtoupper(md5($vrijemeProdaje.$idTrgovine)),0,8);
+        $q = "SELECT Id FROM Racun WHERE Kod_Racuna='{$kodRacuna}'";
+        $stmt = $this->conn->query($q);
+        if ($stmt->num_rows!=0){
+            goto generiranjeKodaRacuna;
+        }
+        
+        $q = "INSERT INTO Racun(Id, MjestoIzdavanja, DatumIzdavanja, Popust, Id_Trgovine, Kupac, Id_Eventa, Kod_Racuna)"
+                . " VALUES (null, '{$mjestoIzdavanja}', '{$vrijemeProdaje}', {$popustRacuna}, {$idTrgovine}, {$idKupca}, {$event["Id"]}, '{$kodRacuna}')";
         $stmt = $this->conn->query($q);
         $idRacuna=$this->conn->insert_id;
         
@@ -714,7 +722,7 @@ class DB_Functions {
             $q.= "(null, {$idItema[$i]}, {$idRacuna}, {$kolicine[$i]}), ";
         }
         $q = substr($q,0,-2);
-        //echo "TESTksan".$q;
+        
         $stmt = $this->conn->query($q);
         
         $p["Id_Racuna"] = $idRacuna;
@@ -722,6 +730,8 @@ class DB_Functions {
         $response = $this->getInvoice($p);
         //var_dump ($response);
         //return $response;
+        
+        $response["Kod_Racuna"]=$kodRacuna;
         
         $p["Id_Racuna"]=$idRacuna;
         $p["Id_Trgovine"]=$idTrgovine;
@@ -759,6 +769,66 @@ class DB_Functions {
         $stmt=$this->conn->query($q);
         $stmt = $stmt->fetch_assoc();
         $idTrgovineProdavac = $stmt["Id_Trgovine"];
+        
+        $idTrgovineKupac = $this->getStoreOfUser($post["KorisnickoIme"]);
+        
+        if ($idTrgovineKupac==$idTrgovineProdavac){
+            $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            $q = "DELETE FROM Racun WHERE Id = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            return -3;
+        }
+        
+        $q = "UPDATE Racun SET Kupac = {$idKupca} WHERE Id = {$idRacuna}";
+        $stmt=$this->conn->query($q);
+        
+        $p["Id_Racuna"] = $idRacuna;
+        $p["KorisnickoIme"] = $post["KorisnickoIme"];
+        $response = $this->getInvoice($p);
+        
+        
+        
+        if ($this->reduceAmount($p)==false){
+            $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            $q = "DELETE FROM Racun WHERE Id = {$idRacuna}";
+            $stmt=$this->conn->query($q);
+            return -1;
+        }
+        else{
+            $clientBalance = $this->getBalance($post);
+            if ($response["ZavrsnaCijena"]>$clientBalance){
+                $q = "DELETE FROM Item_Racun WHERE Id_Racuna = {$idRacuna}";
+                $stmt=$this->conn->query($q);
+                $q = "DELETE FROM Racun WHERE Id = {$idRacuna}";
+                $stmt=$this->conn->query($q);
+                return -2;
+            }
+            $time = time();
+            $this->updateBalance($response["Kupac"],$response["ZavrsnaCijena"],$time, false);
+            $this->updateBalance($response["Id_Trgovine"], $response["ZavrsnaCijena"],$time, true);
+            return $response;
+        }
+    }
+	
+	public function confirmSaleFromCode($post){
+        $event=$this->getCurrentEvent();
+        $q = "SELECT Id FROM Korisnik WHERE KorisnickoIme = '{$post["KorisnickoIme"]}' AND Obrisan=0 AND (Id_Eventa = {$event["Id"]} OR Id_Eventa IS NULL)";
+        $stmt=$this->conn->query($q);
+        $stmt = $stmt->fetch_assoc();
+        $idKupca = $stmt["Id"];
+        
+        $kodRacuna = $post["Kod_Racuna"];
+        
+        $q = "SELECT Id_Trgovine, Id FROM Racun WHERE Kod_Racuna='{$kodRacuna}'";
+        $stmt=$this->conn->query($q);
+        if($stmt->num_rows==0){
+            return -4;
+        }
+        $stmt = $stmt->fetch_assoc();
+        $idTrgovineProdavac = $stmt["Id_Trgovine"];
+        $idRacuna = $stmt["Id"];
         
         $idTrgovineKupac = $this->getStoreOfUser($post["KorisnickoIme"]);
         
