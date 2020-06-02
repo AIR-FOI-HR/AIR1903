@@ -25,7 +25,7 @@ object RetrofitClient {
             //client.addInterceptor(logging)
 
 
-            var builder = GsonBuilder().registerTypeAdapter(Item::class.java, ItemJsonDeserializer()).create()
+            val builder = GsonBuilder().registerTypeAdapter(Item::class.java, ItemJsonDeserializer()).create()
             retrofit = Retrofit.Builder().baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(builder))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -32,15 +32,8 @@ class InvoiceDetailsActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        var intent:Intent
-        if (Session.user.Id_Uloge == 3){
-            intent=Intent(this@InvoiceDetailsActivity, MainMenuSeller::class.java)
-        }
-        else{
-            intent=Intent(this@InvoiceDetailsActivity, MainMenuBuyer::class.java)
-        }
+        val intent = Intent(this@InvoiceDetailsActivity, ShowInvoicesActivity::class.java)
         startActivity(intent)
         finishAffinity()
-
     }
 }

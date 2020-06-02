@@ -43,6 +43,7 @@
     <string name="hint_product_price">Cijena proizvoda</string>
     <string name="text_delete_popup">Jeste li sigurni?</string>
     <string name="hint_quantity">Količina</string>
+    <string name="hint_code">Kod računa</string>
     <string name="text_quantity_default">0</string>
     <string name="textDiscount">Popust</string>
     <string name="inputHintPercentage">0%</string>
@@ -54,8 +55,9 @@
     <string name="btn_qr_code">QR KOD</string>
     <string name="btn_camera">KAMERA</string>
     <string name="btn_nfc">NFC</string>
-    <string name="text_add_image_dialog">Odaberite kako želite dodati sliku.</string>
-    <string name="text_choose_payment_method">Odaberite metodu plaćanja.</string>
+    <string name="btn_code">KOD</string>
+    <string name="text_add_image_dialog">Odaberite kako želite dodati sliku</string>
+    <string name="text_choose_payment_method">Odaberite metodu plaćanja</string>
     <string name="hint_package_discount">Popust paketa</string>
     <string name="btn_finish_adding_products">FINISH</string>
     <string name="hint_package_name">Naziv paketa</string>
@@ -73,6 +75,8 @@
     <string name="textDate">Datum:</string>
     <string name="textSeller">Prodavač:</string>
     <string name="textBuyer">Kupac:</string>
+    <string name="text_payment_code_waiting">Molimo pričekajte završetak plaćanja</string>
+    <string name="text_invoice_code_input">KOD RAČUNA:</string>
     <string name="textInvoiceDiscount">POPUST:</string>
     <string name="valueInvoiceDiscount">0</string>
     <string name="Percentage">%</string>
@@ -117,4 +121,6 @@
     <string name="toast_role_not_selected">Molimo odaberite ulogu!</string>
     <string name="toast_no_items_selected">Molimo odaberite proizvod ili paket!</string>
     <string name="toast_buy_from_own_store">Ne možete kupovati iz svoje trgovine</string>
+    <string name="toast_payment_code_empty">Kod računa nije unesen!</string>
+    <string name="toast_payment_code_invalid">Kod računa nije ispravan!</string>
 </resources>

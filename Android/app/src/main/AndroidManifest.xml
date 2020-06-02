@@ -24,30 +24,33 @@
         android:name="com.example.core.BaseApp"
         >
         <activity android:name="com.example.nfc.GetNfcMessageActivity"></activity>
-        <activity android:name=".InvoiceDetailsActivity" />
-        <activity android:name="com.example.qr.QRCodeActivity" />
-        <activity android:name="com.example.nfc.SetNfcMessageActivity" />
-        <activity android:name=".SellItemsActivity" />
-        <activity android:name=".ShowInvoicesActivity" />
-        <activity android:name=".ShowWalletBalanceActivity" />
+        <activity android:name=".InvoiceDetailsActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name="com.example.qr.QRCodeActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name="com.example.android_code.CodeActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name="com.example.android_code.CodePaymentActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name="com.example.nfc.SetNfcMessageActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".SellItemsActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".ShowInvoicesActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".ShowWalletBalanceActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".ShowItemsActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ManagePackagesActivity" />
+            android:theme="@style/AppTheme" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".ManagePackagesActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".MainMenuSeller"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".MainMenuBuyer"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".RegistrationActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ManageProductsActivity" />
+            android:theme="@style/AppTheme" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
+        <activity android:name=".ManageProductsActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

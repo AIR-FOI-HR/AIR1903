@@ -24,6 +24,13 @@ class MainMenuSeller : BaseActivity() {
         card_wallet.setOnClickListener{showWalletBalance()}
     }
 
+    override fun onBackPressed() {
+        val exitIntent = Intent(Intent.ACTION_MAIN)
+        exitIntent.addCategory(Intent.CATEGORY_HOME)
+        exitIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(exitIntent)
+    }
+
     private fun showItems(){
         val intent = Intent(this, ShowItemsActivity::class.java)
         startActivity(intent)

@@ -28,6 +28,15 @@ class ShowInvoicesActivity : BaseActivity() {
         getInvoices()
     }
 
+    override fun onBackPressed() {
+        val intent: Intent = if (Session.user.Id_Uloge == 3) {
+            Intent(this, MainMenuSeller::class.java)
+        } else {
+            Intent(this, MainMenuBuyer::class.java)
+        }
+        this.startActivity(intent)
+    }
+
     private fun getInvoices(){
         val api = Common.api
         api.getAllInvoices(Session.user.Token, true, Session.user.KorisnickoIme).enqueue(object: Callback<InvoiceResponse>{
@@ -46,16 +55,16 @@ class ShowInvoicesActivity : BaseActivity() {
                     Toast.makeText(this@ShowInvoicesActivity, getString(R.string.toast_store_no_invoices), Toast.LENGTH_LONG).show()
                     return
                 }
-                var invoices = response.body()!!.DATA as ArrayList<Invoice>
-                when {
-                    response.body()!!.STATUSMESSAGE == "OLD TOKEN" -> {
+                val invoices = response.body()!!.DATA as ArrayList<Invoice>
+                when (response.body()!!.STATUSMESSAGE) {
+                    "OLD TOKEN" -> {
                         val intent = Intent(this@ShowInvoicesActivity, LoginActivity::class.java)
                         Toast.makeText(this@ShowInvoicesActivity, getString(R.string.toast_session_expired),Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         finishAffinity()
                     }
-                    response.body()!!.STATUSMESSAGE == "SUCCESS" -> {
+                    "SUCCESS" -> {
                         invoiceAdapter.data=invoices
                     }
                     else -> {

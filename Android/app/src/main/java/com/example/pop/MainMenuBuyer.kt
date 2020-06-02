@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
+import com.example.android_code.CodePaymentActivity
 import com.example.core.BaseActivity
 import com.example.nfc.GetNfcMessageActivity
 import com.example.pop_sajamv2.Session
@@ -29,6 +30,7 @@ const val MIME_TEXT_PLAIN = "text/plain"
 class MainMenuBuyer : BaseActivity() {
 
     lateinit var mService: IMyAPI
+    var dialogWindow: PopupWindow? = null;
     //lateinit var invoice:Invoice
     //NFC
 
@@ -42,22 +44,29 @@ class MainMenuBuyer : BaseActivity() {
 
 
         val dialogView = layoutInflater.run { inflate(R.layout.dialog_payment_method, null) }
-        val dialogWindow = PopupWindow(
+        dialogWindow = PopupWindow(
             dialogView,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
         card_sell_items.setOnClickListener {
-            dialogWindow.showAtLocation(it, Gravity.CENTER, 0, 0)
-            dialogWindow.dimBehind()
+            dialogWindow!!.showAtLocation(it, Gravity.CENTER, 0, 0)
+            dialogWindow!!.dimBehind()
         }
 
-        dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow.dismiss() }
-
+        dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow!!.dismiss() }
         dialogView.btn_qr_code.setOnClickListener {
             val scanner = IntentIntegrator(this)
             scanner.initiateScan()
+        }
+
+        dialogView.btn_code.setOnClickListener {
+            val intentDetails = Intent(this, InvoiceDetailsActivity::class.java)
+            val intent = Intent(this, CodePaymentActivity::class.java)
+            intent.putExtra("detailsIntent", intentDetails)
+            dialogWindow!!.dismiss()
+            this.startActivity(intent)
         }
 
 
@@ -65,17 +74,16 @@ class MainMenuBuyer : BaseActivity() {
         card_wallet.setOnClickListener { showWalletBalance() }
 
         dialogView.btn_nfc.setOnClickListener {
-
-            val intent = Intent(this, GetNfcMessageActivity::class.java)
-            val intent2 = Intent(this, InvoiceDetailsActivity::class.java)
-            intent.putExtra("detailsIntent", intent2)
+            val intentNFC = Intent(this, GetNfcMessageActivity::class.java)
+            val intentDetails = Intent(this, InvoiceDetailsActivity::class.java)
+            intentNFC.putExtra("detailsIntent", intentDetails)
             var nfcAdapter = NfcAdapter.getDefaultAdapter(this)
             nfcAdapter = NfcAdapter.getDefaultAdapter(this)
             val manager =
                 this.getSystemService(Context.NFC_SERVICE) as NfcManager
             val adapter = manager.defaultAdapter
             if (adapter != null && adapter.isEnabled) {
-                this.startActivity(intent)
+                this.startActivity(intentNFC)
             }else{
                 val toast = Toast.makeText(this, getString(R.string.toast_nfc_unavailable), Toast.LENGTH_LONG)
                 toast.show()
@@ -103,9 +111,20 @@ class MainMenuBuyer : BaseActivity() {
         wm.updateViewLayout(container, p)
     }
 
+    override fun onBackPressed() {
+        if(dialogWindow != null && dialogWindow!!.isShowing)
+            dialogWindow!!.dismiss()
+        else {
+            val exitIntent = Intent(Intent.ACTION_MAIN)
+            exitIntent.addCategory(Intent.CATEGORY_HOME)
+            exitIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(exitIntent)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        var payment= QRPayment()
+        val payment= QRPayment()
 
         if (resultCode == Activity.RESULT_OK) {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -115,30 +134,32 @@ class MainMenuBuyer : BaseActivity() {
                 } else {
                     payment.id = (BigInteger(result.contents) / Session.expander).toInt()
 
-                    var intent =
+                    val intent =
                         Intent(this, InvoiceDetailsActivity::class.java)
 
-                    var response = payment.pay(this)
+                    val response = payment.pay(this)
 
                     lateinit var invoice:Invoice
 
-                    if (response.STATUSMESSAGE=="INVOICE FINALIZED") {
-                        invoice = response.DATA!! as Invoice
-                        intent.putExtra("invoice", invoice)
-                        startActivity(intent)
-                        finishAffinity()
-                    }
-                    else if (response.STATUSMESSAGE=="MISSING AMOUNT"){
-                        Toast.makeText(this, getString(com.example.core.R.string.toast_out_of_stock), Toast.LENGTH_SHORT).show()
-                    }
-                    else if (response.STATUSMESSAGE=="MISSING BALANCE"){
-                        Toast.makeText(this, getString(com.example.core.R.string.toast_out_of_balance), Toast.LENGTH_SHORT).show()
-                    }
-                    else if (response.STATUSMESSAGE=="NO BUYING FROM OWN STORE"){
-                        Toast.makeText(this, getString(com.example.core.R.string.toast_buy_from_own_store), Toast.LENGTH_SHORT).show()
-                    }
-                    else{
-                        Toast.makeText(this, response.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+                    when (response.STATUSMESSAGE) {
+                        "INVOICE FINALIZED" -> {
+                            invoice = response.DATA!! as Invoice
+                            intent.putExtra("invoice", invoice)
+                            startActivity(intent)
+                            finishAffinity()
+                        }
+                        "MISSING AMOUNT" -> {
+                            Toast.makeText(this, getString(com.example.core.R.string.toast_out_of_stock), Toast.LENGTH_SHORT).show()
+                        }
+                        "MISSING BALANCE" -> {
+                            Toast.makeText(this, getString(com.example.core.R.string.toast_out_of_balance), Toast.LENGTH_SHORT).show()
+                        }
+                        "NO BUYING FROM OWN STORE" -> {
+                            Toast.makeText(this, getString(com.example.core.R.string.toast_buy_from_own_store), Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            Toast.makeText(this, response.STATUSMESSAGE, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             } else {

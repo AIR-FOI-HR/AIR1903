@@ -16,16 +16,14 @@ class QRPayment : com.example.core.PaymentInterface {
     lateinit var invoice:Invoice
 
     override fun pay(context: Context):OneInvoiceResponse {
-        var api = Common.api
+        val api = Common.api
 
-        var call: Call<OneInvoiceResponse> = api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, id)
+        val call: Call<OneInvoiceResponse> = api.finalizeInvoice(Session.user.Token, true, Session.user.KorisnickoIme, id)
 
         lateinit var response:Response<OneInvoiceResponse>
         runBlocking {
-            var crt = GlobalScope.async {
-
+            val crt = GlobalScope.async {
                 response = call.execute()
-
             }
             println(crt.await())
         }

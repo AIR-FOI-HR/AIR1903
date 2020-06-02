@@ -1,2 +1,3 @@
 include ':app', ':webservice', ':qr', ':nfc', ':core'
 rootProject.name='POP'
+include ':Android-code'

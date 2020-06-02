@@ -115,4 +115,8 @@ interface IMyAPI {
     @FormUrlEncoded
     @POST("korisnici.php")
     fun setRole(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String, @Field("SETOWNROLE") SETOWNROLE:Boolean, @Field("RoleId") RoleId:Int):Call<RoleSetResponse>
+
+    @FormUrlEncoded
+    @POST("racuni.php")
+    fun finalizeInvoiceCode(@Field("Token") Token:String, @Field("KorisnickoIme") KorisnickoIme: String,  @Field("CONFIRMSALEFROMCODE") CONFIRMSALEFROMCODE: Boolean, @Field("Kod_Racuna") Kod_Racuna:String):Call<OneInvoiceResponse>
 }

@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.pop_sajamv2.Session
 import com.example.webservice.Common.Common
 import com.example.webservice.Model.OneInvoiceResponse
@@ -44,7 +43,7 @@ class QRCodeActivity : BaseActivity() {
     }
 
     private fun showInvoice(id:Int){
-        var api = Common.api
+        val api = Common.api
         val asdf = GlobalScope.launch {
             while (loop) {
                 api.getOneInvoice(

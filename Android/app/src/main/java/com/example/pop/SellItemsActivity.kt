@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.Toast
+import com.example.android_code.CodeActivity
 import com.example.core.BaseActivity
 import com.example.nfc.NFCPayment
 import com.example.nfc.SetNfcMessageActivity
@@ -40,6 +41,7 @@ class SellItemsActivity : BaseActivity() {
     var discountedTotalValue: Double = 0.0
     var discount: Int = 0
     var idRacuna: Int? = null
+    var kodRacuna: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +58,7 @@ class SellItemsActivity : BaseActivity() {
                     else 0
                 discountedTotalValue = totalValue * ((100.0 - discount) / 100)
                 invoice_total_value.text =
-                    BigDecimal(discountedTotalValue.toString()).setScale(2, RoundingMode.HALF_EVEN)
-                        .toString()
+                    BigDecimal(discountedTotalValue.toString()).setScale(2, RoundingMode.HALF_EVEN).toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -86,17 +87,17 @@ class SellItemsActivity : BaseActivity() {
     }
 
     private fun getInvoiceId() {
-        var api = Common.api
-        var ids = adapter.getIds()
-        var quantities = ArrayList<String>()
+        val api = Common.api
+        val ids = adapter.getIds()
+        val quantities = ArrayList<String>()
         var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(0)
         for (i in 0 until adapter.itemCount) {
-            var k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(i)
+            val k = layoutSellItemsRecycler.findViewHolderForAdapterPosition(i)
             quantities.add(k!!.itemView.layoutSellItemListQuantity.text.toString())
 
         }
 
-        var disc = input_invoice_discount.text.toString()
+        val disc = input_invoice_discount.text.toString()
         if (disc == "" || disc.toInt() < 0) input_invoice_discount.text =
             Editable.Factory.getInstance().newEditable(0.toString())
         else if (disc.toInt() > 100) input_invoice_discount.text =
@@ -123,6 +124,7 @@ class SellItemsActivity : BaseActivity() {
 
                 } else if (response.body()!!.STATUSMESSAGE == "INVOICE GENERATED") {
                     idRacuna = response.body()!!.DATA!!.Id as Int
+                    kodRacuna = response.body()!!.DATA!!.Kod_Racuna.toString()
                     showDialog()
                 }
             }
@@ -144,6 +146,8 @@ class SellItemsActivity : BaseActivity() {
 
         dialogView.btn_close_payment_dialog.setOnClickListener { dialogWindow.dismiss() }
 
+
+
         dialogView.btn_qr_code.setOnClickListener {
             payment = QRPayment()
             val intent = Intent(this, QRCodeActivity::class.java)
@@ -152,7 +156,17 @@ class SellItemsActivity : BaseActivity() {
             intent.putExtra("Total", idRacuna!!)
             intent.putExtra("menuIntent", menuIntent)
             intent.putExtra("detailsIntent", detailsIntent)
+            startActivity(intent)
+        }
 
+        dialogView.btn_code.setOnClickListener {
+            val intent = Intent(this, CodeActivity::class.java)
+            val menuIntent = Intent(this, MainMenuSeller::class.java)
+            val detailsIntent = Intent(this, InvoiceDetailsActivity::class.java)
+            intent.putExtra("Total", idRacuna!!)
+            intent.putExtra("code", kodRacuna)
+            intent.putExtra("menuIntent", menuIntent)
+            intent.putExtra("detailsIntent", detailsIntent)
             startActivity(intent)
         }
 

@@ -17,6 +17,7 @@ class Invoice (
     var PopustRacuna: String?,
     var IznosPopustaRacuna: String?,
     var ZavrsnaCijena: String?,
-    var Stavke: List<Item>?
-) : Serializable
+    var Stavke: List<Item>?,
+    var Kod_Racuna: String?
+    ) : Serializable
 
