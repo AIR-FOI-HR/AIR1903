@@ -1,5 +1,27 @@
 # AIR1903
 
+
+1. UPUTE ZA KOPIRANJE DOKUMENATA
+
+Localhost -> Server
+
+Kopirati:
+public					   -> app
+sve ostalo (i mapa app)	   -> app/laravel
+
+Izmijeniti:
+root/app/index.php (onaj što je localno bio u public) -> podesiti putanje do laravel mape na serveru u odnosu na sam index.php
+
+npr, za ovu gore konfiguraciju te putanje bi trebale biti
+require __DIR__.'/laravel/vendor/autoload.php';
+$app = require_once __DIR__.'/laravel/bootstrap/app.php';
+
+To sve znači da dokumenti koji su u app/laravel mogu biti bilo gdje, pa čak i izvan app mape (u npr root/laravel), ali onda bi u index.php
+složiti putanju tipa __DIR__./../laravel...
+
+
+
+2. UPUTE CHMOD
 Ovo su upute koje sam koristio za podešavanje chmoda na mape.
 Preuzete su sa: 
 https://stackoverflow.com/questions/30639174/how-to-set-up-file-permissions-for-laravel
