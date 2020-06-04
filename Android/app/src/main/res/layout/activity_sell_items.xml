@@ -108,6 +108,7 @@
         android:clickable="true"
         android:focusable="true"
         app:backgroundTint="@color/colorWhite"
+        app:tint="@color/colorFoi"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/img_red_check_mark" />
