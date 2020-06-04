@@ -8,48 +8,43 @@
     android:focusable="true"
     tools:context=".fragments.RegistrationStep2Fragment">
 
-
-    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/field_boxes_registration_store_name"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        app:hasClearButton="true"
-        app:labelText="@string/label_store_name"
+        android:hint="@string/label_store_name"
+        android:textColorHint="@color/colorFoi"
+        app:boxStrokeColor="@color/colorFoi"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_next_step"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:primaryColor="@color/colorFoiAlternate"
-        app:secondaryColor="@color/colorFoi">
-
-        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+        app:layout_constraintVertical_chainStyle="packed">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_registration_store_name"
-            android:layout_width="352dp"
+            android:textColor="@color/color_text_primary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text|textCapSentences"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+            android:inputType="text|textCapSentences" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_next_step"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="64dp"
-        android:background="@drawable/rounded_button"
         android:text="@string/buttonNext"
-        android:textAllCaps="false"
+        android:backgroundTint="@color/colorFoi"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/field_boxes_registration_store_name" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
