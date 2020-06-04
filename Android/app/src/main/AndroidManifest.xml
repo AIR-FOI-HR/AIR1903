@@ -23,7 +23,7 @@
         android:theme="@style/AppThemeBar"
         android:name="com.example.core.BaseApp"
         >
-        <activity android:name="com.example.nfc.GetNfcMessageActivity"></activity>
+        <activity android:name="com.example.nfc.GetNfcMessageActivity"/>
         <activity android:name=".InvoiceDetailsActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
         <activity android:name="com.example.qr.QRCodeActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
         <activity android:name="com.example.android_code.CodeActivity" android:screenOrientation="portrait" tools:ignore="LockedOrientationActivity"/>
