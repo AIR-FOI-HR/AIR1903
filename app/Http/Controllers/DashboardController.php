@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 class DashboardController extends Controller
 {
+	public $api_url = "https://localhost/pop/api/v1/";
+	
     public function index()
     {
         $activated = 0;
@@ -15,7 +17,7 @@ class DashboardController extends Controller
         $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['Readall'] = 'true';
         
-        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        $ch = curl_init($this->api_url . "korisnici.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -36,7 +38,7 @@ class DashboardController extends Controller
             }
         }
 
-        $ch = curl_init("http://cortex.foi.hr/pop/racuni.php");
+        $ch = curl_init($this->api_url . "racuni.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -50,7 +52,7 @@ class DashboardController extends Controller
                 $spentMoney += $invoice['ZavrsnaCijena'];
         }
 
-        $ch = curl_init("http://cortex.foi.hr/pop/trgovine.php");
+        $ch = curl_init($this->api_url . "trgovine.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -70,7 +72,7 @@ class DashboardController extends Controller
         $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['GETCURRENTEVENT'] = 'true';
         
-        $ch = curl_init("http://cortex.foi.hr/pop/meta.php");
+        $ch = curl_init($this->api_url . "meta.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

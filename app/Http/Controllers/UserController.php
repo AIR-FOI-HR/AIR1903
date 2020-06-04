@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 class UserController extends Controller
 {
+	public $api_url = "https://localhost/pop/api/v1/";
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +17,7 @@ class UserController extends Controller
         $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['Readall'] = 'true';
 
-        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        $ch = curl_init($this->api_url . "korisnici.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -24,7 +25,7 @@ class UserController extends Controller
         $users = $result['DATA'];
         curl_close($ch);
 
-        $ch = curl_init("http://cortex.foi.hr/pop/trgovine.php");
+        $ch = curl_init($this->api_url . "trgovine.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -34,7 +35,7 @@ class UserController extends Controller
 
         unset($_POST['Readall']);
         $_POST['GETROLES'] = 'true';
-        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        $ch = curl_init($this->api_url . "korisnici.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -78,7 +79,7 @@ class UserController extends Controller
         $_POST['Prezime'] = request()->input('Prezime');
         $_POST['Email'] = request()->input('Email');
 
-        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        $ch = curl_init($this->api_url . "korisnici.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -101,7 +102,7 @@ class UserController extends Controller
         $_POST['KorisnickoImeKorisnik[]'] = $user;
         $_POST['CONFIRM'] = $value;
 
-        $ch = curl_init("http://cortex.foi.hr/pop/registracija.php");
+        $ch = curl_init($this->api_url . "registracija.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -130,7 +131,7 @@ class UserController extends Controller
             $_POST['KorisnickoImeKorisnik'][] = $user; 
 
         $_POST = http_build_query($_POST);
-        $ch = curl_init("http://cortex.foi.hr/pop/registracija.php");
+        $ch = curl_init($this->api_url . "registracija.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -149,7 +150,7 @@ class UserController extends Controller
         $_POST['RoleId'] = $value;
 
 
-        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        $ch = curl_init($this->api_url . "korisnici.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -173,7 +174,7 @@ class UserController extends Controller
         $_POST['KorisnickoImeKorisnik'] = $user;
         $_POST['Id_Trgovine'] = $value;
 
-        $ch = curl_init("http://cortex.foi.hr/pop/trgovine.php");
+        $ch = curl_init($this->api_url . "trgovine.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -197,7 +198,7 @@ class UserController extends Controller
         $_POST['KorisnickoImeKorisnik[]'] = $user;
         $_POST['StanjeRacuna'] = (string)$value;
 
-        $ch = curl_init("http://cortex.foi.hr/pop/novcanik.php");
+        $ch = curl_init($this->api_url . "novcanik.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -225,7 +226,7 @@ class UserController extends Controller
             $_POST['KorisnickoImeKorisnik'][] = $user; 
 
         $_POST = http_build_query($_POST);
-        $ch = curl_init("http://cortex.foi.hr/pop/novcanik.php");
+        $ch = curl_init($this->api_url . "novcanik.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -243,7 +244,7 @@ class UserController extends Controller
         $_POST['DELETE'] = 'true';
         $_POST['KorisnickoImeKorisnik'] = $user;
 
-        $ch = curl_init("http://cortex.foi.hr/pop/korisnici.php");
+        $ch = curl_init($this->api_url . "korisnici.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

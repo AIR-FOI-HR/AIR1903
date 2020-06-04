@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 class LoginController extends Controller
 {
     protected $redirectTo = '/';
+	public $api_url = "https://localhost/pop/api/v1/";
 
     public function index()
     {
@@ -15,16 +16,18 @@ class LoginController extends Controller
 
     public function authenticate()
     {
+		
         $_POST['KorisnickoIme'] = request('username');
         $_POST['Lozinka'] = request('password');
-        
-        $ch = curl_init("http://cortex.foi.hr/pop/login.php");
+
+        $ch = curl_init($this->api_url . 'login.php');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = json_decode(curl_exec($ch), true);
+		
         curl_close($ch);
-        var_dump($result);
+        
         if($result['STATUS'] == true)
         {
             session(['authenticated' => time()]);

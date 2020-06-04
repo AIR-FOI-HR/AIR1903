@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 class InvoiceController extends Controller
 {
+	public $api_url = "https://localhost/pop/api/v1/";
+	
     public function index()
     {
         $_POST['Token'] = session('token');
         $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['Readall'] = 'true';
 
-        $ch = curl_init("http://cortex.foi.hr/pop/racuni.php");
+        $ch = curl_init($this->api_url . "racuni.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 class StoreController extends Controller
 {
+	public $api_url = "https://localhost/pop/api/v1/";
+	
     public function index()
     {
         $_POST['Token'] = session('token');
         $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['Readall'] = 'true';
 
-        $ch = curl_init("http://cortex.foi.hr/pop/trgovine.php");
+        $ch = curl_init($this->api_url . "trgovine.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -29,7 +31,7 @@ class StoreController extends Controller
         $_POST['Sufiks'] = $sufixValue;
         $_POST['BrojTrgovina'] = $numberValue;
 
-        $ch = curl_init("http://cortex.foi.hr/pop/trgovine.php");
+        $ch = curl_init($this->api_url . "trgovine.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -67,7 +69,7 @@ class StoreController extends Controller
         $_POST['Id_Trgovine'] = request()->input('Id_Trgovine');
         $_POST['StanjeRacuna'] = request()->input('StanjeRacuna');
 
-        $ch = curl_init("http://cortex.foi.hr/pop/trgovine.php");
+        $ch = curl_init($this->api_url . "trgovine.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -89,7 +91,7 @@ class StoreController extends Controller
         $_POST['DELETESTORE'] = 'true';
         $_POST['Id_Trgovine'] = $store;
 
-        $ch = curl_init("http://cortex.foi.hr/pop/trgovine.php");
+        $ch = curl_init($this->api_url . "trgovine.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 class EventController extends Controller
 {
+	public $api_url = "https://localhost/pop/api/v1/";
+	
     public function index()
     {
         $_POST['Token'] = session('token');
         $_POST['KorisnickoIme'] = session('korisnickoIme');
         $_POST['Readall'] = 'true';
-
-        $ch = curl_init("http://cortex.foi.hr/pop/meta.php");
+        $ch = curl_init($this->api_url . "meta.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -33,7 +34,7 @@ class EventController extends Controller
         $_POST['CREATEEVENT'] = 'true';
         $_POST['NazivEventa'] = request()->input('Naziv');
 
-        $ch = curl_init("http://cortex.foi.hr/pop/meta.php");
+        $ch = curl_init($this->api_url . "meta.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -70,7 +71,7 @@ class EventController extends Controller
         $_POST['Naziv_Eventa'] = request()->input('Naziv');
         $_POST['Id_Eventa'] = request()->input('Id');
 
-        $ch = curl_init("http://cortex.foi.hr/pop/meta.php");
+        $ch = curl_init($this->api_url . "meta.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -92,7 +93,7 @@ class EventController extends Controller
         $_POST['SETCURRENTEVENT'] = 'true';
         $_POST['Id_Eventa'] = $event;
 
-        $ch = curl_init("http://cortex.foi.hr/pop/meta.php");
+        $ch = curl_init($this->api_url . "meta.php");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
