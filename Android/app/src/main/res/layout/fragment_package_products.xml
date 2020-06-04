@@ -5,7 +5,6 @@
     android:id="@+id/fragment_package_products"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorSmokeBackground"
     tools:context=".fragments.PackageProductsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,9 +32,11 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"
+            app:backgroundTint="@color/colorFoi"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/img_check_mark" />
+            app:srcCompat="@drawable/img_check_mark"
+            app:tint="@color/colorWhite" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
