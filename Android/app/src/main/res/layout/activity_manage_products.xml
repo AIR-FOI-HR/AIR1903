@@ -6,70 +6,68 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-
-    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/field_boxes_product_name"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        app:hasClearButton="true"
-        app:labelText="@string/hint_product_name"
+        android:layout_height="60dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="50dp"
+        android:hint="@string/hint_product_name"
+        android:textColorHint="@color/colorFoi"
+        app:boxStrokeColor="@color/colorFoi"
+        app:counterEnabled="true"
+        app:counterMaxLength="25"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/field_boxes_product_description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:maxCharacters="25"
-        app:primaryColor="@color/colorFoiAlternate"
-        app:secondaryColor="@color/colorFoi">
+        app:layout_constraintVertical_chainStyle="packed">
 
-        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_product_name"
-            android:layout_width="352dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapSentences"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+            android:textColor="@color/color_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/field_boxes_product_description"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="60dp"
-        app:hasClearButton="true"
-        app:labelText="@string/hint_product_description"
+        android:layout_height="60dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="50dp"
+        android:hint="@string/hint_product_name"
+        android:textColorHint="@color/colorFoi"
+        app:boxStrokeColor="@color/colorFoi"
+        app:counterEnabled="true"
+        app:counterMaxLength="150"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/field_boxes_product_name"
-        app:maxCharacters="150"
-        app:primaryColor="@color/colorFoiAlternate"
-        app:secondaryColor="@color/colorFoi">
+        app:layout_constraintTop_toBottomOf="@+id/field_boxes_product_name">
 
-        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_product_description"
-            android:layout_width="352dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapSentences"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+            android:textColor="@color/color_text_primary" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="50dp"
         android:baselineAligned="true"
         android:orientation="horizontal"
         android:textAlignment="center"
@@ -78,55 +76,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/field_boxes_product_description">
 
-        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/field_boxes_product_price"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            app:labelText="@string/hint_product_price"
+            android:hint="@string/hint_product_price"
+            android:textColorHint="@color/colorFoi"
+            app:boxStrokeColor="@color/colorFoi"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/field_boxes_product_quantity"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:panelBackgroundColor="#0F000000"
-            app:primaryColor="@color/colorFoiAlternate"
-            app:secondaryColor="@color/colorFoi">
+            app:suffixText="@string/textHRK"
+            app:suffixTextColor="@color/colorFoi">
 
-            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_product_price"
-                android:layout_width="352dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:suffix="@string/textHRK"
-                app:suffixTextColor="@color/colorFoi" />
-        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+                android:textColor="@color/color_text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/field_boxes_product_quantity"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="60dp"
             android:layout_marginStart="12dp"
-            app:labelText="@string/hint_product_quantity"
+            android:hint="@string/hint_product_quantity"
+            android:textColorHint="@color/colorFoi"
+            app:boxStrokeColor="@color/colorFoi"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/field_boxes_product_price"
-            app:layout_constraintTop_toTopOf="parent"
-            app:panelBackgroundColor="#0F000000"
-            app:primaryColor="@color/colorFoiAlternate"
-            app:secondaryColor="@color/colorFoi">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_product_quantity"
-                android:layout_width="352dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned|number|numberDecimal"
-                android:textColor="#000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+                android:textColor="@color/color_text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -134,9 +129,9 @@
         android:id="@+id/image_product_picture"
         android:layout_width="0dp"
         android:layout_height="240dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="50dp"
         android:scaleType="centerCrop"
         android:src="@drawable/add_image"
         app:layout_constraintBottom_toTopOf="@+id/btn_finish_product"
@@ -159,6 +154,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/img_check_mark"
+        app:backgroundTint="@color/colorFoi"
+        app:tint="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
