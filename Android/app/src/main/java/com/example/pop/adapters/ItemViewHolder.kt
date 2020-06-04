@@ -30,15 +30,13 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
         itemView.item_desc.text = item.Opis
 
         if(item is Product){
-            itemView.item_value.text = item.Cijena + currency
+            itemView.item_value.text = "%.2f".format(item.Cijena!!.toDouble()) + currency
             itemView.item_quantity.text = item.Kolicina
         }
-
         else if(item is PackageClass){
-            itemView.item_value.text = item.Popust.toString()
+            itemView.item_value.text = item.Popust.toString() + " %"
             itemView.item_quantity.text = item.Kolicina
             itemView.package_price.text=item.CijenaStavkeNakonPopusta
-
         }
 
         itemView.setOnClickListener(this)
