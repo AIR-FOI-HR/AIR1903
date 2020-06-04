@@ -11,7 +11,7 @@
 |
 */
 Route::get('/', 'LoginController@index')->name('login');
-Route::post('/', 'LoginController@authenticate')->name('authenticate');
+Route::post('/auth', 'LoginController@authenticate')->name('authenticate');
 
 Route::group(['middleware' => ['web', 'custom_auth']], function () {
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
