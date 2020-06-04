@@ -100,6 +100,11 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
             $response->STATUSMESSAGE = "MISSING BALANCE";
             $response->DATA = null;
         }
+        else if ($saleInvoice == -3){
+            $response->STATUS = false;
+            $response->STATUSMESSAGE = "NO BUYING FROM OWN STORE";
+            $response->DATA = null;
+        }
         else{
             $response->STATUS = true;
             $response->STATUSMESSAGE = "INVOICE FINALIZED";
@@ -108,8 +113,7 @@ if ($db->checkAuth($_POST["Token"], $_POST["KorisnickoIme"])) {
         $response = json_encode($response, JSON_UNESCAPED_UNICODE);
         echo $response;
         return;
-    }
-	else if ($_POST["CONFIRMSALEFROMCODE"] == true) {
+    }else if ($_POST["CONFIRMSALEFROMCODE"] == true) {
         $userExists = $db->userExistsLogin($_POST);
         if ($userExists==false){
             $response->STATUS = false;
