@@ -26,7 +26,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshWalletBallance"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +46,11 @@
 
     <Button
         android:id="@+id/btn_details"
-        android:layout_width="180dp"
-        android:layout_height="35dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="80dp"
         android:background="@drawable/rounded_button"
         android:text="@string/wallet_details"
         android:textSize="18sp"
