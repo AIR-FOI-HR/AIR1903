@@ -21,6 +21,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         $users = $result['DATA'];
         curl_close($ch);
@@ -29,6 +34,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         $stores = $result['DATA'];
         curl_close($ch);
@@ -39,6 +49,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         $roles = $result['DATA'];
         curl_close($ch);
@@ -83,6 +98,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
         
@@ -106,6 +126,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
@@ -135,6 +160,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
@@ -154,6 +184,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
@@ -178,6 +213,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
@@ -202,6 +242,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
@@ -230,6 +275,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
         
@@ -248,6 +298,11 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 

@@ -22,8 +22,14 @@ class LoginController extends Controller
 
         $ch = curl_init($this->api_url . 'login.php');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_POST, count($_POST));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		//TODO-Ukloniti kada se riješi problem sa certifikatom na serveru
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+
         $result = json_decode(curl_exec($ch), true);
 		
         curl_close($ch);
