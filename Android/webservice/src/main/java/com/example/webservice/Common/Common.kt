@@ -5,7 +5,7 @@ import com.example.webservice.Response.RetrofitClient
 
 object Common {
 
-    val BASE_URL = "https://cortex.foi.hr/pop/"
+    val BASE_URL = "https://cortex.foi.hr/pop/api/v1/"
 
     val api: IMyAPI
         get() = RetrofitClient.getClient(BASE_URL).create(IMyAPI::class.java)
