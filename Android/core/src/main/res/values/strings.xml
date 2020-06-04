@@ -3,7 +3,7 @@
     <string name="imageLogo">Logo</string>
     <string name="registrationLogin">Already have an account? Login</string>
     <string name="inputHintName">Name</string>
-    <string name="inputHintSurname">Surname</string>
+    <string name="inputHintLastName">Last name</string>
     <string name="inputHintUsername">Username</string>
     <string name="inputHintEmail">Email address</string>
     <string name="inputHintPassword">Password</string>
@@ -39,7 +39,7 @@
     <string name="label_add_image">Add image</string>
     <string name="hint_product_name">Product name</string>
     <string name="hint_product_description">Product description</string>
-    <string name="hint_product_price">Product price</string>
+    <string name="hint_product_price">Price</string>
     <string name="text_delete_popup">Are you sure?</string>
     <string name="hint_quantity">Quantity</string>
     <string name="hint_code">Invoice code</string>
@@ -122,4 +122,7 @@
     <string name="toast_buy_from_own_store">You can\'t buy from your own store</string>
     <string name="toast_payment_code_empty">Invoice code not entered!</string>
     <string name="toast_payment_code_invalid">Invoice code is not valid!</string>
+    <string name="lable_singup_login">Don\'t have an account? Create one</string>
+    <string name="inputHintFirstName">First name</string>
+    <string name="text_package_instructions">Add products to package by clicking plus button</string>
 </resources>

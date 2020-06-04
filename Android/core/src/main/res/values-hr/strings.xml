@@ -4,7 +4,7 @@
     <string name="imageLogo">Logo</string>
     <string name="registrationLogin">Već imate račun? Prijava</string>
     <string name="inputHintName">Ime</string>
-    <string name="inputHintSurname">Prezime</string>
+    <string name="inputHintLastName">Prezime</string>
     <string name="inputHintUsername">Korisničko ime</string>
     <string name="inputHintEmail">Email adresa</string>
     <string name="inputHintPassword">Lozinka</string>
@@ -123,4 +123,8 @@
     <string name="toast_buy_from_own_store">Ne možete kupovati iz svoje trgovine</string>
     <string name="toast_payment_code_empty">Kod računa nije unesen!</string>
     <string name="toast_payment_code_invalid">Kod računa nije ispravan!</string>
+    <string name="lable_singup_login">Nemate račun? Napravite ga</string>
+    <string name="inputHintFirstName">Ime</string>
+    <string name="text_package_instructions">Dodajte proizvod u paket klikom na plus</string>
+
 </resources>
