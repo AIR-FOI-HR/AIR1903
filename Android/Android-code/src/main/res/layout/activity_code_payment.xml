@@ -6,30 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".CodePaymentActivity">
 
-    <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/field_boxes_payment_code"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
-        app:hasClearButton="true"
-        app:labelText="@string/hint_code"
+        android:hint="@string/hint_code"
+        android:textColorHint="@color/colorFoi"
+        app:boxStrokeColor="@color/colorFoi"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/btn_next_step"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:primaryColor="@color/colorFoiAlternate"
-        app:secondaryColor="@color/colorFoi">
-
-        <studio.carbonylgroup.textfieldboxes.ExtendedEditText
+        app:layout_constraintVertical_chainStyle="packed">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_payment_code"
-            android:layout_width="352dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text|textCapSentences"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_loading"
@@ -50,6 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
+        app:backgroundTint="@color/colorFoi"
+        app:tint="@color/colorWhite"
         android:src="@drawable/img_check_mark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
