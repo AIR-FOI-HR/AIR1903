@@ -64,13 +64,13 @@ class PackageProductsFragment : Fragment() {
 
     private fun addProducts(it:View){
         val api = Common.api
-        var prods = ArrayList<Product>()
+        val prods = ArrayList<Product>()
         for(product in productAdapter.products){
             if (product.Kolicina!=0.toString())
             prods.add(product)
         }
 
-        var toAddBundle = bundleOf(
+        val toAddBundle = bundleOf(
                 "prods" to prods
             )
 
@@ -108,8 +108,8 @@ class PackageProductsFragment : Fragment() {
                 parentActivity = activity as ManagePackagesActivity
                 productAdapter = ProductRecyclerAdapter(context)
                 package_product_list.adapter = productAdapter
-                var items = arguments!!.get("items") as ArrayList<Product>
-                var finalItems = ArrayList<Product>()
+                val items = arguments!!.get("items") as ArrayList<Product>
+                val finalItems = ArrayList<Product>()
 
                 for (i:Product in resp){
                     var chk=0

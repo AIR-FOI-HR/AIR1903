@@ -60,13 +60,14 @@ class PackageAddedProductsFragment : Fragment() {
         view.btn_submit_package_products.setOnClickListener{
             submitPackage()
         }
-        try {
-            items = arguments!!.get("prods") as ArrayList<Product>
+
+        items = try {
+            arguments!!.get("prods") as ArrayList<Product>
         }catch (e:kotlin.KotlinNullPointerException){
             try {
-                items = (activity!!.intent.extras!!.get("item") as PackageClass).StavkePaketa as ArrayList<Product>
+                (activity!!.intent.extras!!.get("item") as PackageClass).StavkePaketa as ArrayList<Product>
             } catch (e:TypeCastException){
-                items=ArrayList<Product>()
+                ArrayList<Product>()
             }
         }
 
@@ -81,14 +82,14 @@ class PackageAddedProductsFragment : Fragment() {
 
     private fun submitPackage(){
         var id=0
-        try {
-            id = (activity!!.intent.extras!!.get("item") as PackageClass).Id!!
+        id = try {
+            (activity!!.intent.extras!!.get("item") as PackageClass).Id!!
         } catch (e:kotlin.TypeCastException){
-            id=(activity!!.intent.extras!!.getInt("packetId"))
+            (activity!!.intent.extras!!.getInt("packetId"))
         }
 
-        var prodIds = ArrayList<Int>()
-        var prodAmt = ArrayList<String>()
+        val prodIds = ArrayList<Int>()
+        val prodAmt = ArrayList<String>()
         for (i:Product in productAdapter.getItems()){
             prodIds.add(i.Id!!)
             prodAmt.add(i.Kolicina!!)
@@ -102,15 +103,15 @@ class PackageAddedProductsFragment : Fragment() {
             override fun onResponse(call: Call<PackageResponse>, response: Response<PackageResponse>) {
                 val resp = response.body()!!.DATA
 
-                when {
-                    response.body()!!.STATUSMESSAGE=="OLD TOKEN" -> {
+                when (response.body()!!.STATUSMESSAGE) {
+                    "OLD TOKEN" -> {
                         val intent = Intent(activity, LoginActivity::class.java)
                         Toast.makeText(context, getString(R.string.toast_session_expired) , Toast.LENGTH_LONG).show()
                         Session.reset()
                         startActivity(intent)
                         activity?.finishAffinity()
                     }
-                    response.body()!!.STATUSMESSAGE=="PRODUCT ADDED TO PACKET" -> {
+                    "PRODUCT ADDED TO PACKET" -> {
                         val intent = Intent(activity, ShowItemsActivity::class.java)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -127,7 +128,7 @@ class PackageAddedProductsFragment : Fragment() {
     }
 
     private fun transitionToAddProducts(it:View){
-        var alreadyPresentBundle = bundleOf(
+        val alreadyPresentBundle = bundleOf(
             "items" to productAdapter.getItems()
         )
         it.findNavController().navigate(R.id.action_packageProductsListing_to_packageProductsAdding, alreadyPresentBundle)
