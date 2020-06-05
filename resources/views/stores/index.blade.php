@@ -149,6 +149,9 @@
 				resourcesNumber = 0;
 			resourcesNumber = parseInt(resourcesNumber);
 
+			if(!resourcesSufix)
+			resourcesSufix = " ";
+
 			var url = "{{ route('stores.createMultiple', ['sufixValue' => 'resourcesSufix', 'numberValue' => 'resourcesNumber']) }}";
 			url = url.replace('resourcesNumber', resourcesNumber);
 			url = url.replace('resourcesSufix', resourcesSufix);
