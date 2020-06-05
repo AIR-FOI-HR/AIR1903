@@ -1432,7 +1432,7 @@ pre code {
   }
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 1650px) {
   .col-lg {
     flex-basis: 0;
     -webkit-box-flex: 1;
