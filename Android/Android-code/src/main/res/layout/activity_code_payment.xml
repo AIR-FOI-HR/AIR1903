@@ -18,16 +18,19 @@
         app:boxStrokeColor="@color/colorFoi"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
+        app:hintTextColor="@color/colorFoi"
         app:layout_constraintBottom_toTopOf="@+id/btn_next_step"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_payment_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/color_text_primary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.airbnb.lottie.LottieAnimationView

@@ -41,7 +41,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="50dp"
-        android:hint="@string/hint_product_name"
+        android:hint="@string/hint_product_description"
         android:textColorHint="@color/colorFoi"
         app:boxStrokeColor="@color/colorFoi"
         app:counterEnabled="true"
