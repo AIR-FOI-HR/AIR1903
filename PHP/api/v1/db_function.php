@@ -918,9 +918,9 @@ class DB_Functions {
         $stmt = $stmt->fetch_assoc();
         $idKupca = $stmt["Id"];
         
-        $kodRacuna = $post["Kod_Racuna"];
+        $kodRacuna = strtoupper($post["Kod_Racuna"]);
         
-        $q = "SELECT Id_Trgovine, Id FROM Racun WHERE Kod_Racuna='{$kodRacuna}'";
+        $q = "SELECT Id_Trgovine, Id FROM Racun WHERE UPPER(Kod_Racuna)='{$kodRacuna}'";
         $stmt=$this->conn->query($q);
         if($stmt->num_rows==0){
             return -4;
