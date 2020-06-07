@@ -8,21 +8,26 @@
     <TextView
         android:id="@+id/layoutSellItemListName"
         android:layout_width="0dp"
-        android:layout_height="42dp"
+        android:layout_height="0dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_input"
-        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"
         android:text="@string/hint_product_name"
+        android:textAlignment="viewStart"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/layoutSellItemListQuantity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/layoutSellItemListQuantity"
-        android:layout_width="120dp"
-        android:layout_height="42dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:layout_weight="1"
@@ -33,7 +38,6 @@
         android:text="@string/text_quantity_default"
         android:textAlignment="center"
         android:textColor="@color/color_text_primary"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -43,8 +47,9 @@
         android:id="@+id/layoutSellItemListPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/text_quantity_default"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutSellItemListName"
         app:layout_constraintEnd_toStartOf="@+id/layoutSellItemListTextHRK"
         app:layout_constraintTop_toTopOf="@+id/layoutSellItemListName" />
@@ -55,14 +60,15 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/textHRK"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutSellItemListName"
         app:layout_constraintEnd_toEndOf="@+id/layoutSellItemListName"
         app:layout_constraintTop_toTopOf="@+id/layoutSellItemListName" />
 
     <Button
         android:id="@+id/layoutSellItemListButtonDecrease"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:background="@drawable/img_decrease_quantity"
@@ -72,8 +78,8 @@
 
     <Button
         android:id="@+id/layoutSellItemListButtonIncrease"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:background="@drawable/img_add_quantity"
