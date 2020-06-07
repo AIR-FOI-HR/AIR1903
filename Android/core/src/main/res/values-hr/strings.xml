@@ -35,12 +35,12 @@
     <string name="stepIndicator3">3</string>
     <string name="inputHintNumber">0</string>
     <string name="imageProduct">Slika proizvoda</string>
-    <string name="screenTitle">Poduzetnički pothvat</string>
+    <string name="screenTitle">Sajam</string>
     <string name="imageOverlay">Overlay</string>
     <string name="label_add_image">Dodaj sliku</string>
     <string name="hint_product_name">Naziv proizvoda</string>
     <string name="hint_product_description">Opis proizvoda</string>
-    <string name="hint_product_price">Cijena proizvoda</string>
+    <string name="hint_product_price">Cijena</string>
     <string name="text_delete_popup">Jeste li sigurni?</string>
     <string name="hint_quantity">Količina</string>
     <string name="hint_code">Kod računa</string>
@@ -88,7 +88,7 @@
     <string name="main_menu_wallet">NOVČANIK</string>
     <string name="text_logo">FOI</string>
     <string name="wallet_balance">Stanje računa</string>
-    <string name="wallet_details">E-mail nije unesen!</string>
+    <string name="wallet_details">Detalji</string>
     <string name="invoice_discount_amount">Iznos popusta</string>
     <string name="invoice_discount_percentage">Postotak popusta</string>
     <string name="invoice_price_before_discount">Cijena prije popusta</string>
