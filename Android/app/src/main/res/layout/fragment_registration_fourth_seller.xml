@@ -11,7 +11,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/field_boxes_registration_store_name"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
         android:hint="@string/label_store_name"
@@ -24,12 +24,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_registration_store_name"
-            android:textColor="@color/color_text_primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text|textCapSentences" />
+            android:inputType="text|textCapSentences"
+            android:textColor="@color/color_text_primary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -38,10 +39,10 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
-        android:text="@string/buttonNext"
         android:backgroundTint="@color/colorFoi"
+        android:text="@string/buttonNext"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
