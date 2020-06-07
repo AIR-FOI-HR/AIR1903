@@ -24,11 +24,12 @@
                 android:id="@+id/simpleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="20dp"
-                android:text="@string/entrepreneurial_venture"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/screenTitle"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp" />
+                android:textSize="24sp" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
