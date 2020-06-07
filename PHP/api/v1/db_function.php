@@ -518,17 +518,18 @@ class DB_Functions {
     }
     
     public function addItemToPackage($post){
-        
+        $vrijemeBrisanja = date("Y-m-d H:i:s");
         $paket = $post["Id_Paket"];
         $proizvodi = $post["Id_Proizvod"];
         $kolicine = $post["Kolicina"];
+		$vrijemeDodavanja = date("Y-m-d H:i:s");
         
-        $q = "DELETE FROM Proizvod_Paket WHERE Id_Paketa = {$paket}";
+        $q = "UPDATE Proizvod_Paket SET Obrisan = 1, DatumObrisan = '{$vrijemeBrisanja}' WHERE Id_Paketa = {$paket} AND Obrisan=0";
         $stmt = $this->conn->query($q);
-        $q = "INSERT INTO Proizvod_Paket (Id, Id_Paketa, Id_Proizvoda, Kolicina) VALUES ";
+        $q = "INSERT INTO Proizvod_Paket (Id, DatumDodan, Id_Paketa, Id_Proizvoda, Kolicina) VALUES ";
         for ($i=0;$i<sizeof($proizvodi);$i++){
             if ($kolicine[$i]!=0)
-                $q.="(null, {$paket}, {$proizvodi[$i]},  {$kolicine[$i]}), ";
+                $q.="(null, '{$vrijemeDodavanja}', {$paket}, {$proizvodi[$i]},  {$kolicine[$i]}), ";
         }
         $q=substr($q, 0, -2);
         //echo $q;
@@ -659,11 +660,12 @@ class DB_Functions {
     }*/
     
     public function getContentsOfPackage($post){
+	$vrijemeProdaje = date("Y-m-d H:i:s", $post["UnixDatum"]);
         if (isset($post["UnixDatum"])){
             $q = "SELECT p.Id_Proizvoda Id, i.Naziv, i.Opis, i.Slika, p.Kolicina"
                     . " FROM Proizvod_Paket p"
                     . " JOIN Item i ON i.Id = p.Id_Proizvoda "
-                    . " WHERE Id_Paketa = {$post["Id"]}";
+                    . " WHERE Id_Paketa = {$post["Id"]} AND DatumDodan < '{$vrijemeProdaje}' AND (DatumObrisan > '{$vrijemeProdaje}' OR (DatumObrisan='0000-00-00 00:00:00' AND Obrisan=0)) ";
             $stmt = $this->conn->query($q);
             $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
             
@@ -704,7 +706,7 @@ class DB_Functions {
                 ."WHERE svi.Izbrisan=0) fin "
                 ."JOIN Proizvod_Paket "
                 ."ON Proizvod_Paket.Id_Proizvoda = fin.Id "
-                ."WHERE Proizvod_Paket.Id_Paketa={$post["Id"]}) fin2 ";
+                ."WHERE Proizvod_Paket.Id_Paketa={$post["Id"]} AND Proizvod_Paket.Obrisan=0) fin2 ";
         }
         $stmt = $this->conn->query($q);
         $stmt = $stmt->fetch_all(MYSQLI_ASSOC);
