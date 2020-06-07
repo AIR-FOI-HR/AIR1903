@@ -22,7 +22,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/main_menu"
             android:textColor="#FFF"
-            android:textSize="34sp"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +35,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
             android:textColor="#FFF"
-            android:textSize="24sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_menu_heading" />
@@ -84,7 +84,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/main_menu_buy"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -118,13 +118,13 @@
                     android:src="@drawable/icon_invoices" />
 
                 <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="22dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/main_menu_invoices"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -134,17 +134,17 @@
             android:id="@+id/card_wallet"
             android:layout_width="150dp"
             android:layout_height="120dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:background="#92000000"
             android:hapticFeedbackEnabled="true"
             app:cardBackgroundColor="#92000000"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false"
-            app:layout_constraintEnd_toStartOf="@+id/card_invoices"
+            app:layout_constraintEnd_toStartOf="@+id/card_settings"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_sell_items"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/card_sell_items">
 
             <LinearLayout
                 android:id="@+id/showWalletBalanceButton"
@@ -167,7 +167,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/main_menu_wallet"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -177,16 +177,17 @@
             android:id="@+id/card_settings"
             android:layout_width="150dp"
             android:layout_height="120dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:background="#92000000"
             android:hapticFeedbackEnabled="true"
             app:cardBackgroundColor="#92000000"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false"
-            app:layout_constraintStart_toStartOf="@id/card_invoices"
-            app:layout_constraintTop_toBottomOf="@id/card_sell_items"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/card_wallet"
+            app:layout_constraintTop_toBottomOf="@+id/card_invoices">
 
             <LinearLayout
                 android:id="@+id/showIssuedInvoices"
@@ -209,7 +210,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/main_menu_settings"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
