@@ -49,8 +49,8 @@ class SellItemsViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
     private fun updatePrice(item: Item, change: Int) {
         if(item is PackageClass) {
-            itemView.layoutSellItemListPrice.text = (BigDecimal(itemView.layoutSellItemListPrice.text.toString()) + BigDecimal(item.CijenaStavkeNakonPopusta)*BigDecimal(change)).toString() //Tu treba biti cjena paketa
-            parentActivity.totalValue += item.CijenaStavkeNakonPopusta!!.toDouble() * change
+            itemView.layoutSellItemListPrice.text = (BigDecimal(itemView.layoutSellItemListPrice.text.toString()) + BigDecimal(item.CijenaStavke)*BigDecimal(change)).toString() //Tu treba biti cjena paketa
+            parentActivity.totalValue += item.CijenaStavke!!.toDouble() * change
             parentActivity.invoice_total_value.text = parentActivity.totalValue.toString()
             parentActivity.input_invoice_discount.setText("0")
         }
