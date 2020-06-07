@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/input"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,20 +22,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_weight="1"
             android:text="@string/textInvoiceDiscount"
             android:textColor="@color/colorWhite"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/layoutSellItemsTextTotal"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/input_invoice_discount" />
 
         <EditText
             android:id="@+id/input_invoice_discount"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:backgroundTint="@color/colorWhite"
@@ -45,20 +48,21 @@
             android:text="@string/valueInvoiceDiscount"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
-            android:textSize="24sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/layoutSellItemsTextHRK"
-            app:layout_constraintStart_toEndOf="@+id/text_invoice_discount" />
+            app:layout_constraintStart_toEndOf="@+id/text_invoice_discount"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/layoutSellItemsTextTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="64dp"
             android:layout_weight="1"
             android:text="@string/textTotal"
             android:textColor="@color/colorWhite"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -71,7 +75,7 @@
             android:layout_weight="1"
             android:text="@string/inputHintNumber"
             android:textColor="@color/colorWhite"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/layoutSellItemsTextTotal"
             app:layout_constraintStart_toEndOf="@+id/layoutSellItemsTextTotal" />
@@ -83,7 +87,7 @@
             android:layout_marginStart="8dp"
             android:text="@string/textHRK"
             android:textColor="@color/colorWhite"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/invoice_total_value"
             app:layout_constraintStart_toEndOf="@+id/invoice_total_value" />
