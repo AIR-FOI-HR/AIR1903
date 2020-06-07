@@ -16,7 +16,7 @@ class InvoiceDetailsActivity : BaseActivity() {
         val invoice : Invoice = intent.getSerializableExtra("invoice") as Invoice
 
         layoutInvoiceDetailsId.text = invoice.Id.toString()
-        layoutInvoiceDetailsLocation.text = invoice.MjestoIzdavanja
+        layoutInvoiceDetailsLocation.text = "FOI"
         layoutInvoiceDetailsDate.text = invoice.DatumIzdavanja
         layoutInvoiceDetailsSeller.text = invoice.Trgovina
         layoutInvoiceDetailsBuyer.text = invoice.Ime_Klijenta
