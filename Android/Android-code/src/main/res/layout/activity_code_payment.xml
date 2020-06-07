@@ -9,10 +9,9 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/field_boxes_payment_code"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:hint="@string/hint_code"
         android:textColorHint="@color/colorFoi"
         app:boxStrokeColor="@color/colorFoi"
