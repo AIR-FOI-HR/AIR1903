@@ -32,6 +32,7 @@
         android:text="@string/text_payment_method"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:textColor="@color/color_text_primary"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_close_payment_dialog" />
@@ -88,8 +89,8 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/img_delete_product_reject"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/popup_delete_text"
