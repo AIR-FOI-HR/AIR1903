@@ -71,7 +71,7 @@
     <string name="textItem">Artikl</string>
     <string name="textPrice">Cijena</string>
     <string name="textTotalPrice">Iznos</string>
-    <string name="textLocation">Mjesto prodaje:</string>
+    <string name="textLocation">Lokacija:</string>
     <string name="textDate">Datum:</string>
     <string name="textSeller">Prodavač:</string>
     <string name="textBuyer">Kupac:</string>
@@ -89,9 +89,9 @@
     <string name="text_logo">FOI</string>
     <string name="wallet_balance">Stanje računa</string>
     <string name="wallet_details">Detalji</string>
-    <string name="invoice_discount_amount">Iznos popusta</string>
-    <string name="invoice_discount_percentage">Postotak popusta</string>
-    <string name="invoice_price_before_discount">Cijena prije popusta</string>
+    <string name="invoice_discount_amount">Iznos popusta:</string>
+    <string name="invoice_discount_percentage">Postotak popusta:</string>
+    <string name="invoice_price_before_discount">Cijena prije popusta:</string>
     <string name="main_menu_sell">PRODAJ</string>
     <string name="entrepreneurial_venture">Poduzetnički pothvat</string>
     <string name="toast_out_of_stock">Nekog od proizvoda nema na skladištu!</string>

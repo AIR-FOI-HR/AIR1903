@@ -70,7 +70,7 @@
     <string name="textItem">Item</string>
     <string name="textPrice">Price</string>
     <string name="textTotalPrice">Total</string>
-    <string name="textLocation">Sale location:</string>
+    <string name="textLocation">Location:</string>
     <string name="textDate">Date:</string>
     <string name="textSeller">Seller:</string>
     <string name="textBuyer">Buyer:</string>
@@ -87,9 +87,9 @@
     <string name="main_menu_wallet">WALLET</string>
     <string name="main_menu_settings">SETTINGS</string>
     <string name="main_menu_sell">SELL</string>
-    <string name="invoice_discount_amount">Discount Amount</string>
-    <string name="invoice_price_before_discount">Price before discount</string>
-    <string name="invoice_discount_percentage">Discount Percentage</string>
+    <string name="invoice_discount_amount">Discount amount:</string>
+    <string name="invoice_price_before_discount">Price before discount:</string>
+    <string name="invoice_discount_percentage">Discount percentage:</string>
     <string name="wallet_details">Details</string>
     <string name="entrepreneurial_venture">Entrepreneurial Venture</string>
     <string name="wallet_balance">Balance</string>
