@@ -13,6 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/invoice_discount_amount"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/layoutInvoiceDetailsTextTotal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBeforeDiscount" />
@@ -22,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextDiscountAmount"
         app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextDiscountAmount"
         tools:text="Discount" />
@@ -33,6 +35,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/invoice_price_before_discount"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextInvoiceDiscount" />
 
@@ -61,6 +64,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/invoice_discount_percentage"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextBuyer" />
 
@@ -69,9 +73,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/textInvoice"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/inputHintNumber"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextInvoice"
         app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextInvoice"
         app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextInvoice" />
@@ -91,8 +95,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="@string/textLocation"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextInvoice" />
 
@@ -104,7 +109,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/textDate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextLocation"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/layoutInvoiceDetailsTextSeller"
@@ -113,6 +119,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/textSeller"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextDate" />
 
@@ -123,6 +130,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/textBuyer"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutInvoiceDetailsTextSeller" />
 
@@ -131,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="@string/textTotal"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -143,6 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextLocation"
         app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextLocation"
         app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextLocation"
@@ -153,6 +162,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutInvoiceDetailsTextDate"
         app:layout_constraintStart_toEndOf="@+id/layoutInvoiceDetailsTextDate"
         app:layout_constraintTop_toTopOf="@+id/layoutInvoiceDetailsTextDate"
@@ -192,12 +202,10 @@
 
     <ImageView
         android:id="@+id/layoutInvoiceDetailsImageLogo"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/imageLogo"
-        app:layout_constraintBottom_toTopOf="@+id/layoutInvoiceDetailsLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
