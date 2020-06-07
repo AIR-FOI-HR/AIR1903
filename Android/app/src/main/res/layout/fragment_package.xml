@@ -1,129 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_package"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".fragments.PackageFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/manage_packets"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/manage_packets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_boxes_package_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp"
+            android:hint="@string/hint_package_name"
+            android:textColorHint="@color/colorFoi"
+            app:boxStrokeColor="@color/colorFoi"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toTopOf="@+id/field_boxes_package_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/field_boxes_package_name"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_package_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="50dp"
-                android:hint="@string/hint_package_name"
-                android:textColorHint="@color/colorFoi"
-                app:boxStrokeColor="@color/colorFoi"
-                app:counterEnabled="true"
-                app:counterMaxLength="25"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/field_boxes_package_description"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed">
+                android:inputType="textCapSentences"
+                android:textColor="@color/color_text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_package_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:textColor="@color/color_text_primary" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_boxes_package_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:hint="@string/hint_package_description"
+            android:textColorHint="@color/colorFoi"
+            app:boxStrokeColor="@color/colorFoi"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toTopOf="@+id/field_boxes_package_discount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_name">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/field_boxes_package_description"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_package_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="50dp"
-                android:hint="@string/hint_package_description"
-                android:textColorHint="@color/colorFoi"
-                app:boxStrokeColor="@color/colorFoi"
-                app:counterEnabled="true"
-                app:counterMaxLength="150"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/field_boxes_package_discount"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_name">
+                android:inputType="textCapSentences"
+                android:textColor="@color/color_text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_package_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:textColor="@color/color_text_primary" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/field_boxes_package_discount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:hint="@string/hint_package_discount"
+            android:textColorHint="@color/colorFoi"
+            app:boxStrokeColor="@color/colorFoi"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toTopOf="@+id/image_package_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_description"
+            app:suffixText="@string/Percentage"
+            app:suffixTextColor="@color/colorFoi">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/field_boxes_package_discount"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_package_discount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="50dp"
-                android:hint="@string/hint_package_discount"
-                android:textColorHint="@color/colorFoi"
-                app:boxStrokeColor="@color/colorFoi"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:layout_constraintBottom_toTopOf="@+id/image_package_picture"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_description"
-                app:suffixText="@string/Percentage"
-                app:suffixTextColor="@color/colorFoi">
+                android:inputType="number"
+                android:textColor="@color/color_text_primary" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_package_discount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textColor="@color/color_text_primary" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/image_package_picture"
+            android:layout_width="0dp"
+            android:layout_height="240dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/add_image"
+            app:layout_constraintBottom_toTopOf="@+id/btn_finish_package"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_discount"
+            app:riv_border_color="@color/colorFoi"
+            app:riv_border_width="2dp"
+            app:riv_corner_radius="5dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp" />
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/image_package_picture"
-                android:layout_width="0dp"
-                android:layout_height="240dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="50dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/add_image"
-                app:layout_constraintBottom_toTopOf="@+id/btn_finish_package"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/field_boxes_package_discount"
-                app:riv_border_color="@color/colorFoi"
-                app:riv_border_width="2dp"
-                app:riv_corner_radius="5dp"
-                app:riv_mutate_background="true"
-                app:riv_oval="false"
-                app:riv_tile_mode="clamp" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_finish_package"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                app:backgroundTint="@color/colorFoi"
-                app:tint="@color/colorWhite"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/img_check_mark" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_finish_package"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@color/colorFoi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/img_check_mark"
+            app:tint="@color/colorWhite" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
